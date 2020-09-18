@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>GenomeSpace Recipe: Identify Regions of Protein-DNA Binding and Their Influence on Associated Gene Expression</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link href="/assets/docs.min.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/featured_article.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/pages.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/recipes.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/site.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/tags.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/jquery-ui/theme.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/jquery-ui/core.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/application.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/dataTables/bootstrap/3/jquery.dataTables.bootstrap.css?body=1" media="all" rel="stylesheet"/>
+<script src="/assets/jquery.js?body=1"></script>
+<script src="/assets/jquery_ujs.js?body=1"></script>
+<script src="/assets/jquery-ui/core.js?body=1"></script>
+<script src="/assets/jquery-ui/widget.js?body=1"></script>
+<script src="/assets/jquery-ui/position.js?body=1"></script>
+<script src="/assets/jquery-ui/menu.js?body=1"></script>
+<script src="/assets/jquery-ui/autocomplete.js?body=1"></script>
+<script src="/assets/jquery-ui/mouse.js?body=1"></script>
+<script src="/assets/jquery-ui/sortable.js?body=1"></script>
+<script src="/assets/bootstrap/affix.js?body=1"></script>
+<script src="/assets/bootstrap/alert.js?body=1"></script>
+<script src="/assets/bootstrap/button.js?body=1"></script>
+<script src="/assets/bootstrap/carousel.js?body=1"></script>
+<script src="/assets/bootstrap/collapse.js?body=1"></script>
+<script src="/assets/bootstrap/dropdown.js?body=1"></script>
+<script src="/assets/bootstrap/tab.js?body=1"></script>
+<script src="/assets/bootstrap/transition.js?body=1"></script>
+<script src="/assets/bootstrap/scrollspy.js?body=1"></script>
+<script src="/assets/bootstrap/modal.js?body=1"></script>
+<script src="/assets/bootstrap/tooltip.js?body=1"></script>
+<script src="/assets/bootstrap/popover.js?body=1"></script>
+<script src="/assets/bootstrap-sprockets.js?body=1"></script>
+<script src="/assets/ckeditor/init.js?body=1"></script>
+<script src="/assets/ckeditor/ckeditor.js?body=1"></script>
+<script src="/assets/jquery_nested_form.js?body=1"></script>
+<script src="/assets/dataTables/jquery.dataTables.js?body=1"></script>
+<script src="/assets/dataTables/bootstrap/3/jquery.dataTables.bootstrap.js?body=1"></script>
+<script src="/assets/autocomplete-rails.js?body=1"></script>
+<script src="/assets/spin.min.js?body=1"></script>
+<script src="/assets/docs.min.js?body=1"></script>
+<script src="/assets/jquery.hoverIntent.minified.js?body=1"></script>
+<script src="/assets/ckeditor/config.js?body=1"></script>
+<script src="/assets/featured_article.js?body=1"></script>
+<script src="/assets/pages.js?body=1"></script>
+<script src="/assets/recipes.js?body=1"></script>
+<script src="/assets/site.js?body=1"></script>
+<script src="/assets/tags.js?body=1"></script>
+<script src="/assets/application.js?body=1"></script>
+<meta content="authenticity_token" name="csrf-param"/>
+<meta content="eBXaji/W1r5nHcJRHWvUZgshkDXdTzl5qsp3ULLhlmc=" name="csrf-token"/>
+<link href="https://fonts.googleapis.com/css?family=Wire+One" rel="stylesheet" type="text/css"/>
+<link href="https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:300" rel="stylesheet" type="text/css"/>
+<link href="/assets/favicon.ico" rel="shortcut icon">
+<script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-74623322-1', 'auto');
+        ga('send', 'pageview');
+       // ga('set', 'userId', {{"anonymous"}}); // Set the user ID using signed-in user_id.
+        ga('set', 'userId', 'anonymous'); // Set the user ID using signed-in user_id.
+
+    </script>
+</link></head>
+<body onload="tellParentWindowMySize()">
+<div id="nav_page_wrapper">
+<div id="logo"><a href="http://www.genomespace.org/"><img alt="Gslogo" src="/assets/gslogo.png"/></a></div>
+<div class="clickable" id="login_menu">
+<form accept-charset="UTF-8" action="/users/sign_in" class="new_user" id="gs-login" method="post"><div style="display:none"><input name="utf8" type="hidden" value="✓"/><input name="authenticity_token" type="hidden" value="eBXaji/W1r5nHcJRHWvUZgshkDXdTzl5qsp3ULLhlmc="/></div>
+<input id="user_identity_url" name="user[identity_url]" type="hidden" value="https://identity.genomespace.org/identityServer/xrd.jsp"/>
+<a onclick="document.getElementById('gs-login').submit(); return false;">Login<span class="glyphicon glyphicon-chevron-right"></span></a>
+</form></div>
+<ul id="nav">
+<li class="dropdown">
+<a href="/"><span class="glyphicon glyphicon-home"></span> GenomeSpace Recipes</a>
+</li>
+<!-- <li id="recipe_link"><a href="/recipes"><span class="gparc-nav-icon glyphicon glyphicon-list"></span> My Recipes</a></li> -->
+<!-- links to main genomespace.org -->
+<li id="gsdotorg"><a href="http://www.genomespace.org/"><img alt="Gslogo" height="24px" src="/assets/official_logo.png"/>GenomeSpace.org</a><ul>
+<li id="what-is-genomespace"><a href="http://www.genomespace.org/what-is-genomespace">What is GenomeSpace?</a>
+<li id="tools"><a href="http://www.genomespace.org/support/tools">Tools</a>
+</li>
+<li id="recipes"><a href="http://recipes.genomespace.org/">Recipes</a></li>
+<li id="documentation"><a href="http://www.genomespace.org/documentation">Documentation</a>
+<ul>
+<li><a href="http://www.genomespace.org/support/guides/user-guide">User Guide</a>
+<p>Read the detailed guide to the user interface</p>
+</li>
+<li><a href="http://www.genomespace.org/support/guides/tool-guide">Tool Guide</a>
+<p>Learn how to access GenomeSpace functionality for each Tool</p>
+</li>
+<li><a href="http://www.genomespace.org/faq">FAQ</a>
+<p>See answers to frequently asked questions</p>
+</li>
+<li><a href="http://www.genomespace.org/presentations-and-videos">Presentations and Videos</a>
+<p>Access talks by the GenomeSpace community</p>
+</li>
+<li><a href="http://www.genomespace.org/support/guides/end-to-end-analyses">End-to-End Analyses</a>
+<p>Provides description for end-to-end analyses.</p>
+</li>
+</ul>
+</li>
+<li id="developers"><a href="http://www.genomespace.org/for-developers">Developers</a>
+<ul>
+<li><a href="http://www.genomespace.org/what-can-genomespace-do-for-tool-developers">What Can GenomeSpace Do For Tool Developers?</a>
+<p></p>
+</li>
+<li><a href="http://www.genomespace.org/adopters">Technical Documentation</a>
+<p></p>
+</li>
+<li><a href="http://www.genomespace.org/source-code">Source Code and Distributions</a>
+<p></p>
+</li>
+<li><a href="http://www.genomespace.org/developer-support-and-feedback">Developer Support and Feedback</a>
+<p></p>
+</li>
+</ul>
+</li>
+<li id="support"><a href="http://www.genomespace.org/support">Support</a>
+</li>
+<li id="about"><a href="http://www.genomespace.org/about">About</a>
+</li>
+</li></ul></li>
+<!-- end of links to main GenomeSpace.org -->
+<li class="search">
+<div id="search_box">
+<form accept-charset="UTF-8" action="/search" class="form" method="get" role="form"><div style="display:none"><input name="utf8" type="hidden" value="✓"/></div>
+<div style="margin:0;padding:0;display:inline">
+<input class="search" id="search" name="search" type="text"/>
+</div>
+<input class="searchBtn" type="submit"/>
+</form> </div>
+</li>
+</ul>
+</div>
+<div class="container fluid gs-recipe-">
+<div class="row">
+<div class="col-md-10">
+<table><tr><td><img alt="Gp gal igv" class="recipeAvatar" src="/system/recipes/avatars/000/000/069/original/gp_gal_igv.png?1489687594"/></td><td>
+<h3>Identify Regions of Protein-DNA Binding and Their Influence on Associated Gene Expression
+                        </h3>
+</td></tr></table>
+<p class="text-muted">Added by kosnicki on 2016.12.06 <span class="official"><img alt="Official logo" data-content="Offical GenomeSpace Recipe" data-toggle="popover" src="/assets/official_logo.png"/></span>
+<br/>
+            Last updated on over 3 years ago.
+            </p>
+<div class="row">
+<div class="col-md-8">
+<p>
+<a class="btn btn-default btn-xs tag yellow" >peak calling</a>
+<a class="btn btn-default btn-xs tag green" >gene sets</a>
+<a class="btn btn-default btn-xs tag red" >gene expression analysis</a>
+<a class="btn btn-default btn-xs tag green" >RNA-seq</a>
+<a class="btn btn-default btn-xs tag yellow" >ChIP-seq</a>
+<a class="btn btn-default btn-xs tag red" >differential gene expression</a>
+</p>
+</div>
+<div class="col-md-2 voting">
+<p class="text-success"><span class="glyphicon glyphicon-thumbs-up"></span> 1</p>
+</div>
+<div class="col-md-2 voting">
+<p class="text-danger"><span class="glyphicon glyphicon-thumbs-down"></span> 0</p>
+</div>
+</div>
+<hr/>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/zZiZ40NAR2Y?list=PL4ZmSx1n2Kw669CGdj2dCUmTcjG76eKbu&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+<section id="summary"></section>
+<h3 class="divider">Summary</h3>
+<div class="responsive-content">
+<p><span style="font-family:arial,sans-serif;"><span style="font-size:16px;"><i>Which genes are differentially expressed between my two phenotypes, based on my RNA-seq data?</i></span></span></p>
+<p>This recipe provides one method to identify and visualize gene expression in different diseases and during cell differentiation and development. In collecting ChIP-seq data, we can obtain genome-wide maps of transcription factor occupancies or histone modifications between a treatment and control. In locating these regions, we can integrate ChIP-seq and RNA-seq data to better understand how these binding events regulate associated gene expression of nearby genes. An example use case of this recipe is when <a href="http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0122518#pone.0122518.ref018">Laurent et al.</a> observed how the binding of the Prep1 transcription factor influences gene regulation in mouse embryonic stem cells. The integration of both RNA-seq and Chip-seq data allows a user to identify target genes that are directly regulated by transcription factor binding or any other epigenetic occupancy in the genome.</p>
+<p><img alt="" src="/ckeditor_assets/pictures/415/content_ss_workflow.png" style=" float: right; padding: 10px;" width="550"/></p>
+<p><strong>What is Model-based Analysis of ChiP-seq (MACS)?</strong></p>
+<p>Model-based Analysis of ChIP-seq (MACS) is a computational algorithm that identifies genome-wide locations of transcription/chromatin factor binding or histone modifications. It is often preferred over other peak calling algorithms due to its consistency in reporting fewer false positives and its finer spatial resolution. First, it removes redundant reads to account for possible over-amplification of ChIP-DNA, which may affect peak-calling downstream. Then it shifts read positions based on the fragment size distribution to better represent the original ChIP-DNA fragment positions. Once read positions are adjusted, peak enrichment is calculated by identifying regions that are significantly enriched relative to the genomic background. MACS empirically estimates the FDR for experiments with controls for each peak, which can be used as a cutoff to filter enriched peaks. The treatment and control samples are swapped and any enriched peaks found in the control sample are regarded as false positives.</p>
+<p><strong>Why differential expression analysis?</strong></p>
+<p>We assume that most genes are not expressed all the time, but rather are expressed in specific tissues, stages of development, or under certain conditions. Genes which are expressed in one condition, such as cancerous tissue, are said to be differentially expressed when compared to normal conditions.</p>
+<p><strong>Use Case:</strong> ChIP-Seq and RNA-Seq Analyses Identify Components of the Wnt and Fgf Signaling Pathways as Prep1 Target Genes in Mouse Embryonic Stem Cells (<a href="http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0122518#pone.0122518.ref018">Laurent et al., PLoS ONE, 2015)</a></p>
+<p>The sample datatset, <a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE63282">Series GSE6328,</a> used for this recipe are from NCBI's GEO. We identify the interplay between epigentics and transcriptomics mouse embryonic stems cells by observing how the binding of the transcription factor, <em>Prep1</em>, influences gene expression. <em>Prep1</em> is predominantly known for its contribution in embryonic development. In comparing genome-wide maps of mouse embryonic cells experiencing <i>Prep1</i> binding to those that do not, we can identify potential target genes that are being differentially regulated by these binding events.</p>
+</div>
+<section id="inputs"></section>
+<h3 class="divider">Inputs</h3>
+<div class="responsive-content">
+<p>To complete this recipe, we will need a sample dataset, <a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE63282">Series GSE6328</a>. We have already aligned and performed quality control analysis on the data, prior to this recipe. We will need the following datasets, which can be downloaded from the following folders:</p>
+<p><code class="directory">Public</code> &gt; <code class="directory">RecipeData</code> &gt; <code class="directory">GenomicFeatureData</code> &gt; <strong><code class="filename"><a href="https://gsui.genomespace.org/jsui/gsui.html?pathOrUrl=/Home/Public/RecipeData/GenomicFeatureData/Mouse_wGeneID.gtf" target="_blank">Mouse_wGeneID.gtf</a></code></strong>: this file contains the reference annotations for the mouse genome that is needed to analyze these datasets.</p>
+<p><code class="directory">Public</code> &gt; <code class="directory">RecipeData</code> &gt; <code class="directory">SequenceData</code> &gt; <code class="directory">GSE6328</code> &gt; <strong><code class="filename"><a href="https://gsui.genomespace.org/jsui/gsui.html?pathOrUrl=/Home/Public/RecipeData/SequenceData/GSE6328/Prep1_WT_RNA.bam" target="_blank">Prep1_WT_RNA.bam</a></code></strong>: this file contains aligned RNA-seq data from normal mouse embryonic stem cells (mESCs).</p>
+<p><code class="directory">Public</code> &gt; <code class="directory">RecipeData</code> &gt; <code class="directory">SequenceData</code> &gt; <code class="directory">GSE6328</code> &gt; <strong><code class="filename"><a href="https://gsui.genomespace.org/jsui/gsui.html?pathOrUrl=/Home/Public/RecipeData/SequenceData/GSE6328/Prep1_KO_RNA.bam" target="_blank">Prep1_KO_RNA.bam</a></code></strong>: this file contains aligned RNA-seq data from mESCs in which Prep1 was knocked out.</p>
+<p><code class="directory">Public</code> &gt; <code class="directory">RecipeData</code> &gt; <code class="directory">SequenceData</code> &gt; <code class="directory">GSE6328</code> &gt; <strong><code class="filename"><a href="https://gsui.genomespace.org/jsui/gsui.html?pathOrUrl=/Home/Public/RecipeData/SequenceData/GSE6328/Prep1_WT_ChIP.bam" target="_blank">Prep1_WT_ChIP.bam</a></code></strong>: this file contains aligned input control ChIP-seq data from normal mESCs.</p>
+<p><code class="directory">Public</code> &gt; <code class="directory">RecipeData</code> &gt; <code class="directory">SequenceData</code> &gt; <code class="directory">GSE6328</code> &gt; <strong><code class="filename"><a href="https://gsui.genomespace.org/jsui/gsui.html?pathOrUrl=/Home/Public/RecipeData/SequenceData/GSE6328/Prep1_KO_ChIP.bam" target="_blank">Prep1_KO_ChIP.bam</a></code></strong>: this file contains aligned ChIP-seq data from mESCs for Prep1 binding.</p>
+<p> </p>
+</div>
+<div id="recipeOutputSection">
+<section id="outputs"></section>
+<h3 class="divider">Outputs</h3>
+<div class="responsive-content" id="recipeOutputText">
+</div>
+</div>
+<section id="overview"></section>
+<h3 class="divider">Recipe steps</h3>
+<ul>
+<li><strong>GenePattern</strong></li>
+<ol start="1">
+<li>Loading data</li>
+<li>Identifying differential gene expression in RNA-seq reads</li>
+<li>Saving the files to GenomeSpace</li>
+</ol>
+</ul>
+<ul>
+<li><strong>Galaxy</strong></li>
+<ol start="4">
+<li>Loading RNA-seq and ChIP-seq data into Galaxy</li>
+<li>Prepare signficantly different expression dataset for view in IGV</li>
+<li>Extracting intervals of significantly differential genes</li>
+<li>Convert filtered BAM files to Bigwig</li>
+<li>Identifying transcription factor binding sites</li>
+<li>Convert files to Bigwig format</li>
+<li>Sending data to GenomeSpace for viewing in IGV</li>
+</ol>
+</ul>
+<ul>
+<li><strong>IGV</strong></li>
+<ol start="11">
+<li>Visualizing transcription factor binding sites and corresponding gene regulation</li>
+</ol>
+</ul>
+<div class="row">
+<div class="col-md-6" style="text-align: right; display: inline;width: 250px !important;">
+<a class="btn btn-info" href="javascript:void(0);" id="show-all"><span class="glyphicon glyphicon-plus"></span> Expand All Steps</a>
+</div>
+<div class="col-md-6" style="display: inline;width: 250px !important;">
+<a class="btn btn-info" href="javascript:void(0);" id="hide-all"><span class="glyphicon glyphicon-minus"></span> Collapse All Steps</a>
+</div>
+</div>
+<p></p>
+<div aria-multiselectable="true" class="panel-group" id="steps" role="tablist">
+<div class="panel panel-default">
+<section id="step_0"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Genepattern" class="stepAvatar tag-tooltip" src="/assets/GenePattern.png" title="GenePattern"/>
+<a data-toggle="toggle" href="#collapse_0" onclick="$('#collapse_0').collapse('toggle')">1: Loading data <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>This is one method that can be used to load data into GenePattern.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_0" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<p><em><small><strong>NOTE:</strong> If you have not yet associated your GenomeSpace account with your GenePattern account, you will be asked to do so. If you do not yet have a GenePattern account, you can automatically generate a new account that will be associated with your GenomeSpace account.</small></em></p>
+<ol>
+<li>Open GenePattern from GenomeSpace, and navigate to the <code class="parameter">GenomeSpace</code> tab, then navigate to the folder containing the files (<code class="directory">Public</code> &gt; <code class="directory">RecipeData</code> &gt; <code class="directory">SequenceData</code> &gt; <code class="directory">GSE6328</code>).</li>
+</ol>
+</div>
+<br>
+<div class="panel-group">
+<div class="panel panel-warning">
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title">
+<img alt="Genepattern" class="stepAvatar tag-tooltip" src="/assets/GenePattern.png" title="GenePattern"/><a data-toggle="collapse" href="#alternate_179_0">Alternative: other ways to load data into GenePattern <span class="glyphicon glyphicon-chevron-right"></span></a>
+</h4>
+<p class="text-muted">Tool: GenePattern</p>
+</div>
+<div class="panel-collapse step-container collapse" id="alternate_179_0" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<p>1. Click on the file (e.g., <code class="filename">Prep1_WT_RNA.bam</code>) in GenomeSpace, then use the GenePattern context menu and click <code class="parameter">Launch on File</code>.</p>
+<p><i>OR</i></p>
+<p>2. Click on the file (e.g., <code class="filename">Prep1_WT_RNA.bam</code>) in GenomeSpace, then drag it to the GenePattern icon to launch.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</br></div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_1"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Genepattern" class="stepAvatar tag-tooltip" src="/assets/GenePattern.png" title="GenePattern"/>
+<a data-toggle="toggle" href="#collapse_1" onclick="$('#collapse_1').collapse('toggle')">2: Identifying differential gene expression in RNA-seq reads <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>We will use the <code class="subtool">Cufflinks.cuffdiff</code> module to test differential expression between the two samples (e.g., <code class="filename">Prep1_WT_RNA.bam</code> and <code class="filename">Prep1_KO_RNA.bam</code>). This module uses the aligned data from GenomeSpace, and the reference gene annotation GTF file (<code class="filename">Mouse_wGeneID.gtf</code>).</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_1" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>Change to the <code class="parameter">Modules</code> tab, and search for "Cuffdiff". Once the module is loaded, change the following parameters:</li>
+<li><code class="parameter">aligned files</code>: Create a new condition for the first FASTA/FASTQ file, e.g., "WT". Navigate to the directory containing the appropriate file (e.g., <code class="directory">Public</code> &gt; <code class="directory">RecipeData</code> &gt; <code class="directory">SequenceData</code> &gt; <code class="directory">GSE6328</code> &gt; <code class="filename">Prep1_WT_RNA.bam</code>), then load the file into the <code class="parameter">aligned files</code> parameter by clicking and dragging the file into the input box.</li>
+<li>Click the <code class="parameter">Add Another Condition</code> button.
+	<p>â€‹<img alt="" src="/ckeditor_assets/pictures/385/content_2_ss.png" style="width: 750px; height: 294px;"/></p>
+</li>
+<li><code class="parameter">aligned files</code>: Create a second condition for the first FASTA/FASTQ file, e.g., "KO". Navigate to the directory containing the appropriate file (e.g., <code class="directory">Public</code> &gt; <code class="directory">RecipeData</code> &gt; <code class="directory">SequenceData</code> &gt; <code class="directory">GSE6328</code> &gt; <code class="filename">Prep1_KO_RNA.bam</code>), then load the file into the <code class="parameter">aligned files</code> parameter by clicking and dragging the file into the input box.</li>
+<li><code class="parameter">GTF file</code>: Click on the <code class="parameter">Upload your own file</code> button, then upload GCT file into the <code class="subtool">Cufflinks.cuffdiff</code> module using the <code class="parameter">GenomeSpace</code> tab. Navigate to the directory containing the GCT file (e.g. <code class="directory">Public</code> &gt; <code class="directory">RecipeData</code> &gt; <code class="directory">GenomicFeatureData</code> &gt; <code class="filename">Mouse_wGeneID.gtf</code>). Load it into the <code class="subtool">Cufflinks.cuffdiff</code> module by dragging the file to the <code class="parameter">GTF file</code> parameter.
+	<p><img alt="" src="/ckeditor_assets/pictures/386/content_3_ss.png" style="width: 750px; height: 289px;"/></p>
+</li>
+<li><code class="parameter">library type</code>: fr-unstranded
+	<p><img alt="" src="/ckeditor_assets/pictures/388/content_4_ss_copy.png" style="width: 750px; height: 43px;"/></p>
+</li>
+<li>Click <code class="parameter">advanced input parameters and options</code> and then set <code class="parameter">min alignment count</code>: 0</li>
+<li>Click <code class="parameter">Run</code> to submit your job. This will generate several files; in this recipe, we will use the <code class="filename">genes_exp.diff</code> file.
+	<p><img alt="" src="/ckeditor_assets/pictures/389/content_5_ss.png" style="width: 750px; height: 227px;"/></p>
+</li>
+</ol>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/6-WooPGGylQ?list=https://www.youtube.com/watch?v=6-WooPGGylQ&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+<br>
+<div class="panel-group">
+<div class="panel panel-warning">
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title">
+<img alt="Genepattern" class="stepAvatar tag-tooltip" src="/assets/GenePattern.png" title="GenePattern"/><a data-toggle="collapse" href="#alternate_180_0">Alternative: Alternative methods to identify differential gene expression in RNA-seq reads <span class="glyphicon glyphicon-chevron-right"></span></a>
+</h4>
+<p class="text-muted">Tool: GenePattern</p>
+</div>
+<div class="panel-collapse step-container collapse" id="alternate_180_0" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<p>The DESeq2 tool (<em>GenePattern</em> or <em>Galaxy</em>) can be used to replace the differential expression analysis. (NOTE: Preprocessing would be required if the analysis starts with BAM files</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</br></div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_2"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Genepattern" class="stepAvatar tag-tooltip" src="/assets/GenePattern.png" title="GenePattern"/>
+<a data-toggle="toggle" href="#collapse_2" onclick="$('#collapse_2').collapse('toggle')">3: Saving the files to GenomeSpace <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>Save the <code class="filename">gene_exp.diff</code> file to GenomeSpace using one of the following methods.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_2" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>From the job processing view, click on the text file (e.g., <code class="filename">genes_exp.diff</code>), then choose <code class="parameter">Save to GenomeSpace</code>. Save the file to your folder.<br>
+<img alt="" src="/ckeditor_assets/pictures/419/content_6_ss.png" style="width: 750px; height: 534px;"/></br></li>
+</ol>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/6-WooPGGylQ?list=https://www.youtube.com/watch?v=6-WooPGGylQ&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_3"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Galaxy" class="stepAvatar tag-tooltip" src="/assets/Galaxy.png" title="Galaxy"/>
+<a data-toggle="toggle" href="#collapse_3" onclick="$('#collapse_3').collapse('toggle')">4: Loading RNA-seq and ChIP-seq data into Galaxy <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>We will load RNA-seq, ChIP-seq, and the differential gene expression data into Galaxy for future analyses, using one the following method.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_3" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>Open Galaxy from GenomeSpace, navigate to the <code class="parameter">Get Data</code> &gt; <code class="parameter">GenomeSpace import</code> menu, then navigate to your personal directory to select your file.</li>
+<li>Click on each file (e.g., <code class="filename">gene_exp.diff</code>, <code class="filename">Prep1_WT_RNA.bam</code>, <code class="filename">Prep1_KO_RNA.bam</code>, <code class="filename">Prep1_WT_ChIP.bam</code>, and <code class="filename">Prep1_KO_ChIP.bam</code>).</li>
+<li>Click <code class="parameter">Send to Galaxy</code>.</li>
+</ol>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/F_iFXIqP7Nw?list=https://www.youtube.com/watch?v=F_iFXIqP7Nw&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+<br>
+<div class="panel-group">
+<div class="panel panel-warning">
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title">
+<img alt="Galaxy" class="stepAvatar tag-tooltip" src="/assets/Galaxy.png" title="Galaxy"/><a data-toggle="collapse" href="#alternate_184_0">Alternative: other ways to load data into Galaxy <span class="glyphicon glyphicon-chevron-right"></span></a>
+</h4>
+<p class="text-muted">Tool: Galaxy</p>
+</div>
+<div class="panel-collapse step-container collapse" id="alternate_184_0" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<p>1. Click on the files (e.g., <code class="filename">gene_exp.diff</code>, <code class="filename">Prep1_WT_RNA.bam</code>, <code class="filename">Prep1_KO_RNA.bam</code>, <code class="filename">Prep1_WT_ChIP.bam</code>, and <code class="filename">Prep1_KO_ChIP.bam</code>) in GenomeSpace, then use the GenePattern context menu and click <code class="parameter">Launch on File</code>.</p>
+<p><em>OR</em></p>
+<p>2. Click on the file (e.g., <code class="filename">gene_exp.diff</code>, <code class="filename">Prep1_WT_RNA.bam</code>, <code class="filename">Prep1_KO_RNA.bam</code>, <code class="filename">Prep1_WT_ChIP.bam</code>, and <code class="filename">Prep1_KO_ChIP.bam</code>) in GenomeSpace, then drag it to the GenePattern icon to launch.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</br></div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_4"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Galaxy" class="stepAvatar tag-tooltip" src="/assets/Galaxy.png" title="Galaxy"/>
+<a data-toggle="toggle" href="#collapse_4" onclick="$('#collapse_4').collapse('toggle')">5: Prepare signficantly different expression dataset for view in IGV <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>We will use a pre-built GenomeSpace workflow to prepare the expression datasets for principal component analysis. This is a basic preprocessing workflow that uses column selection and matrix transposition tools.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_4" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>Click on the the workflow link: <a href="https://usegalaxy.org/u/genomespace/w/creating-a-bed-file-of-significantly-different-genes">Creating a BED file of significantly different genes</a>.</li>
+<li>Once directed to the Galaxy page, click the green import button in the top right corner, <img alt="" src="/ckeditor_assets/pictures/408/content_import_ss.png" style="vertical-align: middle; display: inline-block; max-width: 100%;"/>, to import the workflow into your Galaxy environment.</li>
+<li>Click on the workflow drop-down menu (e.g.,<strong>Imported: Creating a BED file of significantly different genes</strong>), then choose <code class="parameter">Run</code>.</li>
+<li>Load the files into the correct fields. The input fields should have annotations indicating which file should be loaded:
+	<ol list-style-type:="" start="1" upper-alpha="">
+<li><code class="parameter">Step 1: Input Dataset</code>: <code class="filename">gene_exp.diff</code></li>
+</ol>
+</li>
+<li>Click <code class="parameter">Run workflow</code>.
+	<p><img alt="" src="/ckeditor_assets/pictures/420/content_7_ss.png" style="width: 750px; height: 536px;"/></p>
+</li>
+</ol>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/qp_93uIgDv8?list=https://www.youtube.com/watch?v=qp_93uIgDv8&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_5"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Galaxy" class="stepAvatar tag-tooltip" src="/assets/Galaxy.png" title="Galaxy"/>
+<a data-toggle="toggle" href="#collapse_5" onclick="$('#collapse_5').collapse('toggle')">6: Extracting intervals of significantly differential genes <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>This step consults the original gene expression data to extract gene regions that were found to be signficantly different between samples.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_5" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>Navigate to the following menu: <code class="subtool">NGS:SAMtools &gt; Filter SAM or BAM, output SAM or BAM</code>.</li>
+<li>Select the Multiple datasets tab (<img alt="" src="/ckeditor_assets/pictures/461/content_gal_multifile.png" style="vertical-align: middle; display: inline-block; max-width: 100%;"/>) to input both the WT and KO aligned reads.</li>
+<li>Input the following parameters:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li><code class="parameter">SAM or BAM file to filter</code> : <code class="filename">Prep1_WT_RNA.bam</code> and <code class="filename">Prep1_KO_RNA.bam</code></li>
+<li><code class="parameter">Header in output</code> : Include Header</li>
+<li><code class="parameter">Output alignment overlapping the regions in the BED FILE</code> : SigDiff_genes.bed</li>
+</ol>
+</li>
+<li>Click <code class="parameter">Execute</code>.
+	<p><img alt="" src="/ckeditor_assets/pictures/391/content_8_ss.png" style="width: 750px; height: 444px;"/></p>
+</li>
+</ol>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/sf56HAfJ9g0?list=https://www.youtube.com/watch?v=sf56HAfJ9g0&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_6"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Galaxy" class="stepAvatar tag-tooltip" src="/assets/Galaxy.png" title="Galaxy"/>
+<a data-toggle="toggle" href="#collapse_6" onclick="$('#collapse_6').collapse('toggle')">7: Convert filtered BAM files to Bigwig <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>This step will convert filtered BAM files, containing signifcantly different genes and their expression, to a Bigwig format that can be viewed in IGV</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_6" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<p>Complete the following steps for each file that was created from the <code class="subtool">NGS:SAMtools &gt; Filter SAM or BAM, output SAM or BAM</code> tool in the previous step, i.e. for both <code class="filename">Prep1_WT_RNA.bam</code> and <code class="filename">Prep1_KO_RNA.bam</code>.</p>
+<ol>
+<li>Once the files have been output, change the attributes for each file, by clicking the pencil (<img src="http://recipes.genomespace.org/ckeditor_assets/pictures/122/content_galaxy_pencil.png" style="vertical-align: middle; display: inline-block;" width="15px"/>) icon.</li>
+<li>Select the <code class="parameter">Attributes</code> tab and select the following paramater:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li><code class="parameter">Database/Build</code> : Mouse July 2007 (NCBI37/mm9)</li>
+</ol>
+</li>
+<li>Select <code class="parameter">Save</code>.
+	<p><img alt="" src="/ckeditor_assets/pictures/392/content_9a_ss.png" style="width: 750px; height: 368px;"/></p>
+</li>
+<li>Select the <code class="parameter">Convert Format</code> tab and input the following parameter:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li><code class="parameter">Convert to new format</code> : Bam to Bigwig</li>
+</ol>
+</li>
+<li>Select <code class="parameter">Convert</code>.
+	<p><img alt="" src="/ckeditor_assets/pictures/417/content_9c_ss.png" style="width: 750px; height: 135px;"/></p>
+</li>
+</ol>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/y0L_Hcx9-Uc?list=https://www.youtube.com/watch?v=y0L_Hcx9-Uc&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_7"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Galaxy" class="stepAvatar tag-tooltip" src="/assets/Galaxy.png" title="Galaxy"/>
+<a data-toggle="toggle" href="#collapse_7" onclick="$('#collapse_7').collapse('toggle')">8: Identifying transcription factor binding sites <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>This step will identify read-enriched regions in our ChIP-seq data using the MACS2 algorithm. In comparing the epigenetic landscape between samples, we can identify the regions in where transcription factor binding is occurring.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_7" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>Ensure that both your control and ChIP-seq BAM files have been loaded into Galaxy.</li>
+<li>Navigate to the following menu: <code class="subtool">NGS:Peak Calling &gt; MACS2 callpeak</code></li>
+<li>In the dialog box, enter the following parameters:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li><code class="parameter">ChIP-Seq Treatment File</code>: ChIP-Seq Tag File: GenomeSpace import on <code class="filename">Prep1_KO_ChIP.bam</code></li>
+<li><code class="parameter">ChIP-Seq Control File</code>: GenomeSpace import on <code class="filename">Prep1_WT_ChIP.bam</code></li>
+<li><code class="parameter">Effective genome size</code> : Mouse (2,150,570,000)</li>
+<li><code class="parameter">Outputs</code>: Scores in bedGraph files (--bdg) (You may select additional outputs for your own analysis as we have done in this example)<br>
+<img alt="" src="/ckeditor_assets/pictures/400/content_10b_ss.png" style="width: 750px; height: 446px;"/></br></li>
+</ol>
+</li>
+<li>Select <code class="parameter">Execute</code>.<br>
+<img alt="" src="/ckeditor_assets/pictures/401/content_11_ss.png" style="width: 750px; height: 300px;"/></br></li>
+</ol>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/5QQScZAyVAc?list=https://www.youtube.com/watch?v=5QQScZAyVAc&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_8"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Galaxy" class="stepAvatar tag-tooltip" src="/assets/Galaxy.png" title="Galaxy"/>
+<a data-toggle="toggle" href="#collapse_8" onclick="$('#collapse_8').collapse('toggle')">9: Convert files to Bigwig format <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>This step will convert treatment (KO) and control (WT) files, containing peak-enrichment data, to a Bigwig format so they can be viewed in IGV</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_8" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<p>Complete the following steps for each file that was created from the <code class="subtool">NGS:Peak Calling &gt; MACS2 callpeak</code> tool in the previous step, i.e. for both <code class="filename">Prep1_WT_ChIP.bam</code> and <code class="filename">Prep1_KO_ChIP.bam</code>.</p>
+<ol>
+<li>Once the files have been output, change the attributes for each file, by clicking the pencil (<img src="http://recipes.genomespace.org/ckeditor_assets/pictures/122/content_galaxy_pencil.png" style="vertical-align: middle; display: inline-block;" width="15px"/>) icon.</li>
+<li>Select the <code class="parameter">Attributes</code> tab and select the following paramater:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li><code class="parameter">Database/Build</code>: Mouse July 2007 (NCBI37/mm9)</li>
+</ol>
+</li>
+<li>Select <code class="parameter">Save</code>.
+	<p><img alt="" src="/ckeditor_assets/pictures/402/content_12_ss.png" style="width: 750px; height: 331px;"/></p>
+</li>
+<li>Select the <code class="parameter">Convert Format</code> tab and input the following parameter:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li><code class="parameter">Convert to new format</code>: Convert Bedgraph to BigWig</li>
+</ol>
+</li>
+<li>Select <code class="parameter">Convert</code>.
+	<p><img alt="" src="/ckeditor_assets/pictures/421/content_9c_ss.png" style="width: 750px; height: 135px;"/></p>
+</li>
+</ol>
+<p> </p>
+<p><strong>Complete these steps for the following files:</strong></p>
+<ul>
+<li><code class="filename">MACS2 callpeak (Bedgraph Treatment)</code></li>
+<li><code class="filename">MACS2 callpeak (Bedgraph Control)</code></li>
+</ul>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/VTKhIIXhaNg?list=https://www.youtube.com/watch?v=VTKhIIXhaNg&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_9"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Galaxy" class="stepAvatar tag-tooltip" src="/assets/Galaxy.png" title="Galaxy"/>
+<a data-toggle="toggle" href="#collapse_9" onclick="$('#collapse_9').collapse('toggle')">10: Sending data to GenomeSpace for viewing in IGV <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>This step will use <code class="subtool">GenomeSpace Exporter</code> to send differential expression data and peak files to GenomeSpace.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_9" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>Navigate to the following menu: <code class="parameter">Send Data &gt; GenomeSpace Exporter</code></li>
+<li>In the dialog box, enter the following parameters:
+	<ol list-style-type:="" start="1" upper-alpha="">
+<li><code class="parameter">Send this dataset to GenomeSpace</code>: the converted treatment bedgraph file, e.g. <em>convert BedGraph to BigWig on data XXX (Bedgraph Treatment)</em>.</li>
+<li><code class="parameter">Choose target directory</code>: navigate to your GenomeSpace directory</li>
+<li><code class="parameter">filename</code>: choose a filename, e.g. <code class="filename">Prep1_KO_peaks.bw</code></li>
+</ol>
+</li>
+<li>Click <code class="parameter">Execute</code> to submit your job. This will send your data to GenomeSpace.
+	<p><img src="/ckeditor_assets/pictures/404/content_14_ss.png" style="width: 750px; height: 243px;"/></p>
+</li>
+</ol>
+<p> </p>
+<p><strong>Repeat for the following files:</strong></p>
+<ul>
+<li>The converted control bedgraph file e.g. <em>convert BedGraph to BigWig on data XXX (Bedgraph Control)</em> called e.g. <code class="filename">Prep1_WT_peaks.bw</code></li>
+<li>The narrow Peaks output from MACS2, called e.g. <code class="filename">Prep1_narrowPeaks.bed</code></li>
+<li>The WT file of significantly different genes with another filename, called e.g. <code class="filename">Prep1_WT_sigDiff.bw</code></li>
+<li>The KO file of significantly different genes with another filename, called e.g. <code class="filename">Prep1_KO_sigDiff.bw</code></li>
+</ul>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/H-Bezhn9k3A?list=https://www.youtube.com/watch?v=H-Bezhn9k3A&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_10"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Igv" class="stepAvatar tag-tooltip" src="/assets/IGV.png" title="IGV"/>
+<a data-toggle="toggle" href="#collapse_10" onclick="$('#collapse_10').collapse('toggle')">11: Visualizing transcription factor binding sites and corresponding gene regulation <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>This step will launch files containing peak enrichment data and differential gene expression data in IGV to view how regulation is influenced by transcription factor binding.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_10" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>Launch IGV from GenomeSpace by clicking on the context menu and choosing <code class="parameter">Launch</code>, prompting the download of a <code class="filename">.jnlp</code> file. Double-click the file to launch IGV.</li>
+<li>Load a reference genome into IGV by using the IGV genome selection drop-down menu in the upper left corner of the tool. Make sure the reference genome matches the samples you are using, e.g., <em>Mouse</em> samples should use the <em>Mouse mm9</em> genome, as in this example.</li>
+<li>Use the GenomeSpace tab to import files by clicking on the <code class="parameter">Load File from GenomeSpace...</code> option.</li>
+<li>To load files, navigate to the directory in GenomeSpace which contains the file(s), then click the file(s) to select, and then click Open. Load the following files into IGV:
+	<ul>
+<li><code class="filename">Prep1_narrowPeaks.bed</code></li>
+<li><code class="filename">Prep1_KO_peaks.bw</code></li>
+<li><code class="filename">Prep1_WT_peaks.bw</code></li>
+<li><code class="filename">Prep1_KO_sigDiff.bw</code></li>
+<li><code class="filename">Prep1_WT_sigDiff.bw</code></li>
+</ul>
+<p><em><small><strong>NOTE:</strong> Each file is loaded separately.</small></em></p>
+</li>
+</ol>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/P9n0tZxiwPs?list=https://www.youtube.com/watch?v=P9n0tZxiwPs&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="recipeInterpSection">
+<section id="results"></section>
+<h3 class="divider">Results Interpretation</h3>
+<div class="responsive-content" id="recipeInterpText">
+<p>This is an example interpretation of the results from this recipe. We used <code class="subtool">MACS2</code> in Galaxy to identify differentially read-enriched regions in mouse embryonic stems cells possessing the <em>Prep1</em> transcription factor binding to those that did not. The specific configuration of <code class="subtool">MACS2</code> we use calls narrow peaks, in other words enriched regions highly associated with transcription factor binding sites, as opposed to broad peaks, which are more highly associated with histone modifications. Additionally, we have portrayed the landscape of binding events in both samples (Knockout and Wild-type). In conjunction, we wanted to identify how this transcription factor binding regulated nearby genes. Using the GenePattern module, <code class="subtool">Cufflinks</code>, were were able to identify genes that were significantly (p&lt;0.05) differentially expressed between samples. Below is an example of how this data can be visualized in IGV.</p>
+<p>Below highlights the narrow peak identified in comparing transcription factor occupancies between embryonic stem cells with the knockout (<code class="filename">Prep1_KO_peaks.bw</code>) and those with <em>Prep1</em> (<code class="filename">Prep1_WT_peaks.bw</code>) binding in the <em>chr7:149,889,286-151114351</em> region.</p>
+<p><img alt="" src="/ckeditor_assets/pictures/410/content_peaks_320.png" style="width: 750px; height: 389px;"/></p>
+<p> </p>
+<p>In the top two frames are the gene expression profiles of the wild-type (first) and the knock-out (second) samples. By zooming in to the <em>chr7:149,832,786-149,849,289</em> region, we are able to compare the gene expression profiles, especially when we overlay the two samples (seen far below). In overlaying, we can identify whether the type of regulation (up or down) that occurs in relation to the <em>Prep1</em> transcription factor binding.</p>
+<p><img alt="" src="/ckeditor_assets/pictures/412/content_320_nonoverlap.png" style="width: 750px; height: 388px;"/></p>
+<p><img alt="" src="/ckeditor_assets/pictures/413/content_540_overlay.png" style="width: 750px; height: 388px;"/></p>
+</div>
+</div>
+<hr/>
+<div class="panel-group" id="comments">
+<div class="panel panel-default">
+<div class="panel-heading">
+<h4 class="panel-title"><a data-toggle="collapse" href="#comments_list">Comments (0)</a> <span class="glyphicon glyphicon-chevron-down toggle-glyph"></span></h4>
+</div>
+<div class="panel-collapse collapse in" id="comments_list">
+<div class="panel-body">
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<h4 class="panel-title">Submit a Comment</h4>
+</div>
+<div class="panel-body">
+<form accept-charset="UTF-8" action="/users/sign_in" class="form" id="new_user" method="post" role="form"><div style="display:none"><input name="utf8" type="hidden" value="✓"/><input name="authenticity_token" type="hidden" value="eBXaji/W1r5nHcJRHWvUZgshkDXdTzl5qsp3ULLhlmc="/></div>
+<input id="user_identity_url" name="user[identity_url]" type="hidden" value="https://identity.genomespace.org/identityServer/xrd.jsp"/>
+<input class="btn btn-sm btn-success" name="commit" type="submit" value="Sign in using GenomeSpace"/>
+</form> </div>
+</div>
+</div>
+<script>
+//<![CDATA[
+
+
+
+                $('.responsive-content img').addClass('img-responsive').css({"height" : "", "width" : ""});
+				$('[data-toggle="popover"]').popover({trigger: "hover", placement: "top"});
+
+				$("#show-all").click(function() {
+					$(".step-container").collapse("show");
+
+				});
+
+				$("#hide-all").click(function() {
+					$(".step-container").collapse("hide");
+
+				});
+
+                 $('.tag-tooltip').tooltip();
+
+
+
+//]]>
+</script> </div>
+<div class="col-md-2">
+<div class="bs-docs-sidebar hidden-print gp-side-menu" role="complementary">
+<ul class="nav bs-docs-sidenav" data-spy="affix">
+<li><a href="#summary">Summary</a></li>
+<li><a href="#inputs">Inputs</a></li>
+<li id="recipeOutputNav"><a href="#outputs">Outputs</a></li>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#steps">Steps</a>
+<ul class="nav">
+<li><a class="step-anchor" href="#step_0">Loading data</a></li>
+<li><a class="step-anchor" href="#step_1">Identifying differential gene expression in RNA-seq reads</a></li>
+<li><a class="step-anchor" href="#step_2">Saving the files to GenomeSpace</a></li>
+<li><a class="step-anchor" href="#step_3">Loading RNA-seq and ChIP-seq data into Galaxy</a></li>
+<li><a class="step-anchor" href="#step_4">Prepare signficantly different expression dataset for view in IGV</a></li>
+<li><a class="step-anchor" href="#step_5">Extracting intervals of significantly differential genes</a></li>
+<li><a class="step-anchor" href="#step_6">Convert filtered BAM files to Bigwig</a></li>
+<li><a class="step-anchor" href="#step_7">Identifying transcription factor binding sites</a></li>
+<li><a class="step-anchor" href="#step_8">Convert files to Bigwig format</a></li>
+<li><a class="step-anchor" href="#step_9">Sending data to GenomeSpace for viewing in IGV</a></li>
+<li><a class="step-anchor" href="#step_10">Visualizing transcription factor binding sites and corresponding gene regulation</a></li>
+</ul>
+</li>
+<li id="recipeInterpNav"><a href="#results">Results Interpretation</a></li>
+<!-- <li><a href="#comments">Comments</a></li> -->
+<!-- <li><a href="#history">History</a></li> -->
+<li><a href="javascript:void(0);" id="scroll-top">Back to the Top</a></li>
+</ul>
+</div>
+<script>
+//<![CDATA[
+
+				$('.step-anchor').click(function() {
+					var step = $(this).attr('href').split('_')[1];
+					$('#collapse_' + step).collapse("show");
+				});
+
+//]]>
+</script> </div>
+</div>
+</div>
+<script>
+//<![CDATA[
+
+     if ($("#recipeOutputText").html().trim().length == 0){
+       $("#recipeOutputSection").hide();
+       $("#recipeOutputNav").hide();
+     }
+      if ($("#recipeInterpText").html().trim().length == 0){
+            $("#recipeInterpSection").hide();
+              $("#recipeInterpNav").hide();
+      }
+
+
+//]]>
+</script> <div class="container" id="history">
+<h1>History</h1>
+<ul>
+<li>Saved <b>over 3 years ago</b>
+                                                        on 03/23/2017 21:06:10 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/69?lastVersion=true&amp;versionIndex=35" target="_oldRecipe" title="View this version in a new window">View this version</a><br>
+<div>
+</div>
+</br></li>
+<li>Saved <b>over 3 years ago</b>
+                                                        on 03/16/2017 18:06:34 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/69?lastVersion=true&amp;versionIndex=34" target="_oldRecipe" title="View this version in a new window">View this version</a><br>
+<div>
+</div>
+</br></li>
+<li>Saved <b>over 3 years ago</b>
+                                                        on 03/15/2017 13:54:30 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/69?lastVersion=true&amp;versionIndex=33" target="_oldRecipe" title="View this version in a new window">View this version</a><br>
+<div>
+</div>
+</br></li>
+</ul>
+</div>
+<div class="container-fluid footer gs-recipe-footer">
+<p class="copy-right-block">Copyright ©2016 The Regents of the University of California and The Broad Institute of MIT &amp; Harvard</p>
+</div>
+</body>
+</html>

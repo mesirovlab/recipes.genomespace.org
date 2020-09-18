@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>GenomeSpace Recipe: Eliminate batch effects in RNA-seq data</title>
+<link href="/assets/docs.min.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/featured_article.css?body=1" media="all" rel="stylesheet"/>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link href="/assets/pages.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/recipes.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/site.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/tags.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/jquery-ui/theme.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/jquery-ui/core.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/application.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/dataTables/bootstrap/3/jquery.dataTables.bootstrap.css?body=1" media="all" rel="stylesheet"/>
+<script src="/assets/jquery.js?body=1"></script>
+<script src="/assets/jquery_ujs.js?body=1"></script>
+<script src="/assets/jquery-ui/core.js?body=1"></script>
+<script src="/assets/jquery-ui/widget.js?body=1"></script>
+<script src="/assets/jquery-ui/position.js?body=1"></script>
+<script src="/assets/jquery-ui/menu.js?body=1"></script>
+<script src="/assets/jquery-ui/autocomplete.js?body=1"></script>
+<script src="/assets/jquery-ui/mouse.js?body=1"></script>
+<script src="/assets/jquery-ui/sortable.js?body=1"></script>
+<script src="/assets/bootstrap/affix.js?body=1"></script>
+<script src="/assets/bootstrap/alert.js?body=1"></script>
+<script src="/assets/bootstrap/button.js?body=1"></script>
+<script src="/assets/bootstrap/carousel.js?body=1"></script>
+<script src="/assets/bootstrap/collapse.js?body=1"></script>
+<script src="/assets/bootstrap/dropdown.js?body=1"></script>
+<script src="/assets/bootstrap/tab.js?body=1"></script>
+<script src="/assets/bootstrap/transition.js?body=1"></script>
+<script src="/assets/bootstrap/scrollspy.js?body=1"></script>
+<script src="/assets/bootstrap/modal.js?body=1"></script>
+<script src="/assets/bootstrap/tooltip.js?body=1"></script>
+<script src="/assets/bootstrap/popover.js?body=1"></script>
+<script src="/assets/bootstrap-sprockets.js?body=1"></script>
+<script src="/assets/ckeditor/init.js?body=1"></script>
+<script src="/assets/ckeditor/ckeditor.js?body=1"></script>
+<script src="/assets/jquery_nested_form.js?body=1"></script>
+<script src="/assets/dataTables/jquery.dataTables.js?body=1"></script>
+<script src="/assets/dataTables/bootstrap/3/jquery.dataTables.bootstrap.js?body=1"></script>
+<script src="/assets/autocomplete-rails.js?body=1"></script>
+<script src="/assets/spin.min.js?body=1"></script>
+<script src="/assets/docs.min.js?body=1"></script>
+<script src="/assets/jquery.hoverIntent.minified.js?body=1"></script>
+<script src="/assets/ckeditor/config.js?body=1"></script>
+<script src="/assets/featured_article.js?body=1"></script>
+<script src="/assets/pages.js?body=1"></script>
+<script src="/assets/recipes.js?body=1"></script>
+<script src="/assets/site.js?body=1"></script>
+<script src="/assets/tags.js?body=1"></script>
+<script src="/assets/application.js?body=1"></script>
+<meta content="authenticity_token" name="csrf-param"/>
+<meta content="gxc2W/fGZsZz5CoHf4KEpoIYSLaRIRDbEe+cgqM6uos=" name="csrf-token"/>
+<link href="https://fonts.googleapis.com/css?family=Wire+One" rel="stylesheet" type="text/css"/>
+<link href="https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:300" rel="stylesheet" type="text/css"/>
+<link href="/assets/favicon.ico" rel="shortcut icon">
+<script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-74623322-1', 'auto');
+        ga('send', 'pageview');
+       // ga('set', 'userId', {{"anonymous"}}); // Set the user ID using signed-in user_id.
+        ga('set', 'userId', 'anonymous'); // Set the user ID using signed-in user_id.
+
+    </script>
+</link></head>
+<body onload="tellParentWindowMySize()">
+<div id="nav_page_wrapper">
+<div id="logo"><a href="http://www.genomespace.org/"><img alt="Gslogo" src="/assets/gslogo.png"/></a></div>
+<div class="clickable" id="login_menu">
+<form accept-charset="UTF-8" action="/users/sign_in" class="new_user" id="gs-login" method="post"><div style="display:none"><input name="utf8" type="hidden" value="✓"/><input name="authenticity_token" type="hidden" value="gxc2W/fGZsZz5CoHf4KEpoIYSLaRIRDbEe+cgqM6uos="/></div>
+<input id="user_identity_url" name="user[identity_url]" type="hidden" value="https://identity.genomespace.org/identityServer/xrd.jsp"/>
+<a onclick="document.getElementById('gs-login').submit(); return false;">Login<span class="glyphicon glyphicon-chevron-right"></span></a>
+</form></div>
+<ul id="nav">
+<li class="dropdown">
+<a href="/"><span class="glyphicon glyphicon-home"></span> GenomeSpace Recipes</a>
+</li>
+<!-- <li id="recipe_link"><a href="/recipes"><span class="gparc-nav-icon glyphicon glyphicon-list"></span> My Recipes</a></li> -->
+<!-- links to main genomespace.org -->
+<li id="gsdotorg"><a href="http://www.genomespace.org/"><img alt="Gslogo" height="24px" src="/assets/official_logo.png"/>GenomeSpace.org</a><ul>
+<li id="what-is-genomespace"><a href="http://www.genomespace.org/what-is-genomespace">What is GenomeSpace?</a>
+<li id="tools"><a href="http://www.genomespace.org/support/tools">Tools</a>
+</li>
+<li id="recipes"><a href="http://recipes.genomespace.org/">Recipes</a></li>
+<li id="documentation"><a href="http://www.genomespace.org/documentation">Documentation</a>
+<ul>
+<li><a href="http://www.genomespace.org/support/guides/user-guide">User Guide</a>
+<p>Read the detailed guide to the user interface</p>
+</li>
+<li><a href="http://www.genomespace.org/support/guides/tool-guide">Tool Guide</a>
+<p>Learn how to access GenomeSpace functionality for each Tool</p>
+</li>
+<li><a href="http://www.genomespace.org/faq">FAQ</a>
+<p>See answers to frequently asked questions</p>
+</li>
+<li><a href="http://www.genomespace.org/presentations-and-videos">Presentations and Videos</a>
+<p>Access talks by the GenomeSpace community</p>
+</li>
+<li><a href="http://www.genomespace.org/support/guides/end-to-end-analyses">End-to-End Analyses</a>
+<p>Provides description for end-to-end analyses.</p>
+</li>
+</ul>
+</li>
+<li id="developers"><a href="http://www.genomespace.org/for-developers">Developers</a>
+<ul>
+<li><a href="http://www.genomespace.org/what-can-genomespace-do-for-tool-developers">What Can GenomeSpace Do For Tool Developers?</a>
+<p></p>
+</li>
+<li><a href="http://www.genomespace.org/adopters">Technical Documentation</a>
+<p></p>
+</li>
+<li><a href="http://www.genomespace.org/source-code">Source Code and Distributions</a>
+<p></p>
+</li>
+<li><a href="http://www.genomespace.org/developer-support-and-feedback">Developer Support and Feedback</a>
+<p></p>
+</li>
+</ul>
+</li>
+<li id="support"><a href="http://www.genomespace.org/support">Support</a>
+</li>
+<li id="about"><a href="http://www.genomespace.org/about">About</a>
+</li>
+</li></ul></li>
+<!-- end of links to main GenomeSpace.org -->
+<li class="search">
+<div id="search_box">
+<form accept-charset="UTF-8" action="/search" class="form" method="get" role="form"><div style="display:none"><input name="utf8" type="hidden" value="✓"/></div>
+<div style="margin:0;padding:0;display:inline">
+<input class="search" id="search" name="search" type="text"/>
+</div>
+<input class="searchBtn" type="submit"/>
+</form> </div>
+</li>
+</ul>
+</div>
+<div class="container fluid gs-recipe-">
+<div class="row">
+<div class="col-md-10">
+<table><tr><td><img alt="Gp galaxy" class="recipeAvatar" src="/system/recipes/avatars/000/000/054/original/gp_galaxy.png?1479751690"/></td><td>
+<h3>Eliminate batch effects in RNA-seq data
+                        </h3>
+</td></tr></table>
+<p class="text-muted">Added by GenomeSpaceTeam on 2016.03.08 <span class="official"><img alt="Official logo" data-content="Offical GenomeSpace Recipe" data-toggle="popover" src="/assets/official_logo.png"/></span>
+<br/>
+            Last updated on over 3 years ago.
+            </p>
+<div class="row">
+<div class="col-md-8">
+<p>
+<a class="btn btn-default btn-xs tag green" >RNA-seq</a>
+<a class="btn btn-default btn-xs tag yellow" >Batch effects</a>
+<a class="btn btn-default btn-xs tag yellow" >expression data</a>
+<a class="btn btn-default btn-xs tag yellow" >mouse</a>
+<a class="btn btn-default btn-xs tag yellow" >PCA</a>
+</p>
+</div>
+<div class="col-md-2 voting">
+<p class="text-success"><span class="glyphicon glyphicon-thumbs-up"></span> 0</p>
+</div>
+<div class="col-md-2 voting">
+<p class="text-danger"><span class="glyphicon glyphicon-thumbs-down"></span> 0</p>
+</div>
+</div>
+<hr/>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/lqNLiG1o0n8?list=PL4ZmSx1n2Kw44AmJT6uFdlwMW3A-Qr1iv&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+<section id="summary"></section>
+<h3 class="divider">Summary</h3>
+<div class="responsive-content">
+<p><span style="font-family:arial,sans-serif;font-size:16px;"><i>Does my RNA-Seq data contain noticeable batch effects? Can I remove any batch effects I find?</i></span></p>
+<p>This recipe provides one method to assess RNA-seq count data for potential batch effects. Identified batch effects are removed using the ComBat algorithm (Johnson, Rabinovic, and Li). An example use case of this recipe is when an investigator wants to correct data and account for confounding variables generated by effects such as using different reagents or processing samples at different times.</p>
+<p><img alt="" src="/ckeditor_assets/pictures/380/content_eliminatingbatcheffects.png" style="width: 441px; height: 345px; float: right; padding: 10px;"/></p>
+<p> </p>
+<p>This recipe uses count data and sample annotations derived from two separate RNA-seq experiments and relies upon Principal Component Analysis (PCA) as a primary means of evaluating the dataset for batch effects. In particular, this recipe utilizes a number of GenePattern modules to filter and preprocess the RNA-seq count data and to normalize the dataset using the ComBat algorithm. We then use Galaxy to view the influence of batch effects in our pre- and post-normalization datasets.</p>
+<p><strong>Why consider batch effects (a.k.a. confounders)?</strong> A "batch" or "confounding" variable can be generally defined as an extraneous variable that may correlate or anti-correlate with our variables of interest. Failing to account for confounding variables or batch effects can lead us to draw spurious conclusions from our data. For example:</p>
+<p><span style="font-family: verdana,geneva,sans-serif; color: rgb(120, 120, 120); font-size: 90%;">“<em>Albert is comparing the hardiness of two different E. coli strains, X and Y, by measuring their production of various stress proteins under a mild bactericide. However, Albert's bactericide stock is running low and he ends up using two different stocks of the same bactericide over the course of this experiment. Here, bactericide stock is a confounding or batch variable. Perhaps one bactericide stock is more potent than the other. Albert will need to be careful in how he analyzes his data. He must somehow ensure that differences in stress protein abundances between his X and Y strains are driven by the biological differences of these two strains rather than differences in the bactericide stocks.</em>”</span></p>
+<p>Efforts can be undertaken to minimize batch effects by ensuring proper experimental design, e.g., simplifying protocols to eliminate potential confounders. If batches are unavoidable, it is also important to randomize samples across these batches such that differences between batches can be attributed to batch effects rather than biological differences. But despite these efforts, unforeseen batch effects may still be present in any experiment. Thus, we should be aware of the degree to which these unwanted factors influence our results and be prepared to use various statistical methods to remove these unwanted factors if needed.</p>
+<p><strong>How do we identify batch effects?</strong> There are a variety of methods for identifying batch effects. Sometimes, potential batches can be identified at the outset of a project based on its experimental design. For example, if samples must be processed in separate groups due to the limiting capacity of a sequencer, then these processing groups are likely to introduce batch effects. If batches can be pre-identified, then the scientist can include identical control samples in each batch. Any variation in measurements from these control samples can then be attributed to and used to quantify a batch effect.</p>
+<p>Another common method is to visualize data using a PCA projection. PCA uses a linear transformation to transform a dataset into a space of linearly uncorrelated, orthogonal "principal components". More simply, PCA is a way of visualizing data such that underlying structures are revealed. We encourage users to learn more about PCA (Ma and Dai's 2011 <a href="http://www.ncbi.nlm.nih.gov/pubmed/21242203">article</a> in <em>Briefings in Bioinformatics</em> is a good starting point). By re-projecting with PCA, we can identify those variables, including batch variables, that are contributing to large variances in the dataset.</p>
+</div>
+<section id="inputs"></section>
+<h3 class="divider">Inputs</h3>
+<div class="responsive-content">
+<p>To complete this recipe, we will need a gene expression dataset of RNA-seq transcript counts describing multiple conditions or phenotypes that may be confounded due to batch effects. In this example, we will use a dataset combining gene expression measurements from two mouse (Mus musculus) behavior studies. In the first study (<a href="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE63412">GEO: GSE63412</a>), Peixoto <em>et al.</em> subjected animals to contextual fear conditioning (FC) and compared them to unconditioned controls. In the second study (<a href="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE44229">GEO: GSE44229</a>), Vogel-Ciernia <em>et al.</em> subjected animals to object location memory (OLM) training and compared them to unconditioned homecage controls. In both studies, samples destined for expression profiling were collected from hippocampal tissue. In this particular recipe, we have pre-combined the two studies into a single RNA-seq count dataset, which we will use. The known batch effect in this dataset is thus the two different labs generating the RNA-seq data.</p>
+<p><em><strong>NOTE:</strong> Since this is an example dataset for the purposes of demonstrating batch effects and their removal, we have chosen to construct a dataset that can dramatically show the effects of confounders. We therefore chose to combine two similar datasets from different labs, knowing that lab would be a strong confounding variable. When combining datasets, great care should be taken to ensure that the samples and data-generation procedures are truly comparable. This particular combination of two mouse behavioral conditioning datasets may not meet these requirements. When working with your own datasets, you may find that batch effects are not as clearly defined or that the data's underlying structure cannot be easily attributed to known confounding variables. Your confounding variables will probably be more subtle than the differing labs of our example (e.g., differing instrumentation, variable reagents, time of sample collection).</em></p>
+<p>This recipe also requires a relatively detailed sample annotation file indicating each sample's name, behavioral condition, and the lab from which it was derived. We have already compiled these sample annotations as both a sample information file and a CLS class file. We will need the following datasets, which can be downloaded from the following GenomeSpace Public folder:</p>
+<p><code class="directory">Public</code>  &gt;  <code class="directory">RecipeData</code>  &gt;  <code class="directory">ExpressionData</code>  &gt;  <strong><code class="filename"><a href="https://gsui.genomespace.org/jsui/gsui.html?pathOrUrl=/Home/Public/RecipeData/ExpressionData/GSE63412_GSE44229.gct" target="_blank">GSE63412_GSE44229.gct</a></code></strong>: This is an expression matrix containing hippocampal RNA-seq count data from mice that were subjected to a variety of behavioral training protocols. Importantly, we are interested in performing a combined analysis using data from two different laboratories; the expression matrix likely has underlying batch effects that should be removed prior to any downstream analysis. The read count data was obtained and compiled from the Gene Expression Omnibus. The file is available in GenePattern's GCT format.</p>
+<p><code class="directory">Public</code>  &gt;  <code class="directory">RecipeData</code>  &gt;  <code class="directory">ExpressionData</code>  &gt;  <strong><code class="filename"><a href="https://gsui.genomespace.org/jsui/gsui.html?pathOrUrl=/Home/Public/RecipeData/ExpressionData/GSE63412_GSE44229.sample.info.txt" target="_blank">GSE63412_GSE44229.sample.info.txt</a></code></strong>: This is a table of annotations for all the samples in the GCT file. The "Batch" column indicates the sample's originating laboratory, which we treat as our confounding "batch" variable. The "Covariate_1" column lists the actual behavioral training that each animal received (control, fear conditioning, object location memory training).</p>
+<p><code class="directory">Public</code>  &gt;  <code class="directory">RecipeData</code>  &gt;  <code class="directory">ExpressionData</code>  &gt;  <strong><code class="filename"><a href="https://gsui.genomespace.org/jsui/gsui.html?pathOrUrl=/Home/Public/RecipeData/ExpressionData/GSE63412_GSE44229.cls" target="_blank">GSE63412_GSE44229.cls</a></code></strong>: This file contains class assignments (control, fear conditioning, object location memory training) for all the samples in the GCT file. The file is available in GenePattern's CLS format.</p>
+</div>
+<div id="recipeOutputSection">
+<section id="outputs"></section>
+<h3 class="divider">Outputs</h3>
+<div class="responsive-content" id="recipeOutputText">
+<p>This recipe generates a gene expression dataset in log counts-per-million from RNA-seq count data. This expression dataset has been filtered for lowly expressed reads and adjusted for an identified batch effect using the ComBat tool. This recipe also generates Principal Component Analysis plots of the expression dataset both prior to and after adjustment for batch effect.</p>
+</div>
+</div>
+<section id="overview"></section>
+<h3 class="divider">Recipe steps</h3>
+<ul>
+<li><strong>GenePattern</strong></li>
+<ol start="1">
+<li>Filter and convert read counts to logCPM</li>
+<li>Remove batch effects using ComBat and save output to GenomeSpace</li>
+<li>Extract high-variance genes from pre- and post-ComBat expression datasets</li>
+</ol>
+</ul>
+<ul>
+<li><strong>Galaxy</strong></li>
+<ol start="4">
+<li>Loading data into Galaxy</li>
+<li>Prepare expression datasets for PCA</li>
+<li>Perform PCA on pre- and post-ComBat expression datasets</li>
+<li>Visualize the expression datasets in the space of their first two principal components</li>
+</ol>
+</ul>
+<div class="row">
+<div class="col-md-6" style="text-align: right; display: inline;width: 250px !important;">
+<a class="btn btn-info" href="javascript:void(0);" id="show-all"><span class="glyphicon glyphicon-plus"></span> Expand All Steps</a>
+</div>
+<div class="col-md-6" style="display: inline;width: 250px !important;">
+<a class="btn btn-info" href="javascript:void(0);" id="hide-all"><span class="glyphicon glyphicon-minus"></span> Collapse All Steps</a>
+</div>
+</div>
+<p></p>
+<div aria-multiselectable="true" class="panel-group" id="steps" role="tablist">
+<div class="panel panel-default">
+<section id="step_0"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Genepattern" class="stepAvatar tag-tooltip" src="/assets/GenePattern.png" title="GenePattern"/>
+<a data-toggle="toggle" href="#collapse_0" onclick="$('#collapse_0').collapse('toggle')">1: Filter and convert read counts to logCPM <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>We will use GenePattern's <code class="subtool">PreprocessReadCounts</code> module to filter out lowly expressed genes and convert the expression data from counts to log counts per million (logCPM).</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_0" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>Under the <code class="parameter">Modules</code> tab, search for "PreprocessReadCounts".</li>
+<li>Once the module is loaded, change the following:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li><code class="parameter">input file</code>: Load the GCT file. To do this, open the <code class="parameter">GenomeSpace</code> tab, and navigate to the folder containing the GCT file (e.g. <code class="directory">Public</code>  &gt;  <code class="directory">RecipeData</code>  &gt;  <code class="directory">ExpressionData</code>  &gt;  <code class="filename">GSE63412_GSE44229.gct</code>). Load the file into the input file parameter by clicking and dragging the file to the input file input box.</li>
+<li><code class="parameter">cls file</code>: Load the CLS file. To do this, open the <code class="parameter">GenomeSpace</code> tab, and navigate to the folder containing the CLS file (e.g. <code class="directory">Public</code>  &gt;  <code class="directory">RecipeData</code>  &gt;  <code class="directory">ExpressionData</code>  &gt;  <code class="filename">GSE63412_GSE44229.cls</code>). Load the file into the cls file parameter by clicking and dragging the file to the cls file input box.</li>
+<li><code class="parameter">output file</code>: &lt;input.file_basename&gt;.logcpm.gct</li>
+</ol>
+</li>
+<li>Click <code class="parameter">Run</code> to submit your job. This will generate a GCT file of the expression data in logCPM.
+	<p><img alt="" height="423" src="/ckeditor_assets/pictures/210/content_batcheffect_step_1.png" width="800"/></p>
+</li>
+</ol>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/lqNLiG1o0n8?list=https://www.youtube.com/watch?v=lqNLiG1o0n8&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_1"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Genepattern" class="stepAvatar tag-tooltip" src="/assets/GenePattern.png" title="GenePattern"/>
+<a data-toggle="toggle" href="#collapse_1" onclick="$('#collapse_1').collapse('toggle')">2: Remove batch effects using ComBat and save output to GenomeSpace <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>We will use the <code class="subtool">ComBat</code> module to run the ComBat algorithm and remove potential batch effects in our data. Specifically, our analysis contains data generated from two different laboratories and we aim to reduce the effects of this "lab" batch.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_1" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>Under the <code class="parameter">Modules</code> tab, search for "ComBat".</li>
+<li>Once the module is loaded, change the following parameters:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li><code class="parameter">input file</code>: load the filtered, logCPM GCT file, e.g., <code class="filename">GSE63412_GSE44229.logcpm.gct</code>. To do this, navigate to the <code class="parameter">Jobs</code> tab, and find the processed GCT file from the previous job. Click and drag the file to the input file input box.</li>
+<li><code class="parameter">sample info file</code>: Load the sample info file. To do this, navigate to the <code class="parameter">GenomeSpace</code> tab, and navigate to the folder containing the file (e.g. <code class="directory">Public</code>  &gt;  <code class="directory">RecipeData</code>  &gt;  <code class="directory">ExpressionData</code>  &gt;  <code class="filename">GSE63412_GSE44229.sample.info.txt</code>). Load the file into the sample info file parameter by clicking and dragging the file to the sample info file input box.</li>
+<li><code class="parameter">prior method</code>: Ensure that this parameter is set to "parametric".</li>
+</ol>
+</li>
+<li>Click <code class="parameter">Run</code> to submit your job. This will generate a GCT file of the expression data that has been normalized for batch effects as well as a JPEG file of prior probability distribution plots.
+	<p><img alt="" height="695" src="/ckeditor_assets/pictures/211/content_batcheffect_step_2.png" width="800"/></p>
+</li>
+</ol>
+<p> </p>
+<p>Save the <code class="filename">GSE63412_GSE44229.logcpm.combat.gct</code> file (and optionally the <code class="filename">GSE63412_GSE44229.logcpm.combat.plot.jpeg</code> file) to GenomeSpace for later reference using one of the following methods:</p>
+<ol>
+<li>From the job processing view, click the context menu (blue arrow) next to the dataset (e.g., <code class="filename">GSE63412_GSE44229.logcpm.combat.gct</code>), then choose <code class="parameter">Save to GenomeSpace</code>. Save the file to your folder.</li>
+<li>From the <code class="parameter">Modules and Pipeline</code> start page, navigate to <code class="parameter">Jobs</code>. Click on the file, then choose <code class="parameter">Save to GenomeSpace</code>. Save the file to your folder.</li>
+</ol>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/hCU7i6wV0e4?list=https://www.youtube.com/watch?v=hCU7i6wV0e4&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_2"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Genepattern" class="stepAvatar tag-tooltip" src="/assets/GenePattern.png" title="GenePattern"/>
+<a data-toggle="toggle" href="#collapse_2" onclick="$('#collapse_2').collapse('toggle')">3: Extract high-variance genes from pre- and post-ComBat expression datasets <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>We will use the <code class="subtool">PreprocessDataset</code> module to extract high-variance genes as determined by a delta cutoff. The delta value is simply the difference between the maximum and minimum expression values of a gene.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_2" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>Under the <code class="parameter">Modules</code> tab, search for "PreprocessDataset".</li>
+<li>Once the module is loaded, change the following parameters:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li><code class="parameter">input filename</code>: load the ComBat-processed GCT file, e.g., <code class="filename">GSE63412_GSE44229.logcpm.combat.gct</code>. To do this, navigate to the <code class="parameter">Jobs</code> tab, and find the batch effect normalized GCT file from the previous job. Click and drag the file to the input file input box.</li>
+<li><code class="parameter">floor</code>: -100</li>
+<li><code class="parameter">ceiling</code>: 100</li>
+<li><code class="parameter">min fold change</code>: 0</li>
+<li><code class="parameter">min delta</code>: 1.5</li>
+<li><code class="parameter">output file</code>: &lt;input.filename_basename&gt;.hidelta
+		<p><img alt="" height="1034" src="/ckeditor_assets/pictures/212/content_batcheffect_step_3.png" width="800"/></p>
+		 
+
+		<p><small><em><strong>Note: </strong></em><em>By selecting a minimum delta threshold, we restrict the expression datasets to a list of ~900 highly variant genes. Here, we used delta thresholding to perform this restriction, with limits specifically chosen to give ~900 genes from both datasets. Alternative methods include explicitly ranking genes by variance and selecting the n most highly variant genes. Since PCA transforms the data to a system of coordinates that capture the variance in the data, it is typical to limit a dataset to a smaller number of highly variant features prior to applying PCA. This feature reduction simplifies the downstream process of calculating principal components while ensuring that the transformation will remain faithful to the structure of the overall dataset.</em></small></p>
+</li>
+</ol>
+</li>
+<li>Click <code class="parameter">Run</code> to submit your job. This will generate a GCT file of the expression data that has been filtered for genes with high-delta values across the experiment.</li>
+<li>Rerun <code class="subtool">PreprocessDataset</code> on the pre-ComBat GCT file. To do this, reload the previous job by navigating to the <code class="parameter">Jobs</code> tab, clicking on the relevant <code class="subtool">PreprocessDataset</code> job title, and selecting <code class="parameter">Reload Job</code>.  Then make the following parameter changes:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li><code class="parameter">input filename</code>: load the pre-ComBat GCT file, e.g., <code class="filename">GSE63412_GSE44229.logcpm.gct</code>. To do this, navigate to the <code class="parameter">Jobs</code> tab, and find the logCPM GCT file from a previous job. Click and drag the file to the input file input box.</li>
+<li><code class="parameter">min delta</code>: 2.5</li>
+<li>Click <code class="parameter">Run</code> to submit your job.</li>
+</ol>
+</li>
+<li>Save the <code class="filename">GSE63412_GSE44229.logcpm.hidelta.gct</code> and <code class="filename">GSE63412_GSE44229.logcpm.combat.hidelta.gct</code> files to GenomeSpace using one of the following methods:
+	<ol type="A">
+<li>From the job processing view, click the context menu (blue arrow) next to the dataset (e.g., <code class="filename">GSE63412_GSE44229.logcpm.hidelta.gct</code>), then choose <code class="parameter">Save to GenomeSpace</code>. Save the file to your folder.</li>
+<li>From the <code class="parameter">Modules and Pipeline</code> start page, navigate to <code class="parameter">Jobs</code>. Click on the file, then choose <code class="parameter">Save to GenomeSpace</code>. Save the file to your folder.</li>
+</ol>
+</li>
+<li>OPTIONAL: close GenePattern.</li>
+</ol>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/lxliCqMWhrg?list=https://www.youtube.com/watch?v=lxliCqMWhrg&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_3"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Galaxy" class="stepAvatar tag-tooltip" src="/assets/Galaxy.png" title="Galaxy"/>
+<a data-toggle="toggle" href="#collapse_3" onclick="$('#collapse_3').collapse('toggle')">4: Loading data into Galaxy <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>We will load the pre- and post-ComBat high-delta expression datasets as well as the sample info file into Galaxy.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_3" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<p><small><em><strong>NOTE:</strong> If you have not yet associated your GenomeSpace account with your Galaxy account, you will be asked to do so. If you do not yet have a Galaxy account, you can automatically generate a new account that will be associated with your GenomeSpace account.</em></small></p>
+<ol>
+<li>Click on the Galaxy icon to launch the tool.</li>
+<li>Navigate to the following menu: <code class="subtool">Get Data &gt; GenomeSpace import</code></li>
+<li>Select the <code class="filename">GSE63412_GSE44229.logcpm.hidelta.gct</code>, <code class="filename">GSE63412_GSE44229.logcpm.combat.hidelta.gct</code>, and <code class="filename">GSE63412_GSE44229.sample.info.txt</code> files; ensure that the <code class="parameter">Send As</code> fields are set as follows:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li><code class="filename">GSE63412_GSE44229.logcpm.hidelta.gct</code>: genomicatab</li>
+<li><code class="filename">GSE63412_GSE44229.logcpm.combat.hidelta.gct</code>: genomicatab</li>
+<li><code class="filename">GSE63412_GSE44229.sample.info.txt</code>: txt</li>
+</ol>
+</li>
+<li>Click <code class="parameter">Send to Galaxy</code>.</li>
+<li>Once the files have been loaded, change the attributes for each file, by clicking the pencil (<img alt="" height="14" src="/ckeditor_assets/pictures/122/content_galaxy_pencil.png" style="display:inline-block;" width="14"/>) icon. Switch to the <code class="parameter">Datatype</code> tab and changing the following parameters:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li><code class="parameter">New type</code>: tabular</li>
+<li>Click <code class="parameter">Save</code>. Ignore any warnings which may pop up.</li>
+</ol>
+</li>
+</ol>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/Izc7DWseCTc?list=https://www.youtube.com/watch?v=Izc7DWseCTc&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_4"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Galaxy" class="stepAvatar tag-tooltip" src="/assets/Galaxy.png" title="Galaxy"/>
+<a data-toggle="toggle" href="#collapse_4" onclick="$('#collapse_4').collapse('toggle')">5: Prepare expression datasets for PCA <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>We will use a pre-built GenomeSpace workflow to prepare the expression datasets for principal component analysis. This is a basic preprocessing workflow that uses column selection and matrix transposition tools.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_4" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>Within Galaxy, click on the <code class="subtool">Workflow</code> tab to open the main Workflow page.</li>
+<li>Click the <code class="parameter">Upload or import workflow</code> button in the upper right corner to begin importing a workflow.</li>
+<li>Copy the URL below and paste it in the <code class="parameter">Galaxy workflow URL:</code> field. Click <code class="parameter">Import</code> to import the workflow into your Galaxy environment.
+	<ul>
+<li><a href="https://dm.genomespace.org/datamanager/file/Home/RecipeData/Tool_Galaxy/Workflows/Galaxy-Workflow-Identifying_batch_effects___PCA_Preprocessor.ga">https://dm.genomespace.org/datamanager/file/Home/RecipeData/Tool_Galaxy/Workflows/Galaxy-Workflow-Identifying_batch_effects___PCA_Preprocessor.ga</a></li>
+</ul>
+</li>
+<li>Click on the workflow drop-down menu (e.g.,<strong> </strong><strong>Identifying batch effects – PCA Preprocessor (imported from uploaded file)</strong>), then choose <code class="parameter">Run</code>.</li>
+<li>Load the files into the correct fields. The input fields should have annotations indicating which file should be loaded:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li><code class="parameter">Step 1: Input Dataset</code>: <code class="filename">GSE63412_GSE44229.logcpm.hidelta.tab</code></li>
+<li><code class="parameter">Step 2: Input Dataset</code>: <code class="filename">GSE63412_GSE44229.logcpm.combat.hidelta.tab</code></li>
+</ol>
+</li>
+<li>Click Run workflow.
+	<p><img alt="" src="/ckeditor_assets/pictures/213/content_batcheffect_step_5_3.png" width="700"/></p>
+</li>
+</ol>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/6Lnwmfxb4Nw?list=https://www.youtube.com/watch?v=6Lnwmfxb4Nw&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_5"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Galaxy" class="stepAvatar tag-tooltip" src="/assets/Galaxy.png" title="Galaxy"/>
+<a data-toggle="toggle" href="#collapse_5" onclick="$('#collapse_5').collapse('toggle')">6: Perform PCA on pre- and post-ComBat expression datasets <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>We will use <code class="subtool">Principal Component Analysis</code> tool in Galaxy to compute the principal components of our two expression datasets.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_5" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>Navigate to the following menu: <code class="subtool">Multivariate Analysis &gt; Principal Component Analysis</code></li>
+<li>Once the tool is loaded, change the following parameters:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li><code class="parameter">Select data</code>: Transpose: Preprocessed Pre-ComBat expr data</li>
+<li><code class="parameter">Select columns containing input variables</code>: Check the box next to Select/Unselect all (Note: This step may take some time as we are specifying hundreds of columns as our input variables; after selecting the box, wait for the variable names to populate the form before proceeding.)</li>
+<li><code class="parameter">Method</code>: Singular Value Decomposition (prcomp)</li>
+<li><code class="parameter">Centering and Scaling</code>: Center only</li>
+</ol>
+</li>
+<li>Click <code class="parameter">Execute</code>.</li>
+<li>Repeat steps 1 through 3 on the post-ComBat GCT file (Transpose: Preprocessed Post-ComBat expr data).
+	<p><img alt="" src="/ckeditor_assets/pictures/214/content_batcheffect_step_6.png" width="700"/></p>
+</li>
+</ol>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/g_Dpj070gIY?list=https://www.youtube.com/watch?v=g_Dpj070gIY&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_6"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Galaxy" class="stepAvatar tag-tooltip" src="/assets/Galaxy.png" title="Galaxy"/>
+<a data-toggle="toggle" href="#collapse_6" onclick="$('#collapse_6').collapse('toggle')">7: Visualize the expression datasets in the space of their first two principal components <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>We will use a pre-built GenomeSpace workflow to generate plots of our pre- and post-ComBat datasets in the space of their first two principal components. We will make use of the <code class="subtool">Visualize Charts</code> options available to Galaxy files.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_6" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>Within Galaxy, click on the <code class="subtool">Workflow</code> tab to open the main Workflow page.</li>
+<li>Click the <code class="parameter">Upload or import workflow</code> button in the upper right corner to begin importing a workflow.</li>
+<li>Copy the URL below and paste it in the <code class="parameter">Galaxy workflow URL:</code> field. Click <code class="parameter">Import</code> to import the workflow into your Galaxy environment.
+	<ul>
+<li><a href="https://dm.genomespace.org/datamanager/file/Home/RecipeData/Tool_Galaxy/Workflows/Galaxy-Workflow-Identifying_batch_effects___PCA_Viewer.ga">https://dm.genomespace.org/datamanager/file/Home/RecipeData/Tool_Galaxy/Workflows/Galaxy-Workflow-Identifying_batch_effects___PCA_Viewer.ga</a></li>
+</ul>
+</li>
+<li>Click on the workflow drop-down menu (e.g.,<strong> </strong><strong>Identifying batch effects – PCA Viewer (imported from uploaded file)</strong>), then choose <code class="parameter">Run</code>.</li>
+<li>Load the files into the correct fields. The input fields should have annotations indicating which file should be loaded:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li><code class="parameter">Step 1: Input Dataset</code>: <code class="filename">GSE63412_GSE44229.sample.info.txt</code></li>
+<li><code class="parameter">Step 2: Input Dataset</code>: PCA on the Pre-ComBat expr data (Note: the Principal Component Analysis tool generates two output files; we require the tabular output for the workflow, not the pdf output)</li>
+<li><code class="parameter">Step 3: Input Dataset</code>: PCA on the Post-ComBat expr data (Note: the Principal Component Analysis tool generates two output files; we require the tabular output for the workflow, not the pdf output)</li>
+</ol>
+</li>
+<li>Click <code class="parameter">Run workflow</code>.</li>
+</ol>
+<p><img alt="" src="/ckeditor_assets/pictures/215/content_batcheffect_step_7_1.png" width="700"/></p>
+<ol start="7">
+<li>Once the workflow has completed, click on the <code class="filename">Paste: Viz of Pre-ComBat PCA</code> output file to access more options; click the graph(<img alt="" height="15" src="/ckeditor_assets/pictures/134/content_bar_graph_icon.png" style="display: inline-block;" width="15"/>) icon and select <code class="parameter">Charts</code> from the dropdown menu to begin plotting the results.
+
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li>Under the <code class="parameter">Start</code> tab, select <code class="parameter">Scatter plot (NVD3)</code></li>
+<li>Under the <font face="monospace">Customize </font>tab, set the parameters:
+		<ol start="1" style="list-style-type: lower-roman;">
+<li><code class="parameter">X axis &gt; Axis label</code>: PC 1</li>
+<li><code class="parameter">Y axis &gt; Axis label</code>: PC 2</li>
+</ol>
+</li>
+<li>Click the <code class="parameter">Select Data</code> tab; for <code class="parameter" style="line-height: 20.8px;">1: Data Series</code>, set the parameters:
+		<ol start="1" style="list-style-type: lower-roman;">
+<li><code class="parameter">Provide a label</code>: LabA</li>
+<li><code class="parameter">Data point labels</code>: Column: 9</li>
+<li><code class="parameter">Values for x-axis</code>: Column: 11</li>
+<li><code class="parameter">Values for y-axis</code>: Column: 12</li>
+</ol>
+</li>
+<li><span style="line-height: 20.8px;">Click the </span><code class="parameter" style="line-height: 20.8px;">Insert Data</code><span style="line-height: 20.8px;"> tab; for </span><code class="parameter" style="line-height: 20.8px;">2: Data Series</code><span style="line-height: 20.8px;">, set the parameters:</span>
+<ol start="1" style="list-style-type: lower-roman;">
+<li><code class="parameter">Provide a label</code>: LabB</li>
+<li><code class="parameter">Data point labels</code>: Column: 3</li>
+<li><code class="parameter">Values for x-axis</code>: Column: 5</li>
+<li><code class="parameter">Values for y-axis</code>: Column: 6</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Click the <code class="parameter">Visualize</code> button in the upper right-hand corner. (Optional: Save a screenshot of the visualization)</li>
+<li>Repeat steps 7 and 8 on the <code class="filename">Paste: Viz of Post-ComBat PCA</code> output file.</li>
+</ol>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/oDnUSGuW3zI?list=https://www.youtube.com/watch?v=oDnUSGuW3zI&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="recipeInterpSection">
+<section id="results"></section>
+<h3 class="divider">Results Interpretation</h3>
+<div class="responsive-content" id="recipeInterpText">
+<p>There are two primary goals of this recipe: (1) identify potential batch effects in our dataset and (2) adjust our data for any identified batch effects. This recipe generates a number of plots to help us evaluate our data along these aims:</p>
+<table border="0" cellpadding="1" cellspacing="1" style="width:100%">
+<tbody>
+<tr>
+<td align="center"><img alt="" src="/ckeditor_assets/pictures/232/content_viz_of_precombat_pca.png" width="400"/></td>
+<td align="center"><img alt="" src="/ckeditor_assets/pictures/233/content_gse63412_gse44229_cpm_combat_plot.jpeg" width="400"/></td>
+<td align="center"><img alt="" src="/ckeditor_assets/pictures/231/content_viz_of_postcombat_pca.png" width="400"/></td>
+</tr>
+<tr>
+<td style="padding: 0px 10px 0px 10px;"><strong>Figure 1. Viz_of_PreComBat_PCA.pdf</strong></td>
+<td style="padding: 0px 10px 0px 10px;"><strong>Figure 2. GSE63412_GSE44229.logcpm.combat.plot.jpeg</strong></td>
+<td style="padding: 0px 10px 0px 10px;"><strong>Figure 3. Viz_of_PostComBat_PCA.pdf</strong></td>
+</tr>
+<tr>
+<td style="padding: 0px 10px 0px 10px;">PCA of expression data prior to applying ComBat, colored by originating lab.</td>
+<td style="padding: 0px 10px 0px 10px;">Prior plots of parametric ComBat algorithm. Parametric estimates of batch effect are in red; kernel density estimate of batch effect are in black.</td>
+<td style="padding: 0px 10px 0px 10px;">PCA of expression data after applying ComBat, colored by originating lab./td&gt;</td>
+</tr>
+<tr>
+<td style="padding: 0px 10px 0px 10px;">This figure was obtained from <a href="#collapse_6">Step 7: Visualize the expression datasets in the space of their first two principal components.</a></td>
+<td style="padding: 0px 10px 0px 10px;">This figure was obtained from <a href="#collapse_1">Step 2: Remove batch effects using ComBat and save output to GenomeSpace.</a></td>
+<td style="padding: 0px 10px 0px 10px;">This figure was obtained from <a href="#collapse_6">Step 7: Visualize the expression datasets in the space of their first two principal components.</a></td>
+</tr>
+</tbody>
+</table>
+<p> </p>
+<p>We began by using Principal Component Analysis (PCA) to view the underlying structure of our raw expression data prior to applying ComBat. To do this, we projected our data in the space of the first two principal components, PC1 and PC2, with each point representing a different sample from the experiment (Fig. 1). The PCs identified by PCA transformation are ordered such that the first principal component, PC1, captures the largest possible variance in the dataset, and each following PC captures the highest variance possible while being orthogonal to the previous PCs. If we view our pre-ComBat data, we clearly see that the samples cluster according to the lab (Lab A or Lab B) that they came from. Since these clusters are located at disparate ends of PC1, it appears that the originating lab introduces much (if not most) of the variance in our dataset. We conclude that the lab in which the samples were processed is a batch effect.</p>
+<p>To adjust our dataset for the identified batch covariate, Lab, we used ComBat. ComBat requires that we specify this batch covariate as well as covariates of interest; in this case, we were interested in a single covariate, treatment (control, fear conditioning, object location memory). The parametric ComBat method that we used computes a prior probability distribution for the adjustment. To evaluate this prior distribution, we view the prior plots that the ComBat algorithm outputs (Fig. 2). In this case, the parametric estimate (red) overlaps the "true" distribution (black, kernel density estimate) pretty well, so we can feel reasonably confident in our ComBat adjustment. In the case of poor estimates, we would resort to the non-parametric setting for the algorithm. For more information, see GenePattern's documentation on ComBat.</p>
+<p>After applying ComBat to our expression dataset, we again apply PCA and project the transformed data into the space of the first two PCs (Fig. 3). Post-ComBat, we see that the samples from our two lab groups are more overlapping, indicating that the batch effect has been mitigated.</p>
+<p>At this point, the investigator can proceed in number of directions. The post-ComBat PCA projection can be explored to see how our covariates of interest cluster. Moreover, the ComBat-adjusted dataset (<code class="filename">GSE63412_GSE44229.logcpm.combat.gct</code>) can be used in downstream expression analysis (e.g., differential expression analysis).</p>
+<h4><strong>References</strong></h4>
+<ol>
+<li>Johnson WE, Rabinovic A, and Li C. Adjusting batch effects in microarray expression data using Empirical Bayes methods. Biostatistics. 2007;8(1):118-127. PMID: <a href="http://www.ncbi.nlm.nih.gov/pubmed/16632515">16632515</a></li>
+<li>Ma S and Dai Y. Principal component analysis based methods in bioinformatics studies. <em>Brief Bioinform.</em> 2011 Nov;12(6):714-22. PMID: <a href="http://www.ncbi.nlm.nih.gov/pubmed/21242203">21242203</a></li>
+<li>Peixoto L, Risso D, Poplawski SG, Wimmer ME et al. How data analysis affects power, reproducibility and biological insight of RNA-seq studies in complex datasets. <em>Nucleic Acids Res</em>. 2015 Sep 18;43(16):7664-74. PMID: <a href="http://www.ncbi.nlm.nih.gov/pubmed/26202970">26202970</a></li>
+<li>Vogel-Ciernia A, Matheos DP, Barrett RM, Kramár EA et al. The neuron-specific chromatin regulatory subunit BAF53b is necessary for synaptic plasticity and memory. <em>Nat Neurosci.</em> 2013 May;16(5):552-61. PMID: <a href="http://www.ncbi.nlm.nih.gov/pubmed/23525042">23525042</a></li>
+</ol>
+</div>
+</div>
+<hr/>
+<div class="panel-group" id="comments">
+<div class="panel panel-default">
+<div class="panel-heading">
+<h4 class="panel-title"><a data-toggle="collapse" href="#comments_list">Comments (0)</a> <span class="glyphicon glyphicon-chevron-down toggle-glyph"></span></h4>
+</div>
+<div class="panel-collapse collapse in" id="comments_list">
+<div class="panel-body">
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<h4 class="panel-title">Submit a Comment</h4>
+</div>
+<div class="panel-body">
+<form accept-charset="UTF-8" action="/users/sign_in" class="form" id="new_user" method="post" role="form"><div style="display:none"><input name="utf8" type="hidden" value="✓"/><input name="authenticity_token" type="hidden" value="gxc2W/fGZsZz5CoHf4KEpoIYSLaRIRDbEe+cgqM6uos="/></div>
+<input id="user_identity_url" name="user[identity_url]" type="hidden" value="https://identity.genomespace.org/identityServer/xrd.jsp"/>
+<input class="btn btn-sm btn-success" name="commit" type="submit" value="Sign in using GenomeSpace"/>
+</form> </div>
+</div>
+</div>
+<script>
+//<![CDATA[
+
+
+
+                $('.responsive-content img').addClass('img-responsive').css({"height" : "", "width" : ""});
+				$('[data-toggle="popover"]').popover({trigger: "hover", placement: "top"});
+
+				$("#show-all").click(function() {
+					$(".step-container").collapse("show");
+
+				});
+
+				$("#hide-all").click(function() {
+					$(".step-container").collapse("hide");
+
+				});
+
+                 $('.tag-tooltip').tooltip();
+
+
+
+//]]>
+</script> </div>
+<div class="col-md-2">
+<div class="bs-docs-sidebar hidden-print gp-side-menu" role="complementary">
+<ul class="nav bs-docs-sidenav" data-spy="affix">
+<li><a href="#summary">Summary</a></li>
+<li><a href="#inputs">Inputs</a></li>
+<li id="recipeOutputNav"><a href="#outputs">Outputs</a></li>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#steps">Steps</a>
+<ul class="nav">
+<li><a class="step-anchor" href="#step_0">Filter and convert read counts to logCPM</a></li>
+<li><a class="step-anchor" href="#step_1">Remove batch effects using ComBat and save output to GenomeSpace</a></li>
+<li><a class="step-anchor" href="#step_2">Extract high-variance genes from pre- and post-ComBat expression datasets</a></li>
+<li><a class="step-anchor" href="#step_3">Loading data into Galaxy</a></li>
+<li><a class="step-anchor" href="#step_4">Prepare expression datasets for PCA</a></li>
+<li><a class="step-anchor" href="#step_5">Perform PCA on pre- and post-ComBat expression datasets</a></li>
+<li><a class="step-anchor" href="#step_6">Visualize the expression datasets in the space of their first two principal components</a></li>
+</ul>
+</li>
+<li id="recipeInterpNav"><a href="#results">Results Interpretation</a></li>
+<!-- <li><a href="#comments">Comments</a></li> -->
+<!-- <li><a href="#history">History</a></li> -->
+<li><a href="javascript:void(0);" id="scroll-top">Back to the Top</a></li>
+</ul>
+</div>
+<script>
+//<![CDATA[
+
+				$('.step-anchor').click(function() {
+					var step = $(this).attr('href').split('_')[1];
+					$('#collapse_' + step).collapse("show");
+				});
+
+//]]>
+</script> </div>
+</div>
+</div>
+<script>
+//<![CDATA[
+
+     if ($("#recipeOutputText").html().trim().length == 0){
+       $("#recipeOutputSection").hide();
+       $("#recipeOutputNav").hide();
+     }
+      if ($("#recipeInterpText").html().trim().length == 0){
+            $("#recipeInterpSection").hide();
+              $("#recipeInterpNav").hide();
+      }
+
+
+//]]>
+</script> <div class="container" id="history">
+<h1>History</h1>
+<ul>
+<li>Saved <b>over 3 years ago</b>
+                                                        on 02/28/2017 18:55:20 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/54?lastVersion=true&amp;versionIndex=44" target="_oldRecipe" title="View this version in a new window">View this version</a><br>
+<div>
+</div>
+</br></li>
+<li>Saved <b>over 3 years ago</b>
+                                                        on 02/28/2017 18:54:58 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/54?lastVersion=true&amp;versionIndex=43" target="_oldRecipe" title="View this version in a new window">View this version</a><br>
+<div>
+</div>
+</br></li>
+<li>Saved <b>over 3 years ago</b>
+                                                        on 02/28/2017 18:54:26 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/54?lastVersion=true&amp;versionIndex=42" target="_oldRecipe" title="View this version in a new window">View this version</a><br>
+<div>
+</div>
+</br></li>
+<li>Saved <b>over 3 years ago</b>
+                                                        on 02/28/2017 18:53:28 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/54?lastVersion=true&amp;versionIndex=41" target="_oldRecipe" title="View this version in a new window">View this version</a><br>
+<div>
+</div>
+</br></li>
+<li>Saved <b>over 3 years ago</b>
+                                                        on 02/28/2017 18:52:37 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/54?lastVersion=true&amp;versionIndex=40" target="_oldRecipe" title="View this version in a new window">View this version</a><br>
+<div>
+</div>
+</br></li>
+<li>Saved <b>over 3 years ago</b>
+                                                        on 02/28/2017 18:42:27 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/54?lastVersion=true&amp;versionIndex=39" target="_oldRecipe" title="View this version in a new window">View this version</a><br>
+<div>
+</div>
+</br></li>
+<li>Saved <b>over 3 years ago</b>
+                                                        on 02/22/2017 15:45:42 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/54?lastVersion=true&amp;versionIndex=38" target="_oldRecipe" title="View this version in a new window">View this version</a><br>
+<div>
+</div>
+</br></li>
+<li>Saved <b>over 3 years ago</b>
+                                                        on 02/21/2017 19:55:05 UTC by <b>forrestkim</b>.
+                                                        <a href="/view/54?lastVersion=true&amp;versionIndex=37" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>over 3 years ago</b>
+                                                        on 12/06/2016 18:16:07 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/54?lastVersion=true&amp;versionIndex=36" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>almost 4 years ago</b>
+                                                        on 11/21/2016 18:08:10 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/54?lastVersion=true&amp;versionIndex=35" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>almost 4 years ago</b>
+                                                        on 11/21/2016 17:59:02 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/54?lastVersion=true&amp;versionIndex=34" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>almost 4 years ago</b>
+                                                        on 11/16/2016 18:58:24 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/54?lastVersion=true&amp;versionIndex=33" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>almost 4 years ago</b>
+                                                        on 10/06/2016 15:24:49 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/54?lastVersion=true&amp;versionIndex=32" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>about 4 years ago</b>
+                                                        on 09/01/2016 18:31:24 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/54?lastVersion=true&amp;versionIndex=31" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>about 4 years ago</b>
+                                                        on 06/29/2016 16:32:02 UTC by <b>flwu</b>.
+                                                        <a href="/view/54?lastVersion=true&amp;versionIndex=30" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>about 4 years ago</b>
+                                                        on 06/29/2016 16:30:46 UTC by <b>flwu</b>.
+                                                        <a href="/view/54?lastVersion=true&amp;versionIndex=29" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>about 4 years ago</b>
+                                                        on 06/29/2016 16:30:23 UTC by <b>flwu</b>.
+                                                        <a href="/view/54?lastVersion=true&amp;versionIndex=28" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+</ul>
+</div>
+<div class="container-fluid footer gs-recipe-footer">
+<p class="copy-right-block">Copyright ©2016 The Regents of the University of California and The Broad Institute of MIT &amp; Harvard</p>
+</div>
+</body>
+</html>

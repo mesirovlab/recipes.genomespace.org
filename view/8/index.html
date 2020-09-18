@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>GenomeSpace Recipe: Identify an up- or down-regulated pathway from expression data</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link href="/assets/docs.min.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/featured_article.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/pages.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/recipes.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/site.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/tags.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/jquery-ui/theme.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/jquery-ui/core.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/application.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/dataTables/bootstrap/3/jquery.dataTables.bootstrap.css?body=1" media="all" rel="stylesheet"/>
+<script src="/assets/jquery.js?body=1"></script>
+<script src="/assets/jquery_ujs.js?body=1"></script>
+<script src="/assets/jquery-ui/core.js?body=1"></script>
+<script src="/assets/jquery-ui/widget.js?body=1"></script>
+<script src="/assets/jquery-ui/position.js?body=1"></script>
+<script src="/assets/jquery-ui/menu.js?body=1"></script>
+<script src="/assets/jquery-ui/autocomplete.js?body=1"></script>
+<script src="/assets/jquery-ui/mouse.js?body=1"></script>
+<script src="/assets/jquery-ui/sortable.js?body=1"></script>
+<script src="/assets/bootstrap/affix.js?body=1"></script>
+<script src="/assets/bootstrap/alert.js?body=1"></script>
+<script src="/assets/bootstrap/button.js?body=1"></script>
+<script src="/assets/bootstrap/carousel.js?body=1"></script>
+<script src="/assets/bootstrap/collapse.js?body=1"></script>
+<script src="/assets/bootstrap/dropdown.js?body=1"></script>
+<script src="/assets/bootstrap/tab.js?body=1"></script>
+<script src="/assets/bootstrap/transition.js?body=1"></script>
+<script src="/assets/bootstrap/scrollspy.js?body=1"></script>
+<script src="/assets/bootstrap/modal.js?body=1"></script>
+<script src="/assets/bootstrap/tooltip.js?body=1"></script>
+<script src="/assets/bootstrap/popover.js?body=1"></script>
+<script src="/assets/bootstrap-sprockets.js?body=1"></script>
+<script src="/assets/ckeditor/init.js?body=1"></script>
+<script src="/assets/ckeditor/ckeditor.js?body=1"></script>
+<script src="/assets/jquery_nested_form.js?body=1"></script>
+<script src="/assets/dataTables/jquery.dataTables.js?body=1"></script>
+<script src="/assets/dataTables/bootstrap/3/jquery.dataTables.bootstrap.js?body=1"></script>
+<script src="/assets/autocomplete-rails.js?body=1"></script>
+<script src="/assets/spin.min.js?body=1"></script>
+<script src="/assets/docs.min.js?body=1"></script>
+<script src="/assets/jquery.hoverIntent.minified.js?body=1"></script>
+<script src="/assets/ckeditor/config.js?body=1"></script>
+<script src="/assets/featured_article.js?body=1"></script>
+<script src="/assets/pages.js?body=1"></script>
+<script src="/assets/recipes.js?body=1"></script>
+<script src="/assets/site.js?body=1"></script>
+<script src="/assets/tags.js?body=1"></script>
+<script src="/assets/application.js?body=1"></script>
+<meta content="authenticity_token" name="csrf-param"/>
+<meta content="osgavLsed7ccUUErWykQgBoJiYGonzrlwMGNYfCheAc=" name="csrf-token"/>
+<link href="https://fonts.googleapis.com/css?family=Wire+One" rel="stylesheet" type="text/css"/>
+<link href="https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:300" rel="stylesheet" type="text/css"/>
+<link href="/assets/favicon.ico" rel="shortcut icon">
+<script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-74623322-1', 'auto');
+        ga('send', 'pageview');
+       // ga('set', 'userId', {{"anonymous"}}); // Set the user ID using signed-in user_id.
+        ga('set', 'userId', 'anonymous'); // Set the user ID using signed-in user_id.
+
+    </script>
+</link></head>
+<body onload="tellParentWindowMySize()">
+<div id="nav_page_wrapper">
+<div id="logo"><a href="http://www.genomespace.org/"><img alt="Gslogo" src="/assets/gslogo.png"/></a></div>
+<div class="clickable" id="login_menu">
+<form accept-charset="UTF-8" action="/users/sign_in" class="new_user" id="gs-login" method="post"><div style="display:none"><input name="utf8" type="hidden" value="✓"/><input name="authenticity_token" type="hidden" value="osgavLsed7ccUUErWykQgBoJiYGonzrlwMGNYfCheAc="/></div>
+<input id="user_identity_url" name="user[identity_url]" type="hidden" value="https://identity.genomespace.org/identityServer/xrd.jsp"/>
+<a onclick="document.getElementById('gs-login').submit(); return false;">Login<span class="glyphicon glyphicon-chevron-right"></span></a>
+</form></div>
+<ul id="nav">
+<li class="dropdown">
+<a href="/"><span class="glyphicon glyphicon-home"></span> GenomeSpace Recipes</a>
+</li>
+<!-- <li id="recipe_link"><a href="/recipes"><span class="gparc-nav-icon glyphicon glyphicon-list"></span> My Recipes</a></li> -->
+<!-- links to main genomespace.org -->
+<li id="gsdotorg"><a href="http://www.genomespace.org/"><img alt="Gslogo" height="24px" src="/assets/official_logo.png"/>GenomeSpace.org</a><ul>
+<li id="what-is-genomespace"><a href="http://www.genomespace.org/what-is-genomespace">What is GenomeSpace?</a>
+<li id="tools"><a href="http://www.genomespace.org/support/tools">Tools</a>
+</li>
+<li id="recipes"><a href="http://recipes.genomespace.org/">Recipes</a></li>
+<li id="documentation"><a href="http://www.genomespace.org/documentation">Documentation</a>
+<ul>
+<li><a href="http://www.genomespace.org/support/guides/user-guide">User Guide</a>
+<p>Read the detailed guide to the user interface</p>
+</li>
+<li><a href="http://www.genomespace.org/support/guides/tool-guide">Tool Guide</a>
+<p>Learn how to access GenomeSpace functionality for each Tool</p>
+</li>
+<li><a href="http://www.genomespace.org/faq">FAQ</a>
+<p>See answers to frequently asked questions</p>
+</li>
+<li><a href="http://www.genomespace.org/presentations-and-videos">Presentations and Videos</a>
+<p>Access talks by the GenomeSpace community</p>
+</li>
+<li><a href="http://www.genomespace.org/support/guides/end-to-end-analyses">End-to-End Analyses</a>
+<p>Provides description for end-to-end analyses.</p>
+</li>
+</ul>
+</li>
+<li id="developers"><a href="http://www.genomespace.org/for-developers">Developers</a>
+<ul>
+<li><a href="http://www.genomespace.org/what-can-genomespace-do-for-tool-developers">What Can GenomeSpace Do For Tool Developers?</a>
+<p></p>
+</li>
+<li><a href="http://www.genomespace.org/adopters">Technical Documentation</a>
+<p></p>
+</li>
+<li><a href="http://www.genomespace.org/source-code">Source Code and Distributions</a>
+<p></p>
+</li>
+<li><a href="http://www.genomespace.org/developer-support-and-feedback">Developer Support and Feedback</a>
+<p></p>
+</li>
+</ul>
+</li>
+<li id="support"><a href="http://www.genomespace.org/support">Support</a>
+</li>
+<li id="about"><a href="http://www.genomespace.org/about">About</a>
+</li>
+</li></ul></li>
+<!-- end of links to main GenomeSpace.org -->
+<li class="search">
+<div id="search_box">
+<form accept-charset="UTF-8" action="/search" class="form" method="get" role="form"><div style="display:none"><input name="utf8" type="hidden" value="✓"/></div>
+<div style="margin:0;padding:0;display:inline">
+<input class="search" id="search" name="search" type="text"/>
+</div>
+<input class="searchBtn" type="submit"/>
+</form> </div>
+</li>
+</ul>
+</div>
+<div class="container fluid gs-recipe-">
+<div class="row">
+<div class="col-md-10">
+<table><tr><td><img alt="Gp msigdb" class="recipeAvatar" src="/system/recipes/avatars/000/000/008/original/gp_msigdb.png?1488916494"/></td><td>
+<h3>Identify an up- or down-regulated pathway from expression data
+                        </h3>
+</td></tr></table>
+<p class="text-muted">Added by GenomeSpaceTeam on 2015.04.21 <span class="official"><img alt="Official logo" data-content="Offical GenomeSpace Recipe" data-toggle="popover" src="/assets/official_logo.png"/></span>
+<br/>
+            Last updated on over 3 years ago.
+            </p>
+<div class="row">
+<div class="col-md-8">
+<p>
+<a class="btn btn-default btn-xs tag green" >microarray</a>
+<a class="btn btn-default btn-xs tag red" >differential gene expression</a>
+<a class="btn btn-default btn-xs tag red" >functional annotation</a>
+</p>
+</div>
+<div class="col-md-2 voting">
+<p class="text-success"><span class="glyphicon glyphicon-thumbs-up"></span> 5</p>
+</div>
+<div class="col-md-2 voting">
+<p class="text-danger"><span class="glyphicon glyphicon-thumbs-down"></span> 0</p>
+</div>
+</div>
+<hr/>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/No8kYFtBHyo?list=PL4ZmSx1n2Kw6n3RKK34Tmv0SU1XDn2Vp_&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+<section id="summary"></section>
+<h3 class="divider">Summary</h3>
+<div class="responsive-content">
+<p><span style="font-family:arial,sans-serif;"><span style="font-size:16px;"><i>Which genes are differentially expressed in my microarray data? Are these genes enriched for certain biological pathways?</i></span></span></p>
+<p>This recipe provides an outline of one method to identify known biological functions for genes that are differentially expressed between two conditions or phenotypes, using microarray data. An example use of this recipe is a case where an investigator may want to determine if a specific cancer phenotype is associated with expression of certain pathways.</p>
+<p><img alt="" src="/ckeditor_assets/pictures/451/content_identifyupdownregulatedpathways_updated.png" style="width: 410px; height: 184px; float: right; padding: 10px;"/></p>
+<p> </p>
+<p>Given a set of differentially expressed genes, the goal is to infer which biological functions (for example, Gene Ontology biological processes) are overrepresented in the set of reference genes found to be differentially expressed. In particular, this recipe uses a gene expression dataset which has two conditions: normal and mild hyperthermia. Then, GenePattern is used to identify differentially expressed genes, and finally MSigDB is used to identify biological functions and pathways that are enriched in the gene set.</p>
+<p><strong>Why differential expression analysis?</strong> We assume that most genes are not expressed all the time, but rather are expressed in specific tissues, stages of development, or under certain conditions. Genes which are expressed in one condition, such as cancerous tissue, are said to be differentially expressed when compared to normal conditions. To identify which genes change in response to specific conditions (e.g. cancer), we must filter or process the dataset to remove genes which are not informative.</p>
+<p><strong>Why perform functional annotation?</strong> Many analyses end with the retrieval of a gene list, e.g. gene expression analysis identifies a list of genes which are differentially expressed when comparing multiple conditions. However, often times a researcher has additional questions about the function or relatedness of genes in a gene list: Are the genes a part of the same pathway? Do the gene products interact physically? Do the gene products localize to a specific part of the cell? Are the genes only expressed during a certain stage of development? These questions, and others like them, can be answered by performing functional annotation on gene lists, to better understand the underlying connections between genes.</p>
+</div>
+<section id="inputs"></section>
+<h3 class="divider">Inputs</h3>
+<div class="responsive-content">
+<p>To complete this recipe, we will need a gene expression dataset describing two conditions or phenotypes, such as normal conditions vs. mild hyperthermic conditions. In this example, we will use gene expression data from a study in which a human lymphoma cell line was subjected to mild hyperthermia (41°C) and compared to normal conditions (37°C).</p>
+<p>The data needed to complete this recipe can be found on the GenomeSpace folder:</p>
+<ul>
+<li><code class="directory">Public</code> &gt; <code class="directory">RecipeData</code> &gt; <code class="directory">ExpressionData</code> &gt; <code class="directory">GSE10043</code> &gt; <code class="filename"><strong><a href="https://gsui.genomespace.org/jsui/gsui.html?pathOrUrl=/Home/Public/RecipeData/ExpressionData/GSE10043/" target="_blank">GSE10043 ... .gct</a></strong></code>: a gene expression dataset of normal vs. mild hyperthermic human lymphoma (4 samples)</li>
+<li><code class="directory">Public</code> &gt; <code class="directory">RecipeData</code> &gt; <code class="directory">ExpressionData</code> &gt; <code class="directory">GSE10043</code> &gt; <code class="filename"><strong><a href="https://gsui.genomespace.org/jsui/gsui.html?pathOrUrl=/Home/Public/RecipeData/ExpressionData/GSE10043/" target="_blank">Treatment.cls</a></strong></code>: a CLS file describing the treatment conditions for each sample</li>
+</ul>
+</div>
+<div id="recipeOutputSection">
+<section id="outputs"></section>
+<h3 class="divider">Outputs</h3>
+<div class="responsive-content" id="recipeOutputText">
+</div>
+</div>
+<section id="overview"></section>
+<h3 class="divider">Recipe steps</h3>
+<ul>
+<li><strong>GenePattern</strong></li>
+<ol start="1">
+<li>Loading data</li>
+<li>Identifying differentially expressed genes</li>
+<li>Viewing differentially expressed genes</li>
+<li>Selecting the top genes</li>
+<li>Saving the file to GenomeSpace</li>
+</ol>
+</ul>
+<ul>
+<li><strong>MSigDB</strong></li>
+<ol start="6">
+<li>Completing functional annotation</li>
+</ol>
+</ul>
+<div class="row">
+<div class="col-md-6" style="text-align: right; display: inline;width: 250px !important;">
+<a class="btn btn-info" href="javascript:void(0);" id="show-all"><span class="glyphicon glyphicon-plus"></span> Expand All Steps</a>
+</div>
+<div class="col-md-6" style="display: inline;width: 250px !important;">
+<a class="btn btn-info" href="javascript:void(0);" id="hide-all"><span class="glyphicon glyphicon-minus"></span> Collapse All Steps</a>
+</div>
+</div>
+<p></p>
+<div aria-multiselectable="true" class="panel-group" id="steps" role="tablist">
+<div class="panel panel-default">
+<section id="step_0"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Genepattern" class="stepAvatar tag-tooltip" src="/assets/GenePattern.png" title="GenePattern"/>
+<a data-toggle="toggle" href="#collapse_0" onclick="$('#collapse_0').collapse('toggle')">1: Loading data <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>This is one method that can be used to load data into GenePattern.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_0" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<p><em><small><strong>NOTE:</strong> If you have not yet associated your GenomeSpace account with your GenePattern account, you will be asked to do so. If you do not yet have a GenePattern account, you can automatically generate a new account that will be associated with your GenomeSpace account.</small></em></p>
+<ol>
+<li>Open GenePattern from GenomeSpace, and navigate to the <code class="parameter">GenomeSpace</code> tab, then navigate to the folder containing the files (<code class="directory">Public</code> &gt; <code class="directory">RecipeData</code> &gt; <code class="directory">ExpressionData</code> &gt; <code class="directory">GSE10043</code>).</li>
+</ol>
+</div>
+<br>
+<div class="panel-group">
+<div class="panel panel-warning">
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title">
+<img alt="Genepattern" class="stepAvatar tag-tooltip" src="/assets/GenePattern.png" title="GenePattern"/><a data-toggle="collapse" href="#alternate_36_0">Alternative: other ways to load data into GenePattern <span class="glyphicon glyphicon-chevron-right"></span></a>
+</h4>
+<p class="text-muted">Tool: GenePattern</p>
+</div>
+<div class="panel-collapse step-container collapse" id="alternate_36_0" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<p>1. Click on the file (e.g., <code class="filename">GSE10043GPL96_RNA_FRMAGENE_4788.gct</code> and <code class="filename">Treatment.cls</code>) in GenomeSpace, then use the GenePattern context menu and click <code class="parameter">Launch on File</code>.</p>
+<p><i>OR</i></p>
+<p>2. Click on the file (e.g., <code class="filename">GSE10043GPL96_RNA_FRMAGENE_4788.gct</code> and <code class="filename">Treatment.cls</code>) in GenomeSpace, then drag it to the GenePattern icon to launch.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</br></div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_1"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Genepattern" class="stepAvatar tag-tooltip" src="/assets/GenePattern.png" title="GenePattern"/>
+<a data-toggle="toggle" href="#collapse_1" onclick="$('#collapse_1').collapse('toggle')">2: Identifying differentially expressed genes <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>We will use the <code class="subtool">ComparativeMarkerSelection</code> module to identify genes which are differentially expressed and can distinguish between two phenotypes (e.g. normal vs. mild hyperthermia). This module uses the GCT file and the CLS file.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_1" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>Change to the <code class="parameter">Modules</code> tab, and search for "ComparativeMarkerSelection". Once the module is loaded, change the following parameters:</li>
+<li><code class="parameter">input file</code>: load the GCT file, e.g., <code class="filename">GSE10043GPL96_RNA_FRMAGENE_4788.gct</code>. To do this, use the <code class="parameter">GenomeSpace</code> tab to navigate to the directory containing this file (<code class="directory">Public</code> &gt; <code class="directory">RecipeData</code> &gt; <code class="directory">ExpressionData</code> &gt; <code class="directory">GSE10043</code>), then drag the file to the input box.</li>
+<li><code class="parameter">cls file</code>: load the CLS file, e.g., <code class="filename">Treatment.cls</code>. To do this, use the <code class="parameter">GenomeSpace</code> tab to navigate to the directory containing this file (<code class="directory">Public</code> &gt; <code class="directory">RecipeData</code> &gt; <code class="directory">ExpressionData</code> &gt; <code class="directory">GSE10043</code>), then drag the file to the input box.</li>
+<li><code class="parameter">test direction</code>: Class 1</li>
+<li>Click <code class="parameter">Run</code> to run <code class="subtool">ComparativeMarkerSelection</code>. This will generate an ODF file.
+	<p><img alt="" src="/uploaded/content_r4_s2_0.png" style="width: 797px; height: 517px;"/></p>
+</li>
+</ol>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/No8kYFtBHyo?list=https://www.youtube.com/watch?v=No8kYFtBHyo&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_2"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Genepattern" class="stepAvatar tag-tooltip" src="/assets/GenePattern.png" title="GenePattern"/>
+<a data-toggle="toggle" href="#collapse_2" onclick="$('#collapse_2').collapse('toggle')">3: Viewing differentially expressed genes <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>We will use the <code class="subtool">ComparativeMarkerSelectionViewer</code> module to visualize the differentially expressed genes from the previous test. This module uses the ODF file.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_2" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>Change to the <code class="parameter">Modules</code> tab, and search for "ComparativeMarkerSelectionViewer". Once the module is loaded, change the following parameters:</li>
+<li><code class="parameter">comparative marker selection file</code>: load ODF file from the previous step, e.g., <code class="filename">GSE10043GPL96_RNA_FRMAGENE_4788.comp.marker.odf</code>. To do this, use the <code class="parameter">Jobs</code> tab to view the files from the previous step, then drag the file to the input box.</li>
+<li><code class="parameter">dataset file</code>: load the GCT file, e.g., <code class="filename">GSE10043GPL96_RNA_FRMAGENE_4788.gct</code>. To do this, use the <code class="parameter">GenomeSpace</code> tab to navigate to the directory containing your GCT file, then drag the file to the input box.</li>
+<li>Click <code class="parameter">Run</code> to run <code class="subtool">ComparativeMarkerSelectionViewer</code>. This will automatically launch the viewer. If the viewer does not automatically launch, you can click on the <code class="parameter">Open Visualizer</code> button.
+	<p><img alt="" src="/uploaded/content_r4_s3_0.png" style="width: 800px; height: 385px;"/></p>
+</li>
+</ol>
+<p><br>
+In this module you can view the distribution of genes in the dataset along with their scores. In our example, genes which are green (e.g. the left side of the graph) are up-regulated in mild hyperthermia when compared against normal conditions; genes that are yellow (e.g. the right side of the graph) are down-regulated in mild hyperthermia when compared against normal conditions. Genes which are significantly up- or down-regulated appear to the extreme edges of the graph; genes which are not significantly differentially expressed are in the center. The genes can be re-ordered by clicking on different parameters in the viewer; e.g. clicking on Score will re-order genes by significance. Clicking on a point in the plot will highlight that gene in the table below the graph.</br></p>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/600tU4-NETk?list=https://www.youtube.com/watch?v=600tU4-NETk&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_3"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Genepattern" class="stepAvatar tag-tooltip" src="/assets/GenePattern.png" title="GenePattern"/>
+<a data-toggle="toggle" href="#collapse_3" onclick="$('#collapse_3').collapse('toggle')">4: Selecting the top genes <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>We will use the <code class="subtool">ExtractComparativeMarkerResults</code> module to select the top genes that distinguish between mild hyperthermia and normal conditions. In this recipe, we will extract all genes whose score is ≥ 30.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_3" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>Change to the <code class="parameter">Modules</code> tab, and search for "ExtractComparativeMarkerResults". Once the module is loaded, change the following parameters:</li>
+<li><code class="parameter">comparative marker selection file</code>: load ODF file from the previous step, e.g., <code class="filename">GSE10043GPL96_RNA_FRMAGENE_4788.comp.marker.odf</code>. To do this, use the <code class="parameter">Jobs</code> tab to view the files from previous steps. Identify the output file from the <code class="subtool">ComparativeMarkerSelection</code> step, then drag the file to the input box.</li>
+<li><code class="parameter">dataset file</code>: load the GCT file, e.g., <code class="filename">GSE10043GPL96_RNA_FRMAGENE_4788.gct</code>. To do this, use the <code class="parameter">GenomeSpace</code> tab to navigate to the directory containing your GCT file, then drag the file to the input box.</li>
+<li><code class="parameter">statistic</code>: Score</li>
+<li><code class="parameter">min</code>: 30</li>
+<li>Click <code class="parameter">Run</code> to run <code class="subtool">ExtractComparativeMarkerResults</code>. This will generate two filtered files, a filtered GCT file, and a filtered TXT file.
+	<p><img alt="" src="/uploaded/content_r4_s4_0.png" style="width: 791px; height: 624px;"/></p>
+</li>
+</ol>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/zWhTlrUtpow?list=https://www.youtube.com/watch?v=zWhTlrUtpow&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_4"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Genepattern" class="stepAvatar tag-tooltip" src="/assets/GenePattern.png" title="GenePattern"/>
+<a data-toggle="toggle" href="#collapse_4" onclick="$('#collapse_4').collapse('toggle')">5: Saving the file to GenomeSpace <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>Save the file back to GenomeSpace using one of the following methods.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_4" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<p>Use one of the methods to save the file to GenomeSpace:</p>
+<ol>
+<li>From the job processing view, on the text file (e.g., <code class="filename">GSE10043GPL96_RNA_FRMAGENE_4788.comp.marker.filt.txt</code>), then choose <code class="parameter">Save to GenomeSpace</code>. Save the file to your working directory.</li>
+<li>Change to the <code class="parameter">Jobs</code> tab, and navigate to the output files from the previous step. Click on the file, then choose <code class="parameter">Send to GenomeSpace</code>. Save the file to your working directory.</li>
+<li><strong>OPTIONAL:</strong> close GenePattern.</li>
+<li><strong>OPTIONAL:</strong> viewing the file in GenomeSpace with the preview option reveals a list of genes whose scores are ≥ 30, i.e. they are significantly up-regulated in mild hyperthermia compared to normal conditions. Note that the gene list is only of up-regulated genes (Score ≥ 30, not of down-regulated genes (Score ≤ -30).</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_5"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Msigdb" class="stepAvatar tag-tooltip" src="/assets/MSigDB.png" title="MSigDB"/>
+<a data-toggle="toggle" href="#collapse_5" onclick="$('#collapse_5').collapse('toggle')">6: Completing functional annotation <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>In this step, we search for the biological functions and pathways that are represented in the set of reference genes which exist in CNV regions. We compute the overlap between our gene list, and pre-compiled gene sets in MSigDB. In this recipe, we will select C1, C2, and C3 to compare to our dataset.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_5" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<p><em><small><strong>NOTE:</strong> If you have not yet associated your GenomeSpace account with your MSigDB account, you will be asked to do so. If you do not yet have a MSigDB account, you can automatically generate a new account that will be associated with your GenomeSpace account.</small></em></p>
+<p>Use the following steps to compute the significant overlap between the GISTIC gene set and these gene sets:</p>
+<ol>
+<li>Load the files into MSigDB using one of the following methods:
+	<ol type="A">
+<li>Click on <code class="filename">GSE10043GPL96_RNA_FRMAGENE_4788.comp.marker.filt.txt</code> in GenomeSpace, then use the MSigDB context menu and click <code class="parameter">Launch on File</code></li>
+<li>Click on <code class="filename">GSE10043GPL96_RNA_FRMAGENE_4788.comp.marker.filt.txt</code> in GenomeSpace, then drag it to the MSigDB icon to launch</li>
+</ol>
+</li>
+<li>Select the following check-boxes:
+	<ol type="A">
+<li><code class="parameter">C1: positional gene sets</code></li>
+<li><code class="parameter">C2: curated gene sets</code></li>
+<li><code class="parameter">C3: motif gene sets</code></li>
+</ol>
+</li>
+<li>Click <code class="parameter">compute overlaps</code> to compute the overlaps between these collections and your dataset. The resulting page will list the significance of the overlaps between the collections and your dataset. The first analysis shows the number of genes from your gene list that were found in each collection, and calculates how significant the overlap is (based on <i>p-value</i>). The second result lists each gene that was identified (and correctly converted) in the gene list, and the number of datasets it overlaps with.<br>
+<em><small><strong>NOTE:</strong> Some genes may not be converted to the correct format and therefore will not be included in the calculation.</small></em></br></li>
+<li>Save your file to GenomeSpace by clicking on the GenomeSpace link.
+	<p><img alt="" src="/uploaded/content_r4_s5_0.png" style="width: 682px; height: 640px; border-width: 1px; border-style: solid;"/></p>
+</li>
+</ol>
+<p>See below the descriptions for the different gene sets in MSigDB:</p>
+<ul>
+<li><strong>C1: positional gene sets:</strong> Gene sets corresponding to each human chromosome and each cytogenetic band that has at least one gene. (Cytogenetic locations were parsed from HUGO, October 2006, and Unigene, build 197. When there were conflicts, the Unigene entry was used.) These gene sets are helpful in identifying effects related to chromosomal deletions or amplifications, dosage compensation, epigenetic silencing, and other regional effects.</li>
+<li><strong>C2: curated gene sets:</strong> Gene sets collected from various sources such as online pathway databases, publications in PubMed, and knowledge of domain experts. The gene set page for each gene set lists its source.</li>
+<li><strong>C3: motif gene sets:</strong> Gene sets that contain genes that share a cis-regulatory motif that is conserved across the human, mouse, rat, and dog genomes. The motifs are catalogued (Xie et al. 2005) and represent known or likely regulatory elements in promoters and 3'-UTRs. These gene sets make it possible to link changes in a microarray experiment to a conserved, putative cis-regulatory element.</li>
+</ul>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/YxAvR3tl4Ro?list=https://www.youtube.com/watch?v=YxAvR3tl4Ro&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="recipeInterpSection">
+<section id="results"></section>
+<h3 class="divider">Results Interpretation</h3>
+<div class="responsive-content" id="recipeInterpText">
+<p>This is an example interpretation of the results from this recipe. First, we identify genes which become significantly up-regulated during mild hyperthermia, using GenePattern, resulting in a short list of genes. Next, we were interested in knowing what, if any, functional annotation these genes had - are there specific gene functions which become up-regulate in mild hyperthermia? Are the genes in this condition connected functionally?<br>
+We used MSigDB to probe our dataset for functional annotation. In this case, we used only three collections: C1, C2 and C3. In this example we are most interested in knowing whether our genes are related to chromosomal deletions or amplifications (C1: positional gene set), whether our genes have functions that are reviewed in the literature (C2: curated gene set), and whether our genes share any cis-regulatory motifs (C3: motif gene set).</br></p>
+<p>Our first result lists the gene set name and description, the number of our genes which overlap with the gene set, and measures of significance (p-values and q-values). For example, we see that 6 genes out of the 24 we submitted to MSigDB fall into the "BUYTAERT_PHOTODYNAMIC_THERAPY_STRESS_DS_DN" category, which has 637 genes total. This enrichment has a p-value = 5.75e-7. This suggests that genes which become up-regulated during mild hyperthermia are also down-regulated in bladder cancer cells in response to photodynamic therapy stress. This is just one example of a possible interpretation of these results.</p>
+<p><img alt="" src="/uploaded/content_r4_s5_1.png"/></p>
+<p>Our second result lists each gene by ID and Symbol, then highlights which of the top categories it is in. For example, lysosomal trafficking regulator (LYST) overlaps with 1 category: ENK_UV_RESPONSE_KERTINOCYTE_DN. If we examine this category, we find that LYST becomes down-regulated in keratinocytes following UVB irradiation.</p>
+<p><img alt="" src="/uploaded/content_r4_s5_2.png" style="width: 800px; height: 596px;"/></p>
+<p>These results suggest that our gene list is enriched for specific functions, which may be associated with the mild hyperthermia condition. However, the results in this example are not necessarily significant and are only a simple representation of possible results.</p>
+</div>
+</div>
+<hr/>
+<div class="panel-group" id="comments">
+<div class="panel panel-default">
+<div class="panel-heading">
+<h4 class="panel-title"><a data-toggle="collapse" href="#comments_list">Comments (0)</a> <span class="glyphicon glyphicon-chevron-down toggle-glyph"></span></h4>
+</div>
+<div class="panel-collapse collapse in" id="comments_list">
+<div class="panel-body">
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<h4 class="panel-title">Submit a Comment</h4>
+</div>
+<div class="panel-body">
+<form accept-charset="UTF-8" action="/users/sign_in" class="form" id="new_user" method="post" role="form"><div style="display:none"><input name="utf8" type="hidden" value="✓"/><input name="authenticity_token" type="hidden" value="osgavLsed7ccUUErWykQgBoJiYGonzrlwMGNYfCheAc="/></div>
+<input id="user_identity_url" name="user[identity_url]" type="hidden" value="https://identity.genomespace.org/identityServer/xrd.jsp"/>
+<input class="btn btn-sm btn-success" name="commit" type="submit" value="Sign in using GenomeSpace"/>
+</form> </div>
+</div>
+</div>
+<script>
+//<![CDATA[
+
+
+
+                $('.responsive-content img').addClass('img-responsive').css({"height" : "", "width" : ""});
+				$('[data-toggle="popover"]').popover({trigger: "hover", placement: "top"});
+
+				$("#show-all").click(function() {
+					$(".step-container").collapse("show");
+
+				});
+
+				$("#hide-all").click(function() {
+					$(".step-container").collapse("hide");
+
+				});
+
+                 $('.tag-tooltip').tooltip();
+
+
+
+//]]>
+</script> </div>
+<div class="col-md-2">
+<div class="bs-docs-sidebar hidden-print gp-side-menu" role="complementary">
+<ul class="nav bs-docs-sidenav" data-spy="affix">
+<li><a href="#summary">Summary</a></li>
+<li><a href="#inputs">Inputs</a></li>
+<li id="recipeOutputNav"><a href="#outputs">Outputs</a></li>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#steps">Steps</a>
+<ul class="nav">
+<li><a class="step-anchor" href="#step_0">Loading data</a></li>
+<li><a class="step-anchor" href="#step_1">Identifying differentially expressed genes</a></li>
+<li><a class="step-anchor" href="#step_2">Viewing differentially expressed genes</a></li>
+<li><a class="step-anchor" href="#step_3">Selecting the top genes</a></li>
+<li><a class="step-anchor" href="#step_4">Saving the file to GenomeSpace</a></li>
+<li><a class="step-anchor" href="#step_5">Completing functional annotation</a></li>
+</ul>
+</li>
+<li id="recipeInterpNav"><a href="#results">Results Interpretation</a></li>
+<!-- <li><a href="#comments">Comments</a></li> -->
+<!-- <li><a href="#history">History</a></li> -->
+<li><a href="javascript:void(0);" id="scroll-top">Back to the Top</a></li>
+</ul>
+</div>
+<script>
+//<![CDATA[
+
+				$('.step-anchor').click(function() {
+					var step = $(this).attr('href').split('_')[1];
+					$('#collapse_' + step).collapse("show");
+				});
+
+//]]>
+</script> </div>
+</div>
+</div>
+<script>
+//<![CDATA[
+
+     if ($("#recipeOutputText").html().trim().length == 0){
+       $("#recipeOutputSection").hide();
+       $("#recipeOutputNav").hide();
+     }
+      if ($("#recipeInterpText").html().trim().length == 0){
+            $("#recipeInterpSection").hide();
+              $("#recipeInterpNav").hide();
+      }
+
+
+//]]>
+</script> <div class="container" id="history">
+<h1>History</h1>
+<ul>
+<li>Saved <b>over 3 years ago</b>
+                                                        on 03/07/2017 19:59:08 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/8?lastVersion=true&amp;versionIndex=5" target="_oldRecipe" title="View this version in a new window">View this version</a><br>
+<div>
+</div>
+</br></li>
+<li>Saved <b>over 3 years ago</b>
+                                                        on 03/07/2017 19:54:55 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/8?lastVersion=true&amp;versionIndex=4" target="_oldRecipe" title="View this version in a new window">View this version</a><br>
+<div>
+</div>
+</br></li>
+<li>Saved <b>over 3 years ago</b>
+                                                        on 03/07/2017 19:48:02 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/8?lastVersion=true&amp;versionIndex=3" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>over 3 years ago</b>
+                                                        on 03/07/2017 19:21:24 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/8?lastVersion=true&amp;versionIndex=2" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>almost 4 years ago</b>
+                                                        on 11/09/2016 20:25:57 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/8?lastVersion=true&amp;versionIndex=1" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>almost 4 years ago</b>
+                                                        on 10/04/2016 00:07:36 UTC by <b>asp006</b>.
+                                                        <a href="/view/8?lastVersion=true&amp;versionIndex=0" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+</ul>
+</div>
+<div class="container-fluid footer gs-recipe-footer">
+<p class="copy-right-block">Copyright ©2016 The Regents of the University of California and The Broad Institute of MIT &amp; Harvard</p>
+</div>
+</body>
+</html>

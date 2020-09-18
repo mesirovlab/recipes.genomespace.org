@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>GenomeSpace Recipe: Identify essential genes and associated subnetworks from Genome-Scale CRISPR-Cas9 knockout screens</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link href="/assets/docs.min.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/featured_article.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/pages.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/recipes.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/site.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/tags.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/jquery-ui/theme.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/jquery-ui/core.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/application.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/dataTables/bootstrap/3/jquery.dataTables.bootstrap.css?body=1" media="all" rel="stylesheet"/>
+<script src="/assets/jquery.js?body=1"></script>
+<script src="/assets/jquery_ujs.js?body=1"></script>
+<script src="/assets/jquery-ui/core.js?body=1"></script>
+<script src="/assets/jquery-ui/widget.js?body=1"></script>
+<script src="/assets/jquery-ui/position.js?body=1"></script>
+<script src="/assets/jquery-ui/menu.js?body=1"></script>
+<script src="/assets/jquery-ui/autocomplete.js?body=1"></script>
+<script src="/assets/jquery-ui/mouse.js?body=1"></script>
+<script src="/assets/jquery-ui/sortable.js?body=1"></script>
+<script src="/assets/bootstrap/affix.js?body=1"></script>
+<script src="/assets/bootstrap/alert.js?body=1"></script>
+<script src="/assets/bootstrap/button.js?body=1"></script>
+<script src="/assets/bootstrap/carousel.js?body=1"></script>
+<script src="/assets/bootstrap/collapse.js?body=1"></script>
+<script src="/assets/bootstrap/dropdown.js?body=1"></script>
+<script src="/assets/bootstrap/tab.js?body=1"></script>
+<script src="/assets/bootstrap/transition.js?body=1"></script>
+<script src="/assets/bootstrap/scrollspy.js?body=1"></script>
+<script src="/assets/bootstrap/modal.js?body=1"></script>
+<script src="/assets/bootstrap/tooltip.js?body=1"></script>
+<script src="/assets/bootstrap/popover.js?body=1"></script>
+<script src="/assets/bootstrap-sprockets.js?body=1"></script>
+<script src="/assets/ckeditor/init.js?body=1"></script>
+<script src="/assets/ckeditor/ckeditor.js?body=1"></script>
+<script src="/assets/jquery_nested_form.js?body=1"></script>
+<script src="/assets/dataTables/jquery.dataTables.js?body=1"></script>
+<script src="/assets/dataTables/bootstrap/3/jquery.dataTables.bootstrap.js?body=1"></script>
+<script src="/assets/autocomplete-rails.js?body=1"></script>
+<script src="/assets/spin.min.js?body=1"></script>
+<script src="/assets/docs.min.js?body=1"></script>
+<script src="/assets/jquery.hoverIntent.minified.js?body=1"></script>
+<script src="/assets/ckeditor/config.js?body=1"></script>
+<script src="/assets/featured_article.js?body=1"></script>
+<script src="/assets/pages.js?body=1"></script>
+<script src="/assets/recipes.js?body=1"></script>
+<script src="/assets/site.js?body=1"></script>
+<script src="/assets/tags.js?body=1"></script>
+<script src="/assets/application.js?body=1"></script>
+<meta content="authenticity_token" name="csrf-param"/>
+<meta content="vfdOzyTm+hw7aZ/ZfTnK4JTR6Nxu1DUqpBnJUaZLHk8=" name="csrf-token"/>
+<link href="https://fonts.googleapis.com/css?family=Wire+One" rel="stylesheet" type="text/css"/>
+<link href="https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:300" rel="stylesheet" type="text/css"/>
+<link href="/assets/favicon.ico" rel="shortcut icon">
+<script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-74623322-1', 'auto');
+        ga('send', 'pageview');
+       // ga('set', 'userId', {{"anonymous"}}); // Set the user ID using signed-in user_id.
+        ga('set', 'userId', 'anonymous'); // Set the user ID using signed-in user_id.
+
+    </script>
+</link></head>
+<body onload="tellParentWindowMySize()">
+<div id="nav_page_wrapper">
+<div id="logo"><a href="http://www.genomespace.org/"><img alt="Gslogo" src="/assets/gslogo.png"/></a></div>
+<div class="clickable" id="login_menu">
+<form accept-charset="UTF-8" action="/users/sign_in" class="new_user" id="gs-login" method="post"><div style="display:none"><input name="utf8" type="hidden" value="✓"/><input name="authenticity_token" type="hidden" value="vfdOzyTm+hw7aZ/ZfTnK4JTR6Nxu1DUqpBnJUaZLHk8="/></div>
+<input id="user_identity_url" name="user[identity_url]" type="hidden" value="https://identity.genomespace.org/identityServer/xrd.jsp"/>
+<a onclick="document.getElementById('gs-login').submit(); return false;">Login<span class="glyphicon glyphicon-chevron-right"></span></a>
+</form></div>
+<ul id="nav">
+<li class="dropdown">
+<a href="/"><span class="glyphicon glyphicon-home"></span> GenomeSpace Recipes</a>
+</li>
+<!-- <li id="recipe_link"><a href="/recipes"><span class="gparc-nav-icon glyphicon glyphicon-list"></span> My Recipes</a></li> -->
+<!-- links to main genomespace.org -->
+<li id="gsdotorg"><a href="http://www.genomespace.org/"><img alt="Gslogo" height="24px" src="/assets/official_logo.png"/>GenomeSpace.org</a><ul>
+<li id="what-is-genomespace"><a href="http://www.genomespace.org/what-is-genomespace">What is GenomeSpace?</a>
+<li id="tools"><a href="http://www.genomespace.org/support/tools">Tools</a>
+</li>
+<li id="recipes"><a href="http://recipes.genomespace.org/">Recipes</a></li>
+<li id="documentation"><a href="http://www.genomespace.org/documentation">Documentation</a>
+<ul>
+<li><a href="http://www.genomespace.org/support/guides/user-guide">User Guide</a>
+<p>Read the detailed guide to the user interface</p>
+</li>
+<li><a href="http://www.genomespace.org/support/guides/tool-guide">Tool Guide</a>
+<p>Learn how to access GenomeSpace functionality for each Tool</p>
+</li>
+<li><a href="http://www.genomespace.org/faq">FAQ</a>
+<p>See answers to frequently asked questions</p>
+</li>
+<li><a href="http://www.genomespace.org/presentations-and-videos">Presentations and Videos</a>
+<p>Access talks by the GenomeSpace community</p>
+</li>
+<li><a href="http://www.genomespace.org/support/guides/end-to-end-analyses">End-to-End Analyses</a>
+<p>Provides description for end-to-end analyses.</p>
+</li>
+</ul>
+</li>
+<li id="developers"><a href="http://www.genomespace.org/for-developers">Developers</a>
+<ul>
+<li><a href="http://www.genomespace.org/what-can-genomespace-do-for-tool-developers">What Can GenomeSpace Do For Tool Developers?</a>
+<p></p>
+</li>
+<li><a href="http://www.genomespace.org/adopters">Technical Documentation</a>
+<p></p>
+</li>
+<li><a href="http://www.genomespace.org/source-code">Source Code and Distributions</a>
+<p></p>
+</li>
+<li><a href="http://www.genomespace.org/developer-support-and-feedback">Developer Support and Feedback</a>
+<p></p>
+</li>
+</ul>
+</li>
+<li id="support"><a href="http://www.genomespace.org/support">Support</a>
+</li>
+<li id="about"><a href="http://www.genomespace.org/about">About</a>
+</li>
+</li></ul></li>
+<!-- end of links to main GenomeSpace.org -->
+<li class="search">
+<div id="search_box">
+<form accept-charset="UTF-8" action="/search" class="form" method="get" role="form"><div style="display:none"><input name="utf8" type="hidden" value="✓"/></div>
+<div style="margin:0;padding:0;display:inline">
+<input class="search" id="search" name="search" type="text"/>
+</div>
+<input class="searchBtn" type="submit"/>
+</form> </div>
+</li>
+</ul>
+</div>
+<div class="container fluid gs-recipe-">
+<div class="row">
+<div class="col-md-10">
+<table><tr><td><img alt="Mageck title image" class="recipeAvatar" src="/system/recipes/avatars/000/000/075/original/mageck-title-image.png?1508799783"/></td><td>
+<h3>Identify essential genes and associated subnetworks from Genome-Scale CRISPR-Cas9 knockout screens
+                        </h3>
+</td></tr></table>
+<p class="text-muted">Added by forrestkim on 2017.05.25 <span class="official"><img alt="Official logo" data-content="Offical GenomeSpace Recipe" data-toggle="popover" src="/assets/official_logo.png"/></span>
+<br/>
+            Last updated on about 2 years ago.
+            </p>
+<div class="row">
+<div class="col-md-8">
+<p>
+<a class="btn btn-default btn-xs tag yellow" >sgRNAs</a>
+<a class="btn btn-default btn-xs tag yellow" >mouse</a>
+<a class="btn btn-default btn-xs tag yellow" >processing</a>
+<a class="btn btn-default btn-xs tag yellow" >CRISPR</a>
+<a class="btn btn-default btn-xs tag red" >network analysis</a>
+</p>
+</div>
+<div class="col-md-2 voting">
+<p class="text-success"><span class="glyphicon glyphicon-thumbs-up"></span> 0</p>
+</div>
+<div class="col-md-2 voting">
+<p class="text-danger"><span class="glyphicon glyphicon-thumbs-down"></span> 0</p>
+</div>
+</div>
+<hr/>
+<section id="summary"></section>
+<h3 class="divider">Summary</h3>
+<div class="responsive-content">
+<p><strong>What genes are essential to a cell’s survival in a specific environment?</strong></p>
+<p>This recipe provides a way to process the results of genome-wide CRISPR-Cas9 knockout screens. In these screens, single guide RNAs (sgRNAs) are designed to bind to and inhibit specific target DNA sequences in genes. Multiple sgRNAs may target the same gene to increase knockout efficiency. In positive screens, essential genes are identified through the sequencing of surviving cells post-selection. The loss of these ‘winning’ genes create cells that are resistant to the selective pressure. In negative screens, essential genes are identified by measuring which genes are lower in abundance post selection. These screens require a non-selected control, which is used to find which genes are essential to survival  under the given selective pressures (<a href="http://onlinelibrary.wiley.com/doi/10.1111/febs.13770/full">Miles <em>et al.</em>, 2016</a>). Since a large number of sgRNAs can be introduced in a single screen, many genes can be tested for a selection criteria. However, there are many factors to consider in processing of sequenced reads; often multiple sgRNAs in a library target the same gene but with different specificities and efficiencies, and read count distributions vary depending on library and study designs. Additionally, positive selection screens often result in relatively few sgRNAs that dominate the total sequenced reads. The MAGeCK (<a href="https://www.ncbi.nlm.nih.gov/pubmed/25476604">Li <em>et al.</em>, 2014</a>) method was specifically developed for CRISPR screen analyses with these conditions in mind.</p>
+<p><img alt="" src="/ckeditor_assets/pictures/496/content_workflow.png" style="height: 400px; float: right; width: 533px;"/></p>
+<div>
+<p><strong>How can we find the molecular mechanism responsible for resistance?</strong></p>
+<p>By looking at how the hits in the screen aggregate on an interaction network, we can get an idea of the mechanisms that are essential for the organism to survive an environmental challenge.  The network neighborhood that contains a high concentration of essential genes is strongly implicated as the molecular mechanism by which an organism handles the challenge.</p>
+<p>We can find the network neighborhood that is enriched for the screen hits through an algorithm called network propagation (Carlin et al., in press) that is implemented as a feature of the popular network analysis program Cytoscape.  This algorithm will find the closely clustered hits and their network neighbors to build a network diagram of the resistance mechanism.  We can then use GeneMANIA plugin to find enriched terms that easily summarize the biological terms that are enriched in the diagram.</p>
+<p><strong>What is Model-based Analysis of Genome-wide CRIPSR/Cas9 Knockout (MAGeCK)?</strong></p>
+<p>Model-based Analysis of Genome-wide CRIPSR/Cas9 Knockout (MAGeCK) is an algorithm for identifying both positively and negatively selected sgRNAs and genes from genome-scale CRIPSR/Cas9 knockout screens. The MAGeCK method can be summarized by the following steps:</p>
+<p>1. sgRNA read counts are median-ratio normalized.</p>
+<p>2. Mean-variance modeling is then used to model each replicate. The statistical significance of each sgRNA is calculated using the learned mean-variance model.</p>
+<p>3. Essential genes are determined by looking for genes with consistently highly significant sgRNAs using robust rank aggregation.</p>
+<p><strong>Use Case:</strong> MAGeCK enables robust identification of essential genes from genome-scale CRISPR/Cas9 knockout screens (<a href="https://www.ncbi.nlm.nih.gov/pubmed/25476604">Li <em>et al. 2014</em></a>).</p>
+</div>
+</div>
+<section id="inputs"></section>
+<h3 class="divider">Inputs</h3>
+<div class="responsive-content">
+<p>For this recipe, we will need two datasets, the experimental screen dataset and a control screen dataset, as well as a sgRNA library for sgRNA to gene relationship information. The sample CRISPR/Cas9 knockout screen treatment, control, and sgRNA library used in this recipe are from the paper "Genome-wide recessive genetic screeening in mammalian cells with a lentiviral CRISPR-guide RNA library" (<a href="https://www.ncbi.nlm.nih.gov/pubmed/24535568">Koike-Yusa <em>et al. 2014</em></a>). These datasets can be downloaded from the following GenomeSpace Public folders:</p>
+<p><strong>Treatment dataset:</strong></p>
+<p><code class="directory">Public</code> &gt; <code class="directory">RecipeData</code> &gt; <code class="directory">SequenceData</code> &gt;<font face="monospace"> <code class="directory">MAGeCK</code></font> &gt; <strong><code class="filename"><a href="#" target="_blank">ERR376999.fastq.gz</a></code></strong>: This file contains sequence data of the Cas9-expressing mouse ESCs after they were transfected with the targeted sgRNA expression vectors. The cell was then treated with alpha-toxin for selection for 2 days. The surviving cells were pooled and genomic DNA extracted for PCR and sequencing.</p>
+<p><strong>Control dataset:</strong></p>
+<p><code class="directory">Public</code> &gt; <code class="directory">RecipeData</code> &gt; <code class="directory">SequenceData</code> &gt;<font face="monospace"> <code class="directory">MAGeCK</code></font> &gt; <strong><code class="filename"><a href="#" target="_blank">ERR376998.fastq.gz</a></code></strong>: This file contains sequence data of the Cas9-expressing mouse ESCs after they were transfected with the pBluescript (control) vector. The cells were grown, pooled, and genomic DNA extracted similar  to the treated cells for sequencing.</p>
+<p><strong>sgRNA library:</strong></p>
+<p><code class="directory">Public</code> &gt; <code class="directory">RecipeData</code> &gt; <code class="directory">SequenceData</code> &gt; <code class="directory">MAGeCK</code> &gt; <strong><code class="filename"><a href="https://sourceforge.net/projects/mageck/files/libraries/yusa_library.csv.zip/download" target="_blank">yusa_library.csv</a></code></strong>: This file contains the sgRNAs and their corresponding target sequences.</p>
+<p><strong>NCI Pathway Interaction Database (in Cytoscape):</strong></p>
+<p><code class="directory">NDEx</code> &gt; <strong><code class="filename"><a href="http://www.ndexbio.org/#/network/c0e70804-d848-11e6-86b1-0ac135e8bacf">NCI Pathway Interaction Database - Diffusion Demo Copy</a></code></strong>: This file contains a network derived from the latest BioPAX3 version of the Pathway Interaction Database (PID) curated by NCI/Nature.</p>
+<p>Note: For help loading your own data into GenomeSpace, see: <strong><a href="http://genomespace.org/support/guides/loading-data/sections/upload-data-to-genomespace">"Upload Data To GenomeSpace"</a>.</strong></p>
+</div>
+<div id="recipeOutputSection">
+<section id="outputs"></section>
+<h3 class="divider">Outputs</h3>
+<div class="responsive-content" id="recipeOutputText">
+</div>
+</div>
+<section id="overview"></section>
+<h3 class="divider">Recipe steps</h3>
+<ul>
+<li><strong>GenePattern</strong></li>
+<ol start="1">
+<li>Loading Data into GenePattern</li>
+<li>Determining and Preprocessing Read Counts</li>
+<li>Identifying Significant sgRNAs and Genes </li>
+</ol>
+</ul>
+<ul>
+<li><strong>Cytoscape 3</strong></li>
+<ol start="4">
+<li>Loading an Interaction Network</li>
+<li>Importing Essential Gene List to Network</li>
+<li> Discovering Interactions with Network Diffusion</li>
+<li>Functionally Annotating Subnetwork(s) in Most Related Genes</li>
+</ol>
+</ul>
+<div class="row">
+<div class="col-md-6" style="text-align: right; display: inline;width: 250px !important;">
+<a class="btn btn-info" href="javascript:void(0);" id="show-all"><span class="glyphicon glyphicon-plus"></span> Expand All Steps</a>
+</div>
+<div class="col-md-6" style="display: inline;width: 250px !important;">
+<a class="btn btn-info" href="javascript:void(0);" id="hide-all"><span class="glyphicon glyphicon-minus"></span> Collapse All Steps</a>
+</div>
+</div>
+<p></p>
+<div aria-multiselectable="true" class="panel-group" id="steps" role="tablist">
+<div class="panel panel-default">
+<section id="step_0"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Genepattern" class="stepAvatar tag-tooltip" src="/assets/GenePattern.png" title="GenePattern"/>
+<a data-toggle="toggle" href="#collapse_0" onclick="$('#collapse_0').collapse('toggle')">1: Loading Data into GenePattern <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>This is one method that can be used to load data into GenePattern.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_0" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<p><em><small><strong>NOTE:</strong> If you have not yet associated your GenomeSpace account with your GenePattern account, you will be asked to do so. If you do not yet have a GenePattern account, you can automatically generate a new account that will be associated with your GenomeSpace account.</small></em></p>
+<ol>
+<li>Open GenePattern from GenomeSpace, and navigate to the <code class="parameter">GenomeSpace</code> tab, then navigate to the folder containing the files (<code class="directory">Public</code> &gt; <code class="directory">RecipeData</code> &gt; <code class="directory">SequenceData</code>).</li>
+</ol>
+</div>
+<br>
+<div class="panel-group">
+<div class="panel panel-warning">
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title">
+<img alt="Genepattern" class="stepAvatar tag-tooltip" src="/assets/GenePattern.png" title="GenePattern"/><a data-toggle="collapse" href="#alternate_193_0">Alternative: other ways to load data into GenePattern <span class="glyphicon glyphicon-chevron-right"></span></a>
+</h4>
+<p class="text-muted">Tool: GenePattern</p>
+</div>
+<div class="panel-collapse step-container collapse" id="alternate_193_0" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<p>Click on the file (e.g. <code class="filename">ERR376999.fastq.gz</code>) in GenomeSpace, then use the GenePattern context menu and click <code class="parameter">Launch on File</code>.</p>
+<p><i>OR</i></p>
+<p>Click on the file (e.g. <code class="filename">ERR376999.fastq.gz</code>) in GenomeSpace, then drag it to the GenePattern icon to launch.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</br></div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_1"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Genepattern" class="stepAvatar tag-tooltip" src="/assets/GenePattern.png" title="GenePattern"/>
+<a data-toggle="toggle" href="#collapse_1" onclick="$('#collapse_1').collapse('toggle')">2: Determining and Preprocessing Read Counts <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>In this step, we will map sequenced reads to the corresponding target sequences in the provided sgRNA library to determine read counts. Read counts are then median-normalized to adjust for the effect of library sizes and read count distributions. We will accomplish this using the <code class="subtool">MAGeCK.Count</code> module in GenePattern.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_1" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<h3>MAGeCK.Count</h3>
+<ol>
+<li>Launch GenePattern from GenomeSpace</li>
+<li>Change to the <code class="parameter">Modules</code> tab, and search for <code class="subtool">MAGeCK.Count</code>.</li>
+<li>Once the module has loaded, add the two FASTQ files (Click "Add Another Group name" to upload the second FASTQ file):
+	<ol type="A">
+<li><code class="parameter">Group name</code>: esc1, <code class="parameter">fastq file</code>: <code class="filename">ERR376999.fastq.gz</code> (found in <code class="directory">Public</code> &gt; <code class="directory">RecipeData</code> &gt; <code class="directory">SequenceData</code>)</li>
+<li><code class="parameter">Group name</code>: plasmid, <code class="parameter">fastq file</code>: <code class="filename">ERR376998.fastq.gz</code> (found in <code class="directory">Public</code> &gt; <code class="directory">RecipeData</code> &gt; <code class="directory">SequenceData</code>)</li>
+</ol>
+</li>
+<li>Change the following parameters:
+	<ol type="A">
+<li><code class="parameter">sgRNA list</code>: <code class="filename">yusa_library.csv</code> (found in <code class="directory">Public</code> &gt; <code class="directory">RecipeData</code> &gt; <code class="directory">SequenceData</code>)</li>
+<li><code class="parameter">output prefix</code>: escneg</li>
+<li><code class="parameter">trim 5 prime</code>: 23</li>
+<li><code class="parameter">normalization method</code>: median</li>
+</ol>
+</li>
+<li>Click <code class="parameter">Run</code> to run <code class="subtool">MAGeCK.Count</code>.</li>
+</ol>
+<p><img alt="" src="/ckeditor_assets/pictures/472/content_pdftojpg_me-1.jpg" style="width: 800px; height: 861px; border: 1px solid grey;"/></p>
+<h3>Save to GenomeSpace</h3>
+<ol start="6">
+<li>From the <code class="subtool">MAGeCK.Count</code> outputs in the Jobs tab, click on the text file (e.g. <code class="filename">escneg.count_normalized.txt</code>), then choose <code class="parameter">Save to GenomeSpace</code> and save the file to your desired directory.</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_2"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Genepattern" class="stepAvatar tag-tooltip" src="/assets/GenePattern.png" title="GenePattern"/>
+<a data-toggle="toggle" href="#collapse_2" onclick="$('#collapse_2').collapse('toggle')">3: Identifying Significant sgRNAs and Genes  <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>Next, we will apply the MAGeCK algorithm to the resulting count file, which ranks sgRNAs and identifies essential genes based on the rank of their corresponding sgRNAs. The plasmid dataset is the control and the embyronic stem cell dataset is the treatment. We will accomplish this using the <code class="subtool">MAGeCK.Test</code> module in GenePattern.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_2" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<h3>MAGeCK.Test</h3>
+<ol>
+<li>Change to the <code class="parameter">Modules</code> tab, and search for <code class="subtool">MAGeCK.Test</code>.</li>
+<li>Once the module has loaded, change the following parameters:
+	<ol type="A">
+<li><code class="parameter">count table</code>: <code class="filename">escneg.count_normalized.txt</code> (from <code class="subtool">MAGeCK.Count</code> job output)</li>
+<li><code class="parameter">treatment id</code>: esc1.1</li>
+<li><code class="parameter">control id</code>: plasmid.1</li>
+<li><code class="parameter">normalization method</code>: median</li>
+<li><code class="parameter">output prefix</code>: esccp</li>
+</ol>
+</li>
+<li>Click <code class="parameter">Run</code> to run <code class="subtool">MAGeCK.Test</code>.</li>
+</ol>
+<p><img alt="" src="/ckeditor_assets/pictures/473/content_screen_shot_2017-05-26_at_12_14_31_pm.png" style="width: 800px; height: 481px; border: 1px solid grey;"/></p>
+<h3>Save to GenomeSpace</h3>
+<ol start="6">
+<li>From the <code class="subtool">MAGeCK.Test</code> outputs in the Jobs tab, click on the text file (e.g. <code class="filename">esccp.gene_summary.txt</code>), hen choose <code class="parameter">Save to GenomeSpace</code> and save the file to your desired directory.</li>
+</ol>
+<p>NOTE: The results of this module can also be used with the <code class="subtool">MAGeCK Pathways.Analysis</code> to test if a pathway is enriched in one particular gene ranking using RRA</p>
+</div>
+<br>
+<div class="panel-group">
+<div class="panel panel-warning">
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title">
+<img alt="Generic tool" class="stepAvatar tag-tooltip" src="/assets/generic_tool.png" title="multiple"/><a data-toggle="collapse" href="#alternate_195_0">Alternative: other ways to identify significant sgRNAs and genes <span class="glyphicon glyphicon-chevron-right"></span></a>
+</h4>
+<p class="text-muted">Tool: multiple</p>
+</div>
+<div class="panel-collapse step-container collapse" id="alternate_195_0" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<p>"Several existing algorithms, although not specifically designed for CRISPR/Cas9 knockout screens, can be also be used to identify significantly selected sgRNAs or genes. For example, edgeR, DESeq, baySeq and NBPSeq are commonly used algorithms for differential RNA-Seq expression analysis. These algorithms are able to evaluate the statistical significance of hits in CRISPR/Cas9 knockout screens, although only at the sgRNA level. Algorithms designed to rank genes in genome-scale short interfering RNA (siRNA) or short hairpin RNA (shRNA) screens can also be used for CRISPR/ Cas9 knockout screening data, including RNAi Gene Enrichment Ranking (RIGER) and Redundant siRNA Activity (RSA). However, these methods are designed to identify essential genes mostly from oligonucleotide barcode microarray data, and a new algorithm is needed to prioritize sgRNAs, as well as gene and pathway hits from high-throughput sequencing data" (<a href="https://www.ncbi.nlm.nih.gov/pubmed/25476604">Li <em>et al.</em>, 2014</a>).</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</br></div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_3"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Cytoscape 3" class="stepAvatar tag-tooltip" src="/assets/Cytoscape 3.png" title="Cytoscape 3"/>
+<a data-toggle="toggle" href="#collapse_3" onclick="$('#collapse_3').collapse('toggle')">4: Loading an Interaction Network <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>Launch Cytoscape and load the <a href="http://www.ndexbio.org/#/network/c0e70804-d848-11e6-86b1-0ac135e8bacf" style="text-decoration-line: none;">NCI Pathway Interaction Database</a>, a highly-structured, curated collection of information of known bio-molecular interactions and key cellular processes assembled into signaling pathways.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_3" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<p><em><small><strong>NOTE:</strong> For Macintosh Users: JNLP files from the internet are labeled insecure. In order to open the JNLP, find the file in your Finder, right-click the file, and press open. This will open a window that will ask for permission to open the file. Press open to access the JNLP.</small></em></p>
+<ol>
+<li>Launch Cytoscape from GenomeSpace by clicking on the Cytoscape icon in the tool menu, prompting the download of a <code class="filename">cytoscape.jnlp</code> file. Double-click this file to launch Cytoscape.<br>
+<img src="/ckeditor_assets/pictures/497/content_screen_shot_2017-08-02_at_10_29_55_am.png" style="color: rgb(0, 0, 0); font-family: Arial; font-size: 14.6667px; white-space: pre-wrap; border: none; transform: rotate(0rad); width: 700px; height: 512px;"/></br></li>
+<li>Once Cytoscape has launched, it will prompt a start menu. Close the start menu.</li>
+<li>Once the Cytoscape 3 software has loaded, it will prompt the user to name their network. Feel free to change the network name, or leave the parameters as default. Click OK.</li>
+<li>To load the network into Cytoscape, we will use the <code class="subtool">CyNDEx</code> app. To install this, use the following steps:</li>
+<li>Navigate to <code class="parameter">Apps &gt; App Manager</code><br>
+<img src="https://lh4.googleusercontent.com/MKw_v-pVqRBmavSfiEQCJ0TogKwzdpN2vjD9MRItJzDwpJwEj7-2wJban3MBLFay63m0-0GrpARNFRfju3XeHFu8toE-L9XFGgMZuYMEhTCncl1F5F1voju4WiUrjqd1i857_w0R" style="color: rgb(68, 68, 68); font-family: Arial; font-size: 14px; text-indent: 48px; white-space: pre-wrap; border: none; transform: rotate(0rad); width: 577px; height: 52px; margin: 25px 0px;"/></br></li>
+<li>Search for <code class="parameter">CyNDEx</code>. Click on the app and click Install to install it.<br/>
+<img src="/ckeditor_assets/pictures/498/content_screen_shot_2017-08-02_at_10_35_30_am.png" style="color: rgb(68, 68, 68); font-family: Arial; font-size: 14px; white-space: pre-wrap; border: none; transform: rotate(0rad); width: 700px; height: 615px;"/></li>
+<li>Navigate to <code class="parameter">Apps &gt; NDEx &gt; Import Networks from NDEx</code><br/>
+<span id="docs-internal-guid-feaada24-aef8-8dfb-6284-7aca3d179afa"><span style="font-size: 11pt; font-family: Arial; color: rgb(0, 0, 0); background-color: transparent; vertical-align: baseline; white-space: pre-wrap;"><img src="https://lh4.googleusercontent.com/uaOQoqU_KLpTL3IFXlZQh4jpiLPcpWeQxDMO1C6i9hF74JeCdk8cyi8acdBLo_-6MAyHa2DvXJKy6K8-iFzjK4GTOkxSp4ZgrvR1E2k7Y6v8csr8Yj3ru19PQOnrJIv3DfGNihAC" style="border: none; transform: rotate(0rad); width: 435px; height: 157px; margin-top: 25px; margin-bottom: 25px;"/></span></span></li>
+<li>Search for <code class="parameter">Diffusion Demo</code>. Make sure the full network title matches.
+	<ol type="A">
+<li>Load the network into your workspace by pressing <code class="parameter">Load Network</code></li>
+<li>Then press <code class="parameter">Done Loading Network</code> to view the loaded Networkâ€‹<span id="docs-internal-guid-feaada24-aef9-1389-6615-92bc0b52852a"><span style="font-size: 11pt; font-family: Arial; color: rgb(0, 0, 0); background-color: transparent; vertical-align: baseline; white-space: pre-wrap;"><img src="/ckeditor_assets/pictures/518/content_screen_shot_2018-06-27_at_10_29_01_am.png" style="border: none; transform: rotate(0rad); width: 800px; height: 393px;"/></span></span></li>
+</ol>
+</li>
+</ol>
+</div>
+<br/>
+<div class="panel-group">
+<div class="panel panel-warning">
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title">
+<img alt="Cytoscape" class="stepAvatar tag-tooltip" src="/assets/Cytoscape.png" title="Cytoscape"/><a data-toggle="collapse" href="#alternate_201_0">Alternative: Cytoscape 3.6.0 changes <span class="glyphicon glyphicon-chevron-right"></span></a>
+</h4>
+<p class="text-muted">Tool: Cytoscape</p>
+</div>
+<div class="panel-collapse step-container collapse" id="alternate_201_0" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<p>If you are using Cytoscape version 3.6.0+, you will have to use the newer version of the NDEx App, <span style="font-family: monospace;">CyNDEx-2</span>, to import the NCI Pathway Interaction Database. Once you have installed <span style="font-family: monospace;">CyNDEx-2</span>, you can search for and download the network by selecting the icon and typing "final revision" in the search bar (shown below).</p>
+<p><img alt="" src="/ckeditor_assets/pictures/519/content_screen_shot_2018-06-27_at_10_40_47_am.png" style="width: 800px; height: 545px;"/><img alt="" src="/ckeditor_assets/pictures/520/content_screen_shot_2018-06-27_at_10_40_55_am.png" style="width: 800px; height: 584px;"/></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_4"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Cytoscape 3" class="stepAvatar tag-tooltip" src="/assets/Cytoscape 3.png" title="Cytoscape 3"/>
+<a data-toggle="toggle" href="#collapse_4" onclick="$('#collapse_4').collapse('toggle')">5: Importing Essential Gene List to Network <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>Import the list of essential genes discovered with the MAGeCK algorithm into Cytoscape for network analysis.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_4" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>Select the <code class="parameter">Import Table from File</code> button to load our gene summary output (<code class="filename">esccp.gene_summary.txt</code>) from Step 3.<br>
+<img src="/ckeditor_assets/pictures/521/content_screen_shot_2018-06-27_at_10_48_14_am.png" style="height: 416px; margin-top: 25px; margin-bottom: 25px; width: 800px;"/><img alt="" src="/ckeditor_assets/pictures/522/content_screen_shot_2018-06-27_at_10_50_52_am.png" style="width: 572px; height: 483px;"/></br></li>
+<li>Select <code class="parameter">To a Network Collection</code> for the <code class="parameter">Where to Import Table Data</code> parameter. Make sure the Network Collection indicated is the <code class="parameter">NCI Pathway Interaction Database - Diffusion Demo Copy</code>. Use the default parameters for the remaining options.<br/>
+<img src="/ckeditor_assets/pictures/523/content_screen_shot_2018-06-27_at_10_51_23_am.png" style="height: 714px; width: 800px;"/></li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_5"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Cytoscape 3" class="stepAvatar tag-tooltip" src="/assets/Cytoscape 3.png" title="Cytoscape 3"/>
+<a data-toggle="toggle" href="#collapse_5" onclick="$('#collapse_5').collapse('toggle')">6:  Discovering Interactions with Network Diffusion <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>Network diffusion is a technique for discovering genes and genetic modules that a list of initial genes may interact with. Here we use the technique with the <code class="subtool">Diffusion</code> app to understand associated networks and pathways from the list of essential genes from our MAGeCK analysis.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_5" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>To perform network diffusion, we will use the <code class="subtool">Diffusion app </code>(NOTE: for Cytospace version 3.6.0, the <span style="font-family: monospace;">Diffusion app</span> is already installed). To install this, use the following steps:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li>Navigate to <code class="parameter">Apps &gt; App Manager</code><br>
+<img src="https://lh4.googleusercontent.com/MKw_v-pVqRBmavSfiEQCJ0TogKwzdpN2vjD9MRItJzDwpJwEj7-2wJban3MBLFay63m0-0GrpARNFRfju3XeHFu8toE-L9XFGgMZuYMEhTCncl1F5F1voju4WiUrjqd1i857_w0R" style="border: none; transform: rotate(0rad); width: 577px; height: 52px; margin-top: 25px; margin-bottom: 25px;"/></br></li>
+<li>Search for <code class="parameter">Diffusion</code>. Select the app and click <code class="parameter">Install</code> to install it.<br/>
+<img src="/ckeditor_assets/pictures/503/content_screen_shot_2017-09-07_at_10_33_39_am.png" style="border: none; transform: rotate(0rad); width: 800px; height: 703px;"/></li>
+</ol>
+</li>
+<li>Select statistically significant essential genes. Go to the <code class="parameter">Select</code> tab under the Control Panel.
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li>Press on the plus icon (+) and select <code class="parameter">Column Filter</code></li>
+<li>Choose the <span style="font-family: monospace;">Node: neg|p-value</span></li>
+<li>Set <code class="parameter">neg|p-value</code>: between 0 and 0.05 inclusive</li>
+</ol>
+<br/>
+<img alt="" src="/ckeditor_assets/pictures/512/content_screen_shot_2017-09-07_at_11_11_40_am.png" style="width: 305px; height: 200px; float: left;"/><img alt="" src="/ckeditor_assets/pictures/513/content_screen_shot_2017-09-07_at_11_12_53_am.png" style="width: 281px; height: 200px; float: left;"/><img alt="" src="/ckeditor_assets/pictures/514/content_screen_shot_2017-09-07_at_11_13_28_am.png" style="width: 277px; height: 200px;"/></li>
+<br/>
+<li>Navigate to <code class="parameter">Tools -&gt; Diffuse -&gt; Selected Nodes</code><br/>
+<img src="https://lh6.googleusercontent.com/jTIju3alkCkOIEWTycLCuko3Dv-9DDjVueV3J-Mk_D5aE0II-XkCJ9GFfr2pmtcYoj7Szd7OuFC_7avtScu_gon4x2Vov7wKvPmqlST1DZUIfZ_1R1wShTBjF3EDvGK0RT6mm5YH" style="border: none; transform: rotate(0rad); width: 700px; height: 154px; margin-top: 25px; margin-bottom: 25px;"/></li>
+<li>Select the 200 most related genes.
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li><code class="parameter">Current Rank</code>: 200. Press <code class="parameter">Set</code>.</li>
+<li>Press <code class="parameter">Create</code> to create a new network from the selection.</li>
+</ol>
+<img src="/ckeditor_assets/pictures/510/content_screen_shot_2017-08-02_at_10_59_52_am.png" style="border: none; transform: rotate(0rad); width: 289px; height: 265px; margin-top: 25px; margin-bottom: 25px;"/></li>
+<li>Change the aesthetics to better visualize network interactions.
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li>Navigate to <code class="parameter">Layout -&gt; yFiles Layouts -&gt; Organic</code> (Note: Cytoscape 3.6.0 uses a new yLayout App. To use them, download the yFiles Layouts through the Cytoscape portal and select "yFiles Organic Layout" in the Layout dropdown menu)</li>
+<li>Apply visual style to highlight original input nodes. For the <code class="parameter">Fill color</code> column <code class="parameter">Map.</code>:
+		<ol start="1" style="list-style-type: lower-roman;">
+<li><code class="parameter">Column</code>: diffusion_input</li>
+<li><code class="parameter">Mapping type</code>: discrete mapping</li>
+<li><code class="parameter">Color</code>: yellow</li>
+</ol>
+</li>
+</ol>
+<br/>
+<img src="/ckeditor_assets/pictures/515/content_screen_shot_2017-09-07_at_2_25_18_pm.png" style="border: none; transform: rotate(0rad); height: 551px; width: 409px;"/></li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_6"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Cytoscape 3" class="stepAvatar tag-tooltip" src="/assets/Cytoscape 3.png" title="Cytoscape 3"/>
+<a data-toggle="toggle" href="#collapse_6" onclick="$('#collapse_6').collapse('toggle')">7: Functionally Annotating Subnetwork(s) in Most Related Genes <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>We will use the <code class="subtool">GeneMANIA</code> plugin to find the network of interacting genes associated with our gene list. <code class="subtool">GeneMANIA</code> can find genes related to our set of input genes by using a very large set of functional association data, which includes protein and genetic interactions, pathways, co-expression, co-localization and protein domain similarity.<code class="subtool">GeneMANIA</code> can find new members of a pathway or complex, find additional genes that may have been missed in a screen, or find new genes with a specific function, such as protein kinases.</p>
+<p><br>
+<em><strong>NOTE:</strong> Resulting subnetworks should look similar to the following, but the shape of the networks may differ.</em></br></p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_6" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>To annotate our networks, we will use the <code class="subtool">GeneMANIA</code> app. To install this, use the following steps:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li>Navigate to <code class="parameter">Apps &gt; App Manager</code><br/>
+<img src="https://lh4.googleusercontent.com/MKw_v-pVqRBmavSfiEQCJ0TogKwzdpN2vjD9MRItJzDwpJwEj7-2wJban3MBLFay63m0-0GrpARNFRfju3XeHFu8toE-L9XFGgMZuYMEhTCncl1F5F1voju4WiUrjqd1i857_w0R" style="height: 52px; margin-top: 25px; margin-bottom: 25px;"/></li>
+<li>Search for <code class="subtool">GeneMANIA</code>. Click on the app and click <code class="parameter">Install</code> to install it.<br/>
+<img height="528" src="https://lh4.googleusercontent.com/8hZrSA8YCCvYlpWbrOwz5ge9HHnb0ZHdMWcHIRLG-qw8TvAps6U8-OyImvVb09rs_eTDy20CuNJVbYXgxHpA23J8rUVruLry_Y1sQKH3Cww1__9zeHlBrTH4egO_S3XvjSG4MhU_"/></li>
+</ol>
+</li>
+<li>Annotate networks with GeneMANIA.
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li>Select a network of genes by holding down <kbd>Shift</kbd> while drag selecting the to highlight the network of interest. <img src="https://lh4.googleusercontent.com/qoFEyHtA3a2oC12u34yestByCakXq51Pf9tdqOJS2OvwW0wnd9EeZEII59fA3tlZXTNGgDozf1X49hwohsihB34s-h7InOzGxwQZQZ7NW8k9fS_8YpJWAQgb07bXzkLj3bxRa_US" style="height: 690px; width: 1200px;"/></li>
+<li>Highlight all rows in the <code class="parameter">Node Table</code>. Copy the selected gene names (Windows: <kbd>Ctrl + C</kbd>, Mac: <kbd>Command + C</kbd>).</li>
+<li>Navigate to <code class="parameter">Apps -&gt; GeneMANIA -&gt; Search...</code><br/>
+<img src="https://lh3.googleusercontent.com/nFS2mLwsd4Nk9VOEg_GbeM0ntUoEq7vsCyse4RfEi2CqW0bPwTZf5H8J5aWZ9ie-SZI3CLLyDRjPQK9IZzND3IFJ_KPED0dDloKJ86rvKmeHtPvjOUcQXNmt7BaNqVR51w4tLX4N" style="margin-top: 25px; margin-bottom: 25px; height: 151px; width: 300px;"/></li>
+<li>Paste the selected genes from the <code class="parameter">Node Table</code> by pressing the keyboard shortcut for paste (Windows: <kbd>Ctrl + V</kbd>, Mac: <kbd>Command + V</kbd>).</li>
+<li>Make sure <code class="parameter">M. musculus (mouse)</code> is selected under <code class="parameter">Organism</code><br/>
+<img src="https://lh3.googleusercontent.com/ch_kIB4ZDDGEtNa-15hbx2_mbOvUl9tV81pS8SXqnxJKixLaPaUQJcaHvzr6dSd-Eegzxt2KPk0FMrMa8i8TqectAYucPm8maJ_ovvrpXA1Y4che2V1i42dPt6vDLKzvQWaqipEC" style="height: 615px; width: 750px;"/></li>
+<li>Start the analysis by pressing <code class="parameter">Start.</code></li>
+</ol>
+</li>
+</ol>
+<p>As a result, we have a network with associated interactions and functions that can be further explored in the <code class="parameter">Result Panel.</code></p>
+<p><img src="https://lh5.googleusercontent.com/WBTucSUhDYKL16OCL3M8xUXadgDyBi5xeRSBB9kMFFNCP6pTC4_J7JCN3LTT_L3NavFItSjPsxwNYMm6MU95WVI9X7u5hSJrCNq13O0cGAcwwmZzDIkR3hHD4i_zPtgUJ9zPUUFw" style="height: 506px; width: 1000px;"/></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="recipeInterpSection">
+<section id="results"></section>
+<h3 class="divider">Results Interpretation</h3>
+<div class="responsive-content" id="recipeInterpText">
+<p>Given sgRNA read counts for our treatment and control, we use the MAGeCK algorithm on GenePattern to determine essential genes, negatively selected genes needed for ESCs proliferation in the pressence of alpha toxin. Cytoscape then allows us to understand network interactions between them. We use network diffusion to discover modules that the essential genes interact with. With the resulting subnetworks, GeneMANIA provides functional annotation by searching across a large catalogue of gene sets to understand the known processes that are enriched.</p>
+<p>GeneMANIA provides a set of networks, genes, and functional annotations from its analysis that we can explore to understand. We can see that many of the top “Functions” listed are essential biological processes and include many DNA repair genes, which are essential for ESC proliferation in the pressence of alpha toxin. These results are consistent with results found in <a href="https://www.ncbi.nlm.nih.gov/pubmed/24535568">Koike-Yusa et. al. 2014</a>. </p>
+<p><span id="docs-internal-guid-feaada24-af50-1c73-820e-55eed806bd70"><span style="font-size: 11pt; font-family: Arial; color: rgb(0, 0, 0); background-color: transparent; vertical-align: baseline; white-space: pre-wrap;"><img src="https://lh3.googleusercontent.com/fKsxvwX2MJWJzEwOF5uLFPDiH1S3lkD1nK_blxC6CmaDQ-mi1uc81-PKf_RLcQCiaLYxmhRPgswYIWlI5C69xdRWFwwr5vv1AiXIQdjmBn_5hNXBPKlbdRFbR-je_xzaLw0R83IO" style="border: none; transform: rotate(0rad); width: 1000px; height: 469px;"/></span></span></p>
+</div>
+</div>
+<hr/>
+<div class="panel-group" id="comments">
+<div class="panel panel-default">
+<div class="panel-heading">
+<h4 class="panel-title"><a data-toggle="collapse" href="#comments_list">Comments (0)</a> <span class="glyphicon glyphicon-chevron-down toggle-glyph"></span></h4>
+</div>
+<div class="panel-collapse collapse in" id="comments_list">
+<div class="panel-body">
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<h4 class="panel-title">Submit a Comment</h4>
+</div>
+<div class="panel-body">
+<form accept-charset="UTF-8" action="/users/sign_in" class="form" id="new_user" method="post" role="form"><div style="display:none"><input name="utf8" type="hidden" value="✓"/><input name="authenticity_token" type="hidden" value="vfdOzyTm+hw7aZ/ZfTnK4JTR6Nxu1DUqpBnJUaZLHk8="/></div>
+<input id="user_identity_url" name="user[identity_url]" type="hidden" value="https://identity.genomespace.org/identityServer/xrd.jsp"/>
+<input class="btn btn-sm btn-success" name="commit" type="submit" value="Sign in using GenomeSpace"/>
+</form> </div>
+</div>
+</div>
+<script>
+//<![CDATA[
+
+
+
+                $('.responsive-content img').addClass('img-responsive').css({"height" : "", "width" : ""});
+				$('[data-toggle="popover"]').popover({trigger: "hover", placement: "top"});
+
+				$("#show-all").click(function() {
+					$(".step-container").collapse("show");
+
+				});
+
+				$("#hide-all").click(function() {
+					$(".step-container").collapse("hide");
+
+				});
+
+                 $('.tag-tooltip').tooltip();
+
+
+
+//]]>
+</script> </div>
+<div class="col-md-2">
+<div class="bs-docs-sidebar hidden-print gp-side-menu" role="complementary">
+<ul class="nav bs-docs-sidenav" data-spy="affix">
+<li><a href="#summary">Summary</a></li>
+<li><a href="#inputs">Inputs</a></li>
+<li id="recipeOutputNav"><a href="#outputs">Outputs</a></li>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#steps">Steps</a>
+<ul class="nav">
+<li><a class="step-anchor" href="#step_0">Loading Data into GenePattern</a></li>
+<li><a class="step-anchor" href="#step_1">Determining and Preprocessing Read Counts</a></li>
+<li><a class="step-anchor" href="#step_2">Identifying Significant sgRNAs and Genes </a></li>
+<li><a class="step-anchor" href="#step_3">Loading an Interaction Network</a></li>
+<li><a class="step-anchor" href="#step_4">Importing Essential Gene List to Network</a></li>
+<li><a class="step-anchor" href="#step_5"> Discovering Interactions with Network Diffusion</a></li>
+<li><a class="step-anchor" href="#step_6">Functionally Annotating Subnetwork(s) in Most Related Genes</a></li>
+</ul>
+</li>
+<li id="recipeInterpNav"><a href="#results">Results Interpretation</a></li>
+<!-- <li><a href="#comments">Comments</a></li> -->
+<!-- <li><a href="#history">History</a></li> -->
+<li><a href="javascript:void(0);" id="scroll-top">Back to the Top</a></li>
+</ul>
+</div>
+<script>
+//<![CDATA[
+
+				$('.step-anchor').click(function() {
+					var step = $(this).attr('href').split('_')[1];
+					$('#collapse_' + step).collapse("show");
+				});
+
+//]]>
+</script> </div>
+</div>
+</div>
+<script>
+//<![CDATA[
+
+     if ($("#recipeOutputText").html().trim().length == 0){
+       $("#recipeOutputSection").hide();
+       $("#recipeOutputNav").hide();
+     }
+      if ($("#recipeInterpText").html().trim().length == 0){
+            $("#recipeInterpSection").hide();
+              $("#recipeInterpNav").hide();
+      }
+
+
+//]]>
+</script> <div class="container" id="history">
+<h1>History</h1>
+<ul>
+<li>Saved <b>over 2 years ago</b>
+                                                        on 12/11/2017 21:19:25 UTC by <b>forrestkim</b>.
+                                                        <a href="/view/75?lastVersion=true&amp;versionIndex=62" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>over 2 years ago</b>
+                                                        on 12/11/2017 21:18:43 UTC by <b>forrestkim</b>.
+                                                        <a href="/view/75?lastVersion=true&amp;versionIndex=61" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>over 2 years ago</b>
+                                                        on 12/11/2017 21:17:35 UTC by <b>forrestkim</b>.
+                                                        <a href="/view/75?lastVersion=true&amp;versionIndex=60" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+</ul>
+</div>
+<div class="container-fluid footer gs-recipe-footer">
+<p class="copy-right-block">Copyright ©2016 The Regents of the University of California and The Broad Institute of MIT &amp; Harvard</p>
+</div>
+</body>
+</html>

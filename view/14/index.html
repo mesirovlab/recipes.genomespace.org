@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>GenomeSpace Recipe: Identify enriched biological functions in single-nucleotide polymorphisms (SNPs)</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link href="/assets/docs.min.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/featured_article.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/pages.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/recipes.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/site.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/tags.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/jquery-ui/theme.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/jquery-ui/core.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/application.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/dataTables/bootstrap/3/jquery.dataTables.bootstrap.css?body=1" media="all" rel="stylesheet"/>
+<script src="/assets/jquery.js?body=1"></script>
+<script src="/assets/jquery_ujs.js?body=1"></script>
+<script src="/assets/jquery-ui/core.js?body=1"></script>
+<script src="/assets/jquery-ui/widget.js?body=1"></script>
+<script src="/assets/jquery-ui/position.js?body=1"></script>
+<script src="/assets/jquery-ui/menu.js?body=1"></script>
+<script src="/assets/jquery-ui/autocomplete.js?body=1"></script>
+<script src="/assets/jquery-ui/mouse.js?body=1"></script>
+<script src="/assets/jquery-ui/sortable.js?body=1"></script>
+<script src="/assets/bootstrap/affix.js?body=1"></script>
+<script src="/assets/bootstrap/alert.js?body=1"></script>
+<script src="/assets/bootstrap/button.js?body=1"></script>
+<script src="/assets/bootstrap/carousel.js?body=1"></script>
+<script src="/assets/bootstrap/collapse.js?body=1"></script>
+<script src="/assets/bootstrap/dropdown.js?body=1"></script>
+<script src="/assets/bootstrap/tab.js?body=1"></script>
+<script src="/assets/bootstrap/transition.js?body=1"></script>
+<script src="/assets/bootstrap/scrollspy.js?body=1"></script>
+<script src="/assets/bootstrap/modal.js?body=1"></script>
+<script src="/assets/bootstrap/tooltip.js?body=1"></script>
+<script src="/assets/bootstrap/popover.js?body=1"></script>
+<script src="/assets/bootstrap-sprockets.js?body=1"></script>
+<script src="/assets/ckeditor/init.js?body=1"></script>
+<script src="/assets/ckeditor/ckeditor.js?body=1"></script>
+<script src="/assets/jquery_nested_form.js?body=1"></script>
+<script src="/assets/dataTables/jquery.dataTables.js?body=1"></script>
+<script src="/assets/dataTables/bootstrap/3/jquery.dataTables.bootstrap.js?body=1"></script>
+<script src="/assets/autocomplete-rails.js?body=1"></script>
+<script src="/assets/spin.min.js?body=1"></script>
+<script src="/assets/docs.min.js?body=1"></script>
+<script src="/assets/jquery.hoverIntent.minified.js?body=1"></script>
+<script src="/assets/ckeditor/config.js?body=1"></script>
+<script src="/assets/featured_article.js?body=1"></script>
+<script src="/assets/pages.js?body=1"></script>
+<script src="/assets/recipes.js?body=1"></script>
+<script src="/assets/site.js?body=1"></script>
+<script src="/assets/tags.js?body=1"></script>
+<script src="/assets/application.js?body=1"></script>
+<meta content="authenticity_token" name="csrf-param"/>
+<meta content="5z7fFS6ieHrowSwWVFxfzRtTvZYgXeNlNxhDzkX0DWg=" name="csrf-token"/>
+<link href="https://fonts.googleapis.com/css?family=Wire+One" rel="stylesheet" type="text/css"/>
+<link href="https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:300" rel="stylesheet" type="text/css"/>
+<link href="/assets/favicon.ico" rel="shortcut icon">
+<script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-74623322-1', 'auto');
+        ga('send', 'pageview');
+       // ga('set', 'userId', {{"anonymous"}}); // Set the user ID using signed-in user_id.
+        ga('set', 'userId', 'anonymous'); // Set the user ID using signed-in user_id.
+
+    </script>
+</link></head>
+<body onload="tellParentWindowMySize()">
+<div id="nav_page_wrapper">
+<div id="logo"><a href="http://www.genomespace.org/"><img alt="Gslogo" src="/assets/gslogo.png"/></a></div>
+<div class="clickable" id="login_menu">
+<form accept-charset="UTF-8" action="/users/sign_in" class="new_user" id="gs-login" method="post"><div style="display:none"><input name="utf8" type="hidden" value="✓"/><input name="authenticity_token" type="hidden" value="5z7fFS6ieHrowSwWVFxfzRtTvZYgXeNlNxhDzkX0DWg="/></div>
+<input id="user_identity_url" name="user[identity_url]" type="hidden" value="https://identity.genomespace.org/identityServer/xrd.jsp"/>
+<a onclick="document.getElementById('gs-login').submit(); return false;">Login<span class="glyphicon glyphicon-chevron-right"></span></a>
+</form></div>
+<ul id="nav">
+<li class="dropdown">
+<a href="/"><span class="glyphicon glyphicon-home"></span> GenomeSpace Recipes</a>
+</li>
+<!-- <li id="recipe_link"><a href="/recipes"><span class="gparc-nav-icon glyphicon glyphicon-list"></span> My Recipes</a></li> -->
+<!-- links to main genomespace.org -->
+<li id="gsdotorg"><a href="http://www.genomespace.org/"><img alt="Gslogo" height="24px" src="/assets/official_logo.png"/>GenomeSpace.org</a><ul>
+<li id="what-is-genomespace"><a href="http://www.genomespace.org/what-is-genomespace">What is GenomeSpace?</a>
+<li id="tools"><a href="http://www.genomespace.org/support/tools">Tools</a>
+</li>
+<li id="recipes"><a href="http://recipes.genomespace.org/">Recipes</a></li>
+<li id="documentation"><a href="http://www.genomespace.org/documentation">Documentation</a>
+<ul>
+<li><a href="http://www.genomespace.org/support/guides/user-guide">User Guide</a>
+<p>Read the detailed guide to the user interface</p>
+</li>
+<li><a href="http://www.genomespace.org/support/guides/tool-guide">Tool Guide</a>
+<p>Learn how to access GenomeSpace functionality for each Tool</p>
+</li>
+<li><a href="http://www.genomespace.org/faq">FAQ</a>
+<p>See answers to frequently asked questions</p>
+</li>
+<li><a href="http://www.genomespace.org/presentations-and-videos">Presentations and Videos</a>
+<p>Access talks by the GenomeSpace community</p>
+</li>
+<li><a href="http://www.genomespace.org/support/guides/end-to-end-analyses">End-to-End Analyses</a>
+<p>Provides description for end-to-end analyses.</p>
+</li>
+</ul>
+</li>
+<li id="developers"><a href="http://www.genomespace.org/for-developers">Developers</a>
+<ul>
+<li><a href="http://www.genomespace.org/what-can-genomespace-do-for-tool-developers">What Can GenomeSpace Do For Tool Developers?</a>
+<p></p>
+</li>
+<li><a href="http://www.genomespace.org/adopters">Technical Documentation</a>
+<p></p>
+</li>
+<li><a href="http://www.genomespace.org/source-code">Source Code and Distributions</a>
+<p></p>
+</li>
+<li><a href="http://www.genomespace.org/developer-support-and-feedback">Developer Support and Feedback</a>
+<p></p>
+</li>
+</ul>
+</li>
+<li id="support"><a href="http://www.genomespace.org/support">Support</a>
+</li>
+<li id="about"><a href="http://www.genomespace.org/about">About</a>
+</li>
+</li></ul></li>
+<!-- end of links to main GenomeSpace.org -->
+<li class="search">
+<div id="search_box">
+<form accept-charset="UTF-8" action="/search" class="form" method="get" role="form"><div style="display:none"><input name="utf8" type="hidden" value="✓"/></div>
+<div style="margin:0;padding:0;display:inline">
+<input class="search" id="search" name="search" type="text"/>
+</div>
+<input class="searchBtn" type="submit"/>
+</form> </div>
+</li>
+</ul>
+</div>
+<div class="container fluid gs-recipe-">
+<div class="row">
+<div class="col-md-10">
+<table><tr><td><img alt="Galaxy gp genomica" class="recipeAvatar" src="/system/recipes/avatars/000/000/014/original/galaxy_gp_genomica.png?1455048884"/></td><td>
+<h3>Identify enriched biological functions in single-nucleotide polymorphisms (SNPs)
+                        </h3>
+</td></tr></table>
+<p class="text-muted">Added by GenomeSpaceTeam on 2015.05.06 <span class="official"><img alt="Official logo" data-content="Offical GenomeSpace Recipe" data-toggle="popover" src="/assets/official_logo.png"/></span>
+<br/>
+            Last updated on over 3 years ago.
+            </p>
+<div class="row">
+<div class="col-md-8">
+<p>
+<a class="btn btn-default btn-xs tag green" >SNP array</a>
+<a class="btn btn-default btn-xs tag green" >genomic loci</a>
+<a class="btn btn-default btn-xs tag red" >gene set enrichment analysis</a>
+<a class="btn btn-default btn-xs tag red" >functional annotation</a>
+</p>
+</div>
+<div class="col-md-2 voting">
+<p class="text-success"><span class="glyphicon glyphicon-thumbs-up"></span> 0</p>
+</div>
+<div class="col-md-2 voting">
+<p class="text-danger"><span class="glyphicon glyphicon-thumbs-down"></span> 0</p>
+</div>
+</div>
+<hr/>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/Izc7DWseCTc?list=PL4ZmSx1n2Kw6mCuLGUcatItB7cTSuJRu3&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+<section id="summary"></section>
+<h3 class="divider">Summary</h3>
+<div class="responsive-content">
+<p><span style="font-family:arial,sans-serif;"><span style="font-size:16px;"><i>How are SNP-related genes regulated in an expression dataset? Are these genes enriched for particular biological functions?</i></span></span></p>
+<p>This recipe provides one method for identifying enriched biological functions in single-nucleotide polymorphisms (SNPs). An example use of this recipe is a case where an investigator may complete a genome-wide association study (GWAS) and wants to know the SNPs that are associated with certain genomic coordinates, in order to determine which genes have particular biological functions.</p>
+<p><img alt="" src="/ckeditor_assets/pictures/365/content_identifyenrichedbiologicalfunctions.png" style="width: 477px; height: 283px; float: right; padding: 10px;"/></p>
+<p>In this particular example, we imagine a scenario in which an investigator completes a GWAS study, obtaining a list of genomic coordinates that are associated with SNPs. However, simply knowing these genomic coordinates is not always informative; the investigator is also interested in knowing which genes lie in these regions, and what kinds of biological functions these genes may have. In this particular example, we are interested in answering two questions:</p>
+<ol>
+<li>Are the genes near these SNPs enriched with particular biological functions?</li>
+<li>Are the genes near these SNPs significantly up- or down-regulated in some other biological conditions, such as cancer?</li>
+</ol>
+<p>To answer the first question, we will find Gene Ontology functional annotations using Genomica. To answer the second question, we will use the Gene Set Enrichment Analysis (GSEA) module in GenePattern, comparing the SNP-associated genes to a gene expression dataset from a study of epithelial cancer stem cells. This study evaluated the ability of oncogenes to activate an embryonic stem cell program in differentiated adult tumor cells, by transforming human keratinocytes into squamous cell carcinomas using oncogenic Ras and IκBα, plus one of three genes: c-Myc, E2F3, and GFP (<a href="http://www.ncbi.nlm.nih.gov/pmc/articles/PMC2628721/">Wong et al. 2009. Cell Stem Cell</a>). Comparisons between these three genes showed that c-Myc could re-activate the embroynic stem cell program. Comparing the SNPs to this gene expression dataset can determine whether this set of SNP-associated genes are differentially regulated in c-Myc samples, when compared to other genes such as GFP and E2F3.</p>
+</div>
+<section id="inputs"></section>
+<h3 class="divider">Inputs</h3>
+<div class="responsive-content">
+<p>To complete this recipe, we will first need a file describing the genomic coordinates of SNPs, as well as a gene expression dataset against which to compare genes associated with SNPs. In addition, in order to complete functional annotation in Genomica, we will need special files of the human Gene Ontology (GO) annotations. We will need the following datasets, which can be downloaded from the following GenomeSpace Public folder:</p>
+<p><code class="directory">Public</code> &gt; <code class="directory">RecipeData</code> &gt; <code class="directory">GenomicFeatureData</code> &gt; <strong><code class="filename"><a href="https://gsui.genomespace.org/jsui/gsui.html?pathOrUrl=/Home/Public/RecipeData/GenomicFeatureData/SNPanalysis_data.bed" target="_blank">SNPanalysis_data.bed</a></code></strong>: A file of the genomic coordinates of SNPs from a GWAS study. The SNPs are listed in a BED file format, with a chromosome annotation and starting and ending positions for coding regions which have SNPs.</p>
+<p> </p>
+<p><strong>Gene Expression Dataset:</strong></p>
+<p><code class="directory">Public</code> &gt; <code class="directory">RecipeData</code> &gt; <code class="directory">ExpressionData</code> &gt; <code class="directory">GSE10423</code> &gt; <strong><code class="filename"><a href="https://gsui.genomespace.org/jsui/gsui.html?pathOrUrl=/Home/Public/RecipeData/ExpressionData/GSE10423/" target="_blank">GSE10423.gct</a></code></strong>: A gene expression dataset of human keratinocytes transformed by Ras, IκBα, and one of three genes: c-Myc, E2F3, and GFP. The file is available in GenePattern's GCT format.</p>
+<p><code class="directory">Public</code> &gt; <code class="directory">RecipeData</code> &gt; <code class="directory">ExpressionData</code> &gt; <code class="directory">GSE10423</code> &gt; <strong><code class="filename"><a href="https://gsui.genomespace.org/jsui/gsui.html?pathOrUrl=/Home/Public/RecipeData/ExpressionData/GSE10423/" target="_blank">GSE10423.cls</a></code></strong>: A class file containing assignments for all the samples in the GCT file (+Myc or -Myc). The file is in GenePattern CLS format.</p>
+<p><code class="directory">Public</code> &gt; <code class="directory">RecipeData</code> &gt; <code class="directory">ExpressionData</code> &gt; <code class="directory">GSE10423</code> &gt; <strong><code class="filename"><a href="https://gsui.genomespace.org/jsui/gsui.html?pathOrUrl=/Home/Public/RecipeData/ExpressionData/GSE10423/" target="_blank">GSE10423.chip</a></code></strong>: A file containing the microarray chip information for the this gene expression dataset.</p>
+<p> </p>
+<p><strong>Genomica Database Files:</strong></p>
+<p><code class="directory">Public</code> &gt; <code class="directory">RecipeData</code> &gt; <code class="directory">Tool_Genomica</code> &gt; <strong><code class="filename"><a href="https://gsui.genomespace.org/jsui/gsui.html?pathOrUrl=/Home/Public/RecipeData/Tool_Genomica/human_GO.gxa" target="_blank">human_GO.gxa</a></code></strong>: A file containing the annotations of genes by pathways, functions, and biological processes from the Gene Ontology.</p>
+<p><code class="directory">Public</code> &gt; <code class="directory">RecipeData</code> &gt; <code class="directory">Tool_Genomica</code> &gt; <strong><code class="filename"><a href="https://gsui.genomespace.org/jsui/gsui.html?pathOrUrl=/Home/Public/RecipeData/Tool_Genomica/Human_RefSeq_skeleton_expression.tab" target="_blank">Human_RefSeq_skeleton_expression.tab</a></code></strong>: A file containing RefSeq IDs for parsing in Genomica.</p>
+</div>
+<div id="recipeOutputSection">
+<section id="outputs"></section>
+<h3 class="divider">Outputs</h3>
+<div class="responsive-content" id="recipeOutputText">
+</div>
+</div>
+<section id="overview"></section>
+<h3 class="divider">Recipe steps</h3>
+<ul>
+<li><strong>Galaxy</strong></li>
+<ol start="1">
+<li>Loading data into Galaxy</li>
+<li>Obtaining a reference genome using Galaxy</li>
+<li>Finding genes in CNV regions</li>
+</ol>
+</ul>
+<ul>
+<li><strong>GenePattern</strong></li>
+<ol start="4">
+<li>Perform Gene Set Enrichment Analysis</li>
+</ol>
+</ul>
+<ul>
+<li><strong>Genomica</strong></li>
+<ol start="5">
+<li>Saving Genomica files locally</li>
+<li>Running gene set analysis in Genomica</li>
+</ol>
+</ul>
+<div class="row">
+<div class="col-md-6" style="text-align: right; display: inline;width: 250px !important;">
+<a class="btn btn-info" href="javascript:void(0);" id="show-all"><span class="glyphicon glyphicon-plus"></span> Expand All Steps</a>
+</div>
+<div class="col-md-6" style="display: inline;width: 250px !important;">
+<a class="btn btn-info" href="javascript:void(0);" id="hide-all"><span class="glyphicon glyphicon-minus"></span> Collapse All Steps</a>
+</div>
+</div>
+<p></p>
+<div aria-multiselectable="true" class="panel-group" id="steps" role="tablist">
+<div class="panel panel-default">
+<section id="step_0"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Galaxy" class="stepAvatar tag-tooltip" src="/assets/Galaxy.png" title="Galaxy"/>
+<a data-toggle="toggle" href="#collapse_0" onclick="$('#collapse_0').collapse('toggle')">1: Loading data into Galaxy <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>We will load the file containing SNPs into Galaxy. Then, we will use a pre-built GenomeSpace workflow to process the dataset, mapping the SNPs to reference gene annotations and extracting the gene IDs in two formats (Gene Symbol and RefSeq ID). Finally, we will send the gene IDs back to GenomeSpace for additional analysis.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_0" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<p><small><em><strong>NOTE:</strong> If you have not yet associated your GenomeSpace account with your Galaxy account, you will be asked to do so. If you do not yet have a Galaxy account, you can automatically generate a new account that will be associated with your GenomeSpace account.</em></small></p>
+<ol>
+<li>Click on the Galaxy icon to launch the tool.</li>
+<li>Navigate to the following menu: <code class="parameter">Get Data &gt; GenomeSpace import</code>.</li>
+<li>Select the <code class="filename">SNPanalysis_data.bed</code> file, which can be found under the following directory: <code class="directory">Public</code> &gt; <code class="directory">RecipeData</code> &gt; <code class="directory">GenomicFeatureData</code>.</li>
+<li>Click <code class="parameter">Send to Galaxy</code>.<br>
+<img alt="" src="/uploaded/content_r9_s1.png" style="height:468px; width:800px"/></br></li>
+</ol>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/Izc7DWseCTc?list=https://www.youtube.com/watch?v=Izc7DWseCTc&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_1"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Galaxy" class="stepAvatar tag-tooltip" src="/assets/Galaxy.png" title="Galaxy"/>
+<a data-toggle="toggle" href="#collapse_1" onclick="$('#collapse_1').collapse('toggle')">2: Obtaining a reference genome using Galaxy <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>We will use the UCSC Main tool to obtain a reference genome from the UCSC Table Browser, through Galaxy.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_1" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>Navigate to the following menu: <code class="parameter">Get Data &gt; UCSC Main</code></li>
+<li>In the dialog box, enter the following parameters:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li><code class="parameter">clade</code>: Mammal</li>
+<li><code class="parameter">genome</code>: Human</li>
+<li><code class="parameter">assembly</code>: Feb. 2009 (GRCh37/hg19)</li>
+<li><code class="parameter">group</code>: Genes and Gene Predictions</li>
+<li><code class="parameter">track</code>: UCSC genes</li>
+<li><code class="parameter">table</code>: knownGene</li>
+<li><code class="parameter">region</code>: genome</li>
+<li><code class="parameter">output format</code>: selected fields from primary and related tables</li>
+<li><code class="parameter">send to</code>: Galaxy</li>
+</ol>
+</li>
+<li>Click <code class="parameter">get output</code>. This will load a new page from which you can select specific annotations.
+	<p><img alt="" src="/uploaded/content_r7_s1_0.png" style="height:506px; width:800px"/></p>
+</li>
+<li>Under <code class="parameter">Linked Tables</code>, make sure the hg19: kgXref is checked.</li>
+<li>Click <code class="parameter">allow selection from checked tables</code> to update the page, then change the following parameters:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li>Under <code class="parameter">Select Fields from hg19.knownGene</code>, make sure the following parameters are checked:
+		<ol start="1" style="list-style-type: lower-roman;">
+<li><code class="parameter">chrom: Reference sequence chromosome or scaffold</code></li>
+<li><code class="parameter">cdsStart: Coding region start</code></li>
+<li><code class="parameter">cdsEnd: Coding region end</code></li>
+</ol>
+</li>
+<li>Under <code class="parameter">hg19.kgXref</code>, make sure the following parameters are checked:
+		<ol start="1" style="list-style-type: lower-roman;">
+<li><code class="parameter">geneSymbol</code>: Gene Symbol</li>
+<li><code class="parameter">refseq</code>: RefSeq ID</li>
+</ol>
+</li>
+<li>Click <code class="parameter">done with selection</code> to load the final output page.
+		<p><img alt="" src="/uploaded/content_r9_s2_1.png" style="height:696px; width:800px"/></p>
+</li>
+</ol>
+</li>
+<li>Click <code class="parameter">Send query to Galaxy</code> to run the job. This will generate a new file of reference gene annotations.</li>
+</ol>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/dcDyZLI7ykA?list=https://www.youtube.com/watch?v=dcDyZLI7ykA&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_2"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Galaxy" class="stepAvatar tag-tooltip" src="/assets/Galaxy.png" title="Galaxy"/>
+<a data-toggle="toggle" href="#collapse_2" onclick="$('#collapse_2').collapse('toggle')">3: Finding genes in CNV regions <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>We will use a pre-built GenomeSpace workflow to identify genes in the CNV regions, and to extract the gene IDs.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_2" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>Click on the following link: <a href="https://usegalaxy.org/u/genomespace/w/identify-enriched-biological-functions-in-snps" target="new">Official GenomeSpace Galaxy Workflow: Identify Enriched Biological Functions in SNPs</a>.</li>
+<li>Click the <img alt="" src="/ckeditor_assets/pictures/121/content_galplus.png" style="width: 14px; height: 14px; display: inline;"/> icon in the upper right corner to import the workflow.</li>
+<li>Click <code class="parameter">start using this workflow</code>.</li>
+<li>Click on the workflow drop-down menu (e.g., <strong>imported: Identify Enriched Biological Functions in SNPs</strong>), then choose <code class="parameter">Run</code>.
+	<p><img alt="" src="/uploaded/content_r9_s3_1.png" style="height:341px; width:772px"/></p>
+</li>
+<li>Load the files into the correct fields. The input fields should have annotation indicating which file should be loaded:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li><code class="parameter">Step 1: Input Dataset (UCSC Reference Genome Annotations)</code>: UCSC Main on Human: knownGene (genome)</li>
+<li><code class="parameter">Step 2: Input Dataset (SNP Genomic Coordinates, e.g. SNPAnalysis_data.bed)</code>: GenomeSpace import on SNPanalysis_data.bed</li>
+</ol>
+<p><img alt="" src="/ckeditor_assets/pictures/454/content_r9_s3_2_updated.png" style="height: 400px; width: 800px;"/></p>
+</li>
+<li>Click <code class="parameter">Run</code> workflow.</li>
+<li>Once the workflow has finished running, save the output of the first cut operation to GenomeSpace by navigating to the following menu: <code class="parameter">Send Data &gt; GenomeSpace Exporter</code>. Change the following parameters:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li><code class="parameter">Send this dataset to GenomeSpace</code>: <code class="parameter"><strong>4</strong>: Cut on data 3</code>, the output file of Gene Symbols, e.g. "ACTB".</li>
+<li><code class="parameter">Choose Target Directory</code>: choose the directory to save the file in</li>
+<li><code class="parameter">filename</code>: <code class="filename">SNPanalysis_GeneSymbol.grp</code></li>
+<li>Click <code class="parameter">Execute</code>.
+		<p><img alt="" src="/ckeditor_assets/pictures/286/content_enrichsnp.png" style="width: 800px; height: 434px;"/></p>
+</li>
+</ol>
+</li>
+<li>Save the output of the second cut operation by navigating again to: <code class="parameter">Send Data &gt; GenomeSpace Exporter</code>. Change the following parameters:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li><code class="parameter">Send this dataset to GenomeSpace</code>: <code class="parameter"><strong>5</strong>: Cut on data 3</code>the output file of RefSeq IDs, e.g. "NM_123456789", etc.</li>
+<li><code class="parameter">Choose Target Directory</code>: choose the directory to save the file in</li>
+<li><code class="parameter">filename</code>: <code class="filename">SNPanalysis_RefSeq.gse</code></li>
+<li>Click <code class="parameter">Execute</code>.</li>
+</ol>
+</li>
+<li>Optional: close Galaxy.</li>
+</ol>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/ET6sNpRlS9E?list=https://www.youtube.com/watch?v=ET6sNpRlS9E&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_3"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Genepattern" class="stepAvatar tag-tooltip" src="/assets/GenePattern.png" title="GenePattern"/>
+<a data-toggle="toggle" href="#collapse_3" onclick="$('#collapse_3').collapse('toggle')">4: Perform Gene Set Enrichment Analysis <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>We will use the Gene Set Enrichment Analysis (GSEA) module to determine whether the SNP-associated genes are up- or down-regulated in biological conditions such as cancer. We will use the SNP-associated genes as a custom 'gene set' to evaluate its enrichment on a gene expression dataset of human keratinocytes transformed into squamous cell carcinomas. This module uses the GCT file and the CLS file, as well as the list of Gene Symbols from the SNP analysis in Galaxy.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_3" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<p><small><em><strong>NOTE:</strong> If you have not yet associated your GenomeSpace account with your GenePattern account, you will be asked to do so. If you do not yet have a GenePattern account, you can automatically generate a new account that will be associated with your GenomeSpace account.</em></small></p>
+<ol>
+<li>Click on the GenePattern icon to launch the tool.</li>
+<li>Change to the <code class="parameter">Modules</code> tab, and search for "GSEA". Change to the <code class="parameter">GenomeSpace</code> tab to navigate to the directory containing the GSE10423 gene expression dataset files. Once the module is loaded, change the following parameters:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li><code class="parameter">expression dataset</code>: <code class="filename">GSE10423.gct</code>, found in the following directory: <code class="directory">Public</code> &gt; <code class="directory">RecipeData</code> &gt; <code class="directory">ExpressionData</code> &gt; <code class="directory">GSE10423</code>.</li>
+<li><code class="parameter">gene sets database file</code>: <code class="filename">SNPanalysis_GeneSymbol.grp<br>
+<img alt="" src="/ckeditor_assets/pictures/455/content_r9_s4_updated1.png" style="width: 600px; height: 415px; border-width: 1px; border-style: solid;"/></br></code></li>
+<li><code class="parameter">phenotype labels</code>: <code class="filename">GSE10423.cls</code>, found in the following directory: <code class="directory">Public</code> &gt; <code class="directory">RecipeData</code> &gt; <code class="directory">ExpressionData</code> &gt; <code class="directory">GSE10423</code>.<br>
+<img alt="" src="/ckeditor_assets/pictures/456/content_r9_s4_updated2.png" style="width: 600px; height: 111px; border-width: 1px; border-style: solid;"/></br></li>
+<li><code class="parameter">chip platform file</code>:
+		<ol start="1" style="list-style-type: lower-alpha;">
+<li>Click the <code class="parameter">Upload your own file</code> button, which will create a new drag-and-drop input box.</li>
+<li>Add the <code class="filename">GSE10423.chip</code> file, found in the following directory: <code class="directory">Public</code> &gt; <code class="directory">RecipeData</code> &gt; <code class="directory">ExpressionData</code> &gt; <code class="directory">GSE10423</code>.<br>
+<img alt="" src="/ckeditor_assets/pictures/457/content_r9_s4_updated3.png" style="width: 600px; height: 157px; border-width: 1px; border-style: solid;"/></br></li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Click the <img alt="" src="/ckeditor_assets/pictures/435/content_gp_run.png" style="width: 64px; height: 29px;"/> button to run GSEA.</li>
+<li>Once the job has finished running, the result will be a .ZIP file containing the report from GSEA. The report will include HTML files, PNG images, etc. You can save the resulting file back to GenomeSpace:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li>Click on the ZIP file (e.g. <code class="filename">GSE10423.zip</code>), and choose <code class="parameter">Save to GenomeSpace</code>.</li>
+<li>Navigate to a directory of your choice and choose <code class="parameter">Save</code>.</li>
+<li>Un-zip the ZIP file by right-clicking on the file, then choosing <code class="parameter">Expand Archive</code>. This should create a new folder in GenomeSpace that you can access, containing all the GSEA results.</li>
+</ol>
+<strong>To interpret the results of the GSEA, please continue to the section called <a href="#results">Interpreting the Results</a>.</strong></li>
+<li>Optional: close GenePattern.</li>
+</ol>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/6RTthw1R47U?list=https://www.youtube.com/watch?v=6RTthw1R47U&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_4"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Genomica" class="stepAvatar tag-tooltip" src="/assets/Genomica.png" title="Genomica"/>
+<a data-toggle="toggle" href="#collapse_4" onclick="$('#collapse_4').collapse('toggle')">5: Saving Genomica files locally <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>We will use Genomica to determine whether the SNP-associated genes are enriched for particular biological functions by analyzing multiple gene sets.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_4" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<p>First, we must save files to the local drive in order for Genomica to run the multiple gene set analysis.</p>
+<ol>
+<li>Download the following files:
+	<ul>
+<li><code class="directory">Public</code> &gt; <code class="directory">RecipeData</code> &gt; <code class="directory">Tool_Genomica</code> &gt; <strong><code class="filename"><a href="https://gsui.genomespace.org/jsui/gsui.html?pathOrUrl=/Home/Public/RecipeData/Tool_Genomica/human_GO.gxa" target="_blank">human_GO.gxa</a></code></strong></li>
+<li><code class="directory">Public</code> &gt; <code class="directory">RecipeData</code> &gt; <code class="directory">Tool_Genomica</code> &gt; <strong><code class="filename"><a href="https://gsui.genomespace.org/jsui/gsui.html?pathOrUrl=/Home/Public/RecipeData/Tool_Genomica/Human_RefSeq_skeleton_expression.tab" target="_blank">Human_RefSeq_skeleton_expression.tab</a></code></strong></li>
+</ul>
+</li>
+<li>Once these two files are downloaded to your local computer, navigate to your Genomica home directory on your local computer:
+	<ul>
+<li>Windows: C:/Users/USERNAME/</li>
+<li>OS X: /Users/USERNAME/</li>
+</ul>
+</li>
+<li>Create a new folder, "Genomica" in this directory. Place the two files, <code class="filename">human_GO.gxa</code> and <code class="filename">Human_RefSeq_skeleton.tab</code>, in this folder.
+	<ul>
+<li>e.g., <code class="filename">human_GO.gxa</code> on a Windows computer will be located in: <code class="filename">C:/Users/USERNAME<strong>/Genomica/human_GO.gxa</strong></code></li>
+<li>e.g., <code class="filename">human_GO.gxa</code> on a Mac computer will be located in: <code class="filename">/Users/USERNAME<strong>/Genomica/human_GO.gxa</strong></code></li>
+</ul>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_5"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Genomica" class="stepAvatar tag-tooltip" src="/assets/Genomica.png" title="Genomica"/>
+<a data-toggle="toggle" href="#collapse_5" onclick="$('#collapse_5').collapse('toggle')">6: Running gene set analysis in Genomica <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>Next, we will complete an enrichment analysis by comparing multiple gene sets in Genomica.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_5" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>In GenomeSpace, click on the file of SNP-associated RefSeq IDs, e.g. <code class="filename">SNPanalysis_RefSeq.gse</code>.</li>
+<li>Launch Genomica on this file by clicking on the Genomica icon. This will prompt the download of a .jnlp file. Double-click the file to launch Genomica. The gene expression analysis program should automatically begin running.</li>
+<li>Once the analysis program starts, you should see a new dialog box titled, <code class="parameter">Analyze Gene Sets</code>. Change the following parameters:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li>Under <code class="parameter">Sets to Analyze</code>, choose <code class="parameter">Human GO</code>.</li>
+<li>Under <code class="parameter">Sets to Find Enrichment For</code>, choose the <code class="filename">SNP_analysis_RefSeq.gse</code> file. It may have additional text and numbers in front of the file name due to the Genomica import.</li>
+</ol>
+</li>
+<li>Click <code class="parameter">Analyze</code>. The output should be a table of gene functional annotation enrichments.<br>
+<small><strong>NOTE:</strong> If you don't see the <code class="parameter">Analyze</code> button, try making the window larger by clicking and dragging the bottom edge of the window downward.</small>
+<p><img alt="" src="/uploaded/content_r9_s5.png"/></p>
+</br></li>
+<li>Disclaimer: Upon launching Genomica through the .jnlp file, there may be no <code><span style="color: rgb(51, 51, 51); font-family: monospace; font-size: 13px; background-color: rgb(255, 255, 255);">Analyze</span></code> button that appears for Windows users.
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li>Close the initial pop-up window, click Analyze in the top bar, then Gene Sets.</li>
+<li>After resizing the window to be larger, the <span style="font-size: 13px;">Analyze </span>and Cancel buttons should appear.</li>
+</ol>
+</li>
+</ol>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/IhT9LsOJO5M?list=https://www.youtube.com/watch?v=IhT9LsOJO5M&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="recipeInterpSection">
+<section id="results"></section>
+<h3 class="divider">Results Interpretation</h3>
+<div class="responsive-content" id="recipeInterpText">
+<p><strong>This is an example interpretation of the results from this recipe.</strong> First, we performed Gene Set Enrichment Analysis (GSEA) to determine if the SNP-associated genes are up- or down-regulated in a biological condition such as cancer. To interpret our GSEA results, we navigate to the un-zipped file of GSEA results.</p>
+<p><img alt="" src="/uploaded/content_r9_result1.png" style="height:649px; width:800px"/></p>
+<p>This folder contains the results of the GSEA, including: tables of results; plots such as enrichment plots, heatmaps, butterfly plots, distribution plots, and correlation profiles; and HTML pages designed to display and explain the accompanying results. Clicking on the <code class="filename"><strong>index.html</strong></code> file will bring up a local HTML webpage linking to the remaining results, in an easy-to-navigate format. In this example, the results indicate that our SNP-associated gene set was up-regulated in the skin tumor phenotype, but these results are not significant. For more help interpreting the results from GSEA analyses, visit the <a href="http://www.broadinstitute.org/gsea/doc/GSEAUserGuideFrame.html?_Interpreting_GSEA_Result">GSEA User Guide page</a> for interpreting GSEA results.</p>
+<p>Next, we used Genomica to determine whether SNP-associated genes are enriched for particular biological functions using multiple gene set analysis. The results from this analysis are (1) a table of significantly enriched GO terms, and (2) a graphical representation of the enrichment for each GO term in the gene set being analyzed.</p>
+<p><img alt="" src="/uploaded/content_r9_result2.png" style="height:343px; width:800px"/></p>
+<p>The Genomica results suggest that there is significant overlap between the SNP-associated gene set and GO terms like, e.g., "regulation of nuclear mRNA splicing, via spliceosome" and "negative regulation of mRNA processing". These GO term enrichment results have high p-values (see table above, column 4), and have a large amount of overlap between the SNP-associate gene set and the GO term gene set (see graphic below). The significance of this possible result would need further confirmation.</p>
+<p><img alt="" src="/uploaded/content_r9_result3.png" style="height:499px; width:800px"/></p>
+</div>
+</div>
+<hr/>
+<div class="panel-group" id="comments">
+<div class="panel panel-default">
+<div class="panel-heading">
+<h4 class="panel-title"><a data-toggle="collapse" href="#comments_list">Comments (0)</a> <span class="glyphicon glyphicon-chevron-down toggle-glyph"></span></h4>
+</div>
+<div class="panel-collapse collapse in" id="comments_list">
+<div class="panel-body">
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<h4 class="panel-title">Submit a Comment</h4>
+</div>
+<div class="panel-body">
+<form accept-charset="UTF-8" action="/users/sign_in" class="form" id="new_user" method="post" role="form"><div style="display:none"><input name="utf8" type="hidden" value="✓"/><input name="authenticity_token" type="hidden" value="5z7fFS6ieHrowSwWVFxfzRtTvZYgXeNlNxhDzkX0DWg="/></div>
+<input id="user_identity_url" name="user[identity_url]" type="hidden" value="https://identity.genomespace.org/identityServer/xrd.jsp"/>
+<input class="btn btn-sm btn-success" name="commit" type="submit" value="Sign in using GenomeSpace"/>
+</form> </div>
+</div>
+</div>
+<script>
+//<![CDATA[
+
+
+
+                $('.responsive-content img').addClass('img-responsive').css({"height" : "", "width" : ""});
+				$('[data-toggle="popover"]').popover({trigger: "hover", placement: "top"});
+
+				$("#show-all").click(function() {
+					$(".step-container").collapse("show");
+
+				});
+
+				$("#hide-all").click(function() {
+					$(".step-container").collapse("hide");
+
+				});
+
+                 $('.tag-tooltip').tooltip();
+
+
+
+//]]>
+</script> </div>
+<div class="col-md-2">
+<div class="bs-docs-sidebar hidden-print gp-side-menu" role="complementary">
+<ul class="nav bs-docs-sidenav" data-spy="affix">
+<li><a href="#summary">Summary</a></li>
+<li><a href="#inputs">Inputs</a></li>
+<li id="recipeOutputNav"><a href="#outputs">Outputs</a></li>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#steps">Steps</a>
+<ul class="nav">
+<li><a class="step-anchor" href="#step_0">Loading data into Galaxy</a></li>
+<li><a class="step-anchor" href="#step_1">Obtaining a reference genome using Galaxy</a></li>
+<li><a class="step-anchor" href="#step_2">Finding genes in CNV regions</a></li>
+<li><a class="step-anchor" href="#step_3">Perform Gene Set Enrichment Analysis</a></li>
+<li><a class="step-anchor" href="#step_4">Saving Genomica files locally</a></li>
+<li><a class="step-anchor" href="#step_5">Running gene set analysis in Genomica</a></li>
+</ul>
+</li>
+<li id="recipeInterpNav"><a href="#results">Results Interpretation</a></li>
+<!-- <li><a href="#comments">Comments</a></li> -->
+<!-- <li><a href="#history">History</a></li> -->
+<li><a href="javascript:void(0);" id="scroll-top">Back to the Top</a></li>
+</ul>
+</div>
+<script>
+//<![CDATA[
+
+				$('.step-anchor').click(function() {
+					var step = $(this).attr('href').split('_')[1];
+					$('#collapse_' + step).collapse("show");
+				});
+
+//]]>
+</script> </div>
+</div>
+</div>
+<script>
+//<![CDATA[
+
+     if ($("#recipeOutputText").html().trim().length == 0){
+       $("#recipeOutputSection").hide();
+       $("#recipeOutputNav").hide();
+     }
+      if ($("#recipeInterpText").html().trim().length == 0){
+            $("#recipeInterpSection").hide();
+              $("#recipeInterpNav").hide();
+      }
+
+
+//]]>
+</script> <div class="container" id="history">
+<h1>History</h1>
+<ul>
+<li>Saved <b>over 3 years ago</b>
+                                                        on 03/09/2017 16:27:55 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/14?lastVersion=true&amp;versionIndex=9" target="_oldRecipe" title="View this version in a new window">View this version</a><br>
+<div>
+</div>
+</br></li>
+<li>Saved <b>over 3 years ago</b>
+                                                        on 03/08/2017 22:04:19 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/14?lastVersion=true&amp;versionIndex=8" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>over 3 years ago</b>
+                                                        on 03/08/2017 21:56:39 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/14?lastVersion=true&amp;versionIndex=7" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>over 3 years ago</b>
+                                                        on 03/08/2017 21:56:14 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/14?lastVersion=true&amp;versionIndex=6" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>over 3 years ago</b>
+                                                        on 03/08/2017 21:49:57 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/14?lastVersion=true&amp;versionIndex=5" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>over 3 years ago</b>
+                                                        on 03/08/2017 21:49:30 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/14?lastVersion=true&amp;versionIndex=4" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>over 3 years ago</b>
+                                                        on 03/08/2017 21:48:51 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/14?lastVersion=true&amp;versionIndex=3" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>almost 4 years ago</b>
+                                                        on 11/21/2016 18:39:56 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/14?lastVersion=true&amp;versionIndex=2" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>almost 4 years ago</b>
+                                                        on 11/02/2016 18:08:17 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/14?lastVersion=true&amp;versionIndex=1" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>almost 4 years ago</b>
+                                                        on 09/06/2016 18:30:46 UTC by <b>asp006</b>.
+                                                        <a href="/view/14?lastVersion=true&amp;versionIndex=0" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+</ul>
+</div>
+<div class="container-fluid footer gs-recipe-footer">
+<p class="copy-right-block">Copyright ©2016 The Regents of the University of California and The Broad Institute of MIT &amp; Harvard</p>
+</div>
+</body>
+</html>

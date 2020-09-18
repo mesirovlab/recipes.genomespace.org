@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>GenomeSpace Recipe: Create and visualize a module network of regulatory genes</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link href="/assets/docs.min.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/featured_article.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/pages.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/recipes.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/site.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/tags.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/jquery-ui/theme.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/jquery-ui/core.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/application.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/dataTables/bootstrap/3/jquery.dataTables.bootstrap.css?body=1" media="all" rel="stylesheet"/>
+<script src="/assets/jquery.js?body=1"></script>
+<script src="/assets/jquery_ujs.js?body=1"></script>
+<script src="/assets/jquery-ui/core.js?body=1"></script>
+<script src="/assets/jquery-ui/widget.js?body=1"></script>
+<script src="/assets/jquery-ui/position.js?body=1"></script>
+<script src="/assets/jquery-ui/menu.js?body=1"></script>
+<script src="/assets/jquery-ui/autocomplete.js?body=1"></script>
+<script src="/assets/jquery-ui/mouse.js?body=1"></script>
+<script src="/assets/jquery-ui/sortable.js?body=1"></script>
+<script src="/assets/bootstrap/affix.js?body=1"></script>
+<script src="/assets/bootstrap/alert.js?body=1"></script>
+<script src="/assets/bootstrap/button.js?body=1"></script>
+<script src="/assets/bootstrap/carousel.js?body=1"></script>
+<script src="/assets/bootstrap/collapse.js?body=1"></script>
+<script src="/assets/bootstrap/dropdown.js?body=1"></script>
+<script src="/assets/bootstrap/tab.js?body=1"></script>
+<script src="/assets/bootstrap/transition.js?body=1"></script>
+<script src="/assets/bootstrap/scrollspy.js?body=1"></script>
+<script src="/assets/bootstrap/modal.js?body=1"></script>
+<script src="/assets/bootstrap/tooltip.js?body=1"></script>
+<script src="/assets/bootstrap/popover.js?body=1"></script>
+<script src="/assets/bootstrap-sprockets.js?body=1"></script>
+<script src="/assets/ckeditor/init.js?body=1"></script>
+<script src="/assets/ckeditor/ckeditor.js?body=1"></script>
+<script src="/assets/jquery_nested_form.js?body=1"></script>
+<script src="/assets/dataTables/jquery.dataTables.js?body=1"></script>
+<script src="/assets/dataTables/bootstrap/3/jquery.dataTables.bootstrap.js?body=1"></script>
+<script src="/assets/autocomplete-rails.js?body=1"></script>
+<script src="/assets/spin.min.js?body=1"></script>
+<script src="/assets/docs.min.js?body=1"></script>
+<script src="/assets/jquery.hoverIntent.minified.js?body=1"></script>
+<script src="/assets/ckeditor/config.js?body=1"></script>
+<script src="/assets/featured_article.js?body=1"></script>
+<script src="/assets/pages.js?body=1"></script>
+<script src="/assets/recipes.js?body=1"></script>
+<script src="/assets/site.js?body=1"></script>
+<script src="/assets/tags.js?body=1"></script>
+<script src="/assets/application.js?body=1"></script>
+<meta content="authenticity_token" name="csrf-param"/>
+<meta content="sAfhml1mqUcLQbNJOG9hsjdSJMyPjW6aErVMX9+ZijY=" name="csrf-token"/>
+<link href="https://fonts.googleapis.com/css?family=Wire+One" rel="stylesheet" type="text/css"/>
+<link href="https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:300" rel="stylesheet" type="text/css"/>
+<link href="/assets/favicon.ico" rel="shortcut icon">
+<script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-74623322-1', 'auto');
+        ga('send', 'pageview');
+       // ga('set', 'userId', {{"anonymous"}}); // Set the user ID using signed-in user_id.
+        ga('set', 'userId', 'anonymous'); // Set the user ID using signed-in user_id.
+
+    </script>
+</link></head>
+<body onload="tellParentWindowMySize()">
+<div id="nav_page_wrapper">
+<div id="logo"><a href="http://www.genomespace.org/"><img alt="Gslogo" src="/assets/gslogo.png"/></a></div>
+<div class="clickable" id="login_menu">
+<form accept-charset="UTF-8" action="/users/sign_in" class="new_user" id="gs-login" method="post"><div style="display:none"><input name="utf8" type="hidden" value="✓"/><input name="authenticity_token" type="hidden" value="sAfhml1mqUcLQbNJOG9hsjdSJMyPjW6aErVMX9+ZijY="/></div>
+<input id="user_identity_url" name="user[identity_url]" type="hidden" value="https://identity.genomespace.org/identityServer/xrd.jsp"/>
+<a onclick="document.getElementById('gs-login').submit(); return false;">Login<span class="glyphicon glyphicon-chevron-right"></span></a>
+</form></div>
+<ul id="nav">
+<li class="dropdown">
+<a href="/"><span class="glyphicon glyphicon-home"></span> GenomeSpace Recipes</a>
+</li>
+<!-- <li id="recipe_link"><a href="/recipes"><span class="gparc-nav-icon glyphicon glyphicon-list"></span> My Recipes</a></li> -->
+<!-- links to main genomespace.org -->
+<li id="gsdotorg"><a href="http://www.genomespace.org/"><img alt="Gslogo" height="24px" src="/assets/official_logo.png"/>GenomeSpace.org</a><ul>
+<li id="what-is-genomespace"><a href="http://www.genomespace.org/what-is-genomespace">What is GenomeSpace?</a>
+<li id="tools"><a href="http://www.genomespace.org/support/tools">Tools</a>
+</li>
+<li id="recipes"><a href="http://recipes.genomespace.org/">Recipes</a></li>
+<li id="documentation"><a href="http://www.genomespace.org/documentation">Documentation</a>
+<ul>
+<li><a href="http://www.genomespace.org/support/guides/user-guide">User Guide</a>
+<p>Read the detailed guide to the user interface</p>
+</li>
+<li><a href="http://www.genomespace.org/support/guides/tool-guide">Tool Guide</a>
+<p>Learn how to access GenomeSpace functionality for each Tool</p>
+</li>
+<li><a href="http://www.genomespace.org/faq">FAQ</a>
+<p>See answers to frequently asked questions</p>
+</li>
+<li><a href="http://www.genomespace.org/presentations-and-videos">Presentations and Videos</a>
+<p>Access talks by the GenomeSpace community</p>
+</li>
+<li><a href="http://www.genomespace.org/support/guides/end-to-end-analyses">End-to-End Analyses</a>
+<p>Provides description for end-to-end analyses.</p>
+</li>
+</ul>
+</li>
+<li id="developers"><a href="http://www.genomespace.org/for-developers">Developers</a>
+<ul>
+<li><a href="http://www.genomespace.org/what-can-genomespace-do-for-tool-developers">What Can GenomeSpace Do For Tool Developers?</a>
+<p></p>
+</li>
+<li><a href="http://www.genomespace.org/adopters">Technical Documentation</a>
+<p></p>
+</li>
+<li><a href="http://www.genomespace.org/source-code">Source Code and Distributions</a>
+<p></p>
+</li>
+<li><a href="http://www.genomespace.org/developer-support-and-feedback">Developer Support and Feedback</a>
+<p></p>
+</li>
+</ul>
+</li>
+<li id="support"><a href="http://www.genomespace.org/support">Support</a>
+</li>
+<li id="about"><a href="http://www.genomespace.org/about">About</a>
+</li>
+</li></ul></li>
+<!-- end of links to main GenomeSpace.org -->
+<li class="search">
+<div id="search_box">
+<form accept-charset="UTF-8" action="/search" class="form" method="get" role="form"><div style="display:none"><input name="utf8" type="hidden" value="✓"/></div>
+<div style="margin:0;padding:0;display:inline">
+<input class="search" id="search" name="search" type="text"/>
+</div>
+<input class="searchBtn" type="submit"/>
+</form> </div>
+</li>
+</ul>
+</div>
+<div class="container fluid gs-recipe-">
+<div class="row">
+<div class="col-md-10">
+<table><tr><td><img alt="Genomica cy3" class="recipeAvatar" src="/system/recipes/avatars/000/000/018/original/genomica_cy3.png?1476389863"/></td><td>
+<h3>Create and visualize a module network of regulatory genes
+                        </h3>
+</td></tr></table>
+<p class="text-muted">Added by GenomeSpaceTeam on 2015.05.22 <span class="official"><img alt="Official logo" data-content="Offical GenomeSpace Recipe" data-toggle="popover" src="/assets/official_logo.png"/></span>
+<br/>
+            Last updated on over 3 years ago.
+            </p>
+<div class="row">
+<div class="col-md-8">
+<p>
+<a class="btn btn-default btn-xs tag green" >microarray</a>
+<a class="btn btn-default btn-xs tag red" >transcriptional regulation</a>
+<a class="btn btn-default btn-xs tag red" >network analysis</a>
+<a class="btn btn-default btn-xs tag red" >module network</a>
+</p>
+</div>
+<div class="col-md-2 voting">
+<p class="text-success"><span class="glyphicon glyphicon-thumbs-up"></span> 2</p>
+</div>
+<div class="col-md-2 voting">
+<p class="text-danger"><span class="glyphicon glyphicon-thumbs-down"></span> 0</p>
+</div>
+</div>
+<hr/>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/p7fQ7YMR9JU?list=PL4ZmSx1n2Kw4cMP468XETNIyo_9OwpRR_&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+<section id="summary"></section>
+<h3 class="divider">Summary</h3>
+<div class="responsive-content">
+<p><span style="font-family:arial,sans-serif;"><span style="font-size:16px;"><i>Does my gene expression dataset contain a module network of regulatory genes? Does the network have any special features?</i></span></span></p>
+<p>This recipe provides one method for creating and visualizing a module network of regulatory genes. An example use of this recipe is a case where an investigator may want to evaulate an expression dataset to find regulatory genes such as transcription factors, and then determine if they are connected in a network.</p>
+<p><img alt="" src="/ckeditor_assets/pictures/355/content_filtermodulenetworks.png" style="width: 450px; height: 304px; float: right; padding: 10px;"/></p>
+<p> </p>
+<p>In particular, the regulatory genes of interest are genes which regulate other genes associated with an embryonic stem cell (ESC) state. This 'stemness signature' is a feature common to ESCs, as well as induced pluripotent stem cells (iPSCs), and also in a compendium of human cancers, such as breast cancer. This recipe recapitulates research by Wong <em>et al.</em>, in <em>Cell Stem Cell</em> (2008), "<a href="http://www.ncbi.nlm.nih.gov/pubmed/18397753">Module map of stem cell genes guides creation of epithelial cancer stem cells</a>."</p>
+<p>We use a gene expression dataset of primary human breast cancer tumor samples (described in <a href="http://www.ncbi.nlm.nih.gov/pubmed/17157792" style="line-height: 20.7999992370605px;">Chin, K. <em>et al</em>, <em>Cancer Cell</em>, 2006</a>), and create a module network by projecting a set of stemness regulators onto the gene expression dataset, using Genomica. A module network is a model which identifies regulatory modules from gene expression data, especially modules of co-regulated genes and their regulators. The module also identifies the conditions under which the regulation can occur.</p>
+<p>After obtaining the module network, we visualize it using Cytoscape. Since the network is very large, we then filter it to just a subnetwork of stemness regulators and their connections, again using Cytoscape. This provides us with a visual representation of the stemness regulators as they appear projected onto a breast cancer tumor dataset.</p>
+<p> </p>
+</div>
+<section id="inputs"></section>
+<h3 class="divider">Inputs</h3>
+<div class="responsive-content">
+<p>To complete this recipe, we will need a gene expression dataset and a list of genes which we believe to be important transcriptional regulators. In this example, we use a gene expression dataset of primary human breast cancer tumor samples, which is fully described in <a href="http://www.ncbi.nlm.nih.gov/pubmed/17157792">Chin, K. <em>et al</em>, <em>Cancer Cell</em> (2006)</a>. We also use a set of genes which are believed to be regulators of the embryonic stem cell state, called "stemness regulators". This gene set of stemness regulators can be obtained by following the recipe for completing <a href="http://recipes.genomespace.org/view/19">Stepwise Linkage Analysis of Microarray Signatures (SLAMS)</a>. We will need the following datasets, which can be downloaded from the following folders:</p>
+<p><code class="directory">Public</code> &gt; <code class="directory">RecipeData</code> &gt; <code class="directory">ExpressionData</code> &gt; <strong><code class="filename"><a href="https://gsui.genomespace.org/jsui/gsui.html?pathOrUrl=/Home/Public/RecipeData/ExpressionData/breasttumor.preprocessed.collapsed.tab" target="_blank">breasttumor.preprocessed.collapsed.tab</a></code></strong>: this file contains the gene expression profile of primary human breast cancer tumor samples. The original dataset has been log-transformed, row-centered on the mean, and has had the probe IDs collapsed to HUGO Gene Symbols.</p>
+<p><code class="directory">Public</code> &gt; <code class="directory">RecipeData</code> &gt; <code class="directory">GeneSets</code> &gt; <strong><code class="filename"><a href="https://gsui.genomespace.org/jsui/gsui.html?pathOrUrl=/Home/Public/RecipeData/GeneSets/stemness_regulators.geneset.tab" target="_blank">stemness_regulators.geneset.tab</a></code></strong>: this file contains a list of genes which are believed to regulate genes associated with the embryonic stem cell state.</p>
+</div>
+<div id="recipeOutputSection">
+<section id="outputs"></section>
+<h3 class="divider">Outputs</h3>
+<div class="responsive-content" id="recipeOutputText">
+<p>A subnetwork of genes which regulate the transcription of embryonic stem cell-associated signature genes. This subnetwork shows the connections between regulators of this 'stemness signature'.</p>
+</div>
+</div>
+<section id="overview"></section>
+<h3 class="divider">Recipe steps</h3>
+<ul>
+<li><strong>Genomica</strong></li>
+<ol start="1">
+<li>Create a module network of co-regulated genes</li>
+</ol>
+</ul>
+<ul>
+<li><strong>Cytoscape 3</strong></li>
+<ol start="2">
+<li>Visualize the gene regulatory network</li>
+<li>Filter the network of nodes and edges to just the stemness regulators</li>
+<li>Exploring the subnetwork</li>
+</ol>
+</ul>
+<div class="row">
+<div class="col-md-6" style="text-align: right; display: inline;width: 250px !important;">
+<a class="btn btn-info" href="javascript:void(0);" id="show-all"><span class="glyphicon glyphicon-plus"></span> Expand All Steps</a>
+</div>
+<div class="col-md-6" style="display: inline;width: 250px !important;">
+<a class="btn btn-info" href="javascript:void(0);" id="hide-all"><span class="glyphicon glyphicon-minus"></span> Collapse All Steps</a>
+</div>
+</div>
+<p></p>
+<div aria-multiselectable="true" class="panel-group" id="steps" role="tablist">
+<div class="panel panel-default">
+<section id="step_0"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Genomica" class="stepAvatar tag-tooltip" src="/assets/Genomica.png" title="Genomica"/>
+<a data-toggle="toggle" href="#collapse_0" onclick="$('#collapse_0').collapse('toggle')">1: Create a module network of co-regulated genes <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>First, we will build a network of regulatory modules from co-regulated genes with similar expression profiles, from the breast cancer tumor sample dataset.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_0" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>Launch Genomica on the normalized breast cancer gene expression dataset file (<code class="directory">Public</code> &gt; <code class="directory">RecipeData</code> &gt; <code class="directory">ExpressionData</code> &gt; <code class="filename">breasttumor.preprocessed.collapsed.tab</code>) by clicking and dragging the file to the Genomica tool icon.</li>
+<li>Navigate to the following menu: <code class="parameter">Algorithms &gt; Create a Module Network…</code><br>
+<img alt="" src="/ckeditor_assets/pictures/46/content_ge1.png" style="height:664px; width:763px"/></br></li>
+<li>Once the tool has loaded, change the following parameters:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li>Under <code class="parameter">Regulation</code>, set <code class="parameter">Maximum tree depth</code> to 5.</li>
+<li>For <code class="parameter">Candidate regulator genes</code>, click <code class="parameter">GenomeSpace Load…</code>.</li>
+<li>Choose the stemness regulators gene set (<code class="directory">Public</code> &gt; <code class="directory">RecipeData</code> &gt; <code class="directory">GeneSets</code> &gt; <code class="filename">stemness_regulators.geneset.tab</code>), then click <code class="parameter">Select</code>.<br/>
+<small><em><strong>NOTE:</strong> Once the list of genes is loaded, the number of candidate regulators genes will change (see image below).<br/>
+<img alt="" src="/ckeditor_assets/pictures/47/content_ge2.png" style="height:369px; width:699px"/></em></small></li>
+</ol>
+</li>
+<li>Click <code class="parameter">Run</code> to create a module network.<br/>
+<img alt="" src="/ckeditor_assets/pictures/48/content_ge3.png" style="height:370px; width:699px"/><br/>
+<small><em><strong>NOTE:</strong> It may take several minutes to learn and generate the module network.</em></small></li>
+<li>Export the resulting network to GenomeSpace using the following steps:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li>Navigate to the following menu: <code class="parameter">GenomeSpace &gt; Export Network to GenomeSpace…</code><br/>
+<img alt="" src="/ckeditor_assets/pictures/49/content_ge4.png" style="height:672px; width:699px"/><br/>
+<small><em><strong>NOTE:</strong> A pop-up will appear indicating that you should save the file with a .ndb extension. Click <code class="parameter">OK</code> to close the pop-up and continue with the export (see below).<br/>
+<img alt="" src="/ckeditor_assets/pictures/50/content_ge5.png" style="height:164px; width:519px"/></em></small></li>
+<li>Choose a directory to save the file to.</li>
+<li>Give the file a name, e.g. <code class="filename">stemness_network.ndb</code>.</li>
+<li>Click <code class="parameter">Save As</code>.</li>
+</ol>
+</li>
+<li>Close Genomica and return to GenomeSpace.</li>
+</ol>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/p7fQ7YMR9JU?list=https://www.youtube.com/watch?v=p7fQ7YMR9JU&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_1"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Cytoscape 3" class="stepAvatar tag-tooltip" src="/assets/Cytoscape 3.png" title="Cytoscape 3"/>
+<a data-toggle="toggle" href="#collapse_1" onclick="$('#collapse_1').collapse('toggle')">2: Visualize the gene regulatory network <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>Next, we will import the network results from GenomeSpace into Cytoscape, and show the gene regulatory network. In this example, we use Cytoscape 3.4.</p>
+<p><em><strong>NOTE:</strong> This recipe requires Cytoscape 3.3 or higher to be installed. Please navigate to <a href="http://www.cytoscape.org" target="_blank">www.cytoscape.org</a> to download the latest version.</em></p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_1" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>Launch Cytoscape from GenomeSpace by clicking on the Cytoscape icon in the tool menu, prompting the download of a <code class="filename">cytoscape.jnlp</code> file. Double-click this file to launch Cytoscape.</li>
+<li>Once Cytoscape has launched, it will prompt a start menu. Under the <code class="parameter">Start New Session</code> label, choose <code class="parameter">With Empty Network</code>.<br>
+<img alt="" src="/ckeditor_assets/pictures/325/content_cy3_step1.png" style="width: 500px; height: 381px;"/></br></li>
+<li>Once the Cytoscape 3 software has loaded, it will prompt the user to name their network. Feel free to change the network name, or leave the parameters as default. Click <code class="parameter">OK</code>.<br/>
+<img alt="" src="/ckeditor_assets/pictures/326/content_cy3_step2.png" style="width: 344px; height: 155px;"/></li>
+<li>To load the necessary files into Cytoscape, we will use the <code class="subtool">NDB Reader</code> app. To install this, use the following steps:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li>Navigate to <code class="parameter">Apps &gt; App Manager</code>.<br/>
+<img alt="" src="/ckeditor_assets/pictures/327/content_cy3_step4a.png" style="width: 500px; height: 79px;"/></li>
+<li>Search for “NDB Reader”.</li>
+<li>Click on the app and click <code class="parameter">Install</code> to install it. Once the app is installed it allows you to load NDB files, without modifying any of the Cytoscape menu items.<br/>
+<img alt="" src="/ckeditor_assets/pictures/328/content_cy3_step4bc.png" style="width: 500px; height: 434px;"/></li>
+</ol>
+</li>
+<li>Navigate to the menu: <code class="parameter">File &gt; Import &gt; Network &gt; GenomeSpace</code>.<br/>
+<img alt="" src="/ckeditor_assets/pictures/329/content_cy3_step5.png" style="height: 296px; width: 600px;"/></li>
+<li>Navigate to the folder with the .ndb file, <code class="filename">stemness_network.ndb</code>. Choose <code class="parameter">Select</code> to load the file. This may take a few moments. Once the file is loaded, it will prompt you to import the network to a network view. Choose a network and click <code class="parameter">OK</code>.<br/>
+<img alt="" src="/ckeditor_assets/pictures/330/content_cy3_step6.png" style="width: 425px; height: 152px;"/></li>
+<li>Once the network is loaded it will ask if you want to create a view for the network. Click <code class="parameter">OK</code> to create the network. This may take a few minutes.<br/>
+<img alt="" src="/ckeditor_assets/pictures/332/content_cy3_step7.png" style="width: 371px; height: 158px;"/></li>
+</ol>
+<p>This will create a network of 13,341 nodes and 117,815 edges. This is an incredibly large, dense network. It is best to filter the network before attempting to visualize it using a different Cytoscape layout, such as a force-directed layout or a degree-sorted circular layout. In the next step, we will filter the network to a more manageable size.</p>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/7ZPIhvliHfs?list=https://www.youtube.com/watch?v=7ZPIhvliHfs&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_2"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Cytoscape 3" class="stepAvatar tag-tooltip" src="/assets/Cytoscape 3.png" title="Cytoscape 3"/>
+<a data-toggle="toggle" href="#collapse_2" onclick="$('#collapse_2').collapse('toggle')">3: Filter the network of nodes and edges to just the stemness regulators <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>In this step, we will filter the existing network of 13,341 nodes to just the nodes that are known to be regulators of the embryonic stemness signature. We will filter by the gene set described in <code class="filename">stemness_regulators.geneset.tab</code>.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_2" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>Load the list of stemness regulators into Cytoscape using the following steps:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li>Navigate to the menu: <code class="parameter">File &gt; Import &gt; Table &gt; GenomeSpace</code>.<br>
+<img alt="" src="/ckeditor_assets/pictures/334/content_cy3_step2_1a.png" style="width: 600px; height: 299px;"/></br></li>
+<li>Choose the stemness regulators file (<code class="directory">Public</code> &gt; <code class="directory">RecipeData</code> &gt; <code class="directory">GeneSets</code> &gt; <code class="filename">stemness_regulators.geneset.tab</code>). Click <code class="parameter">Select</code>. This will bring up an import menu, allowing you to choose which names and symbols are imported into Cytoscape.</li>
+<li>Click <code class="parameter">OK</code> to import the file.<br/>
+<img alt="" src="/ckeditor_assets/pictures/335/content_cy3_step2_1c.png" style="width: 600px; height: 446px;"/></li>
+</ol>
+</li>
+<li>Under the <code class="parameter">Control Panel</code> section, click the <code class="parameter">Select</code> tab.</li>
+<li>Under the <code class="parameter">Default Filter</code> section, click the <code class="parameter">+</code> button to add a new filter, and choose <code class="parameter">Column Filter</code>.<br/>
+<img alt="" src="/ckeditor_assets/pictures/338/content_cy3_step2_2-3.png" style="width: 307px; height: 514px;"/></li>
+<li>Choose <code class="parameter">node.INGENESET</code> as the attribute to filter on.<br/>
+<img alt="" src="/ckeditor_assets/pictures/340/content_cy3_step2_4.png" style="width: 220px; height: 335px;"/></li>
+<li>Make sure the filter has the following parameters:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li><code class="parameter">Between</code> 1 <code class="parameter">and</code> 1 <code class="parameter">inclusive</code>.</li>
+<li>Click <code class="parameter">Apply</code>.<br/>
+<img alt="" src="/ckeditor_assets/pictures/339/content_cy3_step2_5ab.png" style="width: 295px; height: 287px;"/><br/>
+<small><em><strong>NOTE:</strong> This will select the stemness regulators in the existing network. They will appear highlighted in yellow if they are a stemness regulator. Make sure not to accidentally de-select the highlighted nodes by clicking in the visualization panel. If you do accidentally de-select the nodes, you can re-select them by clicking the <code class="parameter">Apply</code> button.</em></small></li>
+</ol>
+</li>
+<li>In the main Cytoscape menu, click on the following menu icon. <img alt="" src="/ckeditor_assets/pictures/336/content_cy3_step2_6.png" style="display:inline-block; width: 28px; height: 30px;"/><br/>
+	This is the icon indicating the tool, <code class="parameter">New Network From Selection, All Edges</code>. This will create a new subnetwork with just the stemness regulators and their connections. You should obtain a network of 48 nodes and 334 edges.</li>
+</ol>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/eqf0n8YsObU?list=https://www.youtube.com/watch?v=eqf0n8YsObU&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_3"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Cytoscape 3" class="stepAvatar tag-tooltip" src="/assets/Cytoscape 3.png" title="Cytoscape 3"/>
+<a data-toggle="toggle" href="#collapse_3" onclick="$('#collapse_3').collapse('toggle')">4: Exploring the subnetwork <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<div>To better visualize the network, try using a different layout to re-arrange nodes and edges. It is best to create a layout that minimizes overlap of edges, to make the network less confusing visually. This also allows you to identify unique features of the network that you may not see otherwise.</div>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_3" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ul>
+<li>Cytoscape provides many options for displaying a network. For example:
+	<ul>
+<li>A spring-embedded layout finds an optimal way to display nodes and edges by simulating nodes as objects and edges as springs connecting objects together. Cytoscape provides several variations on a spring-embedded layout. To create a spring-embedded layout, try the following:<br>
+<code class="parameter">Layout &gt; Edge Weighted Spring Embedded Layout</code></br></li>
+<li>A circular layout arranges nodes in a circle. Layouts can use information about a node, such as the node's degree, to determine the order of nodes within the circle. To create a circular layout, try the following:<br/>
+<code class="parameter">Layout &gt; Circular Layout</code></li>
+<li>You can also sort a circular layout using features of the nodes, e.g. the degree or connectivity of the nodes. By creating a degree-sorted circular layout (see the results section), you can visualize all nodes and edges with minimal overlap, and can easily identify which nodes have the most or least connections.<br/>
+<code class="parameter">Layout &gt; Degree Sorted Circle Layout</code></li>
+</ul>
+</li>
+<li>To control the density of the network (how far nodes are from one another), you can use the <code class="parameter">Scale</code> function. Select <code class="parameter">Layout &gt; Scale</code>, then use the sliding scale bar to increase or decrease network density.</li>
+<li>To change the visual style of the network, e.g., by coloring nodes or adding arrows to edges, navigate to the <code class="parameter">Style</code> tab in the <code class="parameter">Control Panel</code>. You can choose preset styles using a drop-down menu. You can create your own styles by clicking on the <code class="parameter">Defaults</code> pane, then adjusting the parameters.<br/>
+	For example, to adjust edge color first choose the <code class="parameter">Edge</code> tab in the bottom part of the pane. Then click on <code class="parameter">EDGE_COLOR</code>, choose a new color, and click <code class="parameter">OK</code>. Some variables take numeric inputs, such as <code class="parameter">EDGE_LINE_WIDTH</code>.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="recipeInterpSection">
+<section id="results"></section>
+<h3 class="divider">Results Interpretation</h3>
+<div class="responsive-content" id="recipeInterpText">
+<p>This is an example interpretation of the results from this recipe. First, we created a module network of genes that regulate the stemness signature, by projecting it onto a breast cancer tumor gene expression dataset using Genomica. We then used Cytoscape to visualize the connections between these genes, and to filter a large network down into a subnetwork of just stemness regulators.</p>
+<p>We can see from the resulting subnetwork (see below) that, e.g. genes such as POLR2K and MYC are stemness regulators with many connections to other stemness regulators. In contrast, genes such as SQLE or PSCA have fewer connections to other stemness regulators. We can describe POLR2K and MYC as having higher 'degree', than genes such as SQLE or PSCA. These connections in the network imply that perturbing the regulation of POLR2K or MYC would have a larger effect on the embryonic stem cell expression signature (because their multiple connections allow perturbations to propagate in the network) than perturbing other genes that have fewer connections.</p>
+<p><img alt="" src="/ckeditor_assets/pictures/60/content_result.png" style="height:506px; width:800px"/></p>
+</div>
+</div>
+<hr/>
+<div class="panel-group" id="comments">
+<div class="panel panel-default">
+<div class="panel-heading">
+<h4 class="panel-title"><a data-toggle="collapse" href="#comments_list">Comments (0)</a> <span class="glyphicon glyphicon-chevron-down toggle-glyph"></span></h4>
+</div>
+<div class="panel-collapse collapse in" id="comments_list">
+<div class="panel-body">
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<h4 class="panel-title">Submit a Comment</h4>
+</div>
+<div class="panel-body">
+<form accept-charset="UTF-8" action="/users/sign_in" class="form" id="new_user" method="post" role="form"><div style="display:none"><input name="utf8" type="hidden" value="✓"/><input name="authenticity_token" type="hidden" value="sAfhml1mqUcLQbNJOG9hsjdSJMyPjW6aErVMX9+ZijY="/></div>
+<input id="user_identity_url" name="user[identity_url]" type="hidden" value="https://identity.genomespace.org/identityServer/xrd.jsp"/>
+<input class="btn btn-sm btn-success" name="commit" type="submit" value="Sign in using GenomeSpace"/>
+</form> </div>
+</div>
+</div>
+<script>
+//<![CDATA[
+
+
+
+                $('.responsive-content img').addClass('img-responsive').css({"height" : "", "width" : ""});
+				$('[data-toggle="popover"]').popover({trigger: "hover", placement: "top"});
+
+				$("#show-all").click(function() {
+					$(".step-container").collapse("show");
+
+				});
+
+				$("#hide-all").click(function() {
+					$(".step-container").collapse("hide");
+
+				});
+
+                 $('.tag-tooltip').tooltip();
+
+
+
+//]]>
+</script> </div>
+<div class="col-md-2">
+<div class="bs-docs-sidebar hidden-print gp-side-menu" role="complementary">
+<ul class="nav bs-docs-sidenav" data-spy="affix">
+<li><a href="#summary">Summary</a></li>
+<li><a href="#inputs">Inputs</a></li>
+<li id="recipeOutputNav"><a href="#outputs">Outputs</a></li>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#steps">Steps</a>
+<ul class="nav">
+<li><a class="step-anchor" href="#step_0">Create a module network of co-regulated genes</a></li>
+<li><a class="step-anchor" href="#step_1">Visualize the gene regulatory network</a></li>
+<li><a class="step-anchor" href="#step_2">Filter the network of nodes and edges to just the stemness regulators</a></li>
+<li><a class="step-anchor" href="#step_3">Exploring the subnetwork</a></li>
+</ul>
+</li>
+<li id="recipeInterpNav"><a href="#results">Results Interpretation</a></li>
+<!-- <li><a href="#comments">Comments</a></li> -->
+<!-- <li><a href="#history">History</a></li> -->
+<li><a href="javascript:void(0);" id="scroll-top">Back to the Top</a></li>
+</ul>
+</div>
+<script>
+//<![CDATA[
+
+				$('.step-anchor').click(function() {
+					var step = $(this).attr('href').split('_')[1];
+					$('#collapse_' + step).collapse("show");
+				});
+
+//]]>
+</script> </div>
+</div>
+</div>
+<script>
+//<![CDATA[
+
+     if ($("#recipeOutputText").html().trim().length == 0){
+       $("#recipeOutputSection").hide();
+       $("#recipeOutputNav").hide();
+     }
+      if ($("#recipeInterpText").html().trim().length == 0){
+            $("#recipeInterpSection").hide();
+              $("#recipeInterpNav").hide();
+      }
+
+
+//]]>
+</script> <div class="container" id="history">
+<h1>History</h1>
+<ul>
+<li>Saved <b>over 3 years ago</b>
+                                                        on 03/09/2017 18:28:44 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/18?lastVersion=true&amp;versionIndex=10" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>over 3 years ago</b>
+                                                        on 03/09/2017 18:08:36 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/18?lastVersion=true&amp;versionIndex=9" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>almost 4 years ago</b>
+                                                        on 10/31/2016 20:01:12 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/18?lastVersion=true&amp;versionIndex=8" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>almost 4 years ago</b>
+                                                        on 10/19/2016 15:05:07 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/18?lastVersion=true&amp;versionIndex=7" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>almost 4 years ago</b>
+                                                        on 10/13/2016 20:23:56 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/18?lastVersion=true&amp;versionIndex=6" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>almost 4 years ago</b>
+                                                        on 10/13/2016 20:17:43 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/18?lastVersion=true&amp;versionIndex=5" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>almost 4 years ago</b>
+                                                        on 10/13/2016 18:01:03 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/18?lastVersion=true&amp;versionIndex=4" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>about 4 years ago</b>
+                                                        on 07/19/2016 17:40:51 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/18?lastVersion=true&amp;versionIndex=3" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>over 4 years ago</b>
+                                                        on 05/27/2016 18:14:37 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/18?lastVersion=true&amp;versionIndex=2" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>over 4 years ago</b>
+                                                        on 05/16/2016 18:02:02 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/18?lastVersion=true&amp;versionIndex=1" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>over 4 years ago</b>
+                                                        on 05/16/2016 18:01:41 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/18?lastVersion=true&amp;versionIndex=0" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+</ul>
+</div>
+<div class="container-fluid footer gs-recipe-footer">
+<p class="copy-right-block">Copyright ©2016 The Regents of the University of California and The Broad Institute of MIT &amp; Harvard</p>
+</div>
+</body>
+</html>

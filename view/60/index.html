@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>GenomeSpace Recipe: Identify TCGA data that have specific mutational profiles</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link href="/assets/docs.min.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/featured_article.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/pages.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/recipes.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/site.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/tags.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/jquery-ui/theme.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/jquery-ui/core.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/application.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/dataTables/bootstrap/3/jquery.dataTables.bootstrap.css?body=1" media="all" rel="stylesheet"/>
+<script src="/assets/jquery.js?body=1"></script>
+<script src="/assets/jquery_ujs.js?body=1"></script>
+<script src="/assets/jquery-ui/core.js?body=1"></script>
+<script src="/assets/jquery-ui/widget.js?body=1"></script>
+<script src="/assets/jquery-ui/position.js?body=1"></script>
+<script src="/assets/jquery-ui/menu.js?body=1"></script>
+<script src="/assets/jquery-ui/autocomplete.js?body=1"></script>
+<script src="/assets/jquery-ui/mouse.js?body=1"></script>
+<script src="/assets/jquery-ui/sortable.js?body=1"></script>
+<script src="/assets/bootstrap/affix.js?body=1"></script>
+<script src="/assets/bootstrap/alert.js?body=1"></script>
+<script src="/assets/bootstrap/button.js?body=1"></script>
+<script src="/assets/bootstrap/carousel.js?body=1"></script>
+<script src="/assets/bootstrap/collapse.js?body=1"></script>
+<script src="/assets/bootstrap/dropdown.js?body=1"></script>
+<script src="/assets/bootstrap/tab.js?body=1"></script>
+<script src="/assets/bootstrap/transition.js?body=1"></script>
+<script src="/assets/bootstrap/scrollspy.js?body=1"></script>
+<script src="/assets/bootstrap/modal.js?body=1"></script>
+<script src="/assets/bootstrap/tooltip.js?body=1"></script>
+<script src="/assets/bootstrap/popover.js?body=1"></script>
+<script src="/assets/bootstrap-sprockets.js?body=1"></script>
+<script src="/assets/ckeditor/init.js?body=1"></script>
+<script src="/assets/ckeditor/ckeditor.js?body=1"></script>
+<script src="/assets/jquery_nested_form.js?body=1"></script>
+<script src="/assets/dataTables/jquery.dataTables.js?body=1"></script>
+<script src="/assets/dataTables/bootstrap/3/jquery.dataTables.bootstrap.js?body=1"></script>
+<script src="/assets/autocomplete-rails.js?body=1"></script>
+<script src="/assets/spin.min.js?body=1"></script>
+<script src="/assets/docs.min.js?body=1"></script>
+<script src="/assets/jquery.hoverIntent.minified.js?body=1"></script>
+<script src="/assets/ckeditor/config.js?body=1"></script>
+<script src="/assets/featured_article.js?body=1"></script>
+<script src="/assets/pages.js?body=1"></script>
+<script src="/assets/recipes.js?body=1"></script>
+<script src="/assets/site.js?body=1"></script>
+<script src="/assets/tags.js?body=1"></script>
+<script src="/assets/application.js?body=1"></script>
+<meta content="authenticity_token" name="csrf-param"/>
+<meta content="MGyj9mZSGyt1NWB5zBeUw/eB6Ygsuy3aggazWhwOgY4=" name="csrf-token"/>
+<link href="https://fonts.googleapis.com/css?family=Wire+One" rel="stylesheet" type="text/css"/>
+<link href="https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:300" rel="stylesheet" type="text/css"/>
+<link href="/assets/favicon.ico" rel="shortcut icon">
+<script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-74623322-1', 'auto');
+        ga('send', 'pageview');
+       // ga('set', 'userId', {{"anonymous"}}); // Set the user ID using signed-in user_id.
+        ga('set', 'userId', 'anonymous'); // Set the user ID using signed-in user_id.
+
+    </script>
+</link></head>
+<body onload="tellParentWindowMySize()">
+<div id="nav_page_wrapper">
+<div id="logo"><a href="http://www.genomespace.org/"><img alt="Gslogo" src="/assets/gslogo.png"/></a></div>
+<div class="clickable" id="login_menu">
+<form accept-charset="UTF-8" action="/users/sign_in" class="new_user" id="gs-login" method="post"><div style="display:none"><input name="utf8" type="hidden" value="✓"/><input name="authenticity_token" type="hidden" value="MGyj9mZSGyt1NWB5zBeUw/eB6Ygsuy3aggazWhwOgY4="/></div>
+<input id="user_identity_url" name="user[identity_url]" type="hidden" value="https://identity.genomespace.org/identityServer/xrd.jsp"/>
+<a onclick="document.getElementById('gs-login').submit(); return false;">Login<span class="glyphicon glyphicon-chevron-right"></span></a>
+</form></div>
+<ul id="nav">
+<li class="dropdown">
+<a href="/"><span class="glyphicon glyphicon-home"></span> GenomeSpace Recipes</a>
+</li>
+<!-- <li id="recipe_link"><a href="/recipes"><span class="gparc-nav-icon glyphicon glyphicon-list"></span> My Recipes</a></li> -->
+<!-- links to main genomespace.org -->
+<li id="gsdotorg"><a href="http://www.genomespace.org/"><img alt="Gslogo" height="24px" src="/assets/official_logo.png"/>GenomeSpace.org</a><ul>
+<li id="what-is-genomespace"><a href="http://www.genomespace.org/what-is-genomespace">What is GenomeSpace?</a>
+<li id="tools"><a href="http://www.genomespace.org/support/tools">Tools</a>
+</li>
+<li id="recipes"><a href="http://recipes.genomespace.org/">Recipes</a></li>
+<li id="documentation"><a href="http://www.genomespace.org/documentation">Documentation</a>
+<ul>
+<li><a href="http://www.genomespace.org/support/guides/user-guide">User Guide</a>
+<p>Read the detailed guide to the user interface</p>
+</li>
+<li><a href="http://www.genomespace.org/support/guides/tool-guide">Tool Guide</a>
+<p>Learn how to access GenomeSpace functionality for each Tool</p>
+</li>
+<li><a href="http://www.genomespace.org/faq">FAQ</a>
+<p>See answers to frequently asked questions</p>
+</li>
+<li><a href="http://www.genomespace.org/presentations-and-videos">Presentations and Videos</a>
+<p>Access talks by the GenomeSpace community</p>
+</li>
+<li><a href="http://www.genomespace.org/support/guides/end-to-end-analyses">End-to-End Analyses</a>
+<p>Provides description for end-to-end analyses.</p>
+</li>
+</ul>
+</li>
+<li id="developers"><a href="http://www.genomespace.org/for-developers">Developers</a>
+<ul>
+<li><a href="http://www.genomespace.org/what-can-genomespace-do-for-tool-developers">What Can GenomeSpace Do For Tool Developers?</a>
+<p></p>
+</li>
+<li><a href="http://www.genomespace.org/adopters">Technical Documentation</a>
+<p></p>
+</li>
+<li><a href="http://www.genomespace.org/source-code">Source Code and Distributions</a>
+<p></p>
+</li>
+<li><a href="http://www.genomespace.org/developer-support-and-feedback">Developer Support and Feedback</a>
+<p></p>
+</li>
+</ul>
+</li>
+<li id="support"><a href="http://www.genomespace.org/support">Support</a>
+</li>
+<li id="about"><a href="http://www.genomespace.org/about">About</a>
+</li>
+</li></ul></li>
+<!-- end of links to main GenomeSpace.org -->
+<li class="search">
+<div id="search_box">
+<form accept-charset="UTF-8" action="/search" class="form" method="get" role="form"><div style="display:none"><input name="utf8" type="hidden" value="✓"/></div>
+<div style="margin:0;padding:0;display:inline">
+<input class="search" id="search" name="search" type="text"/>
+</div>
+<input class="searchBtn" type="submit"/>
+</form> </div>
+</li>
+</ul>
+</div>
+<div class="container fluid gs-recipe-">
+<div class="row">
+<div class="col-md-10">
+<table><tr><td><img alt="Fb galaxy gp" class="recipeAvatar" src="/system/recipes/avatars/000/000/060/original/fb-galaxy-gp.png?1467138651"/></td><td>
+<h3>Identify TCGA data that have specific mutational profiles
+                        </h3>
+</td></tr></table>
+<p class="text-muted">Added by GenomeSpaceTeam on 2016.04.26 <span class="official"><img alt="Official logo" data-content="Offical GenomeSpace Recipe" data-toggle="popover" src="/assets/official_logo.png"/></span>
+<br/>
+            Last updated on over 3 years ago.
+            </p>
+<div class="row">
+<div class="col-md-8">
+<p>
+<a class="btn btn-default btn-xs tag green" >RNA-seq</a>
+<a class="btn btn-default btn-xs tag yellow" >TCGA</a>
+<a class="btn btn-default btn-xs tag yellow" >mutation annotations</a>
+<a class="btn btn-default btn-xs tag yellow" >processing</a>
+</p>
+</div>
+<div class="col-md-2 voting">
+<p class="text-success"><span class="glyphicon glyphicon-thumbs-up"></span> 1</p>
+</div>
+<div class="col-md-2 voting">
+<p class="text-danger"><span class="glyphicon glyphicon-thumbs-down"></span> 0</p>
+</div>
+</div>
+<hr/>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/kH85J2kVt8o?list=PL4ZmSx1n2Kw5R5gvBBcJmBe0ErjrEz3Xo&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+<section id="summary"></section>
+<h3 class="divider">Summary</h3>
+<div class="responsive-content">
+<p><span style="font-family:arial,sans-serif;"><span style="font-size:16px;"><i>How do I obtain and analyze data from The Cancer Genome Atlas (TCGA)? Which TCGA datasets have specific mutations in my gene of interest?</i></span></span></p>
+<p>This recipe provides a method for identifying and obtaining specific datasets of interest from The Cancer Genome Atlas (TCGA), through a web-based tool called FireBrowse. An example use of this recipe is a case where an investigator may have a gene they are interested in, such as ERCC2, and would like to know if there are mutations in this gene in specific datasets of interest, such as bladder cancer.</p>
+<p><img alt="" src="/ckeditor_assets/pictures/364/content_identifytcgadata.png" style="width: 397px; height: 306px; float: right; padding: 10px;"/></p>
+<p> </p>
+<p>Tumors arise from mutational changes to healthy cells, and are frequently deficient in one or more DNA repair pathways. The accumulation of mutations in tumor can be described by the “mutational signature”, a pattern of genetic mutations found in tumor DNA, which reflect different mutation events. Mutational signatures can be specific to certain tissues or cancer types. Many of these mutational signatures are associated with DNA repair pathways.</p>
+<p>An in-depth study of urothelial carcinoma, which causes ~150,000 deaths annually, by <a href="http://www.nature.com/ng/journal/vaop/ncurrent/full/ng.3557.html" target="_blank">Kim et al. (<em>Nature Genetics</em>, 2016)</a> has identified a mutational signature in bladder cancer involving the nucleotide-excision repair (NER) pathway. Kim et al. identified a mutational signature involving ERCC2, a gene encoding a DNA helicase which plays a critical role in the NER pathway. Somatic mutations in this gene may prevent proper functioning of the NER pathway, allowing mutations to accumulate. Uniquely, urothelial cancer is the only known tumor type to date in which ERCC2 is significantly mutated.</p>
+<p>Kim et al. used the collection of bladder carcinoma (BLCA) samples in <a href="http://cancergenome.nih.gov/" target="_blank">The Cancer Genome Atlas (TCGA)</a> to complete their analysis. Data were downloaded from the Broad Institute TCGA Genome Data Analysis Center, and samples were categorized based on mutational status. Tumors with somatic, missense mutations in ERCC2 were compared to non-mutated (wild-type) samples to identify the comprehensive mutational landscape of bladder cancer (<a href="http://www.nature.com/nature/journal/v507/n7492/full/nature12965.html" target="_blank">also described in this TCGA paper</a>).</p>
+<p>This recipe provides a method for processing data from The Cancer Genome Atlas (TCGA), to identify samples which have mutations in specific genes. The purpose of this recipe is to categorize data by mutational status, for further downstream analysis (e.g. comparing tumors of different mutational status, etc.). Data is collected from FireBrowse; Galaxy and GenePattern are used to categorize samples by mutational status and generate <a href="http://www.broadinstitute.org/cancer/software/genepattern/file-formats-guide#GCT" target="_blank">GCT</a> and <a href="http://www.broadinstitute.org/cancer/software/genepattern/file-formats-guide#CLS" target="_blank">CLS</a> files. The RNA-seq datasets are gene-level normalized <a href="http://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-12-323" target="_blank">RSEM expression estimates</a>.</p>
+<p> </p>
+<p><strong>TCGA Barcodes</strong></p>
+<p>The Cancer Genome Atlas labels its datasets with the TCGA barcode, an identifer that describes the metadata associated with sample. You can learn more about the <a href="https://wiki.nci.nih.gov/display/TCGA/TCGA+barcode" target="_blank">TCGA Barcodes on the NIH National Cancer Institute Wiki page</a> (see also: <a href="https://wiki.nci.nih.gov/display/TCGA/Working+with+TCGA+Data" target="_blank">working with TCGA data</a>).</p>
+<p>TCGA barcodes adhere to a certain format: <code class="note">TCGA-00-1111-<strong>22A</strong>-33B-4444-55</code>. For this recipe, we are interested in the <a href="https://wiki.nci.nih.gov/display/TCGA/Sample" target="_blank">Sample type</a>, indicated by the <strong><code class="note">22A</code></strong> section of the barcode. For this recipe we are interested in samples with designation <code class="note">01</code> (solid tumor, or TP) or <code class="note">11</code> (solid tissue normal, or NT), which are paired tumor-normal samples.</p>
+</div>
+<section id="inputs"></section>
+<h3 class="divider">Inputs</h3>
+<div class="responsive-content">
+<p>To complete this recipe, we will need several datasets. First, we need example Bladder Cancer (BLCA) data from RNA-seq reads which have been processed and had normalized <a href="http://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-12-323" target="_blank">RSEM values</a> calculated for each gene. In this dataset, we should have bladder cancer tumor samples, in addition to paired normal tissue. For this recipe we are trying to identify the bladder cancer samples that have mutations in the gene ERCC2. Therefore, we also need a list of which samples in the RNA-seq data have mutation annotation files (MAFs), and additionally we need to identify the list of bladder cancer samples that have ERCC2 mutations. We will be using the following datasets, which we will obtain from <strong>FireBrowse</strong>:</p>
+<p><strong><code class="filename">BLCA.illuminahiseq_rnaseqv2-RSEM_genes_normalized.tar.gz</code></strong>: This is a zipped file containing the normalized RSEM values for bladder cancer Illumina hi-seq RNA-seq data.</p>
+<p><strong><code class="filename">BLCA.Mutation_Packager_Calls.tar.gz</code></strong>: This is a zipped archive of mutation annotation files (<a href="http://www.broadinstitute.org/igv/MutationAnnotationFormat" target="_blank">MAFs</a>) for all bladder cancer samples with mutations. Specifically, we will only be using the <code class="filename">MANIFEST.txt</code> file within this zipped archive, which just lists the samples with MAFs.</p>
+<p><strong><code class="filename">ERCC2mutSamples.txt</code></strong>: This text file lists the bladder cancer samples that have mutations in the ERCC2 gene. This file lists the specific type of mutation that occurs in the sample and whether it causes a missense or silent mutation of the protein product. This file also contains samples which do not have RNA-seq data, and must be filtered out.</p>
+</div>
+<div id="recipeOutputSection">
+<section id="outputs"></section>
+<h3 class="divider">Outputs</h3>
+<div class="responsive-content" id="recipeOutputText">
+<p>This purpose of this recipe is to filter an RNA-seq dataset of bladder cancer samples, in order to find samples which have mutations in the ERCC2 gene, and compare them against samples that do not have these mutations. The output of this recipe will be a filtered GCT file (<code class="filename">BLCA.rnaseq.processed.gct</code>), and an accompanying CLS file (<code class="filename">BLCA.rnaseq.processed.cls</code>).</p>
+</div>
+</div>
+<section id="overview"></section>
+<h3 class="divider">Recipe steps</h3>
+<ul>
+<li><strong>FireBrowse</strong></li>
+<ol start="1">
+<li>Obtain the three input files from FireBrowse</li>
+</ol>
+</ul>
+<ul>
+<li><strong>GenomeSpace</strong></li>
+<ol start="2">
+<li>Upload and un-zip data in GenomeSpace</li>
+</ol>
+</ul>
+<ul>
+<li><strong>Galaxy</strong></li>
+<ol start="3">
+<li>Transfer the RNA-seq and MAF data files from GenomeSpace to Galaxy</li>
+<li>Process the RNA-seq file</li>
+<li>Identify RNA-seq samples that have MAF annotations by overlapping files</li>
+<li>Re-process the filtered RNA-seq data into a new file</li>
+</ol>
+</ul>
+<ul>
+<li><strong>GenomeSpace</strong></li>
+<ol start="7">
+<li>Convert the processed RNA-seq file into a GCT file</li>
+</ol>
+</ul>
+<ul>
+<li><strong>GenePattern</strong></li>
+<ol start="8">
+<li>Create a CLS file using the list of ERCC2-mutated samples</li>
+</ol>
+</ul>
+<div class="row">
+<div class="col-md-6" style="text-align: right; display: inline;width: 250px !important;">
+<a class="btn btn-info" href="javascript:void(0);" id="show-all"><span class="glyphicon glyphicon-plus"></span> Expand All Steps</a>
+</div>
+<div class="col-md-6" style="display: inline;width: 250px !important;">
+<a class="btn btn-info" href="javascript:void(0);" id="hide-all"><span class="glyphicon glyphicon-minus"></span> Collapse All Steps</a>
+</div>
+</div>
+<p></p>
+<div aria-multiselectable="true" class="panel-group" id="steps" role="tablist">
+<div class="panel panel-default">
+<section id="step_0"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Firebrowse" class="stepAvatar tag-tooltip" src="/assets/FireBrowse.png" title="FireBrowse"/>
+<a data-toggle="toggle" href="#collapse_0" onclick="$('#collapse_0').collapse('toggle')">1: Obtain the three input files from FireBrowse <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>Use FireBrowse to obtain the three files necessary to complete this recipe: (1) a file of gene RSEM values for BLCA RNA-seq data; (2) a list of BLCA samples with MAF annotations; and, (3) a list of BLCA samples with ERCC2 mutations, and the mutation types.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_0" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>Launch FireBrowse from GenomeSpace by clicking on the FireBrowse icon in the tool bar.</li>
+<li>Download the RNA-seq data file:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li>Under <code class="parameter">SELECT COHORT</code>, choose <code class="parameter">BLCA</code>.<br>
+<img alt="" src="/ckeditor_assets/pictures/143/content_step01_01.png" style="width: 400px; height: 385px; border: 1px solid grey; margin-bottom: 10px;"/></br></li>
+<li>In the barchart of samples, click <code class="parameter">mRNASeq</code> (dark red bar). This will open a window called <code class="parameter">BLCA mRNASeq Archives</code>.<br/>
+<img alt="" src="/ckeditor_assets/pictures/144/content_step01_02.png" style="width: 400px; height: 415px; border: 1px solid grey;margin-bottom: 10px;"/></li>
+<li>Click on <code class="parameter">Send To</code>.</li>
+<li>Select <code class="filename">illuminahiseq_rnaseqv2-RSEM_genes_normalized</code>.</li>
+<li>Click the <code class="parameter">GenomeSpace Upload</code> button, which will open the GenomeSpace upload/download manager.<br/>
+<img alt="" src="/ckeditor_assets/pictures/145/content_step01_03.png" style="width: 400px; height: 332px;margin-bottom: 10px;"/></li>
+<li>Choose a directory to save the file in. Click <code class="parameter">Submit</code> to send the data to GenomeSpace. This will create a new archived file in your GenomeSpace account, called <code class="filename">gdac.broadinstitute.org_BLCA.Merge_rnaseqv2_...[date/time]...tar.gz</code>. Once the upload is complete, close the data manager window and the <code class="parameter">BLCA mRNASeq Archives</code> popup window.</li>
+</ol>
+</li>
+<li>Download the MAF annotation file:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li>In the the barchart of samples, click <code class="parameter">Mutation Annotation File</code> (grey bar). This will open a window called <code class="parameter">BLCA MAF Archives</code>.<br/>
+<img alt="" src="/ckeditor_assets/pictures/146/content_step01_04.png" style="width: 400px; height: 422px; border: 1px solid grey;margin-bottom: 10px;"/></li>
+<li>Click on <code class="parameter">Send To</code>.</li>
+<li>Select <code class="parameter">Mutation_Packager_Calls</code>.</li>
+<li>Click the <code class="parameter">GenomeSpace Upload</code> button, which will open the GenomeSpace upload/download manager.<br/>
+<img alt="" src="/ckeditor_assets/pictures/147/content_step01_05.png" style="width: 400px; height: 380px;margin-bottom: 10px;"/></li>
+<li>Choose a directory to save the file in. Click <code class="parameter">Submit</code> to send the data to GenomeSpace. This will create a new archived file in your GenomeSpace account, called <code class="filename">gdac.broadinstitute.org_BLCA.Mutation_Packager_Calls...[date/time]...tar.gz</code>. Once the upload is complete, close the data manager window and the <code class="parameter">BLCA MAF Archives</code> popup window.</li>
+</ol>
+</li>
+<li>Download the list of BLCA samples with ERCC2 mutations.
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li>Click on the <code class="parameter">WEB-API</code> link in the navigation menu.<br/>
+<img alt="" src="/ckeditor_assets/pictures/148/content_step01_06.png" style="width: 600px; height: 98px;border: 1px solid grey;margin-bottom: 10px;"/></li>
+<li>Click <code class="parameter">Analyses: Fine grained retrieval of analysis pipeline results</code>.</li>
+<li>Click <code class="parameter">GET /Analyses/Mutation/MAF</code>.<br/>
+<img alt="" src="/ckeditor_assets/pictures/149/content_step01_07.png" style="width: 600px; height: 379px;border: 1px solid grey;margin-bottom: 10px;"/></li>
+<li>Change the following parameters:
+		<ol start="1" style="list-style-type: lower-alpha;">
+<li><code class="parameter">format</code>: tsv</li>
+<li><code class="parameter">cohort</code>: BLCA</li>
+<li><code class="parameter">gene</code>: ERCC2</li>
+</ol>
+</li>
+<li>Click <code class="parameter">Perform Query</code>. This will return several results, such as the "Request URL", "Response Body", "Response Code", and "Response Headers".<br/>
+<img alt="" src="/ckeditor_assets/pictures/150/content_step01_08.png" style="width: 600px; height: 496px;margin-bottom: 10px;"/></li>
+<li>Under the <code class="parameter">Request URL</code> section, copy the URL.<br/>
+<img alt="" src="/ckeditor_assets/pictures/151/content_step01_09.png" style="width: 600px; height: 65px;margin-bottom: 10px;"/><br/>
+		We will need this URL in the next step to upload the data to GenomeSpace. Make sure not to close the FireBrowse window until you have successfully uploaded the data to GenomeSpace.</li>
+</ol>
+</li>
+</ol>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/kH85J2kVt8o?list=https://www.youtube.com/watch?v=kH85J2kVt8o&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_1"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Genomespace" class="stepAvatar tag-tooltip" src="/assets/GenomeSpace.png" title="GenomeSpace"/>
+<a data-toggle="toggle" href="#collapse_1" onclick="$('#collapse_1').collapse('toggle')">2: Upload and un-zip data in GenomeSpace <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>Upload the ERCC2 mutation data file to GenomeSpace. Then, un-zip the directory of RNA-seq data, <code class="filename">BLCA RNA-seq RSEM normalized</code> file. This will create a .txt file of the normalized RSEM values of the RNA-seq data. <span style="line-height: 20.8px;">Un-tar, un-zip and process the mutation annotation file list, </span><code class="filename" style="line-height: 20.8px;">BLCA Mutation Packager Calls</code><span style="line-height: 20.8px;"> file. This will create a folder of the MAF annotations for each sample. The only file we will use for this recipe is the </span><code class="filename" style="line-height: 20.8px;">MANIFEST.txt</code><span style="line-height: 20.8px;"> file.</span></p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_1" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li><strong>Upload the <span style="line-height: 20.8px;">list of BLCA samples with ERCC2 mutations to GenomeSpace.</span></strong>
+<ol start="1" style="list-style-type: upper-alpha;">
+<li>In GenomeSpace navigate to <code class="parameter">File &gt; Import from URL</code>.</li>
+<li>Paste the URL from FireBrowse into the box, then click <code class="parameter">Go</code>. This will open the GenomeSpace upload/download manager.<br>
+<img alt="" src="/ckeditor_assets/pictures/171/content_step02_01.png" style="width: 600px; height: 446px;margin-bottom: 10px;"/></br></li>
+<li>Choose a directory and file name for the file (e.g., <code class="filename">ERCC2mutSamples.txt</code>).</li>
+<li>Click <code class="parameter">Submit</code> to send the data to GenomeSpace.</li>
+</ol>
+</li>
+<li><strong>Un-zip the BLCA RNA-seq dataset.</strong>
+<ol start="1" style="list-style-type: upper-alpha;">
+<li>Right-click on the <code class="filename">gdac.broadinstitute.org_BLCA.Merge_rnaseqv2_...[date/time]...tar.gz</code> file.</li>
+<li>Choose <code class="parameter">Expand Archive</code>. Give the unzipped folder an easy to remember name, e.g. "BLCA_RNAseq". Then click <code class="parameter">Expand Archive</code>. This should create a new folder, <code class="directory">BLCA_RNAseq</code>.<br/>
+<img alt="" src="/ckeditor_assets/pictures/460/content_step02_02_updated.png" style="width: 673px; height: 357px; margin-bottom: 10px;"/></li>
+<li>Navigate through the subfolders in <code class="directory">BLCA_RNAseq</code> until you find the RSEM file, <code class="filename">BLCA.rnaseqv2__illuminahiseq_rnaseqv2__unc_edu__Level_3__RSEM_genes_normalized__data.data.txt</code>. This is the file we will be working with. Feel free to copy this file to a different part of your directory, or to rename the file.</li>
+</ol>
+</li>
+<li><strong><span style="line-height: 20.8px;">Un-zip and process the BLCA MAF dataset.</span></strong>
+<ol start="1" style="list-style-type: upper-alpha;">
+<li>In GenomeSpace, right-click on the <code class="filename">gdac.broadinstitute.org_BLCA.Mutation_Packager_Calls...[date/time]...tar.gz</code> file.</li>
+<li>Choose <code class="parameter">Expand Archive</code>. Give the unzipped folder an easy to remember name, e.g. "BLCA_MAF". Then click <code class="parameter">Expand Archive</code>. This should create a new folder, <code class="directory">BLCA_MAF</code>.<br/>
+<img alt="" src="/ckeditor_assets/pictures/173/content_step02_03.png" style="width: 400px; height: 350px;margin-bottom: 10px;"/></li>
+<li>Navigate through the subfolders in <code class="directory">BLCA_MAF</code> until you find a <code class="filename">MANIFEST.txt</code> file.</li>
+<li>Right-click the <code class="filename">MANIFEST.txt</code> file, and choose <code class="parameter">Extract rows / cols</code>. Change the following parameters:
+		<ol start="1" style="list-style-type: lower-alpha;">
+<li><code class="parameter">delimiter</code>: Space</li>
+<li>Click the check-box above the second column. This should select all the MAF filenames (e.g. "TCGA-G2-A2EF-01.maf.txt").</li>
+<li>Click <code class="parameter">Save</code>. The resulting file should be called <code class="filename">MANIFEST.slice.txt</code>.<br/>
+<img alt="" src="/ckeditor_assets/pictures/174/content_step02_04.png" style="width: 600px; height: 238px;margin-bottom: 10px;"/></li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/h0-aAMogE8o?list=https://www.youtube.com/watch?v=h0-aAMogE8o&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_2"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Galaxy" class="stepAvatar tag-tooltip" src="/assets/Galaxy.png" title="Galaxy"/>
+<a data-toggle="toggle" href="#collapse_2" onclick="$('#collapse_2').collapse('toggle')">3: Transfer the RNA-seq and MAF data files from GenomeSpace to Galaxy <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>Use the Galaxy GenomeSpace Importer interface to transfer the RNA-seq data file and the MAF Manifest file to Galaxy.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_2" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>
+<div>Upload the RNA-Seq file to Galaxy.
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li>Launch Galaxy by clicking on the Galaxy icon in GenomeSpace.</li>
+<li>Navigate to <code class="parameter">Get Data &gt; GenomeSpace import</code>.<br>
+<img alt="" src="/ckeditor_assets/pictures/175/content_step03_01.png" style="width: 200px; height: 217px;margin-bottom: 10px;"/></br></li>
+<li>Navigate through your GenomeSpace directories until you find the RSEM file, <code class="filename">BLCA.rnaseqv2__illuminahiseq_rnaseqv2__unc_edu__Level_3__RSEM_genes_normalized__data.data.txt</code>.</li>
+<li>Click <code class="parameter">Send to Galaxy</code>.</li>
+<li>When the dataset has been uploaded, click the pencil icon (<img alt="" height="14" src="/ckeditor_assets/pictures/122/content_galaxy_pencil.png" style="display: inline-block;" width="14"/>).</li>
+<li>Click on the <code class="parameter">Datatype</code> column, then change the following parameters:
+		<ol start="1" style="list-style-type: lower-alpha;">
+<li><code class="parameter">New Type</code>: tabular</li>
+<li>Click <code class="parameter">Save</code>.<br/>
+<img alt="" src="/ckeditor_assets/pictures/176/content_step03_02.png" style="width: 500px; height: 223px;margin-bottom: 10px;"/></li>
+</ol>
+</li>
+<li>Click on the <code class="parameter">Attributes</code> column, and change the following parameters:
+		<ol start="1" style="list-style-type: lower-alpha;">
+<li><code class="parameter">Name</code>: BLCA.rnaseq</li>
+<li>Click <code class="parameter">Save</code>.<br/>
+<img alt="" src="/ckeditor_assets/pictures/177/content_step03_03.png" style="width: 400px; height: 475px;margin-bottom: 10px;"/></li>
+</ol>
+</li>
+</ol>
+</div>
+</li>
+<li><span style="line-height: 20.8px;">Upload the MAF file, <code class="filename">MANIFEST.slice.txt</code>, to Galaxy.</span>
+<ol start="1" style="list-style-type: upper-alpha;">
+<li>Navigate to <code class="parameter">Get Data &gt; GenomeSpace import</code>.<br/>
+<img alt="" src="/ckeditor_assets/pictures/178/content_step03_04.png" style="width: 200px; height: 217px;margin-bottom: 10px;"/></li>
+<li>Navigate through your GenomeSpace directories until you find the <code class="filename">MANIFEST.slice.txt</code> file. Select it.</li>
+<li>Click <code class="parameter">Send to Galaxy</code>.</li>
+</ol>
+</li>
+<li>Remove extraneous data from the <code class="filename">MANIFEST.slice.txt</code> file.
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li>Navigate to <code class="parameter">Text Manipulation &gt; Replace Text (in entire line)</code>. Change the following parameters:<br/>
+<img alt="" src="/ckeditor_assets/pictures/179/content_step03_05.png" style="width: 200px; height: 198px;margin-bottom: 10px;"/>
+<ol start="1" style="list-style-type: lower-alpha;">
+<li><code class="parameter">file to process</code>: GenomeSpace import on [<code class="filename">Manifest.slice.txt</code>]</li>
+<li><code class="parameter">Find pattern</code>: -01.maf.txt</li>
+<li><code class="parameter">Replace with</code>: <span style="color:#FF0000;"><i>(leave empty)</i></span></li>
+<li>Click <code class="parameter">Execute</code>.<br/>
+<img alt="" src="/ckeditor_assets/pictures/180/content_step03_06.png" style="width: 400px; height: 260px; margin-bottom: 10px;"/></li>
+</ol>
+</li>
+<li>Once the job is finished running, click on the pencil icon (<img alt="" height="14" src="/ckeditor_assets/pictures/122/content_galaxy_pencil.png" style="display:inline-block;" width="14"/>) and navigate to the <code class="parameter">Attributes</code> section. Change the following parameters:
+		<ol start="1" style="list-style-type: lower-alpha;">
+<li><code class="parameter">Name</code>: <code class="filename">MAF Sample IDs</code>.</li>
+<li>Click <code class="parameter">Save</code>.<br/>
+<img alt="" src="/ckeditor_assets/pictures/181/content_step03_07.png" style="width: 350px; height: 435px;margin-bottom: 10px;"/></li>
+</ol>
+</li>
+<li>Click on the <code class="parameter">Datatype</code> column, then change the following parameters:
+		<ol start="1" style="list-style-type: lower-alpha;">
+<li><code class="parameter">New Type</code>: tabular</li>
+<li>Click <code class="parameter">Save</code>.<br/>
+<img alt="" src="/ckeditor_assets/pictures/458/content_step03_02_updated.png" style="width: 510px; height: 227px; margin-bottom: 10px;"/></li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/TknYdI7HpEU?list=https://www.youtube.com/watch?v=TknYdI7HpEU&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_3"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Galaxy" class="stepAvatar tag-tooltip" src="/assets/Galaxy.png" title="Galaxy"/>
+<a data-toggle="toggle" href="#collapse_3" onclick="$('#collapse_3').collapse('toggle')">4: Process the RNA-seq file <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>Process the RNA-seq file, <code class="filename">BLCA.rnaseq</code> (from Step 2). In this step, we will be removing unnecessary information from the file (e.g. 'normalized count' information), in order to turn the file into a <a href="http://www.broadinstitute.org/cancer/software/genepattern/file-formats-guide#GCT" target="_blank">GCT file</a> later.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_3" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>Remove the first column of gene IDs from the RNA-seq data.
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li>Navigate to <code class="parameter">Text Manipulation &gt; Cut columns from a table (cut)</code>. Change the following parameters:<br>
+<small><strong>NOTE:</strong> There are two versions of a 'cut' tool in Galaxy. Please check the screenshots and make sure that the parameters of the tools match.</small><br/>
+<img alt="" src="/ckeditor_assets/pictures/164/content_step04_01.png" style="width: 251px; height: 249px; margin-bottom: 10px;"/></br></li>
+<li><code class="parameter">file to cut</code>: [<code class="filename">BLCA.rnaseq</code>]</li>
+<li><code class="parameter">Operation</code>: Discard</li>
+<li><code class="parameter">Delimited by</code>: Tab</li>
+<li><code class="parameter">Cut by</code>: fields</li>
+<li><code class="parameter">List of Fields</code>: click on the box and select <code class="parameter">Column: 1</code> from the drop-down menu.</li>
+<li>Click <code class="parameter">Execute</code>.<br/>
+<img alt="" src="/ckeditor_assets/pictures/165/content_step04_02.png" style="width: 400px; height: 401px; margin-bottom: 10px;"/></li>
+</ol>
+</li>
+<li>Transpose the RNA-seq data (convert the rows to columns, and the columns to rows).
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li>Navigate to <code class="parameter">Datamash &gt; Transpose</code>. Change the following parameters:<br/>
+<img alt="" src="/ckeditor_assets/pictures/166/content_step04_03.png" style="width: 251px; height: 209px; margin-bottom: 10px;"/></li>
+<li><code class="parameter">Input tabular dataset</code>: Cut on [<code class="filename">BLCA.rnaseq</code>]</li>
+<li>Click <code class="parameter">Execute</code>.<br/>
+<img alt="" src="/ckeditor_assets/pictures/167/content_step04_04.png" style="width: 400px; height: 107px; margin-bottom: 10px;"/></li>
+</ol>
+</li>
+<li>Remove extraneous columns from the data.
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li>Navigate to <code class="parameter">Text Manipulation &gt; Cut columns from a table (cut)</code>. Change the following parameters:<br/>
+<small><strong>NOTE:</strong> There are two versions of a 'cut' tool in Galaxy. Please check the screenshots and make sure that the parameters of the tools match.</small><br/>
+<img alt="" src="/ckeditor_assets/pictures/168/content_step04_05.png" style="width: 251px; height: 249px; margin-bottom: 10px;"/></li>
+<li><code class="parameter">file to cut</code>: Tranpose on [Cut on <code class="filename">BLCA.rnaseq</code>]</li>
+<li><code class="parameter">Operation</code>: Discard</li>
+<li><code class="parameter">Delimited by</code>: Tab</li>
+<li><code class="parameter">Cut by</code>: fields</li>
+<li><code class="parameter">List of Fields</code>: click on the box and select <code class="parameter">Column: 2</code> from the drop-down menu.</li>
+<li>Click <code class="parameter">Execute</code>.<br/>
+<img alt="" src="/ckeditor_assets/pictures/169/content_step04_06.png" style="width: 400px; height: 385px; margin-bottom: 10px;"/></li>
+<li>Once the job is finished running, click on the pencil icon (<img alt="" height="14" src="/ckeditor_assets/pictures/122/content_galaxy_pencil.png" style="display:inline-block;" width="14"/>) and navigate to the <code class="parameter">Attributes</code> section. Change the following parameters:
+		<ol start="1" style="list-style-type: lower-alpha;">
+<li><code class="parameter">Name</code>: <code class="filename">BLCA.rnaseq Data</code>.</li>
+<li>Click <code class="parameter">Save</code>.<br/>
+<img alt="" src="/ckeditor_assets/pictures/170/content_step04_07.png" style="width: 397px; height: 487px; margin-bottom: 10px;"/></li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/cV3jLRSxEHA?list=https://www.youtube.com/watch?v=cV3jLRSxEHA&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_4"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Galaxy" class="stepAvatar tag-tooltip" src="/assets/Galaxy.png" title="Galaxy"/>
+<a data-toggle="toggle" href="#collapse_4" onclick="$('#collapse_4').collapse('toggle')">5: Identify RNA-seq samples that have MAF annotations by overlapping files <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>Next, we want to identify samples from the RNA-seq data, which have been annotated by mutations, and therefore have an associated MAF. We will do this by overlapping the list of samples with RNA-seq data, with the list of samples with MAFs.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_4" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>Cut out the list of sample IDs from the RNA-seq file for processing.
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li>Navigate to <code class="parameter">Text Manipulation &gt; Cut columns from a table (cut)</code>. Change the following parameters:<br>
+<small><strong>NOTE:</strong> There are two versions of a 'cut' tool in Galaxy. Please check the screenshots and make sure that the parameters of the tools match.</small><br/>
+<img alt="" src="/ckeditor_assets/pictures/164/content_step04_01.png" style="width: 200px; height: 198px;margin-bottom: 10px;"/></br></li>
+<li><code class="parameter">file to cut</code>: [<code class="filename">BLCA.rnaseq Data</code>]</li>
+<li><code class="parameter">Operation</code>: Keep</li>
+<li><code class="parameter">Delimited by</code>: Tab</li>
+<li><code class="parameter">Cut by</code>: fields</li>
+<li><code class="parameter">List of Fields</code>: click on the box and select <code class="parameter">Column: 1</code> from the drop-down menu.</li>
+<li>Click <code class="parameter">Execute</code>.<br/>
+<img alt="" src="/ckeditor_assets/pictures/182/content_step05_02.png" style="width: 400px; height: 395px;margin-bottom: 10px;"/></li>
+</ol>
+</li>
+<li>Trim extraneous text from the sample IDs (obtained from the RNA-seq file).
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li>Navigate to <code class="parameter">Text Manipulation &gt; Trim</code>. Change the following parameters:<br/>
+<img alt="" src="/ckeditor_assets/pictures/183/content_step05_03.png" style="width: 200px; height: 198px;margin-bottom: 10px;"/></li>
+<li><code class="parameter">this dataset</code>: Cut on [<code class="filename">BLCA.rnaseq Data</code>]</li>
+<li><code class="parameter">Trim this column only</code>: 0</li>
+<li><code class="parameter">Trim from the beginning up to this position</code>: 1</li>
+<li><code class="parameter">Remove everything from this position to the end</code>: -16</li>
+<li><code class="parameter">Is input data in fastq format?</code>: No</li>
+<li>Click <code class="parameter">Execute</code>.<br/>
+<img alt="" src="/ckeditor_assets/pictures/184/content_step05_04.png" style="width: 400px; height: 603px;margin-bottom: 10px;"/></li>
+</ol>
+</li>
+<li>Combine the simplified sample IDs with the processed RNA-seq dataset.
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li>Navigate to <code class="parameter">Text Manipulation &gt; Paste</code>. Change the following parameters:<br/>
+<img alt="" src="/ckeditor_assets/pictures/185/content_step05_05.png" style="width: 200px; height: 198px;margin-bottom: 10px;"/></li>
+<li><code class="parameter">Paste</code>: Trim on [<code class="filename">Cut on BLCA.rnaseq Data</code>]</li>
+<li><code class="parameter">and</code>: [<code class="filename">BLCA.rnaseq Data</code>]</li>
+<li><code class="parameter">Delimit by</code>: Tab</li>
+<li>Click <code class="parameter">Execute</code>.<br/>
+<img alt="" src="/ckeditor_assets/pictures/186/content_step05_06.png" style="width: 400px; height: 243px;margin-bottom: 10px;"/></li>
+<li>Once the job is finished running, click on the pencil icon (<img alt="" height="14" src="/ckeditor_assets/pictures/122/content_galaxy_pencil.png" style="display:inline-block;" width="14"/>) and navigate to the <code class="parameter">Attributes</code> column. Change the following parameters:
+		<ol start="1" style="list-style-type: lower-alpha;">
+<li><code class="parameter">Name</code>: <code class="filename">BLCA.rnaseq Data, combined IDs</code></li>
+<li>Click <code class="parameter">Save</code>.<br/>
+<img alt="" src="/ckeditor_assets/pictures/187/content_step05_07.png" style="width: 400px; height: 454px;margin-bottom: 10px;"/></li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Find the overlap of IDs between the RNA-seq sample IDs and the MAF annotation sample IDs.
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li>Navigate to <code class="parameter">Join, Subtract and Group &gt; Join two Datasets</code>. Change the following parameters:<br/>
+<img alt="" src="/ckeditor_assets/pictures/188/content_step05_08.png" style="width: 200px; height: 214px;margin-bottom: 10px;"/></li>
+<li><code class="parameter">Join</code>: [<code class="filename">MAF Sample IDs</code>]</li>
+<li><code class="parameter">using column</code>: Column: 1</li>
+<li><code class="parameter">with</code>: [<code class="filename">BLCA.rnaseq Data, combined IDs</code>]</li>
+<li><code class="parameter">and column</code>: Column: 1</li>
+<li><code class="parameter">Keep lines of first input that do not join with second input</code>: No</li>
+<li><code class="parameter">Keep lines of first input that are incomplete</code>: No</li>
+<li><code class="parameter">Fill empty columns</code>: No</li>
+<li>Click <code class="parameter">Execute</code>.<br/>
+<img alt="" src="/ckeditor_assets/pictures/189/content_step05_09.png" style="width: 400px; height: 461px;margin-bottom: 10px;"/></li>
+<li>Once the job is finished running, click on the pencil icon (<img alt="" height="14" src="/ckeditor_assets/pictures/122/content_galaxy_pencil.png" style="display:inline-block;" width="14"/>) and navigate to the <code class="parameter">Attributes</code> column. Change the following parameters:
+		<ol start="1" style="list-style-type: lower-alpha;">
+<li><code class="parameter">Name</code>: <code class="filename">BLCA.rnaseq Data, filtered</code></li>
+<li>Click <code class="parameter">Save</code>.<br/>
+<img alt="" src="/ckeditor_assets/pictures/190/content_step05_10.png" style="width: 400px; height: 475px;margin-bottom: 10px;"/></li>
+</ol>
+</li>
+<li>Click on the <code class="parameter">Datatype</code> column, then change the following parameters:
+		<ol start="1" style="list-style-type: lower-alpha;">
+<li><code class="parameter">New Type</code>: tabular</li>
+<li>Click <code class="parameter">Save</code>.<br/>
+<img alt="" src="/ckeditor_assets/pictures/459/content_step03_02_updated2.png" style="width: 510px; height: 227px; margin-bottom: 10px;"/></li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/oqQe9zbbU84?list=https://www.youtube.com/watch?v=oqQe9zbbU84&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_5"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Galaxy" class="stepAvatar tag-tooltip" src="/assets/Galaxy.png" title="Galaxy"/>
+<a data-toggle="toggle" href="#collapse_5" onclick="$('#collapse_5').collapse('toggle')">6: Re-process the filtered RNA-seq data into a new file <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>Now that we have identified the RNA-seq samples that are also annotated with mutation information, we need to re-process the filtered RNA-seq dataset and turn it into a GCT file.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_5" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>Remove the extraneous column from the <code class="filename">BLCA.rnaseq Data, filtered</code> file.
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li>Navigate to <code class="parameter">Text Manipulation &gt; Cut columns from a table (cut)</code>. Change the following parameters:<br>
+<small><strong>NOTE:</strong> There are two versions of a 'cut' tool in Galaxy. Please check the screenshots and make sure that the parameters of the tools match.</small><br/>
+<img alt="" src="/ckeditor_assets/pictures/164/content_step04_01.png" style="width: 200px; height: 198px;margin-bottom:10px;"/></br></li>
+<li><code class="parameter">File to cut</code>: [<code class="filename">BLCA.rnaseq Data, filtered</code>]</li>
+<li><code class="parameter">Operation</code>: Discard</li>
+<li><code class="parameter">Delimited by</code>: Tab</li>
+<li><code class="parameter">Cut by</code>: fields</li>
+<li><code class="parameter">List of fields</code>: click on the box and select <code class="parameter">Column: 1</code> from the drop-down menu. Click again to select <code class="parameter">Column: 2</code> from the drop-down menu.</li>
+<li>Click <code class="parameter">Execute</code>.<br/>
+<img alt="" src="/ckeditor_assets/pictures/191/content_step06_02.png" style="width: 400px; height: 393px;margin-bottom:10px;"/></li>
+</ol>
+</li>
+<li>Re-transpose the RNA-seq data to its original form (convert the rows to columns, and the columns to rows).
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li>Navigate to <code class="parameter">Datamash &gt; Transpose</code>. Change the following parameters:<br/>
+<img alt="" src="/ckeditor_assets/pictures/166/content_step04_03.png" style="width: 251px; height: 209px;margin-bottom:10px;"/></li>
+<li><code class="parameter">Input tabular dataset</code>: Cut on [<code class="filename">BLCA.rnaseq Data, filtered</code>]</li>
+<li>Click <code class="parameter">Execute</code>.<br/>
+<img alt="" src="/ckeditor_assets/pictures/192/content_step06_03.png" style="width: 499px; height: 130px;margin-bottom:10px;"/></li>
+</ol>
+</li>
+<li>Obtain the first column of the original file, the gene IDs.
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li>Navigate to <code class="parameter">Text Manipulation &gt; Cut columns from a table (cut)</code>. Change the following parameters:<br/>
+<small><strong>NOTE:</strong> There are two versions of a 'cut' tool in Galaxy. Please check the screenshots and make sure that the parameters of the tools match.</small><br/>
+<img alt="" src="/ckeditor_assets/pictures/193/content_step06_04.png" style="width: 200px; height: 198px;margin-bottom:10px;"/></li>
+<li><code class="parameter">file to cut</code>: [<code class="filename">BLCA.rnaseq</code>]</li>
+<li><code class="parameter">Operation</code>: Keep</li>
+<li><code class="parameter">Delimited by</code>: Tab</li>
+<li><code class="parameter">Cut by</code>: fields</li>
+<li><code class="parameter">List of Fields</code>: click on the box and select <code class="parameter">Column: 1</code> from the drop-down menu.</li>
+<li>Click <code class="parameter">Execute</code>.<br/>
+<img alt="" src="/ckeditor_assets/pictures/194/content_step06_05.png" style="width: 400px; height: 383px;margin-bottom:10px;"/></li>
+<li>Once the job is finished running, click on the pencil icon (<img alt="" height="14" src="/ckeditor_assets/pictures/122/content_galaxy_pencil.png" style="line-height: 20.8px; display: inline-block;" width="14"/>) and navigate to the <code class="parameter">Attributes</code> section. Change the following parameters:
+		<ol start="1" style="list-style-type: lower-alpha;">
+<li><code class="parameter">â€‹Name:</code> <code class="filename">BLCA.rnaseq Gene IDs</code></li>
+<li>Click <code class="parameter">Save</code>.<br/>
+<img alt="" src="/ckeditor_assets/pictures/195/content_step06_06.png" style="width: 400px; height: 487px;margin-bottom:10px;"/></li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Remove unnecessary information from the column of gene IDs.
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li>Navigate to <code class="parameter">Text Manipulation &gt; Remove beginning</code>. Change the following parameters:<br/>
+<img alt="" src="/ckeditor_assets/pictures/196/content_step06_07.png" style="width: 200px; height: 198px;margin-bottom:10px;"/></li>
+<li><code class="parameter">Remove first</code>: 1</li>
+<li><code class="parameter">from</code>: [<code class="filename">BLCA.rnaseq Gene IDs</code>]</li>
+<li>Click <code class="parameter">Execute</code>.<br/>
+<img alt="" src="/ckeditor_assets/pictures/197/content_step06_08.png" style="width: 400px; height: 199px;margin-bottom:10px;"/></li>
+</ol>
+</li>
+<li>Add a descriptor column to the gene IDs file.
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li>Navigate to <code class="parameter">Text Manipulation &gt; Add column</code>. Change the following parameters:<br/>
+<img alt="" src="/ckeditor_assets/pictures/198/content_step06_09.png" style="width: 200px; height: 198px;margin-bottom:10px;"/></li>
+<li><code class="parameter">Add this value</code>: No description</li>
+<li><code class="parameter">to Dataset</code>: Remove beginning on [BLCA.rnaseq Gene IDs]</li>
+<li><code class="parameter">Iterate?</code>: NO</li>
+<li>Click <code class="parameter">Execute</code>.<br/>
+<img alt="" src="/ckeditor_assets/pictures/199/content_step06_10.png" style="width: 400px; height: 224px;margin-bottom:10px;"/></li>
+</ol>
+</li>
+<li>Combine the gene IDs and the RNA-seq dataset together.
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li>Navigate to <code class="parameter">Text Manipulation &gt; Paste</code>. Change the following parameters:<br/>
+<img alt="" src="/ckeditor_assets/pictures/200/content_step06_11.png" style="width: 200px; height: 198px;margin-bottom:10px;"/></li>
+<li><code class="parameter">Paste</code>: Add column on [Remove beginning on [<code class="filename">BLCA.rnaseq Gene IDs</code>]]</li>
+<li><code class="parameter">and</code>: Transpose on [Cut on [<code class="filename">BLCA.rnaseq Data, filtered</code>]]</li>
+<li><code class="parameter">Delimit by</code>: Tab</li>
+<li>Click <code class="parameter">Execute</code>.<br/>
+<img alt="" src="/ckeditor_assets/pictures/201/content_step06_12.png" style="width: 500px; height: 215px;margin-bottom:10px;"/></li>
+<li>Once the job is finished running, click on the pencil icon (<img alt="" height="14" src="/ckeditor_assets/pictures/122/content_galaxy_pencil.png" style="display:inline-block;" width="14"/>) and navigate to the <code class="parameter">Attributes</code> section. Change the following parameters:
+		<ol start="1" style="list-style-type: lower-alpha;">
+<li><code class="parameter">Name</code>: <code class="filename">BLCA.rnaseq Final</code></li>
+<li>Click <code class="parameter">Save</code>.<br/>
+<img alt="" src="/ckeditor_assets/pictures/202/content_step06_13.png" style="width: 400px; height: 484px;margin-bottom:10px;"/></li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Send data back to GenomeSpace.
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li>Navigate to <code class="parameter">Send Data &gt; GenomeSpace Exporter</code>. Change the following parameters:<br/>
+<img alt="" src="/ckeditor_assets/pictures/203/content_step06_14.png" style="width: 200px; height: 175px;margin-bottom:10px;"/></li>
+<li><code class="parameter">Send this dataset to GenomeSpace</code>: [<code class="filename">BLCA.rnaseq Final</code>]</li>
+<li><code class="parameter">Choose Target Directory</code>: select a directory to save the file to</li>
+<li><code class="parameter">Filename</code>: give the file a name, e.g. <code class="filename">BLCA.rnaseq.processed.tab</code>. Make sure to use the <strong><code class="filename">.tab</code></strong> extension when saving the file.</li>
+<li>Click <code class="parameter">Execute</code>.<br/>
+<img alt="" src="/ckeditor_assets/pictures/204/content_step06_15.png" style="width: 500px; height: 263px;"/></li>
+</ol>
+</li>
+</ol>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/9XSkQS0Lj8g?list=https://www.youtube.com/watch?v=9XSkQS0Lj8g&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_6"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Genomespace" class="stepAvatar tag-tooltip" src="/assets/GenomeSpace.png" title="GenomeSpace"/>
+<a data-toggle="toggle" href="#collapse_6" onclick="$('#collapse_6').collapse('toggle')">7: Convert the processed RNA-seq file into a GCT file <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p><span style="line-height: 20.8px;">We have found the overlap between samples with RNA-seq data and samples with MAF annotations. This process resulted in a tab-delimited matrix file containing the RSEM values for the genes. In order to proceed with further analysis, this tab-delimited file needs to be turned into a<span style="line-height: 20.8px;"> </span><a href="http://www.broadinstitute.org/cancer/software/genepattern/file-formats-guide#GCT" style="line-height: 20.8px;" target="_blank">GCT file</a><span style="line-height: 20.8px;">. We can accomplish this using the simple conversion tools built into GenomeSpace.</span></span></p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_6" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol start="1">
+<li>Turn the RNA-seq file into a GCT file.
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li>In GenomeSpace, right-click on the <code class="filename">BLCA.rnaseq.processed.tab</code> file.</li>
+<li>Choose <code class="parameter">Convert</code>.<br>
+<img alt="" src="/ckeditor_assets/pictures/206/content_step07_01.png" style="width: 600px; height: 374px;margin-bottom:10px;"/></br></li>
+<li>Under <code class="parameter">Convert to:</code> choose <code class="parameter">GCT</code>.</li>
+<li>Click <code class="parameter">Convert on Server</code>. The output file should be <code class="filename">BLCA.rnaseq.processed.<strong>gct</strong></code>.<br/>
+<img alt="" src="/ckeditor_assets/pictures/207/content_step07_02.png" style="width: 250px; height: 210px;"/></li>
+</ol>
+</li>
+</ol>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/lIMiNmyUWBA?list=https://www.youtube.com/watch?v=lIMiNmyUWBA&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_7"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Genepattern" class="stepAvatar tag-tooltip" src="/assets/GenePattern.png" title="GenePattern"/>
+<a data-toggle="toggle" href="#collapse_7" onclick="$('#collapse_7').collapse('toggle')">8: Create a CLS file using the list of ERCC2-mutated samples <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p><span style="line-height: 20.8px;">Now that we have created a GCT file of the RNA-seq samples with mutation annotations, we need an accompanying </span><a href="http://www.broadinstitute.org/cancer/software/genepattern/file-formats-guide#CLS" style="line-height: 20.8px;" target="_blank">CLS file</a><span style="line-height: 20.8px;">. To create this CLS file, we will use our newly created GCT file, and we will also use the list of samples with mutations in the ERCC2 gene. This list is found in the </span><code class="filename" style="line-height: 20.8px;">ERCC2mutSamples.txt</code><span style="line-height: 20.8px;"> file. We will create this CLS file in GenePattern, using the </span><code class="parameter" style="line-height: 20.8px;">ClsFileCreator</code><span style="line-height: 20.8px;"> module.</span></p>
+<p><strong>TCGA Barcodes</strong></p>
+<p>The Cancer Genome Atlas labels its datasets with the TCGA barcode, an identifer that describes the metadata associated with sample. You can learn more about the <a href="https://wiki.nci.nih.gov/display/TCGA/TCGA+barcode" target="_blank">TCGA Barcodes on the NIH National Cancer Institute Wiki page</a> (see also: <a href="https://wiki.nci.nih.gov/display/TCGA/Working+with+TCGA+Data" target="_blank">working with TCGA data</a>). TCGA barcodes adhere to a certain format: <code class="note">TCGA-00-1111-<strong>22A</strong>-33B-4444-55</code>. For this recipe, we are interested in the <a href="https://wiki.nci.nih.gov/display/TCGA/Sample" target="_blank">Sample type</a>, indicated by the <strong><code class="note">22A</code></strong> section of the barcode. For this recipe we are interested in samples with designation <code class="note">01</code> (solid tumor, or TP) or <code class="note">11</code> (solid tissue normal, or NT), which are paired tumor-normal samples.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_7" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol style="line-height: 20.8px;">
+<li>Launch GenePattern by clicking on the GenePattern icon in the toolbar.</li>
+<li>In the <code class="parameter">Modules</code> section, search for the <code class="parameter">ClsFileCreator</code> module. Click the<span style="line-height: 20.8px;"> </span><code class="parameter" style="line-height: 20.8px;">ClsFileCreator</code><span style="line-height: 20.8px;"> module to load the module.<br>
+<img alt="" src="/ckeditor_assets/pictures/208/content_step08_01.png" style="width: 600px; height: 249px;margin-bottom:10px;"/></br></span></li>
+<li>Change to the <code class="parameter">GenomeSpace</code> tab to be able to access your files in GenomeSpace. Change the following parameters:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li><code class="parameter">input file</code>: <code class="filename">BLCA.rnaseq.processed.gct</code>.</li>
+<li>Click <code class="parameter">Run</code>. This will launch a visualizer which will walk you through the CLS file creation process.<br/>
+<img alt="" src="/ckeditor_assets/pictures/209/content_step08_02.png" style="width: 700px; height: 264px;margin-bottom:10px;"/></li>
+</ol>
+</li>
+<li>Add all the sample IDs to your CLS file:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li>Click on the <code class="parameter">Samples</code> tab.</li>
+<li>Make sure all samples are highlighted by clicking the <code class="parameter">Check All</code> button.</li>
+<li>Scroll down and click <code class="parameter">Next</code>.<br/>
+<img alt="" src="/ckeditor_assets/pictures/221/content_step08_03.png" style="width: 600px; height: 288px;margin-bottom:10px;"/></li>
+</ol>
+</li>
+<li>Under the <code class="parameter">Define Classes</code> tab, change the following parameters:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li>Define four classes; for each class, enter the name in the <code class="parameter">Enter class name</code> box, then click the <code class="parameter">Add class</code> button.
+		<ul>
+<li><code class="note">mutated_normal</code>: this is ERCC2 mutated, solid tissue normal (Sample Code: 11)</li>
+<li><code class="note">mutated_tumor</code>: this is ERCC2 mutated, primary solid tumor (Sample Code: 01)</li>
+<li><code class="note">wildtype_normal</code>: this is non-mutated, solid tissue normal (Sample Code: 11)</li>
+<li><code class="note">wildtype_tumor</code>: this is non-mutated, primary solid tumor (Sample Code: 01)</li>
+</ul>
+</li>
+<li>Once you have added these classes, scroll down and click <code class="parameter">Next</code>.<br/>
+<img alt="" src="/ckeditor_assets/pictures/220/content_step08_04.png" style="width: 600px; height: 329px;margin-bottom:10px;"/></li>
+</ol>
+</li>
+<li>Assign sample IDs to the classes.
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li>In a separate browser window, open GenomeSpace. Navigate to the location of the <code class="filename">ERCC2mutSamples.txt</code> file.</li>
+<li>Right-click on the <code class="filename">ERCC2mutSamples.txt</code> file, then choose <code class="parameter">Preview</code>. This will allow you to view the file. Keep this window open, in order to be able to reference the contents of the <code class="filename">ERCC2mutSamples.txt</code> file in later steps.<br/>
+<img alt="" src="/ckeditor_assets/pictures/223/content_step08_05.png" style="width: 600px; height: 391px;"/> </li>
+<li>Return to the browser window containing the view of GenePattern's <code class="parameter">CLSFileCreator</code> module.</li>
+<li>Under the <code class="parameter">Assign Classes</code> tab, assign each sample ID to a class.
+		<ol start="1" style="list-style-type: lower-alpha;">
+<li>Look at each sample ID in the <code class="filename">ERCC2mutSamples.txt</code> file (in GenomeSpace) and determine its ID (e.g. "TCGA-<strong>4Z-AA84-01A</strong>-11D-A391-08"). Next, compare this to the <code class="parameter">CLSFileCreator</code> window (in GenePattern), and look for the same IDs.</li>
+<li>Make sure the <code class="parameter">Class:</code> parameter is set to the appropriate class, based on the following criteria:
+			<ul>
+<li><code class="note">mutated_normal</code>: samples with sample class "11" and "missense mutation" (under "Variant_classification")</li>
+<li><code class="note">mutated_tumor</code>: samples with sample class "01" and "missense mutation" (under "Variant_classification")</li>
+<li><code class="note">wildtype_normal</code>: all remaining samples with sample class "11"</li>
+<li><code class="note">wildtype_tumor</code>: samples with sample class "01" and "silent mutation" (under "Variant_classification"), and all remaining samples with sample class "01" that are not assigned to <code class="note">mutated_tumor</code></li>
+</ul>
+</li>
+<li>If you have a matching ID and the correct <code class="parameter">Class:</code> chosen, assign the sample ID to the class by clicking on the arrow.<br/>
+<img alt="" src="/ckeditor_assets/pictures/224/content_step08_06.png" style="width: 800px; height: 329px;margin-bottom:10px;"/></li>
+</ol>
+</li>
+<li>Once you have assigned all samples to a class, scroll down and click <code class="parameter">Next</code>.<br/>
+<img alt="" src="/ckeditor_assets/pictures/225/content_step08_07.png" style="width: 600px; height: 467px;margin-bottom:10px;"/><br/>
+<strong>Note:</strong> There are a total of 43 lines in the <code class="filename">ERCC2mutSamples.txt</code> file, including 1 metadata line. The remaining 42 lines allow us to directly identify 2 <code class="note">mutated_normal</code> samples, 16 <code class="note">mutated_tumor</code> samples, and 2 <code class="note">wildtype_tumor</code> samples with silent mutations. The 13 <code class="note">wildtype_normal</code> samples are identified by their Sample Code (e.g. "11") which remains once the previous samples are removed from the list. The remaining 111 <code class="note">wildtype_tumor</code> samples are identified by being left over after all remaining previously listed samples are classified.</li>
+</ol>
+</li>
+<li>Review the information in the <code class="parameter">Summary</code> section. You should have the following assignments:Once you have reviewed everything, scroll down and click <code class="parameter">Next</code>.
+	<ul>
+<li><code class="note">mutated_normal</code>: 2</li>
+<li><code class="note">mutated_tumor</code>: 16</li>
+<li><code class="note">wildtype_normal</code>: 13</li>
+<li><code class="note">wildtype_tumor</code>: 113<br/>
+<img alt="" src="/ckeditor_assets/pictures/226/content_step08_08.png" style="width: 600px; height: 502px;margin-bottom:10px;"/></li>
+</ul>
+</li>
+<li>Under the <code class="parameter">Save</code> tab, change the following parameters:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li><code class="parameter">Enter file name</code>: Keep the filename that was generated, <code class="filename">BLCA.rnaseq.processed.cls</code></li>
+<li>Select the <code class="parameter">Save file to GenePattern Files Tab</code> button.</li>
+<li>Click the <code class="parameter">Select directory</code> button.<br/>
+<img alt="" src="/ckeditor_assets/pictures/227/content_step08_09.png" style="width: 600px; height: 401px;margin-bottom:10px;"/></li>
+<li>On the <code class="parameter">Select Directory from Files</code> pop-up, click on the directory you want to upload the file to.</li>
+<li>Click <code class="parameter">OK</code>.<br/>
+<img alt="" src="/ckeditor_assets/pictures/228/content_step08_10.png" style="width: 612px; height: 332px;margin-bottom:10px;"/></li>
+<li>On the <code class="parameter">Save</code> tab, click <code class="parameter">Save</code> to save the file to GenePattern.<br/>
+<img alt="" src="/ckeditor_assets/pictures/229/content_step08_11.png" style="width: 600px; height: 444px;margin-bottom:10px;"/></li>
+</ol>
+</li>
+</ol>
+<p> </p>
+<p><em><strong>(Optional)</strong></em> Save the file back to GenomeSpace.</p>
+<ol start="1" style="list-style-type: upper-alpha;">
+<li>Navigate to your GenePattern <code class="parameter">Files</code> tab.</li>
+<li>Click on the generated file, <code class="filename">BLCA.rnaseq.processed.cls</code>, and choose <code class="parameter">Save to GenomeSpace</code>.</li>
+<li>Choose a directory to save the file to, and click <code class="parameter">Save</code>.</li>
+</ol>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/jdQYJws_AL4?list=https://www.youtube.com/watch?v=jdQYJws_AL4&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="recipeInterpSection">
+<section id="results"></section>
+<h3 class="divider">Results Interpretation</h3>
+<div class="responsive-content" id="recipeInterpText">
+<p>The completion of this recipe should result in two complementary files: <code class="filename">BLCA.rnaseq.processed.gct</code>, and the accompanying <code class="filename">BLCA.rnaseq.processed.cls</code>. The GCT file will contain gene-level RSEM values for the BLCA samples; the CLS file will define the phenotype labels (e.g. normal tissue vs. tumor) for each sample in the GCT file.</p>
+<p>These two files can be used together to complete other types of analyses. In particular, to recapitulate the research shown by <a href="http://www.nature.com/ng/journal/vaop/ncurrent/full/ng.3557.html" target="_blank">Kim et al. (<em>Nature Genetics</em>, 2016)</a>, the best course of action is to compare the RSEM values for each of the phenotypes, in order to identify what the overall gene expression profile looks like for samples that have ERCC2 mutations. By comparing normal and tumor tissues that do or do not have the ERCC2 mutations, a mutational signature can be determined.</p>
+<p>Using the processed, normalized gene-level expression data, there are several follow-up analyses to consider:</p>
+<ul>
+<li><a href="/view/2" target="_blank">Find subnetworks of differentially expressed genes</a></li>
+<li><a href="/view/8" target="_blank">Identify up- or down-regulated pathways</a></li>
+<li><a href="/view/11" target="_blank">Identify and validate a consensus signature</a></li>
+</ul>
+</div>
+</div>
+<hr/>
+<div class="panel-group" id="comments">
+<div class="panel panel-default">
+<div class="panel-heading">
+<h4 class="panel-title"><a data-toggle="collapse" href="#comments_list">Comments (0)</a> <span class="glyphicon glyphicon-chevron-down toggle-glyph"></span></h4>
+</div>
+<div class="panel-collapse collapse in" id="comments_list">
+<div class="panel-body">
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<h4 class="panel-title">Submit a Comment</h4>
+</div>
+<div class="panel-body">
+<form accept-charset="UTF-8" action="/users/sign_in" class="form" id="new_user" method="post" role="form"><div style="display:none"><input name="utf8" type="hidden" value="✓"/><input name="authenticity_token" type="hidden" value="MGyj9mZSGyt1NWB5zBeUw/eB6Ygsuy3aggazWhwOgY4="/></div>
+<input id="user_identity_url" name="user[identity_url]" type="hidden" value="https://identity.genomespace.org/identityServer/xrd.jsp"/>
+<input class="btn btn-sm btn-success" name="commit" type="submit" value="Sign in using GenomeSpace"/>
+</form> </div>
+</div>
+</div>
+<script>
+//<![CDATA[
+
+
+
+                $('.responsive-content img').addClass('img-responsive').css({"height" : "", "width" : ""});
+				$('[data-toggle="popover"]').popover({trigger: "hover", placement: "top"});
+
+				$("#show-all").click(function() {
+					$(".step-container").collapse("show");
+
+				});
+
+				$("#hide-all").click(function() {
+					$(".step-container").collapse("hide");
+
+				});
+
+                 $('.tag-tooltip').tooltip();
+
+
+
+//]]>
+</script> </div>
+<div class="col-md-2">
+<div class="bs-docs-sidebar hidden-print gp-side-menu" role="complementary">
+<ul class="nav bs-docs-sidenav" data-spy="affix">
+<li><a href="#summary">Summary</a></li>
+<li><a href="#inputs">Inputs</a></li>
+<li id="recipeOutputNav"><a href="#outputs">Outputs</a></li>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#steps">Steps</a>
+<ul class="nav">
+<li><a class="step-anchor" href="#step_0">Obtain the three input files from FireBrowse</a></li>
+<li><a class="step-anchor" href="#step_1">Upload and un-zip data in GenomeSpace</a></li>
+<li><a class="step-anchor" href="#step_2">Transfer the RNA-seq and MAF data files from GenomeSpace to Galaxy</a></li>
+<li><a class="step-anchor" href="#step_3">Process the RNA-seq file</a></li>
+<li><a class="step-anchor" href="#step_4">Identify RNA-seq samples that have MAF annotations by overlapping files</a></li>
+<li><a class="step-anchor" href="#step_5">Re-process the filtered RNA-seq data into a new file</a></li>
+<li><a class="step-anchor" href="#step_6">Convert the processed RNA-seq file into a GCT file</a></li>
+<li><a class="step-anchor" href="#step_7">Create a CLS file using the list of ERCC2-mutated samples</a></li>
+</ul>
+</li>
+<li id="recipeInterpNav"><a href="#results">Results Interpretation</a></li>
+<!-- <li><a href="#comments">Comments</a></li> -->
+<!-- <li><a href="#history">History</a></li> -->
+<li><a href="javascript:void(0);" id="scroll-top">Back to the Top</a></li>
+</ul>
+</div>
+<script>
+//<![CDATA[
+
+				$('.step-anchor').click(function() {
+					var step = $(this).attr('href').split('_')[1];
+					$('#collapse_' + step).collapse("show");
+				});
+
+//]]>
+</script> </div>
+</div>
+</div>
+<script>
+//<![CDATA[
+
+     if ($("#recipeOutputText").html().trim().length == 0){
+       $("#recipeOutputSection").hide();
+       $("#recipeOutputNav").hide();
+     }
+      if ($("#recipeInterpText").html().trim().length == 0){
+            $("#recipeInterpSection").hide();
+              $("#recipeInterpNav").hide();
+      }
+
+
+//]]>
+</script> <div class="container" id="history">
+<h1>History</h1>
+<ul>
+<li>Saved <b>over 3 years ago</b>
+                                                        on 03/09/2017 20:54:53 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/60?lastVersion=true&amp;versionIndex=37" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>almost 4 years ago</b>
+                                                        on 11/21/2016 18:42:30 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/60?lastVersion=true&amp;versionIndex=36" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>almost 4 years ago</b>
+                                                        on 11/02/2016 17:45:01 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/60?lastVersion=true&amp;versionIndex=35" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>almost 4 years ago</b>
+                                                        on 11/02/2016 17:32:12 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/60?lastVersion=true&amp;versionIndex=34" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>almost 4 years ago</b>
+                                                        on 10/06/2016 15:27:51 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/60?lastVersion=true&amp;versionIndex=33" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>almost 4 years ago</b>
+                                                        on 09/06/2016 18:11:27 UTC by <b>asp006</b>.
+                                                        <a href="/view/60?lastVersion=true&amp;versionIndex=32" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>about 4 years ago</b>
+                                                        on 06/28/2016 18:30:51 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/60?lastVersion=true&amp;versionIndex=31" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>over 4 years ago</b>
+                                                        on 05/31/2016 17:49:19 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/60?lastVersion=true&amp;versionIndex=30" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+</ul>
+</div>
+<div class="container-fluid footer gs-recipe-footer">
+<p class="copy-right-block">Copyright ©2016 The Regents of the University of California and The Broad Institute of MIT &amp; Harvard</p>
+</div>
+</body>
+</html>

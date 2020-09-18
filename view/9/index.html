@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>GenomeSpace Recipe: Identify biological functions for genes in copy number variation regions</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link href="/assets/docs.min.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/featured_article.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/pages.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/recipes.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/site.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/tags.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/jquery-ui/theme.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/jquery-ui/core.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/application.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/dataTables/bootstrap/3/jquery.dataTables.bootstrap.css?body=1" media="all" rel="stylesheet"/>
+<script src="/assets/jquery.js?body=1"></script>
+<script src="/assets/jquery_ujs.js?body=1"></script>
+<script src="/assets/jquery-ui/core.js?body=1"></script>
+<script src="/assets/jquery-ui/widget.js?body=1"></script>
+<script src="/assets/jquery-ui/position.js?body=1"></script>
+<script src="/assets/jquery-ui/menu.js?body=1"></script>
+<script src="/assets/jquery-ui/autocomplete.js?body=1"></script>
+<script src="/assets/jquery-ui/mouse.js?body=1"></script>
+<script src="/assets/jquery-ui/sortable.js?body=1"></script>
+<script src="/assets/bootstrap/affix.js?body=1"></script>
+<script src="/assets/bootstrap/alert.js?body=1"></script>
+<script src="/assets/bootstrap/button.js?body=1"></script>
+<script src="/assets/bootstrap/carousel.js?body=1"></script>
+<script src="/assets/bootstrap/collapse.js?body=1"></script>
+<script src="/assets/bootstrap/dropdown.js?body=1"></script>
+<script src="/assets/bootstrap/tab.js?body=1"></script>
+<script src="/assets/bootstrap/transition.js?body=1"></script>
+<script src="/assets/bootstrap/scrollspy.js?body=1"></script>
+<script src="/assets/bootstrap/modal.js?body=1"></script>
+<script src="/assets/bootstrap/tooltip.js?body=1"></script>
+<script src="/assets/bootstrap/popover.js?body=1"></script>
+<script src="/assets/bootstrap-sprockets.js?body=1"></script>
+<script src="/assets/ckeditor/init.js?body=1"></script>
+<script src="/assets/ckeditor/ckeditor.js?body=1"></script>
+<script src="/assets/jquery_nested_form.js?body=1"></script>
+<script src="/assets/dataTables/jquery.dataTables.js?body=1"></script>
+<script src="/assets/dataTables/bootstrap/3/jquery.dataTables.bootstrap.js?body=1"></script>
+<script src="/assets/autocomplete-rails.js?body=1"></script>
+<script src="/assets/spin.min.js?body=1"></script>
+<script src="/assets/docs.min.js?body=1"></script>
+<script src="/assets/jquery.hoverIntent.minified.js?body=1"></script>
+<script src="/assets/ckeditor/config.js?body=1"></script>
+<script src="/assets/featured_article.js?body=1"></script>
+<script src="/assets/pages.js?body=1"></script>
+<script src="/assets/recipes.js?body=1"></script>
+<script src="/assets/site.js?body=1"></script>
+<script src="/assets/tags.js?body=1"></script>
+<script src="/assets/application.js?body=1"></script>
+<meta content="authenticity_token" name="csrf-param"/>
+<meta content="3BlfvUoRnZb3r17uWms0WycE0zvT0BWz1niOKhVisCc=" name="csrf-token"/>
+<link href="https://fonts.googleapis.com/css?family=Wire+One" rel="stylesheet" type="text/css"/>
+<link href="https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:300" rel="stylesheet" type="text/css"/>
+<link href="/assets/favicon.ico" rel="shortcut icon">
+<script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-74623322-1', 'auto');
+        ga('send', 'pageview');
+       // ga('set', 'userId', {{"anonymous"}}); // Set the user ID using signed-in user_id.
+        ga('set', 'userId', 'anonymous'); // Set the user ID using signed-in user_id.
+
+    </script>
+</link></head>
+<body onload="tellParentWindowMySize()">
+<div id="nav_page_wrapper">
+<div id="logo"><a href="http://www.genomespace.org/"><img alt="Gslogo" src="/assets/gslogo.png"/></a></div>
+<div class="clickable" id="login_menu">
+<form accept-charset="UTF-8" action="/users/sign_in" class="new_user" id="gs-login" method="post"><div style="display:none"><input name="utf8" type="hidden" value="✓"/><input name="authenticity_token" type="hidden" value="3BlfvUoRnZb3r17uWms0WycE0zvT0BWz1niOKhVisCc="/></div>
+<input id="user_identity_url" name="user[identity_url]" type="hidden" value="https://identity.genomespace.org/identityServer/xrd.jsp"/>
+<a onclick="document.getElementById('gs-login').submit(); return false;">Login<span class="glyphicon glyphicon-chevron-right"></span></a>
+</form></div>
+<ul id="nav">
+<li class="dropdown">
+<a href="/"><span class="glyphicon glyphicon-home"></span> GenomeSpace Recipes</a>
+</li>
+<!-- <li id="recipe_link"><a href="/recipes"><span class="gparc-nav-icon glyphicon glyphicon-list"></span> My Recipes</a></li> -->
+<!-- links to main genomespace.org -->
+<li id="gsdotorg"><a href="http://www.genomespace.org/"><img alt="Gslogo" height="24px" src="/assets/official_logo.png"/>GenomeSpace.org</a><ul>
+<li id="what-is-genomespace"><a href="http://www.genomespace.org/what-is-genomespace">What is GenomeSpace?</a>
+<li id="tools"><a href="http://www.genomespace.org/support/tools">Tools</a>
+</li>
+<li id="recipes"><a href="http://recipes.genomespace.org/">Recipes</a></li>
+<li id="documentation"><a href="http://www.genomespace.org/documentation">Documentation</a>
+<ul>
+<li><a href="http://www.genomespace.org/support/guides/user-guide">User Guide</a>
+<p>Read the detailed guide to the user interface</p>
+</li>
+<li><a href="http://www.genomespace.org/support/guides/tool-guide">Tool Guide</a>
+<p>Learn how to access GenomeSpace functionality for each Tool</p>
+</li>
+<li><a href="http://www.genomespace.org/faq">FAQ</a>
+<p>See answers to frequently asked questions</p>
+</li>
+<li><a href="http://www.genomespace.org/presentations-and-videos">Presentations and Videos</a>
+<p>Access talks by the GenomeSpace community</p>
+</li>
+<li><a href="http://www.genomespace.org/support/guides/end-to-end-analyses">End-to-End Analyses</a>
+<p>Provides description for end-to-end analyses.</p>
+</li>
+</ul>
+</li>
+<li id="developers"><a href="http://www.genomespace.org/for-developers">Developers</a>
+<ul>
+<li><a href="http://www.genomespace.org/what-can-genomespace-do-for-tool-developers">What Can GenomeSpace Do For Tool Developers?</a>
+<p></p>
+</li>
+<li><a href="http://www.genomespace.org/adopters">Technical Documentation</a>
+<p></p>
+</li>
+<li><a href="http://www.genomespace.org/source-code">Source Code and Distributions</a>
+<p></p>
+</li>
+<li><a href="http://www.genomespace.org/developer-support-and-feedback">Developer Support and Feedback</a>
+<p></p>
+</li>
+</ul>
+</li>
+<li id="support"><a href="http://www.genomespace.org/support">Support</a>
+</li>
+<li id="about"><a href="http://www.genomespace.org/about">About</a>
+</li>
+</li></ul></li>
+<!-- end of links to main GenomeSpace.org -->
+<li class="search">
+<div id="search_box">
+<form accept-charset="UTF-8" action="/search" class="form" method="get" role="form"><div style="display:none"><input name="utf8" type="hidden" value="✓"/></div>
+<div style="margin:0;padding:0;display:inline">
+<input class="search" id="search" name="search" type="text"/>
+</div>
+<input class="searchBtn" type="submit"/>
+</form> </div>
+</li>
+</ul>
+</div>
+<div class="container fluid gs-recipe-">
+<div class="row">
+<div class="col-md-10">
+<table><tr><td><img alt="Content ucsc galaxy msigdb" class="recipeAvatar" src="/system/recipes/avatars/000/000/009/original/content_ucsc_galaxy_msigdb.png?1445288859"/></td><td>
+<h3>Identify biological functions for genes in copy number variation regions
+                        </h3>
+</td></tr></table>
+<p class="text-muted">Added by GenomeSpaceTeam on 2015.04.21 <span class="official"><img alt="Official logo" data-content="Offical GenomeSpace Recipe" data-toggle="popover" src="/assets/official_logo.png"/></span>
+<br/>
+            Last updated on almost 4 years ago.
+            </p>
+<div class="row">
+<div class="col-md-8">
+<p>
+<a class="btn btn-default btn-xs tag green" >copy number variation</a>
+<a class="btn btn-default btn-xs tag red" >gene set enrichment analysis</a>
+<a class="btn btn-default btn-xs tag green" >genomic loci</a>
+</p>
+</div>
+<div class="col-md-2 voting">
+<p class="text-success"><span class="glyphicon glyphicon-thumbs-up"></span> 0</p>
+</div>
+<div class="col-md-2 voting">
+<p class="text-danger"><span class="glyphicon glyphicon-thumbs-down"></span> 0</p>
+</div>
+</div>
+<hr/>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/ODW6srae0ow?list=PL4ZmSx1n2Kw54VRLy5RXpJqBSLKrD1LDw&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+<section id="summary"></section>
+<h3 class="divider">Summary</h3>
+<div class="responsive-content">
+<p><span style="font-family:arial,sans-serif;"><span style="font-size:16px;"><i>Which genes lie in my copy number variation regions? Are these genes enriched for any biological functions or pathways?</i></span></span></p>
+<p>This recipe provides a method for identifying biological functions for genes lying in copy number variation (CNV) regions. An example use of this recipe is a case where an investigator may want to examine their list of CNVs to see which genetic regions are amplified or deleted, and determine the biological functions or pathways associated with these amplified or deleted regions.</p>
+<p><img alt="" src="/ckeditor_assets/pictures/367/content_identifyenrichedbiologicalfunctions.png" style="width: 477px; height: 283px; float: right; padding: 10px;"/></p>
+<p> </p>
+<p>Copy number variations (CNVs) are large alterations to genomes, such as amplification or deletion of large segments of a chromosome. They can range in size from a focal aberration in a single gene to aberrations covering entire chromosome arms. These variations in the genome have been associated with different conditions, such as cancer. Many genomic analyses produce a set of genes which are assumed to be relevant to an underlying biological mechanism or phenotype. Thus, an investigator often has additional questions about the function or relatedness of these genes: Are they part of the same pathway? Do the gene products interact physically? Do the gene products localize to a specific part of the cell? Are the genes associated with certain stages of development? These questions, and others like them, can be answered by performing functional annotation of gene lists to better understand the underlying connections between genes.</p>
+<p>In this particular example, we imagine a scenario in which an investigator identifies CNV regions that are amplified or deleted in glioblastoma multiforme (GBM) tumor samples, using a method called Genomic Identification of Significant Targets in Cancer (GISTIC, <a href="http://www.ncbi.nlm.nih.gov/pubmed/21527027">Mermel et al. (2011) Genome Biol.</a>). Given a set of CNV regions, the goal is to infer which biological functions (e.g., metabolic and regulatory pathways, chemical perturbation signatures, etc.) are overrepresented in the set of reference genes that overlap with these regions. In particular, this recipe uses several Galaxy tools to find the overlap between CNV regions and reference genes obtained from the UCSC Table Browser. Then it uses the Molecular Signatures Database (MSigDB) to identify biological functions of the overlapped genes.</p>
+<p><strong>How can I use this recipe?</strong> This recipe may be modified to analyze CNV regions derived from any organism for which an annotated reference genome exists. Nor does the recipe depend on the algorithm used to identify these regions (GISTIC); any source of CNV data can be used. Once an investigator has pinpointed the CNV regions believed to be influencing their phenotype (disease state, cell type, etc.) of study he/she can use this recipe to identify functional pathways that may be affected by these copy number changes and draw closer to an understanding of the mechanisms behind these CNV effects.</p>
+</div>
+<section id="inputs"></section>
+<h3 class="divider">Inputs</h3>
+<div class="responsive-content">
+<p>To complete this recipe, we will need a file describing the locations of CNV regions in a specific condition, and a reference genome to compare against. In this example, we use CNV regions identified in primary glioblastoma multiforme (GBM) tumor samples using the GISTIC algorithm. We will need the following datasets, which can be downloaded from the following GenomeSpace Public folder: <code class="directory">Public &gt; RecipeData &gt; GenomicFeatureData</code>.</p>
+<p><strong><code class="filename"><a href="https://gsui.genomespace.org/jsui/gsui.html?pathOrUrl=/Home/Public/RecipeData/GenomicFeatureData/GISTIC_CNV_deleted.txt" target="_blank">GISTIC_CNV_deleted.txt</a></code></strong>: This file is a standard output file of the GISTIC2 tool. It lists narrow- and wide-peak regions of significant amplification in the genome, organized by chromosome, as well as start and end positions in the genome for each of these CNV regions.</p>
+<p><strong><code class="filename"><a href="https://gsui.genomespace.org/jsui/gsui.html?pathOrUrl=/Home/Public/RecipeData/GenomicFeatureData/GISTIC_CNV_amplified.txt" target="_blank">GISTIC_CNV_amplified.txt</a></code></strong>: This file is a standard output file of the GISTIC2 tool. It lists narrow- and wide-peak regions of significant deletion in the genome, organized by chromosome, as well as start and end positions in the genome for each of these CNV regions.</p>
+<p><small><strong>NOTE:</strong> These data are modified files downloaded from <a href="http://firebrowse.org/">FireBrowse</a>, the <a href="https://tcga-data.nci.nih.gov/tcga/tcgaDataType.jsp">TCGA</a> data browser. The reference study for the TCGA glioblastoma dataset is <a href="http://www.ncbi.nlm.nih.gov/pubmed/18772890">McLendon et al. (2008) Nature</a>.</small></p>
+</div>
+<div id="recipeOutputSection">
+<section id="outputs"></section>
+<h3 class="divider">Outputs</h3>
+<div class="responsive-content" id="recipeOutputText">
+</div>
+</div>
+<section id="overview"></section>
+<h3 class="divider">Recipe steps</h3>
+<ul>
+<li><strong>UCSC Table Browser</strong></li>
+<ol start="1">
+<li>Getting reference gene annotations</li>
+</ol>
+</ul>
+<ul>
+<li><strong>Galaxy</strong></li>
+<ol start="2">
+<li>Loading data into Galaxy</li>
+<li>Identify genes in CNV regions</li>
+</ol>
+</ul>
+<ul>
+<li><strong>MSigDB</strong></li>
+<ol start="4">
+<li>Functional Annotation</li>
+</ol>
+</ul>
+<div class="row">
+<div class="col-md-6" style="text-align: right; display: inline;width: 250px !important;">
+<a class="btn btn-info" href="javascript:void(0);" id="show-all"><span class="glyphicon glyphicon-plus"></span> Expand All Steps</a>
+</div>
+<div class="col-md-6" style="display: inline;width: 250px !important;">
+<a class="btn btn-info" href="javascript:void(0);" id="hide-all"><span class="glyphicon glyphicon-minus"></span> Collapse All Steps</a>
+</div>
+</div>
+<p></p>
+<div aria-multiselectable="true" class="panel-group" id="steps" role="tablist">
+<div class="panel panel-default">
+<section id="step_0"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Ucsc table browser" class="stepAvatar tag-tooltip" src="/assets/UCSC Table Browser.png" title="UCSC Table Browser"/>
+<a data-toggle="toggle" href="#collapse_0" onclick="$('#collapse_0').collapse('toggle')">1: Getting reference gene annotations <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>In this step, we will use the UCSC Table Browser to retrieve reference gene annotations corresponding to the reference genome for our example data. If you are using your own data, you may already have a reference gene annotation file, or you may need to search for one matching your reference genome here.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_0" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<p><img alt="" src="/ckeditor_assets/pictures/267/content_biofunctioncnvmammalbold.png" style="width: 800px; height: 457px;"/></p>
+<ol>
+<li>Launch UCSC Table Browser from GenomeSpace by clicking on the icon.</li>
+<li>Download the reference gene annotations from UCSC. For the example dataset, enter the following parameters:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li><code class="parameter">clade</code>: Mammal</li>
+<li><code class="parameter">genome</code>: Human</li>
+<li><code class="parameter">assembly</code>: Feb. 2009 (GRCh37/hg19)</li>
+<li><code class="parameter">group</code>: Genes and Gene Predictions</li>
+<li><code class="parameter">track</code>: RefSeq Genes</li>
+<li><code class="parameter">table</code>: refGene</li>
+<li><code class="parameter">region</code>: genome</li>
+<li><code class="parameter">output format</code>: BED - browser extensible data</li>
+<li><code class="parameter">Send output to</code>: Select the GenomeSpace checkbox.</li>
+<li><code class="parameter">output file</code>: Give the output a name. For the example data, we name it <code class="filename">hg19.RefSeq.bed</code>.</li>
+</ol>
+</li>
+<li>Click <code class="parameter">get output</code>. This will take you to a new page which loads the file to GenomeSpace.<br>
+<img alt="" src="/uploaded/content_r2_s1_1.png" style="height:545px; width:580px"/></br></li>
+<li>On the new page, choose the <code class="parameter">Whole Gene</code> parameter</li>
+<li>Click <code class="parameter">get BED</code> to retrieve the file. The output file should appear in your GenomeSpace home directory.</li>
+</ol>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/ODW6srae0ow?list=https://www.youtube.com/watch?v=ODW6srae0ow&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_1"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Galaxy" class="stepAvatar tag-tooltip" src="/assets/Galaxy.png" title="Galaxy"/>
+<a data-toggle="toggle" href="#collapse_1" onclick="$('#collapse_1').collapse('toggle')">2: Loading data into Galaxy <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>This is one method that can be used to load data into Galaxy.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_1" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<p><em><small><strong>NOTE:</strong> If you have not yet associated your GenomeSpace account with your Galaxy account, you will be asked to do so. If you do not yet have a Galaxy account, you can automatically generate a new account that will be associated with your GenomeSpace account.</small></em></p>
+<p>Send the files to Galaxy using the following method:</p>
+<ol>
+<li>Open Galaxy from GenomeSpace, navigate to the <code class="parameter">Get Data</code> tool, then click on <code class="parameter">GenomeSpace import</code>, then navigate to your personal directory.</li>
+</ol>
+<p>Make sure to load <code class="filename">hg19.RefSeq.bed</code>, <code class="filename">GISTIC_CNV_amplified.txt</code> and <code class="filename">GISTIC_CNV_deleted.txt</code> into Galaxy, either from your personal GenomeSpace folder, or from the GenomeSpace Public folder.</p>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/Izc7DWseCTc?list=https://www.youtube.com/watch?v=Izc7DWseCTc&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+<br>
+<div class="panel-group">
+<div class="panel panel-warning">
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title">
+<img alt="Galaxy" class="stepAvatar tag-tooltip" src="/assets/Galaxy.png" title="Galaxy"/><a data-toggle="collapse" href="#alternate_43_0">Alternative: other methods to load data into Galaxy <span class="glyphicon glyphicon-chevron-right"></span></a>
+</h4>
+<p class="text-muted">Tool: Galaxy</p>
+</div>
+<div class="panel-collapse step-container collapse" id="alternate_43_0" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<p>1. Click on the file(s) (e.g., <code class="filename">hg19.RefSeq.bed</code>) in GenomeSpace, then use the Galaxy context menu and click <code class="parameter">Launch on File</code>.</p>
+<p><i>OR</i></p>
+<p>2. Click on the file(s) (e.g., <code class="filename">hg19.RefSeq.bed</code>) in GenomeSpace, then drag it to the Galaxy icon to launch.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</br></div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_2"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Galaxy" class="stepAvatar tag-tooltip" src="/assets/Galaxy.png" title="Galaxy"/>
+<a data-toggle="toggle" href="#collapse_2" onclick="$('#collapse_2').collapse('toggle')">3: Identify genes in CNV regions <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>We will use a pre-built GenomeSpace workflow to identify genes that are located in CNV regions. This workflow uses <code class="subtool">Operate on Genomic Intervals</code> to find the overlap between two datasets, one of which is processed using the <code class="subtool">Text Manipulation</code> tool.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_2" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>Click on the following link: <a href="https://usegalaxy.org/u/genomespace/w/identify-biological-functions-for-genes-in-copy-number-variation-regions">Official GenomeSpace Galaxy Workflow: Identify Biological Functions for Genes in Copy Number Variation Regions</a>.</li>
+<li>Click the <img alt="" src="/ckeditor_assets/pictures/121/content_galplus.png" style="width: 14px; height: 14px; display:inline;"/> icon in the upper right corner to import the workflow.</li>
+<li>Click <code class="parameter">start using this workflow</code>.</li>
+<li>Click on the workflow drop-down menu (e.g., <strong>imported: Identify Biological Fnctions for Genes in Copy Number Variation Regions</strong>), then choose <code class="parameter">Run</code>.</li>
+<li>Load the files into the correct fields. The input fields should have annotation indicating which file should be loaded:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li><code class="parameter">Step 1: Input Dataset</code>: <code class="filename">hg19.RefSeq.bed</code></li>
+<li><code class="parameter">Step 2: Input Dataset</code>: <code class="filename">GISTIC_CNV_deleted.txt</code></li>
+<li><code class="parameter">Step 6: GenomeSpace Exporter</code>: select a directory of your choice under the <code class="parameter">Choose Target Directory</code> parameter</li>
+<li><code class="parameter">Step 6: GenomeSpace Exporter</code>: give your file a name, e.g. <code class="filename">GISTIC_deleted_genes.txt</code> under the <code class="parameter">filename</code> parameter</li>
+</ol>
+</li>
+<li>Click <code class="parameter">Run workflow</code>.<br>
+<em><small><strong>NOTE:</strong> The workflow will automatically save your output file to GenomeSpace.</small></em></br></li>
+</ol>
+<p><img alt="" src="/uploaded/content_r2_s3.png" style="height:882px; width:705px"/></p>
+<p><strong>REPEAT:</strong> In this recipe we are investigating both amplified and deleted CNV regions. To find the overlap between the reference gene annotations (<code class="filename">hg19.refseq.bed</code>) and the amplified CNV regions (<code class="filename">GISTIC_CNV_amplified.txt</code>), repeat the above steps, substituting <code class="filename">GISTIC_CNV_amplified.txt</code> for <code class="filename">GISTIC_CNV_deleted.txt</code>.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_3"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Msigdb" class="stepAvatar tag-tooltip" src="/assets/MSigDB.png" title="MSigDB"/>
+<a data-toggle="toggle" href="#collapse_3" onclick="$('#collapse_3').collapse('toggle')">4: Functional Annotation <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>In this step, we search for the biological functions and pathways that are represented in the set of reference genes which exist in CNV regions. We compute the overlap between our gene list, and pre-compiled gene sets in MSigDB. In this Recipe, we will select C1, C2, and C3 to compare to our dataset.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_3" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<p><em><small><strong>NOTE:</strong> If you have not yet associated your GenomeSpace account with your MSigDB account, you will be asked to do so. If you do not yet have a MSigDB account, you can automatically generate a new account that will be associated with your GenomeSpace account.</small></em></p>
+<p><img alt="" src="/uploaded/content_r2_s6_0.png" style="height:640px; width:682px"/></p>
+<p>Use the following steps to compute the significant overlap between the GISTIC gene set and these gene sets:</p>
+<ol>
+<li>Load the files into MSigDB using one of the following methods:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li>Click on <code class="filename">GISTIC_deleted_genes.txt</code> in GenomeSpace, then use the MSigDB context menu and click <code class="parameter">Launch on File</code></li>
+<li>Click on <code class="filename">GISTIC_deleted_genes.txt</code> in GenomeSpace, then drag it to the MSigDB icon to launch</li>
+</ol>
+</li>
+<li>Select the following check-boxes:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li><code class="parameter">C1: positional gene sets</code></li>
+<li><code class="parameter">C2: curated gene sets</code></li>
+<li><code class="parameter">C3: motif gene sets</code></li>
+</ol>
+</li>
+<li>Click <code class="parameter">compute overlaps</code> to compute the overlaps between these collections and your dataset. The resulting page will list the significance of the overlaps between the collections and your dataset. The first analysis shows the number of genes from your gene list that were found in each collection, and calculates how significant the overlap is (based on p-value). The second result lists each gene that was identified (and correctly converted) in the gene list, and the number of datasets it overlaps with.<br>
+<em><small><strong>NOTE:</strong> Some genes may not be converted to the correct format and therefore will not be included in the calculation.</small></em></br></li>
+<li>Save your file to GenomeSpace by clicking on the GenomeSpace link.</li>
+</ol>
+<p><strong>REPEAT:</strong> To complete functional enrichment analysis on the amplified CNV regions (<code class="filename">GISTIC_CNV_amplified.txt</code>), repeat the above steps, substituting <code class="filename">GISTIC_CNV_amplified.txt</code> for <code class="filename">GISTIC_CNV_deleted.txt</code>.</p>
+<p>See below the descriptions for the different gene sets in MSigDB:</p>
+<ul>
+<li><strong>C1: positional gene sets:</strong> Gene sets corresponding to each human chromosome and each cytogenetic band that has at least one gene. (Cytogenetic locations were parsed from HUGO, October 2006, and Unigene, build 197. When there were conflicts, the Unigene entry was used.) These gene sets are helpful in identifying effects related to chromosomal deletions or amplifications, dosage compensation, epigenetic silencing, and other regional effects.</li>
+<li><strong>C2: curated gene sets:</strong> Gene sets collected from various sources such as online pathway databases, publications in PubMed, and knowledge of domain experts. The gene set page for each gene set lists its source.</li>
+<li><strong>C3: motif gene sets:</strong> Gene sets that contain genes that share a cis-regulatory motif that is conserved across the human, mouse, rat, and dog genomes. The motifs are catalogued (Xie et al. 2005) and represent known or likely regulatory elements in promoters and 3'-UTRs. These gene sets make it possible to link changes in a microarray experiment to a conserved, putative cis-regulatory element.</li>
+</ul>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/YxAvR3tl4Ro?list=https://www.youtube.com/watch?v=YxAvR3tl4Ro&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="recipeInterpSection">
+<section id="results"></section>
+<h3 class="divider">Results Interpretation</h3>
+<div class="responsive-content" id="recipeInterpText">
+<p>This is an example interpretation of the results from this Recipe. First, we identified the overlap between reference gene annotations (RefSeq format) and the copy number variation (CNV) regions using Galaxy. This results in a list of annotated genes that are located in the CNVs; there may be more genes in the CNV regions that are not properly annotated and therefore were missed in the analysis. In this example, we find roughly 1300 genes that are amplified in CNV regions, and roughly 8800 genes that are deleted in CNV regions. Next, we were interested in knowing what, if any, functional annotation these genes had - are there specific gene functions being duplicated in CNV regions? Are the gene products in these regions connected functionally?<br/>
+We used MSigDB to probe our dataset for functional annotation. In this case, we used only three collections: C1, C2 and C3. In this example we are most interested in knowing whether our genes are related to chromosomal deletions or amplifications (C1: positional gene set), whether our genes have functions that are reviewed in the literature (C2: curated gene set), and whether our genes share any cis-regulatory motifs (C3: motif gene set).</p>
+<p>Our first result lists the gene set name and description, the number of our genes which overlap with the gene set, and measures of significance (p-values and q-values). For example, we see that 28 genes out of the ~1300 amplified genes fall into the "chr3q27" category, which has 83 genes total. This result is significant (p-value = 1.72e-44). This suggests that the CNV regions associated with glioblastoma are enriched for genes duplicated on chromosomal region chr3q27. Similarly, 222 genes out of the ~8800 deleted genes fall into the "chr19q13" category, suggesting that glioblastoma is associated with deletions in this chromosomal region (p = 3.78e-135). This is just one example of a possible interpretation of these results.</p>
+<p><img alt="" src="/uploaded/content_r2_amp_result1.png" style="height:237px; width:800px"/></p>
+<p><img alt="" src="/uploaded/content_r2_del_result1.png"/></p>
+<p>Our second result lists each gene by ID and Symbol, then highlights which of the top categories it is in. For example, the amplified gene CDK4 overlaps with 4 categories: TCGA_GLIOBLASTOMA_COPY_NUMBER_UP, NIKOLSKY_BREAST_CANCER_12Q13_Q21_AMPLICON, LOCKWOOD_AMPLIFIED_IN_LUNG_CANCER, and PUJANA_BRCA1_PCC_NETWORK. If we examine the categories, they suggest that CDK4 is amplified in glioblastoma, breast cancer, and lung cancer, and that CDK4 is a part of the BRCA1 regulatory network. Similarly, when we examine the deleted gene NUP62, we observe that it overlaps with 5 categories: chr19q13, CAGGTG_V$E12_Q6, GGGCGGR_V$SP1_Q6, PUJANA_BRCA1_PCC_NETWORK, and DANG_BOUND_BY_MYC. This suggests that NUP62 is in the chr19q13 chromosomal region, that it contains motifs CAGGTG and GGGCGGR, and that it is associated with the BRCA regulatory network and its promoter is bound by Myc.</p>
+<p><img alt="" src="/uploaded/content_r2_amp_result2.png" style="height:353px; width:800px"/></p>
+<p><img alt="" src="/uploaded/content_r2_del_result2.png" style="height:324px; width:800px"/></p>
+<p>These results suggest that our gene list is enriched for specific chromosomal regions and specific promoter region motifs, among other functional annotations. This suggests that functionally related genes are being duplicated in CNV regions in a cancer phenotype. However, the results in this example are not necessarily significant and are only a simple representation of possible results.</p>
+</div>
+</div>
+<hr/>
+<div class="panel-group" id="comments">
+<div class="panel panel-default">
+<div class="panel-heading">
+<h4 class="panel-title"><a data-toggle="collapse" href="#comments_list">Comments (0)</a> <span class="glyphicon glyphicon-chevron-down toggle-glyph"></span></h4>
+</div>
+<div class="panel-collapse collapse in" id="comments_list">
+<div class="panel-body">
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<h4 class="panel-title">Submit a Comment</h4>
+</div>
+<div class="panel-body">
+<form accept-charset="UTF-8" action="/users/sign_in" class="form" id="new_user" method="post" role="form"><div style="display:none"><input name="utf8" type="hidden" value="✓"/><input name="authenticity_token" type="hidden" value="3BlfvUoRnZb3r17uWms0WycE0zvT0BWz1niOKhVisCc="/></div>
+<input id="user_identity_url" name="user[identity_url]" type="hidden" value="https://identity.genomespace.org/identityServer/xrd.jsp"/>
+<input class="btn btn-sm btn-success" name="commit" type="submit" value="Sign in using GenomeSpace"/>
+</form> </div>
+</div>
+</div>
+<script>
+//<![CDATA[
+
+
+
+                $('.responsive-content img').addClass('img-responsive').css({"height" : "", "width" : ""});
+				$('[data-toggle="popover"]').popover({trigger: "hover", placement: "top"});
+
+				$("#show-all").click(function() {
+					$(".step-container").collapse("show");
+
+				});
+
+				$("#hide-all").click(function() {
+					$(".step-container").collapse("hide");
+
+				});
+
+                 $('.tag-tooltip').tooltip();
+
+
+
+//]]>
+</script> </div>
+<div class="col-md-2">
+<div class="bs-docs-sidebar hidden-print gp-side-menu" role="complementary">
+<ul class="nav bs-docs-sidenav" data-spy="affix">
+<li><a href="#summary">Summary</a></li>
+<li><a href="#inputs">Inputs</a></li>
+<li id="recipeOutputNav"><a href="#outputs">Outputs</a></li>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#steps">Steps</a>
+<ul class="nav">
+<li><a class="step-anchor" href="#step_0">Getting reference gene annotations</a></li>
+<li><a class="step-anchor" href="#step_1">Loading data into Galaxy</a></li>
+<li><a class="step-anchor" href="#step_2">Identify genes in CNV regions</a></li>
+<li><a class="step-anchor" href="#step_3">Functional Annotation</a></li>
+</ul>
+</li>
+<li id="recipeInterpNav"><a href="#results">Results Interpretation</a></li>
+<!-- <li><a href="#comments">Comments</a></li> -->
+<!-- <li><a href="#history">History</a></li> -->
+<li><a href="javascript:void(0);" id="scroll-top">Back to the Top</a></li>
+</ul>
+</div>
+<script>
+//<![CDATA[
+
+				$('.step-anchor').click(function() {
+					var step = $(this).attr('href').split('_')[1];
+					$('#collapse_' + step).collapse("show");
+				});
+
+//]]>
+</script> </div>
+</div>
+</div>
+<script>
+//<![CDATA[
+
+     if ($("#recipeOutputText").html().trim().length == 0){
+       $("#recipeOutputSection").hide();
+       $("#recipeOutputNav").hide();
+     }
+      if ($("#recipeInterpText").html().trim().length == 0){
+            $("#recipeInterpSection").hide();
+              $("#recipeInterpNav").hide();
+      }
+
+
+//]]>
+</script> <div class="container" id="history">
+<h1>History</h1>
+<ul>
+<li>Saved <b>almost 4 years ago</b>
+                                                        on 11/02/2016 18:40:16 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/9?lastVersion=true&amp;versionIndex=1" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>almost 4 years ago</b>
+                                                        on 09/07/2016 16:16:32 UTC by <b>andyis</b>.
+                                                        <a href="/view/9?lastVersion=true&amp;versionIndex=0" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+</ul>
+</div>
+<div class="container-fluid footer gs-recipe-footer">
+<p class="copy-right-block">Copyright ©2016 The Regents of the University of California and The Broad Institute of MIT &amp; Harvard</p>
+</div>
+</body>
+</html>

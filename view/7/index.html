@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>GenomeSpace Recipe: Identify and visualize expressed transcripts in RNA-seq data</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link href="/assets/docs.min.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/featured_article.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/pages.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/recipes.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/site.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/tags.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/jquery-ui/theme.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/jquery-ui/core.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/application.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/dataTables/bootstrap/3/jquery.dataTables.bootstrap.css?body=1" media="all" rel="stylesheet"/>
+<script src="/assets/jquery.js?body=1"></script>
+<script src="/assets/jquery_ujs.js?body=1"></script>
+<script src="/assets/jquery-ui/core.js?body=1"></script>
+<script src="/assets/jquery-ui/widget.js?body=1"></script>
+<script src="/assets/jquery-ui/position.js?body=1"></script>
+<script src="/assets/jquery-ui/menu.js?body=1"></script>
+<script src="/assets/jquery-ui/autocomplete.js?body=1"></script>
+<script src="/assets/jquery-ui/mouse.js?body=1"></script>
+<script src="/assets/jquery-ui/sortable.js?body=1"></script>
+<script src="/assets/bootstrap/affix.js?body=1"></script>
+<script src="/assets/bootstrap/alert.js?body=1"></script>
+<script src="/assets/bootstrap/button.js?body=1"></script>
+<script src="/assets/bootstrap/carousel.js?body=1"></script>
+<script src="/assets/bootstrap/collapse.js?body=1"></script>
+<script src="/assets/bootstrap/dropdown.js?body=1"></script>
+<script src="/assets/bootstrap/tab.js?body=1"></script>
+<script src="/assets/bootstrap/transition.js?body=1"></script>
+<script src="/assets/bootstrap/scrollspy.js?body=1"></script>
+<script src="/assets/bootstrap/modal.js?body=1"></script>
+<script src="/assets/bootstrap/tooltip.js?body=1"></script>
+<script src="/assets/bootstrap/popover.js?body=1"></script>
+<script src="/assets/bootstrap-sprockets.js?body=1"></script>
+<script src="/assets/ckeditor/init.js?body=1"></script>
+<script src="/assets/ckeditor/ckeditor.js?body=1"></script>
+<script src="/assets/jquery_nested_form.js?body=1"></script>
+<script src="/assets/dataTables/jquery.dataTables.js?body=1"></script>
+<script src="/assets/dataTables/bootstrap/3/jquery.dataTables.bootstrap.js?body=1"></script>
+<script src="/assets/autocomplete-rails.js?body=1"></script>
+<script src="/assets/spin.min.js?body=1"></script>
+<script src="/assets/docs.min.js?body=1"></script>
+<script src="/assets/jquery.hoverIntent.minified.js?body=1"></script>
+<script src="/assets/ckeditor/config.js?body=1"></script>
+<script src="/assets/featured_article.js?body=1"></script>
+<script src="/assets/pages.js?body=1"></script>
+<script src="/assets/recipes.js?body=1"></script>
+<script src="/assets/site.js?body=1"></script>
+<script src="/assets/tags.js?body=1"></script>
+<script src="/assets/application.js?body=1"></script>
+<meta content="authenticity_token" name="csrf-param"/>
+<meta content="XoarrMGyX+NNPIAefmJdk+OPrxdrvCTZQEjb9nK66DY=" name="csrf-token"/>
+<link href="https://fonts.googleapis.com/css?family=Wire+One" rel="stylesheet" type="text/css"/>
+<link href="https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:300" rel="stylesheet" type="text/css"/>
+<link href="/assets/favicon.ico" rel="shortcut icon">
+<script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-74623322-1', 'auto');
+        ga('send', 'pageview');
+       // ga('set', 'userId', {{"anonymous"}}); // Set the user ID using signed-in user_id.
+        ga('set', 'userId', 'anonymous'); // Set the user ID using signed-in user_id.
+
+    </script>
+</link></head>
+<body onload="tellParentWindowMySize()">
+<div id="nav_page_wrapper">
+<div id="logo"><a href="http://www.genomespace.org/"><img alt="Gslogo" src="/assets/gslogo.png"/></a></div>
+<div class="clickable" id="login_menu">
+<form accept-charset="UTF-8" action="/users/sign_in" class="new_user" id="gs-login" method="post"><div style="display:none"><input name="utf8" type="hidden" value="✓"/><input name="authenticity_token" type="hidden" value="XoarrMGyX+NNPIAefmJdk+OPrxdrvCTZQEjb9nK66DY="/></div>
+<input id="user_identity_url" name="user[identity_url]" type="hidden" value="https://identity.genomespace.org/identityServer/xrd.jsp"/>
+<a onclick="document.getElementById('gs-login').submit(); return false;">Login<span class="glyphicon glyphicon-chevron-right"></span></a>
+</form></div>
+<ul id="nav">
+<li class="dropdown">
+<a href="/"><span class="glyphicon glyphicon-home"></span> GenomeSpace Recipes</a>
+</li>
+<!-- <li id="recipe_link"><a href="/recipes"><span class="gparc-nav-icon glyphicon glyphicon-list"></span> My Recipes</a></li> -->
+<!-- links to main genomespace.org -->
+<li id="gsdotorg"><a href="http://www.genomespace.org/"><img alt="Gslogo" height="24px" src="/assets/official_logo.png"/>GenomeSpace.org</a><ul>
+<li id="what-is-genomespace"><a href="http://www.genomespace.org/what-is-genomespace">What is GenomeSpace?</a>
+<li id="tools"><a href="http://www.genomespace.org/support/tools">Tools</a>
+</li>
+<li id="recipes"><a href="http://recipes.genomespace.org/">Recipes</a></li>
+<li id="documentation"><a href="http://www.genomespace.org/documentation">Documentation</a>
+<ul>
+<li><a href="http://www.genomespace.org/support/guides/user-guide">User Guide</a>
+<p>Read the detailed guide to the user interface</p>
+</li>
+<li><a href="http://www.genomespace.org/support/guides/tool-guide">Tool Guide</a>
+<p>Learn how to access GenomeSpace functionality for each Tool</p>
+</li>
+<li><a href="http://www.genomespace.org/faq">FAQ</a>
+<p>See answers to frequently asked questions</p>
+</li>
+<li><a href="http://www.genomespace.org/presentations-and-videos">Presentations and Videos</a>
+<p>Access talks by the GenomeSpace community</p>
+</li>
+<li><a href="http://www.genomespace.org/support/guides/end-to-end-analyses">End-to-End Analyses</a>
+<p>Provides description for end-to-end analyses.</p>
+</li>
+</ul>
+</li>
+<li id="developers"><a href="http://www.genomespace.org/for-developers">Developers</a>
+<ul>
+<li><a href="http://www.genomespace.org/what-can-genomespace-do-for-tool-developers">What Can GenomeSpace Do For Tool Developers?</a>
+<p></p>
+</li>
+<li><a href="http://www.genomespace.org/adopters">Technical Documentation</a>
+<p></p>
+</li>
+<li><a href="http://www.genomespace.org/source-code">Source Code and Distributions</a>
+<p></p>
+</li>
+<li><a href="http://www.genomespace.org/developer-support-and-feedback">Developer Support and Feedback</a>
+<p></p>
+</li>
+</ul>
+</li>
+<li id="support"><a href="http://www.genomespace.org/support">Support</a>
+</li>
+<li id="about"><a href="http://www.genomespace.org/about">About</a>
+</li>
+</li></ul></li>
+<!-- end of links to main GenomeSpace.org -->
+<li class="search">
+<div id="search_box">
+<form accept-charset="UTF-8" action="/search" class="form" method="get" role="form"><div style="display:none"><input name="utf8" type="hidden" value="✓"/></div>
+<div style="margin:0;padding:0;display:inline">
+<input class="search" id="search" name="search" type="text"/>
+</div>
+<input class="searchBtn" type="submit"/>
+</form> </div>
+</li>
+</ul>
+</div>
+<div class="container fluid gs-recipe-">
+<div class="row">
+<div class="col-md-10">
+<table><tr><td><img alt="Content ucsc gp igv" class="recipeAvatar" src="/system/recipes/avatars/000/000/007/original/content_ucsc_gp_igv.png?1445288777"/></td><td>
+<h3>Identify and visualize expressed transcripts in RNA-seq data
+                        </h3>
+</td></tr></table>
+<p class="text-muted">Added by GenomeSpaceTeam on 2015.04.21 <span class="official"><img alt="Official logo" data-content="Offical GenomeSpace Recipe" data-toggle="popover" src="/assets/official_logo.png"/></span>
+<br/>
+            Last updated on over 3 years ago.
+            </p>
+<div class="row">
+<div class="col-md-8">
+<p>
+<a class="btn btn-default btn-xs tag green" >RNA-seq</a>
+<a class="btn btn-default btn-xs tag red" >visualization</a>
+<a class="btn btn-default btn-xs tag green" >isoform abundance</a>
+<a class="btn btn-default btn-xs tag red" >differential gene expression</a>
+</p>
+</div>
+<div class="col-md-2 voting">
+<p class="text-success"><span class="glyphicon glyphicon-thumbs-up"></span> 3</p>
+</div>
+<div class="col-md-2 voting">
+<p class="text-danger"><span class="glyphicon glyphicon-thumbs-down"></span> 0</p>
+</div>
+</div>
+<hr/>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/Ums_iMqIVdQ?list=PL4ZmSx1n2Kw7--NlTks0wcAa5wpskovwa&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+<section id="summary"></section>
+<h3 class="divider">Summary</h3>
+<div class="responsive-content">
+<p><span style="font-family:arial,sans-serif;"><span style="font-size:16px;"><i>Which genes are highly expressed, based on my RNA-seq data? Are any of the highly expressed genes also differentially expressed?</i></span></span></p>
+<p>This recipe provides an outline of one method to identify and visualize genes and isoforms that are highly expressed in RNA-seq data. In particular, this recipe utilizes an analysis pipeline, allowing a user to chain together multiple analysis steps into one workflow that can be run in one step. An example use of this recipe is a case where an investigator wants to process several datasets in the same way, in which case the pipeline will allow the investigator to re-use the same modules and parameters, over and over again.</p>
+<p><img alt="" src="/ckeditor_assets/pictures/368/content_identifyvalidatepipeline.png" style="width: 454px; height: 208px; float: right; padding: 10px;"/></p>
+<p> </p>
+<p>Given a set of raw RNA-seq reads, the goal is to align the reads to a reference genome, estimate expression abundance levels for reference genes and isoforms, filter out low-expressed genes and isoforms, and visualize the read alignments and their expression levels. In particular, this recipe uses the UCSC Table Browser to retrieve a reference genome to align RNA-seq reads against. We also uses several modules in GenePattern to align the reads against the reference genome, and to identify differentially expressed genes when comparing two conditions. Finally, we use IGV to visualize the differentially expressed genes.</p>
+<p><strong>Why differential expression analysis?</strong> We assume that most genes are not expressed all the time, but rather are expressed in specific tissues, stages of development, or under certain conditions. Genes which are expressed in one condition, such as cancerous tissue, are said to be differentially expressed when compared to normal conditions. To identify which genes change in response to specific conditions (e.g. cancer), we must filter or process the dataset to remove genes which are not informative.</p>
+<p> </p>
+</div>
+<section id="inputs"></section>
+<h3 class="divider">Inputs</h3>
+<div class="responsive-content">
+<p>To complete this recipe, we will need RNA-seq reads, and reference gene annotations to align the reads against. In this example, we examine human RNA-seq data. The RNA-seq reads are in FASTQ/FASTA &gt;  format, and can be gzipped. We will need the following datasets, which can be downloaded from the GenomeSpace Public folder.</p>
+<p><code class="directory">Public</code>  &gt;  <code class="directory">RecipeData</code>  &gt;  <code class="directory">SequenceData</code>  &gt;  <strong><code class="filename"><a href="https://gsui.genomespace.org/jsui/gsui.html?pathOrUrl=/Home/Public/RecipeData/SequenceData/RNA_seq.r1.fastq" target="_blank">RNA_seq.r1.fastq</a></code></strong>: this is human RNA-seq data, forward reads.</p>
+<p><code class="directory">Public</code>  &gt;  <code class="directory">RecipeData</code>  &gt;  <code class="directory">SequenceData</code>  &gt;  <strong><code class="filename"><a href="https://gsui.genomespace.org/jsui/gsui.html?pathOrUrl=/Home/Public/RecipeData/SequenceData/RNA_seq.r2.fastq" target="_blank">RNA_seq.r2.fastq</a></code></strong>: this is human RNA-seq data, reverse reads.</p>
+</div>
+<div id="recipeOutputSection">
+<section id="outputs"></section>
+<h3 class="divider">Outputs</h3>
+<div class="responsive-content" id="recipeOutputText">
+</div>
+</div>
+<section id="overview"></section>
+<h3 class="divider">Recipe steps</h3>
+<ul>
+<li><strong>UCSC Table Browser</strong></li>
+<ol start="1">
+<li>Getting reference gene annotations</li>
+</ol>
+</ul>
+<ul>
+<li><strong>GenePattern</strong></li>
+<ol start="2">
+<li>Creating a pipeline of modules in GenePattern</li>
+<li>Running the pipeline</li>
+<li>Saving results back to GenomeSpace</li>
+</ol>
+</ul>
+<ul>
+<li><strong>IGV</strong></li>
+<ol start="5">
+<li>Loading data into IGV</li>
+<li>Visualizing transcripts</li>
+</ol>
+</ul>
+<div class="row">
+<div class="col-md-6" style="text-align: right; display: inline;width: 250px !important;">
+<a class="btn btn-info" href="javascript:void(0);" id="show-all"><span class="glyphicon glyphicon-plus"></span> Expand All Steps</a>
+</div>
+<div class="col-md-6" style="display: inline;width: 250px !important;">
+<a class="btn btn-info" href="javascript:void(0);" id="hide-all"><span class="glyphicon glyphicon-minus"></span> Collapse All Steps</a>
+</div>
+</div>
+<p></p>
+<div aria-multiselectable="true" class="panel-group" id="steps" role="tablist">
+<div class="panel panel-default">
+<section id="step_0"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Ucsc table browser" class="stepAvatar tag-tooltip" src="/assets/UCSC Table Browser.png" title="UCSC Table Browser"/>
+<a data-toggle="toggle" href="#collapse_0" onclick="$('#collapse_0').collapse('toggle')">1: Getting reference gene annotations <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>In this step, we use the UCSC Table Browser to retrieve reference gene annotations corresponding to the reference genome for our example data. If you are using your own data, you may already have a reference gene annotation file, or you may need to search for one matching your reference genome here.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_0" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>Launch UCSC Table Browser from GenomeSpace by clicking on the icon.</li>
+<li>Download the reference gene annotations from UCSC. For the example dataset, enter the following parameters:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li><code class="parameter">clade</code>: Mammal</li>
+<li><code class="parameter">genome</code>: Human</li>
+<li><code class="parameter">assembly</code>: Feb. 2009 (GRCh37/hg19)</li>
+<li><code class="parameter">group</code>: Genes and Gene Predictions</li>
+<li><code class="parameter">track</code>: UCSC Genes</li>
+<li><code class="parameter">region</code>: genome</li>
+<li><code class="parameter">output format</code>: GTF - gene transfer format</li>
+<li><code class="parameter">Send output to</code>: Select the GenomeSpace checkbox.</li>
+<li><code class="parameter">output file</code>: Give the output a name. For the example data, we name it <code class="filename">UCSC_hg19.gtf</code>.</li>
+</ol>
+</li>
+<li>Click <code class="parameter">get output</code> to retrieve the file. This will take you to a new page which loads the file to GenomeSpace. The output file should appear in your GenomeSpace home directory.</li>
+<li>Optional: close the UCSC Table Browser website.</li>
+</ol>
+<p><img alt="" src="/ckeditor_assets/pictures/285/content_identifyrnaseq.png" style="width: 800px; height: 487px; border-width: 1px; border-style: solid;"/></p>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/Ums_iMqIVdQ?list=https://www.youtube.com/watch?v=Ums_iMqIVdQ&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_1"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Genepattern" class="stepAvatar tag-tooltip" src="/assets/GenePattern.png" title="GenePattern"/>
+<a data-toggle="toggle" href="#collapse_1" onclick="$('#collapse_1').collapse('toggle')">2: Creating a pipeline of modules in GenePattern <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>In this recipe, we want to perform multiple analyses using GenePattern tools, specifically <code class="subtool">TopHat</code> and <code class="subtool">Cufflinks</code>. We will use <code class="subtool">TopHat</code> in GenePattern to align the RNA-seq raw reads to a reference genome. Next, we will use <code class="subtool">Cufflinks</code> to assemble transcripts and estimate the expression levels. We can combine these modules into a pipeline to perform the analysis in an efficient manner. Once saved, a pipeline may be reused or re-purposed for subsequent analyses.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_1" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<p><em><small><strong>NOTE:</strong> If you have not yet associated your GenomeSpace account with your GenePattern account, you will be asked to do so. If you do not yet have a GenePattern account, you can automatically generate a new account that will be associated with your GenomeSpace account.</small></em></p>
+<h3><strong>Creating a new pipeline</strong></h3>
+<ol style="margin:10px;">
+<li>Launch GenePattern from GenomeSpace by clicking on the icon.</li>
+<li>Navigate to the <code class="parameter">Modules &amp; Pipelines</code> tab on the GenePattern toolbar. Do not click; instead, hover your cursor over the tab and click <code class="parameter">New Pipeline</code> in the drop-down menu to load the Pipeline Designer interface.</li>
+<li><strong>OPTIONAL:</strong> In the right-hand information panel, change the <code class="parameter">Pipeline Name</code> to, e.g., RNA_Exp. Other descriptive information (Description, Author, etc.) may be added by the user as desired.</li>
+</ol>
+<h3><strong>Adding <code class="subtool">TopHat</code> to the pipeline</strong></h3>
+<ol>
+<li>Using either the <code class="parameter">Search Modules</code> field or the <code class="parameter">Browse Modules</code> button, select the <code class="subtool">TopHat</code> module. A purple box titled <code class="subtool">TopHat</code> will appear in the designer space while the right-hand information panel will change to display <code class="subtool">TopHat</code>-specific parameters.</li>
+<li>Select the <code class="parameter">GTF.file</code> checkbox.</li>
+<li>In the <code class="parameter">prebuilt.bowtie.index</code> context menu, choose "Homo_sapiens_hg19_UCSC".</li>
+<li>Select the <code class="parameter">reads.pair.1</code> checkbox.</li>
+<li>Select the <code class="parameter">reads.pair.2</code> checkbox.</li>
+<li>In the <code class="parameter">library.type</code> context menu, choose "Standard Illumina (fr-unstranded)".
+	<p><img alt="" src="/ckeditor_assets/pictures/440/content_r5_s2_1_updated.png" style="height: 842px; width: 502px; border: 1px solid grey;"/></p>
+</li>
+</ol>
+<h3><strong>Adding <code class="subtool">Picard.SortSam</code> to the pipeline</strong></h3>
+<ol>
+<li>Using either the <code class="parameter">Search Modules</code> field or the <code class="parameter">Browse Modules</code> button, select the <code class="subtool">Picard.SortSam</code> module. A purple box titled <code class="subtool">Picard.SortSam</code> will appear in the designer space while the right-hand information panel will change to display <code class="subtool">Picard.SortSam</code>-specific parameters.</li>
+<li>In the <code class="parameter">output.format</code> context menu, choose BAM.
+	<p><img alt="" src="/uploaded/content_r5_s2_2.png" style="height:354px; width:275px; border: 1px solid grey"/></p>
+</li>
+<li>Connect the <code class="subtool">TopHat</code> and <code class="subtool">Picard.SortSam</code> modules by clicking on the arrow button in the bottom-right corner of the <code class="subtool">TopHat</code> box (output) and dragging to the arrow button at the top-left corner of the <code class="subtool">Picard.SortSam</code> box next to input.file. A purple arrow should appear, connecting the two modules.</li>
+<li>Click on the context menu at the bottom of the <code class="subtool">Picard.SortSam</code> output box and choose bam.</li>
+</ol>
+<h3><strong>Adding <code class="subtool">Cufflinks</code> to the pipeline</strong></h3>
+<ol>
+<li>Using either the <code class="parameter">Search Modules</code> field or the <code class="parameter">Browse Modules</code> button, select the <code class="subtool">Cufflinks</code> module. A purple box titled <code class="subtool">Cufflinks</code> will appear in the designer space while the right-hand information panel will change to display <code class="subtool">Cufflinks</code>-specific parameters.</li>
+<li>Select <code class="parameter">GTF.file</code> to have the pipeline prompt the user to provide this file when run.
+	<p><img alt="" src="/ckeditor_assets/pictures/441/content_r5_s2_3_updated.png" style="height: 360px; width: 371px; border: 1px solid grey;"/></p>
+</li>
+<li>Connect the <code class="subtool">Picard.SortSam</code> and <code class="subtool">Cufflinks</code> modules by clicking on the arrow button in the bottom-right corner of the <code class="subtool">Picard.SortSam</code> box (output) and dragging to the arrow button at the top-left corner of the <code class="subtool">Cufflinks</code> box next to input.file. A purple arrow should appear, connecting the two modules.</li>
+<li>Click on the context menu at the bottom of the <code class="subtool">Cufflinks</code> output box and choose genes.fpkm_tracking.</li>
+</ol>
+<h3><strong>Adding <code class="subtool">Fpkm_trackingToGct</code> to the pipeline</strong></h3>
+<ol>
+<li>Using either the <code class="parameter">Search Modules</code> field or the <code class="parameter">Browse Modules</code> button, select the <code class="subtool">Fpkm_trackingToGct</code> module. A purple box titled <code class="subtool">Fpkm_trackingToGct</code> will appear in the designer space while the right-hand information panel will change to display <code class="subtool">Fpkm_trackingToGct</code>-specific parameters.</li>
+<li>Connect the <code class="subtool">Cufflinks</code> and <code class="subtool">Fpkm_trackingToGct</code> modules by clicking on the arrow button in the bottom-right corner of the <code class="subtool">Cufflinks</code> box (output) and dragging to the arrow button at the top-left corner of the <code class="subtool">Fpkm_trackingToGct</code> box next to input.file. A purple arrow should appear, connecting the two buttons.</li>
+<li>Click the <code class="parameter">Save</code> button to save the pipeline.</li>
+<li>Click the <code class="parameter">Run Pipeline</code> button in the dialog box to run the pipeline.</li>
+<li>
+<p><img alt="" src="/ckeditor_assets/pictures/442/content_r5_s2_5_updated.png" style="height: 163px; width: 800px; border: 1px solid grey;"/></p>
+</li>
+</ol>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/-mvjPFwVenI?list=https://www.youtube.com/watch?v=-mvjPFwVenI&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_2"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Genepattern" class="stepAvatar tag-tooltip" src="/assets/GenePattern.png" title="GenePattern"/>
+<a data-toggle="toggle" href="#collapse_2" onclick="$('#collapse_2').collapse('toggle')">3: Running the pipeline <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>Run the pipeline for aligning RNA-seq reads to the genome.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_2" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<p><em><strong>NOTE:</strong> A Pipeline Issues dialog box may appear, displaying warnings found in the pipeline. In the case of our model recipe, these warnings may be ignored.</em></p>
+<ol>
+<li>Using the <code class="parameter">GenomeSpace</code> tab in the GenePattern menu, navigate to the location of your input files. In this example recipe, we will use files <code class="filename">RNA_seq.r1.fastq</code> and <code class="filename">RNA_seq.r2.fastq</code>.</li>
+<li>For the first <code class="parameter">GTF file</code> parameter, click the <code class="parameter">Upload your own file</code> button. Navigate to <code class="directory">Your Home Directory</code>, then click and drag the GTF file, <code class="filename">UCSC_hg19.gtf</code>, to the input box.</li>
+<li>Navigate to <code class="directory">Public</code>  &gt;  <code class="directory">RecipeData</code>  &gt;  <code class="directory">SequenceData</code> and drag the first FASTQ file, <code class="filename">RNA_seq.r1.fastq</code>, to the <code class="parameter">reads pair 1</code> parameter.</li>
+<li>Staying in the same folder, drag the second FASTQ file, <code class="filename">RNA_seq.r2.fastq</code>, to the <code class="parameter">reads pair 2</code> parameter.</li>
+<li>For the second <code class="parameter">GTF file</code> parameter, click the <code class="parameter">Upload your own file</code> button. Navigate to <code class="directory">Your Home Directory</code>, then click and drag the GTF file, <code class="filename">UCSC_hg19.gtf</code>, to the input box.</li>
+<li>Click <code class="parameter">Run</code> to submit the pipeline job.
+	<p><img alt="" src="/ckeditor_assets/pictures/443/content_r5_s3_updated.png" style="width: 800px; height: 709px;"/></p>
+</li>
+</ol>
+<p>NOTE: It may take several hours to run this pipeline, depending on the size of the files and whether you are using the GenePattern public server.</p>
+<p><strong>Example output from the pipeline:</strong></p>
+<p><img alt="" src="/uploaded/content_r5_s3_1_2.png" style="height:893px; width:776px"/></p>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/R6BSddRcuok?list=https://www.youtube.com/watch?v=R6BSddRcuok&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_3"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Genepattern" class="stepAvatar tag-tooltip" src="/assets/GenePattern.png" title="GenePattern"/>
+<a data-toggle="toggle" href="#collapse_3" onclick="$('#collapse_3').collapse('toggle')">4: Saving results back to GenomeSpace <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>In this recipe step, we will save the results from the GenePattern pipeline back to GenomeSpace, for further use..</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_3" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>Save the following files to GenomeSpace:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li><code class="filename">TopHat1.reads.pair.1.accepted_hits.sorted.bam</code></li>
+<li><code class="filename">TopHat1.reads.pair.1.accepted_hits.sorted.bai</code></li>
+<li><code class="filename">genes.gct</code></li>
+</ol>
+</li>
+<li>Use one of the following methods for saving files:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li>From the job processing view, click the context menu (blue arrow) next to the dataset (e.g., <code class="filename">genes.gct</code>), then choose <code class="parameter">Save to GenomeSpace</code>.</li>
+<li>From the <code class="parameter">Modules &amp; Pipelines</code> start page, navigate to <code class="parameter">Jobs</code>. Click on the file, then choose <code class="parameter">Send to GenomeSpace</code>.</li>
+</ol>
+</li>
+<li><strong>OPTIONAL:</strong> close GenePattern.</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_4"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Igv" class="stepAvatar tag-tooltip" src="/assets/IGV.png" title="IGV"/>
+<a data-toggle="toggle" href="#collapse_4" onclick="$('#collapse_4').collapse('toggle')">5: Loading data into IGV <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>We will use IGV to visualize the differential expression and abundance levels in the genes.gct file, and check the quality of the mapped alignments from the BAM files.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_4" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<h3><strong>Loading reference data into IGV.</strong></h3>
+<ol>
+<li>Launch IGV from GenomeSpace by clicking on the context menu and choosing <code class="parameter">Launch</code>, prompting the download of a .jnlp file. Double-click the file to launch IGV.</li>
+<li>To load a pre-built reference dataset into IGV, navigate to <code class="parameter">File &gt; Load from Server...</code>.</li>
+<li>Select the 'UCSC Genes' reference dataset by expanding the following drop-down menus: <code class="parameter">Annotations &gt; Genes</code>. Choose the UCSC Genes checkbox.<br>
+<small><em><strong>NOTE:</strong> Check only the 'UCSC Genes' box. Checking the 'Genes' or 'Annotations' checkboxes will check all boxes under that heading, i.e., it will load additional datasets that are not needed for this recipe</em></small></br></li>
+<li>Click <code class="parameter">OK</code> to load the dataset.
+	<p><img alt="" src="/uploaded/content_r5_s6_0.png" style="height:556px; width:800px"/></p>
+</li>
+</ol>
+<h3><strong>Loading RNA-seq data into IGV.</strong></h3>
+<ol>
+<li>Load a reference genome into IGV by using the IGV genome selection drop-down menu. Make sure the reference genome matches the samples you are using, e.g., <i>H. sapiens</i> samples should use the Human hg19 genome, as in this example.</li>
+<li>Use the <code class="parameter">GenomeSpace</code> tab to import files by clicking on the <code class="parameter">Load File from GenomeSpace...</code> option.</li>
+<li>To load files, navigate to the directory in GenomeSpace which contains the file, then click the file to select it, and then click <code class="parameter">Open</code>. Load the following files into IGV:<br>
+<em><small><strong>NOTE:</strong> each file is loaded separately</small></em>
+<ol start="1" style="list-style-type: upper-alpha;">
+<li><code class="filename">RNA_seq.r1.accepted_hits.sorted.bam</code></li>
+<li><code class="filename">genes.gct</code></li>
+</ol>
+<p><img alt="" src="/uploaded/content_r5_s6_1.png" style="height:556px; width:800px"/></p>
+</br></li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_5"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Igv" class="stepAvatar tag-tooltip" src="/assets/IGV.png" title="IGV"/>
+<a data-toggle="toggle" href="#collapse_5" onclick="$('#collapse_5').collapse('toggle')">6: Visualizing transcripts <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>To visualize the FPKM counts for specific genes, we use the <code class="filename">genes.gct</code> file and the UCSC gene annotation information.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_5" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>From the GenomeSpace homepage, navigate to and right-click on the <code class="filename">genes.gct</code> file. Select <code class="parameter">Preview</code> from the context menu.</li>
+<li>In the preview window, copy a UCSC tracking id (under <code class="parameter">tracking_id</code>). In this example, we use uc001aal.</li>
+<li>Return to IGV and paste this tracking id into the search bar at the top of the window. Hit <kbd>enter</kbd> or click the <code class="parameter">Go</code> button. A visual representation of the mapped reads will appear.</li>
+<li>Display the FPKM values of the transcript by hovering the mouse over FPKM bar.
+	<p><img alt="" src="/uploaded/content_r5_s6_5.png" style="height:537px; width:800px"/></p>
+</li>
+</ol>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/oekuBJHKKuk?list=https://www.youtube.com/watch?v=oekuBJHKKuk&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="recipeInterpSection">
+<section id="results"></section>
+<h3 class="divider">Results Interpretation</h3>
+<div class="responsive-content" id="recipeInterpText">
+<p><strong>This is an example interpretation of the results from this recipe.</strong> First, we used GenePattern to create and run a pipeline which aligned raw reads from RNA-seq to a reference genome (pre-built in Bowtie) using <code class="subtool">TopHat</code>, then identified differentially expressed genes using <code class="subtool">Cufflinks</code>. We then used IGV to visualize the FPKM counts of the aligned reads for an example gene, uc001aal.</p>
+<p>The wt_FPKM track is red in the region of the uc001aal gene, which indicates a high FPKM count for that gene. If we examine the *.accepted_hits.bam track in IGV, we can see that we have several reads aligning to this particular gene in the genome. However, the results in this example are not necessarily significant and are only a simple representation of possible results.</p>
+</div>
+</div>
+<hr/>
+<div class="panel-group" id="comments">
+<div class="panel panel-default">
+<div class="panel-heading">
+<h4 class="panel-title"><a data-toggle="collapse" href="#comments_list">Comments (0)</a> <span class="glyphicon glyphicon-chevron-down toggle-glyph"></span></h4>
+</div>
+<div class="panel-collapse collapse in" id="comments_list">
+<div class="panel-body">
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<h4 class="panel-title">Submit a Comment</h4>
+</div>
+<div class="panel-body">
+<form accept-charset="UTF-8" action="/users/sign_in" class="form" id="new_user" method="post" role="form"><div style="display:none"><input name="utf8" type="hidden" value="✓"/><input name="authenticity_token" type="hidden" value="XoarrMGyX+NNPIAefmJdk+OPrxdrvCTZQEjb9nK66DY="/></div>
+<input id="user_identity_url" name="user[identity_url]" type="hidden" value="https://identity.genomespace.org/identityServer/xrd.jsp"/>
+<input class="btn btn-sm btn-success" name="commit" type="submit" value="Sign in using GenomeSpace"/>
+</form> </div>
+</div>
+</div>
+<script>
+//<![CDATA[
+
+
+
+                $('.responsive-content img').addClass('img-responsive').css({"height" : "", "width" : ""});
+				$('[data-toggle="popover"]').popover({trigger: "hover", placement: "top"});
+
+				$("#show-all").click(function() {
+					$(".step-container").collapse("show");
+
+				});
+
+				$("#hide-all").click(function() {
+					$(".step-container").collapse("hide");
+
+				});
+
+                 $('.tag-tooltip').tooltip();
+
+
+
+//]]>
+</script> </div>
+<div class="col-md-2">
+<div class="bs-docs-sidebar hidden-print gp-side-menu" role="complementary">
+<ul class="nav bs-docs-sidenav" data-spy="affix">
+<li><a href="#summary">Summary</a></li>
+<li><a href="#inputs">Inputs</a></li>
+<li id="recipeOutputNav"><a href="#outputs">Outputs</a></li>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#steps">Steps</a>
+<ul class="nav">
+<li><a class="step-anchor" href="#step_0">Getting reference gene annotations</a></li>
+<li><a class="step-anchor" href="#step_1">Creating a pipeline of modules in GenePattern</a></li>
+<li><a class="step-anchor" href="#step_2">Running the pipeline</a></li>
+<li><a class="step-anchor" href="#step_3">Saving results back to GenomeSpace</a></li>
+<li><a class="step-anchor" href="#step_4">Loading data into IGV</a></li>
+<li><a class="step-anchor" href="#step_5">Visualizing transcripts</a></li>
+</ul>
+</li>
+<li id="recipeInterpNav"><a href="#results">Results Interpretation</a></li>
+<!-- <li><a href="#comments">Comments</a></li> -->
+<!-- <li><a href="#history">History</a></li> -->
+<li><a href="javascript:void(0);" id="scroll-top">Back to the Top</a></li>
+</ul>
+</div>
+<script>
+//<![CDATA[
+
+				$('.step-anchor').click(function() {
+					var step = $(this).attr('href').split('_')[1];
+					$('#collapse_' + step).collapse("show");
+				});
+
+//]]>
+</script> </div>
+</div>
+</div>
+<script>
+//<![CDATA[
+
+     if ($("#recipeOutputText").html().trim().length == 0){
+       $("#recipeOutputSection").hide();
+       $("#recipeOutputNav").hide();
+     }
+      if ($("#recipeInterpText").html().trim().length == 0){
+            $("#recipeInterpSection").hide();
+              $("#recipeInterpNav").hide();
+      }
+
+
+//]]>
+</script> <div class="container" id="history">
+<h1>History</h1>
+<ul>
+<li>Saved <b>almost 4 years ago</b>
+                                                        on 11/21/2016 18:24:56 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/7?lastVersion=true&amp;versionIndex=3" target="_oldRecipe" title="View this version in a new window">View this version</a><br>
+<div>
+</div>
+</br></li>
+<li>Saved <b>almost 4 years ago</b>
+                                                        on 11/02/2016 18:52:02 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/7?lastVersion=true&amp;versionIndex=2" target="_oldRecipe" title="View this version in a new window">View this version</a><br>
+<div>
+</div>
+</br></li>
+<li>Saved <b>almost 4 years ago</b>
+                                                        on 10/06/2016 15:23:27 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/7?lastVersion=true&amp;versionIndex=1" target="_oldRecipe" title="View this version in a new window">View this version</a><br>
+<div>
+</div>
+</br></li>
+<li>Saved <b>almost 4 years ago</b>
+                                                        on 09/13/2016 17:46:14 UTC by <b>andyis</b>.
+                                                        <a href="/view/7?lastVersion=true&amp;versionIndex=0" target="_oldRecipe" title="View this version in a new window">View this version</a><br>
+<div>
+</div>
+</br></li>
+</ul>
+</div>
+<div class="container-fluid footer gs-recipe-footer">
+<p class="copy-right-block">Copyright ©2016 The Regents of the University of California and The Broad Institute of MIT &amp; Harvard</p>
+</div>
+</body>
+</html>

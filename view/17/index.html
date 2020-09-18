@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>GenomeSpace Recipe: Identify and validate coding variants from exome sequencing data</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link href="/assets/docs.min.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/featured_article.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/pages.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/recipes.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/site.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/tags.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/jquery-ui/theme.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/jquery-ui/core.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/application.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/dataTables/bootstrap/3/jquery.dataTables.bootstrap.css?body=1" media="all" rel="stylesheet"/>
+<script src="/assets/jquery.js?body=1"></script>
+<script src="/assets/jquery_ujs.js?body=1"></script>
+<script src="/assets/jquery-ui/core.js?body=1"></script>
+<script src="/assets/jquery-ui/widget.js?body=1"></script>
+<script src="/assets/jquery-ui/position.js?body=1"></script>
+<script src="/assets/jquery-ui/menu.js?body=1"></script>
+<script src="/assets/jquery-ui/autocomplete.js?body=1"></script>
+<script src="/assets/jquery-ui/mouse.js?body=1"></script>
+<script src="/assets/jquery-ui/sortable.js?body=1"></script>
+<script src="/assets/bootstrap/affix.js?body=1"></script>
+<script src="/assets/bootstrap/alert.js?body=1"></script>
+<script src="/assets/bootstrap/button.js?body=1"></script>
+<script src="/assets/bootstrap/carousel.js?body=1"></script>
+<script src="/assets/bootstrap/collapse.js?body=1"></script>
+<script src="/assets/bootstrap/dropdown.js?body=1"></script>
+<script src="/assets/bootstrap/tab.js?body=1"></script>
+<script src="/assets/bootstrap/transition.js?body=1"></script>
+<script src="/assets/bootstrap/scrollspy.js?body=1"></script>
+<script src="/assets/bootstrap/modal.js?body=1"></script>
+<script src="/assets/bootstrap/tooltip.js?body=1"></script>
+<script src="/assets/bootstrap/popover.js?body=1"></script>
+<script src="/assets/bootstrap-sprockets.js?body=1"></script>
+<script src="/assets/ckeditor/init.js?body=1"></script>
+<script src="/assets/ckeditor/ckeditor.js?body=1"></script>
+<script src="/assets/jquery_nested_form.js?body=1"></script>
+<script src="/assets/dataTables/jquery.dataTables.js?body=1"></script>
+<script src="/assets/dataTables/bootstrap/3/jquery.dataTables.bootstrap.js?body=1"></script>
+<script src="/assets/autocomplete-rails.js?body=1"></script>
+<script src="/assets/spin.min.js?body=1"></script>
+<script src="/assets/docs.min.js?body=1"></script>
+<script src="/assets/jquery.hoverIntent.minified.js?body=1"></script>
+<script src="/assets/ckeditor/config.js?body=1"></script>
+<script src="/assets/featured_article.js?body=1"></script>
+<script src="/assets/pages.js?body=1"></script>
+<script src="/assets/recipes.js?body=1"></script>
+<script src="/assets/site.js?body=1"></script>
+<script src="/assets/tags.js?body=1"></script>
+<script src="/assets/application.js?body=1"></script>
+<meta content="authenticity_token" name="csrf-param"/>
+<meta content="+l5k7e7Fu5bU7XuFiBubVIg16j5LN5qiNCDl5YGObRk=" name="csrf-token"/>
+<link href="https://fonts.googleapis.com/css?family=Wire+One" rel="stylesheet" type="text/css"/>
+<link href="https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:300" rel="stylesheet" type="text/css"/>
+<link href="/assets/favicon.ico" rel="shortcut icon">
+<script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-74623322-1', 'auto');
+        ga('send', 'pageview');
+       // ga('set', 'userId', {{"anonymous"}}); // Set the user ID using signed-in user_id.
+        ga('set', 'userId', 'anonymous'); // Set the user ID using signed-in user_id.
+
+    </script>
+</link></head>
+<body onload="tellParentWindowMySize()">
+<div id="nav_page_wrapper">
+<div id="logo"><a href="http://www.genomespace.org/"><img alt="Gslogo" src="/assets/gslogo.png"/></a></div>
+<div class="clickable" id="login_menu">
+<form accept-charset="UTF-8" action="/users/sign_in" class="new_user" id="gs-login" method="post"><div style="display:none"><input name="utf8" type="hidden" value="✓"/><input name="authenticity_token" type="hidden" value="+l5k7e7Fu5bU7XuFiBubVIg16j5LN5qiNCDl5YGObRk="/></div>
+<input id="user_identity_url" name="user[identity_url]" type="hidden" value="https://identity.genomespace.org/identityServer/xrd.jsp"/>
+<a onclick="document.getElementById('gs-login').submit(); return false;">Login<span class="glyphicon glyphicon-chevron-right"></span></a>
+</form></div>
+<ul id="nav">
+<li class="dropdown">
+<a href="/"><span class="glyphicon glyphicon-home"></span> GenomeSpace Recipes</a>
+</li>
+<!-- <li id="recipe_link"><a href="/recipes"><span class="gparc-nav-icon glyphicon glyphicon-list"></span> My Recipes</a></li> -->
+<!-- links to main genomespace.org -->
+<li id="gsdotorg"><a href="http://www.genomespace.org/"><img alt="Gslogo" height="24px" src="/assets/official_logo.png"/>GenomeSpace.org</a><ul>
+<li id="what-is-genomespace"><a href="http://www.genomespace.org/what-is-genomespace">What is GenomeSpace?</a>
+<li id="tools"><a href="http://www.genomespace.org/support/tools">Tools</a>
+</li>
+<li id="recipes"><a href="http://recipes.genomespace.org/">Recipes</a></li>
+<li id="documentation"><a href="http://www.genomespace.org/documentation">Documentation</a>
+<ul>
+<li><a href="http://www.genomespace.org/support/guides/user-guide">User Guide</a>
+<p>Read the detailed guide to the user interface</p>
+</li>
+<li><a href="http://www.genomespace.org/support/guides/tool-guide">Tool Guide</a>
+<p>Learn how to access GenomeSpace functionality for each Tool</p>
+</li>
+<li><a href="http://www.genomespace.org/faq">FAQ</a>
+<p>See answers to frequently asked questions</p>
+</li>
+<li><a href="http://www.genomespace.org/presentations-and-videos">Presentations and Videos</a>
+<p>Access talks by the GenomeSpace community</p>
+</li>
+<li><a href="http://www.genomespace.org/support/guides/end-to-end-analyses">End-to-End Analyses</a>
+<p>Provides description for end-to-end analyses.</p>
+</li>
+</ul>
+</li>
+<li id="developers"><a href="http://www.genomespace.org/for-developers">Developers</a>
+<ul>
+<li><a href="http://www.genomespace.org/what-can-genomespace-do-for-tool-developers">What Can GenomeSpace Do For Tool Developers?</a>
+<p></p>
+</li>
+<li><a href="http://www.genomespace.org/adopters">Technical Documentation</a>
+<p></p>
+</li>
+<li><a href="http://www.genomespace.org/source-code">Source Code and Distributions</a>
+<p></p>
+</li>
+<li><a href="http://www.genomespace.org/developer-support-and-feedback">Developer Support and Feedback</a>
+<p></p>
+</li>
+</ul>
+</li>
+<li id="support"><a href="http://www.genomespace.org/support">Support</a>
+</li>
+<li id="about"><a href="http://www.genomespace.org/about">About</a>
+</li>
+</li></ul></li>
+<!-- end of links to main GenomeSpace.org -->
+<li class="search">
+<div id="search_box">
+<form accept-charset="UTF-8" action="/search" class="form" method="get" role="form"><div style="display:none"><input name="utf8" type="hidden" value="✓"/></div>
+<div style="margin:0;padding:0;display:inline">
+<input class="search" id="search" name="search" type="text"/>
+</div>
+<input class="searchBtn" type="submit"/>
+</form> </div>
+</li>
+</ul>
+</div>
+<div class="container fluid gs-recipe-">
+<div class="row">
+<div class="col-md-10">
+<table><tr><td><img alt="Galaxy igv" class="recipeAvatar" src="/system/recipes/avatars/000/000/017/original/galaxy_igv.png?1445288676"/></td><td>
+<h3>Identify and validate coding variants from exome sequencing data
+                        </h3>
+</td></tr></table>
+<p class="text-muted">Added by GenomeSpaceTeam on 2015.05.19 <span class="official"><img alt="Official logo" data-content="Offical GenomeSpace Recipe" data-toggle="popover" src="/assets/official_logo.png"/></span>
+<br/>
+            Last updated on over 3 years ago.
+            </p>
+<div class="row">
+<div class="col-md-8">
+<p>
+<a class="btn btn-default btn-xs tag green" >whole exome sequencing</a>
+<a class="btn btn-default btn-xs tag green" >DNA sequencing</a>
+<a class="btn btn-default btn-xs tag green" >SNPs</a>
+<a class="btn btn-default btn-xs tag red" >variant calling</a>
+</p>
+</div>
+<div class="col-md-2 voting">
+<p class="text-success"><span class="glyphicon glyphicon-thumbs-up"></span> 0</p>
+</div>
+<div class="col-md-2 voting">
+<p class="text-danger"><span class="glyphicon glyphicon-thumbs-down"></span> 0</p>
+</div>
+</div>
+<hr/>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/M6LZepBlEqk?list=PL4ZmSx1n2Kw5eh2afip0JyVpj6EBkgPX4&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+<section id="summary"></section>
+<h3 class="divider">Summary</h3>
+<div class="responsive-content">
+<p><span style="font-family:arial,sans-serif;"><span style="font-size:16px;"><i>What coding variants do my exome sequences contain, and are any of them phenotypically interesting?</i></span></span></p>
+<p>This recipe provides a method to identify coding variants from exome sequencing data. An example use of this recipe is a case where an investigator may want to identify variants from their alignment data and evaluate the phenotypes.</p>
+<p><img alt="" src="/ckeditor_assets/pictures/371/content_identifyvalidatecodingvariants.png" style="width: 529px; height: 212px; float: right; padding: 10px;"/></p>
+<p> </p>
+<p>In particular, this recipe uses the variant detector, FreeBayes, in Galaxy to identify potential variants from short-read alignments and assign them quality scores. We also use other Galaxy tools to pare these potential variants down to a high quality subset and to compare them against a catalog of gold-standard variants. Finally, we use IGV to visualize these variants alongside known pathogenic variants.</p>
+<p><strong>Why identify genetic variants?</strong> Genetic variants are DNA sequence differences that occur with relative frequency in a population. These variants include single nucleotide polymorphisms (SNPs), insertions and deletions (indels), multi-nucleotide polymorphisms (MNPs), and complex events that are combinations of indels and polymorphisms. With the advent of next generation sequencing technologies, it has become common practice to identify variants using sequence data. This is usually accomplished by comparing sequence data from many samples or individuals against a reference. Identified variants can have many practical applications. For instance, variants that correlate strongly with disease risk may provide insight into the disease's genetic underpinnings. Variants may also be used as biomarkers for disease risk or to DNA "fingerprint" individuals.</p>
+<p><strong>Why use exome sequencing data?</strong> The human exome comprises all the exonic regions of the human genome. That is, it includes all the DNA sequences that, after transcription into RNA, remain after RNA-splicing, which amounts to about 1% of the entire genome. Whole exome sequencing (WES) thus generates much less data than whole genome sequencing (WGS). Furthermore, since WES focuses almost exclusively on protein-coding regions it is an effective method for identifying coding variants.</p>
+<p><small><em><strong>NOTE:</strong> Working with DNA sequencing data is a computationally and resource intensive process. Files containing raw sequence reads can be many gigabytes in size and can be cumbersome to manage. To maintain the usability of this recipe, we have chosen to work with only a partial region of the human genome, specifically th</em><em>e exonic regions of a chromosome 20.</em></small></p>
+</div>
+<section id="inputs"></section>
+<h3 class="divider">Inputs</h3>
+<div class="responsive-content">
+<p>To complete this recipe, we will need a number of datasets of various types. First, we will need a set of exonic sequence reads that have been pre-processed for quality and duplicates and aligned to the genome. In this example, we will use aligned reads generated by the 1000 Genomes Project that have been mapped to the exonic regions of chromosome 20. These samples are derived from 10 individuals in the project's Great Britain population cohort. We also require a reference genome in FASTA format, which we will use to identify variants. Finally, we will need a set of gold-standard variants as well as a set of variant annotations to compare against our discovered variants. We will need the following datasets, which can be downloaded from the following GenomeSpace Public folder:</p>
+<p><code class="directory">Public</code> &gt; <code class="directory">RecipeData</code> &gt; <code class="directory">AlignmentData</code> &gt; <strong><code class="filename"><a href="https://gsui.genomespace.org/jsui/gsui.html?pathOrUrl=/Home/Public/RecipeData/AlignmentData/1000GP.GBR.chrom20.exome.tar.gz" target="_blank">1000GP.GBR.chrom20.exome.tar.gz</a></code></strong>: This is an archive of aligned, sorted, and duplicate-marked chromosome 20 exome reads in BAM format. Specifically, the archive includes the alignments of 10 individuals drawn from the Great Britain population in Phase 3 of the 1000 Genome Project.</p>
+<p><code class="directory">Public</code> &gt; <code class="directory">RecipeData</code> &gt; <code class="directory">SequenceData</code> &gt; <strong><code class="filename"><a href="https://gsui.genomespace.org/jsui/gsui.html?pathOrUrl=/Home/Public/RecipeData/SequenceData/hs_ref_GRCh37.p5_chr20.fa" target="_blank">hs_ref_GRCh37.p5_chr20.fa</a></code></strong>: This is a FASTA file containing sequences for a human reference genome, chromosome 20 only.</p>
+<p><code class="directory">Public</code> &gt; <code class="directory">RecipeData</code> &gt; <code class="directory">VariantData</code> &gt; <strong><code class="filename"><a href="https://gsui.genomespace.org/jsui/gsui.html?pathOrUrl=/Home/Public/RecipeData/VariantData/hapmap_3.3.b37.chr20.vcf" target="_blank">hapmap_3.3.b37.chr20.vcf</a></code></strong>: This is a VCF formatted file containing genetic variants identified by the International HapMap Project (version 3.3) filtered to include only variants on chromosome 20.</p>
+<p><code class="directory">Public</code> &gt; <code class="directory">RecipeData</code> &gt; <code class="directory">VariantData</code> &gt; <strong><code class="filename"><a href="https://gsui.genomespace.org/jsui/gsui.html?pathOrUrl=/Home/Public/RecipeData/VariantData/dbSNP_135.no1000GProduction.chr20.pathogenic.vcf" target="_blank">dbSNP_135.no1000GProduction.chr20.pathogenic.vcf</a></code></strong>: This is a VCF formatted file containing genetic variants identified by the NCBI Short Genetic Variations database, dbSNP.</p>
+<p><small><strong>NOTE:</strong> These data are modified files downloaded from the <a href="http://www.1000genomes.org/" target="_blank">1000 Genomes Project</a>, the <a href="http://hapmap.ncbi.nlm.nih.gov" target="_blank">International HapMap Project</a>, and the <a href="http://www.ncbi.nlm.nih.gov/SNP/" target="_blank">NCBI Short Genetic Variations database</a>.</small></p>
+</div>
+<div id="recipeOutputSection">
+<section id="outputs"></section>
+<h3 class="divider">Outputs</h3>
+<div class="responsive-content" id="recipeOutputText">
+<p>This recipe identifies a set of high confidence genetic variants in the exonic regions of chromosome 20.</p>
+</div>
+</div>
+<section id="overview"></section>
+<h3 class="divider">Recipe steps</h3>
+<ul>
+<li><strong>Galaxy</strong></li>
+<ol start="1">
+<li>Loading Data</li>
+<li>Call and filter variants with FreeBayes and the VCFlib toolkit</li>
+</ol>
+</ul>
+<ul>
+<li><strong>IGV</strong></li>
+<ol start="3">
+<li>Visualize variants</li>
+</ol>
+</ul>
+<div class="row">
+<div class="col-md-6" style="text-align: right; display: inline;width: 250px !important;">
+<a class="btn btn-info" href="javascript:void(0);" id="show-all"><span class="glyphicon glyphicon-plus"></span> Expand All Steps</a>
+</div>
+<div class="col-md-6" style="display: inline;width: 250px !important;">
+<a class="btn btn-info" href="javascript:void(0);" id="hide-all"><span class="glyphicon glyphicon-minus"></span> Collapse All Steps</a>
+</div>
+</div>
+<p></p>
+<div aria-multiselectable="true" class="panel-group" id="steps" role="tablist">
+<div class="panel panel-default">
+<section id="step_0"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Galaxy" class="stepAvatar tag-tooltip" src="/assets/Galaxy.png" title="Galaxy"/>
+<a data-toggle="toggle" href="#collapse_0" onclick="$('#collapse_0').collapse('toggle')">1: Loading Data <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>Load the files into Galaxy using the following method.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_0" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<p><em><small><strong>NOTE:</strong> If you have not yet associated your GenomeSpace account with your Galaxy account, you will be asked to do so. If you do not yet have a Galaxy account, you can automatically generate a new account that will be associated with your GenomeSpace account.</small></em></p>
+<p><strong>Un-zip the archive of BAM files.</strong></p>
+<ol start="1">
+<li>Navigate to the folder containing the <strong><code class="filename"><a href="https://gsui.genomespace.org/jsui/gsui.html?pathOrUrl=/Home/Public/RecipeData/AlignmentData/1000GP.GBR.chrom20.exome.tar.gz" target="_blank">1000GP.GBR.chrom20.exome.tar.gz</a></code></strong> file: <code class="directory">Public</code> &gt; <code class="directory">RecipeData</code> &gt; <code class="directory">AlignmentData</code>.</li>
+<li>Right-click this file and select <code class="parameter">Expand Archive</code>. Choose your own directory.</li>
+<li>Click the <code class="parameter">Expand Archive</code> button to unzip the <code class="filename">tar.gz</code> file, and extract all the files to a new folder in your home directory, <code class="directory">1000GP.GBR.chrom20.exome</code>.</li>
+</ol>
+<p><strong>Send the files to Galaxy.</strong></p>
+<ol start="1" style="list-style-type:decimal">
+<li>Open Galaxy from GenomeSpace and navigate to the menu: <code class="parameter">Get Data &gt; GenomeSpace import</code>. Navigate to the newly created directory, <code class="directory">1000GP.GBR.chrom20.exome</code>.
+
+	<ol start="1" style="list-style-type:upper-alpha">
+<li>Select all BAM files in the directory. There should be 10 BAM files. Do <em>not</em> load the "bam.bai" files.</li>
+<li>Click <code class="parameter">Send to Galaxy</code>.</li>
+</ol>
+</li>
+<li>Send the <code class="filename">hs_ref_GRCh37.p5_chr20.fa file.</code> file to Galaxy.
+	<ol start="1" style="list-style-type:upper-alpha">
+<li>Navigate to <code class="directory">Public</code> &gt; <code class="directory">RecipeData</code> &gt; <code class="directory">SequenceData</code>. Select the <code class="filename">hs_ref_GRCh37.p5_chr20.fa file</code>.</li>
+<li>Click <code class="parameter">Send to Galaxy</code>.</li>
+</ol>
+</li>
+<li>Send the <code class="filename">hapmap_3.3.b37.chr20.vcf file</code> file to Galaxy.
+	<ol start="1" style="list-style-type:upper-alpha">
+<li>Navigate to <code class="directory">Public</code> &gt; <code class="directory">RecipeData</code> &gt; <code class="directory">VariantData</code>. Select the <code class="filename">hapmap_3.3.b37.chr20.vcf file</code>.</li>
+<li>Click <code class="parameter">Send to Galaxy</code>.</li>
+</ol>
+</li>
+</ol>
+<p><em><small><strong>NOTE:</strong> While GenomeSpace provide multiple methods for sending data to tools, in this instance we highly suggest using the above method. Users may encounter errors if using other methods due to the relatively large size and number of files.</small></em></p>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/M6LZepBlEqk?list=https://www.youtube.com/watch?v=M6LZepBlEqk&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_1"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Galaxy" class="stepAvatar tag-tooltip" src="/assets/Galaxy.png" title="Galaxy"/>
+<a data-toggle="toggle" href="#collapse_1" onclick="$('#collapse_1').collapse('toggle')">2: Call and filter variants with FreeBayes and the VCFlib toolkit <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>We will use a pre-built Galaxy workflow to call and filter variants in the exome regions of chromosome 20. This workflow first uses the haplotype-based genetic variant detector, <code class="subtool">FreeBayes</code>, to call variants from the short-read sequencing alignments, generating a VCF file that lists the discovered variants, genotypes, and various quality metrics. (The VCF or Variant Call Format is a standard file format for reporting genetic variants.) This workflow also uses <code class="subtool">VCFfilter</code> and <code class="subtool">VCFintersect</code>, from the <code class="subtool">VCFlib toolkit</code>, to filter the results from <code class="subtool">FreeBayes</code> for high quality, known variants. The resulting Galaxy workflow output is thus a VCF file containing high quality variants identified by <code class="subtool">FreeBayes</code> and extant in the gold-standard HapMap catalog.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_1" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>Click on the following link: <a href="https://usegalaxy.org/u/genomespace/w/identify-and-validate-coding-variants-from-exome-sequencing-data-1" target="_blank">Identify and Validate Coding Variants from Exome Sequencing Data</a></li>
+<li>Click the <img alt="" src="/ckeditor_assets/pictures/121/content_galplus.png" style="width: 14px; height: 14px; display: inline;"/> icon in the upper right corner to import the workflow.</li>
+<li>Click <code class="parameter">start using this workflow</code>.</li>
+<li>Click on the workflow drop-down menu (e.g., <strong>imported: Identify and Validate Coding Variants from Exome Sequencing Data</strong>), then choose <code class="parameter">Run</code>.</li>
+<li>Load the files into the correct fields. The input fields should have annotations indicating which file should be loaded:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li><code class="parameter">1: Input Dataset -</code> <code class="filename">HG000<strong>96</strong>.chrom20.ILLUMINA.bwa.GBR.exome.20120522.bam</code></li>
+<li><code class="parameter">2: Input Dataset -</code> <code class="filename">HG000<strong>97</strong>.chrom20.ILLUMINA.bwa.GBR.exome.20120522.bam</code></li>
+<li><code class="parameter">3: Input Dataset -</code> <code class="filename">HG000<strong>99</strong>.chrom20.ILLUMINA.bwa.GBR.exome.20120522.bam</code></li>
+<li><code class="parameter">4: Input Dataset -</code> <code class="filename">HG00<strong>100</strong>.chrom20.ILLUMINA.bwa.GBR.exome.20130415.bam</code></li>
+<li><code class="parameter">5: Input Dataset -</code> <code class="filename">HG00<strong>101</strong>.chrom20.ILLUMINA.bwa.GBR.exome.20130415.bam</code></li>
+<li><code class="parameter">6: Input Dataset -</code> <code class="filename">HG00<strong>102</strong>.chrom20.ILLUMINA.bwa.GBR.exome.20130415.bam</code></li>
+<li><code class="parameter">7: Input Dataset -</code> <code class="filename">HG00<strong>103</strong>.chrom20.ILLUMINA.bwa.GBR.exome.20130415.bam</code></li>
+<li><code class="parameter">8: Input Dataset -</code> <code class="filename">HG00<strong>105</strong>.chrom20.ILLUMINA.bwa.GBR.exome.20130415.bam</code></li>
+<li><code class="parameter">9: Input Dataset -</code> <code class="filename">HG00<strong>106</strong>.chrom20.ILLUMINA.bwa.GBR.exome.20130415.bam</code></li>
+<li><code class="parameter">10: Input Dataset -</code> <code class="filename">HG00<strong>107</strong>.chrom20.ILLUMINA.bwa.GBR.exome.20121211.bam</code></li>
+<li><code class="parameter">11: Input Dataset -</code> <code class="filename">hs_ref_GRCh37.p5_chr20.fa</code></li>
+<li><code class="parameter">12: Input Dataset -</code> <code class="filename">hapmap_3.3.b37.chr20.vcf</code></li>
+<li><code class="parameter">16: GenomeSpace Exporter:</code>
+<ol start="1" style="list-style-type: lower-roman;">
+<li>Select a directory of your choice under the <code class="parameter">Choose Target Directory</code> parameter.</li>
+<li>Give your file a name, e.g. <code class="filename">GBR.chr20.freebayes.filtered.validated.vcf</code> under the <code class="parameter">filename</code> parameter</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Click <code class="parameter">Run workflow</code>.<br>
+<em><small><strong>NOTE:</strong> The workflow will automatically save your output file to GenomeSpace.</small></em></br></li>
+</ol>
+<p><img alt="" src="/ckeditor_assets/pictures/439/content_fig1.png" style="border-style: solid; border-width: 1px; height: 1330px; width: 800px;"/></p>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/zLIoSBNqUlM?list=https://www.youtube.com/watch?v=zLIoSBNqUlM&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_2"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Igv" class="stepAvatar tag-tooltip" src="/assets/IGV.png" title="IGV"/>
+<a data-toggle="toggle" href="#collapse_2" onclick="$('#collapse_2').collapse('toggle')">3: Visualize variants <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>In this step, we use IGV to visualize high-confidence genetic variants, which we have identified in our British population sample, alongside known pathogenic variants defined in dbSNP.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_2" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<p><img alt="" src="/ckeditor_assets/pictures/93/content_igv_screenshot_all1.png" style="border-style:solid; border-width:1px; height:500px; width:800px"/></p>
+<ol>
+<li>Launch IGV from GenomeSpace by clicking on the context menu and choosing <code class="parameter">Launch</code>, prompting the download of a .jnlp file. Double-click the file to launch IGV.</li>
+<li>Load a reference genome into IGV by using the IGV genome selection drop-down menu. Make sure the reference genome matches the one used in the variant calling process, e.g., Human (b37) in this example.</li>
+<li>Use the <code class="parameter">GenomeSpace</code> tab to import files by navigating to the following menu: <code class="parameter">Load File from GenomeSpace...</code>.</li>
+<li>To load files, navigate to the directory in GenomeSpace which contains the file, then click the file to select it, and then click <code class="parameter">Open</code>. Load the following files into IGV:<br>
+<small><em><strong>NOTE:</strong> Each file is loaded separately.</em></small>
+<ol start="1" style="list-style-type:upper-alpha">
+<li><code class="directory">Your Home Directory</code> &gt; <strong><code class="filename">GBR.chr20.freebayes.filtered.validated.vcf</code></strong></li>
+<li><code class="directory">Public</code> &gt; <code class="directory">RecipeData</code> &gt; <code class="directory">VariantData</code> &gt; <strong><code class="filename">dbSNP_135.no1000GProduction.chr20.pathogenic.vcf</code></strong></li>
+</ol>
+</br></li>
+</ol>
+<p><img alt="" src="/ckeditor_assets/pictures/96/content_igv_screenshot_all2.png" style="border-style:solid; border-width:1px; height:369px; width:800px"/></p>
+<ol start="5" style="list-style-type:decimal">
+<li>Since our original reads were aligned to chromosome 20 only, select 20 from the dropdown menu of regions to view the variants.</li>
+</ol>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/YkY0fgxoaSA?list=https://www.youtube.com/watch?v=YkY0fgxoaSA&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="recipeInterpSection">
+<section id="results"></section>
+<h3 class="divider">Results Interpretation</h3>
+<div class="responsive-content" id="recipeInterpText">
+<p>This is an example interpretation of the results from this recipe. In our Galaxy workflow we first used <code class="subtool">FreeBayes</code> to compare our short-read exome sequencing alignments to a reference sequence in order to determine likely genetic variants in our sample cohort. Next we used <code class="subtool">VCFfilter</code> to filter these results for high quality variants based on various metrics (e.g., read depth, quality score). We also used <code class="subtool">VCFintersect</code> to further narrow our results down to those variants with equivalent alleles in the HapMap catalog. Finally, we turned to IGV to view our filtered variants alongside a set of known pathogenic variants identified in the dbSNP database. Specifically, we would like to see if any of our identified variants may be associated with an increased risk for disease.</p>
+<p><img alt="" src="/ckeditor_assets/pictures/97/content_igv_screenshot_all3.png" style="border-style:solid; border-width:1px; height:401px; width:800px"/></p>
+<p>We zoom in on a specific variant located in the q13.31 cytoband of chromosome 20 by typing the coordinates 20:54961541 into the regions navigation bar and hitting enter. Both our results track (upper) and dbSNP track (lower) display a variant at this site, as indicated by the blue and red bar (the proportion of red in the bar corresponds to the allele frequency of the variant). The group of 10 tracks display the genotypes of the 10 individuals whose sequences we used in this recipe. Specifically, 4 individuals are heterozygous for the variant (blue), 2 individuals are homozygous (cyan), and the remaining 4 individuals are homozygous (grey) for the reference allele.</p>
+<p>Clicking on the variants in either track brings up info-boxes that display various statistics for the variant. By comparing to the dbSNP track, we notice that our variant analysis has identified an A/T SNP that corresponds to the pathogenic variant, rs2273535, in the AURKA gene. Moreover, our set of 10 samples carried the minor allele with a frequency of 0.4, which corresponds closely to the allele frequency of 0.316 reported in the dbSNP annotations. Given this correspondence, we reason that we have identified the pathogenic SNP rs2273535 in our sample set of 10 British individuals. If we search for SNP id rs2273535 in ClinVar (<a href="http://www.google.com/url?q=http%3A%2F%2Fwww.ncbi.nlm.nih.gov%2Fclinvar%2Fvariation%2F6642%2F&amp;sa=D&amp;sntz=1&amp;usg=AFQjCNGwT9sG5wCvWQYlRjytWiob4r2n8g" target="_blank">link</a>), we see that it has been identified as a risk factor for colon cancer. However, note that due to our small sample size these variant discoveries may not be generalizable to the whole population; this is only a simple representation of possible results.</p>
+</div>
+</div>
+<hr/>
+<div class="panel-group" id="comments">
+<div class="panel panel-default">
+<div class="panel-heading">
+<h4 class="panel-title"><a data-toggle="collapse" href="#comments_list">Comments (2)</a> <span class="glyphicon glyphicon-chevron-down toggle-glyph"></span></h4>
+</div>
+<div class="panel-collapse collapse in" id="comments_list">
+<div class="panel-body">
+<div class="well comment">
+<small class="help-block">Posted by mvila on December 18, 2017 12:09</small>
+<p>Hi, I've been trying to follow this recipe, but could not launch the data to Galaxy. Please check, whether there is any problem with that. Thanks, Marta</p>
+</div>
+<div class="well comment">
+<small class="help-block">Posted by ted on December 18, 2017 17:12</small>
+<p>Marta,  it looks like the GenomeSpace importer in Galaxy has been updated and in the new version it does not allow multiple files to be imported at once.  I am contacting the developer and will try to get this corrected.  I will contact you via email to follow up.
+Thanks for letting us know,  Ted</p>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<h4 class="panel-title">Submit a Comment</h4>
+</div>
+<div class="panel-body">
+<form accept-charset="UTF-8" action="/users/sign_in" class="form" id="new_user" method="post" role="form"><div style="display:none"><input name="utf8" type="hidden" value="✓"/><input name="authenticity_token" type="hidden" value="+l5k7e7Fu5bU7XuFiBubVIg16j5LN5qiNCDl5YGObRk="/></div>
+<input id="user_identity_url" name="user[identity_url]" type="hidden" value="https://identity.genomespace.org/identityServer/xrd.jsp"/>
+<input class="btn btn-sm btn-success" name="commit" type="submit" value="Sign in using GenomeSpace"/>
+</form> </div>
+</div>
+</div>
+<script>
+//<![CDATA[
+
+
+
+                $('.responsive-content img').addClass('img-responsive').css({"height" : "", "width" : ""});
+				$('[data-toggle="popover"]').popover({trigger: "hover", placement: "top"});
+
+				$("#show-all").click(function() {
+					$(".step-container").collapse("show");
+
+				});
+
+				$("#hide-all").click(function() {
+					$(".step-container").collapse("hide");
+
+				});
+
+                 $('.tag-tooltip').tooltip();
+
+
+
+//]]>
+</script> </div>
+<div class="col-md-2">
+<div class="bs-docs-sidebar hidden-print gp-side-menu" role="complementary">
+<ul class="nav bs-docs-sidenav" data-spy="affix">
+<li><a href="#summary">Summary</a></li>
+<li><a href="#inputs">Inputs</a></li>
+<li id="recipeOutputNav"><a href="#outputs">Outputs</a></li>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#steps">Steps</a>
+<ul class="nav">
+<li><a class="step-anchor" href="#step_0">Loading Data</a></li>
+<li><a class="step-anchor" href="#step_1">Call and filter variants with FreeBayes and the VCFlib toolkit</a></li>
+<li><a class="step-anchor" href="#step_2">Visualize variants</a></li>
+</ul>
+</li>
+<li id="recipeInterpNav"><a href="#results">Results Interpretation</a></li>
+<!-- <li><a href="#comments">Comments</a></li> -->
+<!-- <li><a href="#history">History</a></li> -->
+<li><a href="javascript:void(0);" id="scroll-top">Back to the Top</a></li>
+</ul>
+</div>
+<script>
+//<![CDATA[
+
+				$('.step-anchor').click(function() {
+					var step = $(this).attr('href').split('_')[1];
+					$('#collapse_' + step).collapse("show");
+				});
+
+//]]>
+</script> </div>
+</div>
+</div>
+<script>
+//<![CDATA[
+
+     if ($("#recipeOutputText").html().trim().length == 0){
+       $("#recipeOutputSection").hide();
+       $("#recipeOutputNav").hide();
+     }
+      if ($("#recipeInterpText").html().trim().length == 0){
+            $("#recipeInterpSection").hide();
+              $("#recipeInterpNav").hide();
+      }
+
+
+//]]>
+</script> <div class="container" id="history">
+<h1>History</h1>
+<ul>
+<li>Saved <b>over 3 years ago</b>
+                                                        on 02/27/2017 16:24:02 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/17?lastVersion=true&amp;versionIndex=6" target="_oldRecipe" title="View this version in a new window">View this version</a><br>
+<div>
+</div>
+</br></li>
+<li>Saved <b>over 3 years ago</b>
+                                                        on 02/27/2017 15:59:02 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/17?lastVersion=true&amp;versionIndex=5" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>over 3 years ago</b>
+                                                        on 02/23/2017 15:47:29 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/17?lastVersion=true&amp;versionIndex=4" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>over 3 years ago</b>
+                                                        on 02/22/2017 21:24:38 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/17?lastVersion=true&amp;versionIndex=3" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>almost 4 years ago</b>
+                                                        on 11/21/2016 18:21:54 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/17?lastVersion=true&amp;versionIndex=2" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>almost 4 years ago</b>
+                                                        on 11/09/2016 20:55:02 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/17?lastVersion=true&amp;versionIndex=1" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>almost 4 years ago</b>
+                                                        on 10/28/2016 19:59:15 UTC by <b>asp006</b>.
+                                                        <a href="/view/17?lastVersion=true&amp;versionIndex=0" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+</ul>
+</div>
+<div class="container-fluid footer gs-recipe-footer">
+<p class="copy-right-block">Copyright ©2016 The Regents of the University of California and The Broad Institute of MIT &amp; Harvard</p>
+</div>
+</body>
+</html>

@@ -1,0 +1,1164 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>GenomeSpace Recipe Resource</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link href="/assets/docs.min.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/featured_article.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/pages.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/recipes.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/site.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/tags.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/jquery-ui/theme.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/jquery-ui/core.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/application.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/dataTables/bootstrap/3/jquery.dataTables.bootstrap.css?body=1" media="all" rel="stylesheet"/>
+<script src="/assets/jquery.js?body=1"></script>
+<script src="/assets/jquery_ujs.js?body=1"></script>
+<script src="/assets/jquery-ui/core.js?body=1"></script>
+<script src="/assets/jquery-ui/widget.js?body=1"></script>
+<script src="/assets/jquery-ui/position.js?body=1"></script>
+<script src="/assets/jquery-ui/menu.js?body=1"></script>
+<script src="/assets/jquery-ui/autocomplete.js?body=1"></script>
+<script src="/assets/jquery-ui/mouse.js?body=1"></script>
+<script src="/assets/jquery-ui/sortable.js?body=1"></script>
+<script src="/assets/bootstrap/affix.js?body=1"></script>
+<script src="/assets/bootstrap/alert.js?body=1"></script>
+<script src="/assets/bootstrap/button.js?body=1"></script>
+<script src="/assets/bootstrap/carousel.js?body=1"></script>
+<script src="/assets/bootstrap/collapse.js?body=1"></script>
+<script src="/assets/bootstrap/dropdown.js?body=1"></script>
+<script src="/assets/bootstrap/tab.js?body=1"></script>
+<script src="/assets/bootstrap/transition.js?body=1"></script>
+<script src="/assets/bootstrap/scrollspy.js?body=1"></script>
+<script src="/assets/bootstrap/modal.js?body=1"></script>
+<script src="/assets/bootstrap/tooltip.js?body=1"></script>
+<script src="/assets/bootstrap/popover.js?body=1"></script>
+<script src="/assets/bootstrap-sprockets.js?body=1"></script>
+<script src="/assets/ckeditor/init.js?body=1"></script>
+<script src="/assets/ckeditor/ckeditor.js?body=1"></script>
+<script src="/assets/jquery_nested_form.js?body=1"></script>
+<script src="/assets/dataTables/jquery.dataTables.js?body=1"></script>
+<script src="/assets/dataTables/bootstrap/3/jquery.dataTables.bootstrap.js?body=1"></script>
+<script src="/assets/autocomplete-rails.js?body=1"></script>
+<script src="/assets/spin.min.js?body=1"></script>
+<script src="/assets/docs.min.js?body=1"></script>
+<script src="/assets/jquery.hoverIntent.minified.js?body=1"></script>
+<script src="/assets/ckeditor/config.js?body=1"></script>
+<script src="/assets/featured_article.js?body=1"></script>
+<script src="/assets/pages.js?body=1"></script>
+<script src="/assets/recipes.js?body=1"></script>
+<script src="/assets/site.js?body=1"></script>
+<script src="/assets/tags.js?body=1"></script>
+<script src="/assets/application.js?body=1"></script>
+<meta content="authenticity_token" name="csrf-param"/>
+<meta content="Kl+tdAIBMlzjXyea3Elh/DTT48Yz7cpn/1HupVCK9OU=" name="csrf-token"/>
+<link href="https://fonts.googleapis.com/css?family=Wire+One" rel="stylesheet" type="text/css"/>
+<link href="https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:300" rel="stylesheet" type="text/css"/>
+<link href="/assets/favicon.ico" rel="shortcut icon">
+<script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-74623322-1', 'auto');
+        ga('send', 'pageview');
+       // ga('set', 'userId', {{"anonymous"}}); // Set the user ID using signed-in user_id.
+        ga('set', 'userId', 'anonymous'); // Set the user ID using signed-in user_id.
+
+    </script>
+</link></head>
+<body onload="tellParentWindowMySize()">
+<div id="nav_page_wrapper">
+<div id="logo"><a href="http://www.genomespace.org/"><img alt="Gslogo" src="/assets/gslogo.png"/></a></div>
+<div class="clickable" id="login_menu">
+<form accept-charset="UTF-8" action="/users/sign_in" class="new_user" id="gs-login" method="post"><div style="display:none"><input name="utf8" type="hidden" value="✓"/><input name="authenticity_token" type="hidden" value="Kl+tdAIBMlzjXyea3Elh/DTT48Yz7cpn/1HupVCK9OU="/></div>
+<input id="user_identity_url" name="user[identity_url]" type="hidden" value="https://identity.genomespace.org/identityServer/xrd.jsp"/>
+<a onclick="document.getElementById('gs-login').submit(); return false;">Login<span class="glyphicon glyphicon-chevron-right"></span></a>
+</form></div>
+<ul id="nav">
+<li class="dropdown">
+<a href="/"><span class="glyphicon glyphicon-home"></span> GenomeSpace Recipes</a>
+</li>
+<!-- <li id="recipe_link"><a href="/recipes"><span class="gparc-nav-icon glyphicon glyphicon-list"></span> My Recipes</a></li> -->
+<!-- links to main genomespace.org -->
+<li id="gsdotorg"><a href="http://www.genomespace.org/"><img alt="Gslogo" height="24px" src="/assets/official_logo.png"/>GenomeSpace.org</a><ul>
+<li id="what-is-genomespace"><a href="http://www.genomespace.org/what-is-genomespace">What is GenomeSpace?</a>
+<li id="tools"><a href="http://www.genomespace.org/support/tools">Tools</a>
+</li>
+<li id="recipes"><a href="http://recipes.genomespace.org/">Recipes</a></li>
+<li id="documentation"><a href="http://www.genomespace.org/documentation">Documentation</a>
+<ul>
+<li><a href="http://www.genomespace.org/support/guides/user-guide">User Guide</a>
+<p>Read the detailed guide to the user interface</p>
+</li>
+<li><a href="http://www.genomespace.org/support/guides/tool-guide">Tool Guide</a>
+<p>Learn how to access GenomeSpace functionality for each Tool</p>
+</li>
+<li><a href="http://www.genomespace.org/faq">FAQ</a>
+<p>See answers to frequently asked questions</p>
+</li>
+<li><a href="http://www.genomespace.org/presentations-and-videos">Presentations and Videos</a>
+<p>Access talks by the GenomeSpace community</p>
+</li>
+<li><a href="http://www.genomespace.org/support/guides/end-to-end-analyses">End-to-End Analyses</a>
+<p>Provides description for end-to-end analyses.</p>
+</li>
+</ul>
+</li>
+<li id="developers"><a href="http://www.genomespace.org/for-developers">Developers</a>
+<ul>
+<li><a href="http://www.genomespace.org/what-can-genomespace-do-for-tool-developers">What Can GenomeSpace Do For Tool Developers?</a>
+<p></p>
+</li>
+<li><a href="http://www.genomespace.org/adopters">Technical Documentation</a>
+<p></p>
+</li>
+<li><a href="http://www.genomespace.org/source-code">Source Code and Distributions</a>
+<p></p>
+</li>
+<li><a href="http://www.genomespace.org/developer-support-and-feedback">Developer Support and Feedback</a>
+<p></p>
+</li>
+</ul>
+</li>
+<li id="support"><a href="http://www.genomespace.org/support">Support</a>
+</li>
+<li id="about"><a href="http://www.genomespace.org/about">About</a>
+</li>
+</li></ul></li>
+<!-- end of links to main GenomeSpace.org -->
+<li class="search">
+<div id="search_box">
+<form accept-charset="UTF-8" action="/search" class="form" method="get" role="form"><div style="display:none"><input name="utf8" type="hidden" value="✓"/></div>
+<div style="margin:0;padding:0;display:inline">
+<input class="search" id="search" name="search" type="text"/>
+</div>
+<input class="searchBtn" type="submit"/>
+</form> </div>
+</li>
+</ul>
+</div>
+<div class="container" style="padding:20px;">
+<a><img alt="Reciperesourcepage3" class="gs-recipe-logo_3" src="/assets/RecipeResourcePage3.png"/></a>
+<div class="row" style="padding:13px;">
+<img alt="Recipe workflow" class="gs-recipe-workflow" src="/assets/recipe_workflow.png"/>
+<p>GenomeSpace recipes provide step-by-step instructions for performing integrative bioinformatic data analyses using GenomeSpace tools and data sources. Recipes guide users through common analyses, starting with obtaining input data, followed by analyzing data by passing it to GenomeSpace-enabled tools. In addition, recipes guide users in the interpretation of the results of analyses.</p>
+<p>To learn more about recipes, read the <a href="/page/how-to-use-the-recipe-resource-and-recipes">Recipe Usage Guide</a> or try browsing recipes!</p>
+</div>
+<div class="row">
+<div class="col-xs-6">
+<h3 class="specialfont">Recipe Resource Guide</h3>
+<div class="well well-sm" style="height:175px;line-height:37px;">
+<a class="" href="/page/how-to-use-the-recipe-resource-and-recipes">How to use the Recipe Resource and recipes ▸</a><br/>
+<a class="" href="/page/best-practices-for-creating-recipes">Best Practices for Creating Recipes ▸</a><br/>
+<a class="" href="/page/community-guidelines">Community Guidelines ▸</a><br/>
+<a class="" href="/page/cegs-2017">CEGS 2017: RNA-Seq Differential Expression Analysis ▸</a><br/>
+</div>
+</div>
+<div class="col-xs-6">
+	<h3 class="specialfont">Community</h3>
+	<div class="well" style="text-align: center; height: 175px;">
+		<p>Check out our <a href="http://f1000research.com/channels/genomespace" target="_f1000">F1000 GenomeSpace Channel</a> for published, community-contributed recipes.</p>
+		<img alt="F1000" class="img-responsive center-block sevenfivesquare" src="/assets/f1000.png" style="float:left;margin-right: 10px;margin-left:30px"/>
+		<p>Do you have questions about a recipe? <a href="https://groups.google.com/a/broadinstitute.org/forum/?hl=en#!forum/genomespace-users">Visit our community forum!</a></p>
+		<p>Still have questions? <a href="mailto:gs-help@broadinstitute.org">Contact us!</a></p>
+	</div>
+</div>
+
+</div>
+<div class='row'>
+	<div class='col-xs-12'>
+		<h3 class="specialfont">List of All Recipes</h3>
+		<div class="row">
+			<div class="col-md-12">
+			<div id="recipe_list_target">
+		<div class="gs-recipe-panel panel panel-default panel-hover" data-page="1">
+			<div class="panel-heading gs-recipe-panel-head showOnClick clickable clickable-1">
+				<table><tr>
+				<td><img alt="Galaxy gp genomica" class="recipeAvatar" src="/system/recipes/avatars/000/000/010/original/galaxy_gp_genomica.png?1456515163"/></td>
+				<td><h4><a class="aRealLink tag-tooltip" href="/view/10" title="Click the title to see the full recipe">Build and visualize a module network using putative aberrant regions and expression data</a> <small><span class="glyphicon glyphicon-chevron-right tag-tooltip toggle-glyph" title="Click to expand"></span></small></h4></td>
+				</tr></table>
+			</div>
+			<div class="panel-body">
+				<p><span style="font-family:arial,sans-serif;"><span style="font-size:16px;"><i>Which genes lie in my copy number variation regions? Are there any sets of co-regulated genes in these aberrant regions?</i></span></span></p>
+				<p>This recipe provides a method for identifying and visualizing a network of co-regulated genes that are associated with aberrant regions identified by single nucleotide polymorphism (SNP) arrays. An example use of this recipe is a case where an investigator may want to find which genes are located in regions that exhibit significant changes (e.g. amplification or deletion) in cancer cells.</p>
+				<p><img alt="" src="/ckeditor_assets/pictures/360/content_buildvisualizemodulenetwork.png" style="width: 479px; height: 262px; float: right; padding: 10px;"/></p>
+				<p> </p>
+				<p>This recipe provides one method for identifying and visualizing aberrant regions in Diffuse Large B-Cell Lymphoma (DLBCL) cancer cells. This recipe uses copy-number variation (CNV) data from SNP arrays, and evaluates the expression of aberrant regions using a microarray dataset. Regions that are significantly changed (e.g., amplified or deleted) in cancer cells are defined by the GISTIC algorithm. In particular, this recipe makes use of several Galaxy tools to find the overlap between the aberrant regions and reference genes, and uses GenePattern to process the microarray dataset. Genomica is used to find module networks of co-regulated genes associated with these aberrant regions. A module network is a model which identifies regulatory modules from gene expression data, especially modules of co-regulated genes and their regulators. The module also identifies the conditions under which the regulation can occur.</p>
+				<p><strong>Why analyze copy number variation regions?</strong> Copy number variations (CNVs) are large alterations to genomes, such as duplication or deletion of large segments of a chromosome. These variations in the genome have been associated with different conditions, such as cancer. In this recipe, we explore the scenario in which CNVs are elevated in a cancer cell line, and our goal is to determine the function of these duplicated genes.</p>
+				<div class="row" style="padding-right: 15px; text-align: right;font-style: italic;"><a class="aRealLink tag-tooltip" href="/view/10" title="Click the title to see the full recipe">Continue on to the full recipe...</a>
+				</div>
+				<div class="panel-footer">
+					<div class="tag_list row">
+					<a class="btn btn-default btn-xs tag green">SNP array</a>
+					<a class="btn btn-default btn-xs tag green" >microarray</a>
+					<a class="btn btn-default btn-xs tag red" >module network</a>
+					<a class="btn btn-default btn-xs tag green" >copy number variation</a>
+					</div>
+					<div class="row">
+					<div class="col-xs-1">
+					<span class="text-success"><span class="glyphicon glyphicon-thumbs-up"></span> 3</span>
+					</div>
+					<div class="col-xs-1">
+					<span class="text-danger"><span class="glyphicon glyphicon-thumbs-down"></span> 0</span>
+					</div>
+					<div class="col-xs-2">Steps: 12</div>
+					<div class="col-xs-5">Tools: Galaxy, GenePattern, Genomica</div>
+					<div class="col-xs-3">
+					<span class="pull-right"><img alt="Official logo" data-content="Offical GenomeSpace Recipe" data-toggle="popover" src="/assets/official_logo.png"/></span>
+					</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="gs-recipe-panel panel panel-default panel-hover" data-page="1">
+		<div class="panel-heading gs-recipe-panel-head showOnClick clickable clickable-1">
+		<table><tr>
+		<td><img alt="Genomica cy3" class="recipeAvatar" src="/system/recipes/avatars/000/000/018/original/genomica_cy3.png?1476389863"/></td>
+		<td><h4><a class="aRealLink tag-tooltip" href="/view/18" title="Click the title to see the full recipe">Create and visualize a module network of regulatory genes</a> <small><span class="glyphicon glyphicon-chevron-right tag-tooltip toggle-glyph" title="Click to expand"></span></small></h4></td>
+		</tr></table>
+		</div>
+		<div class="panel-body">
+		<p><span style="font-family:arial,sans-serif;"><span style="font-size:16px;"><i>Does my gene expression dataset contain a module network of regulatory genes? Does the network have any special features?</i></span></span></p>
+		<p>This recipe provides one method for creating and visualizing a module network of regulatory genes. An example use of this recipe is a case where an investigator may want to evaulate an expression dataset to find regulatory genes such as transcription factors, and then determine if they are connected in a network.</p>
+		<p><img alt="" src="/ckeditor_assets/pictures/355/content_filtermodulenetworks.png" style="width: 450px; height: 304px; float: right; padding: 10px;"/></p>
+		<p> </p>
+		<p>In particular, the regulatory genes of interest are genes which regulate other genes associated with an embryonic stem cell (ESC) state. This 'stemness signature' is a feature common to ESCs, as well as induced pluripotent stem cells (iPSCs), and also in a compendium of human cancers, such as breast cancer. This recipe recapitulates research by Wong <em>et al.</em>, in <em>Cell Stem Cell</em> (2008), "<a href="http://www.ncbi.nlm.nih.gov/pubmed/18397753">Module map of stem cell genes guides creation of epithelial cancer stem cells</a>."</p>
+		<p>We use a gene expression dataset of primary human breast cancer tumor samples (described in <a href="http://www.ncbi.nlm.nih.gov/pubmed/17157792" style="line-height: 20.7999992370605px;">Chin, K. <em>et al</em>, <em>Cancer Cell</em>, 2006</a>), and create a module network by projecting a set of stemness regulators onto the gene expression dataset, using Genomica. A module network is a model which identifies regulatory modules from gene expression data, especially modules of co-regulated genes and their regulators. The module also identifies the conditions under which the regulation can occur.</p>
+		<p>After obtaining the module network, we visualize it using Cytoscape. Since the network is very large, we then filter it to just a subnetwork of stemness regulators and their connections, again using Cytoscape. This provides us with a visual representation of the stemness regulators as they appear projected onto a breast cancer tumor dataset.</p>
+		<p> </p>
+		<div class="row" style="padding-right: 15px; text-align: right;font-style: italic;"><a class="aRealLink tag-tooltip" href="/view/18" title="Click the title to see the full recipe">Continue on to the full recipe...</a></div>
+		<div class="panel-footer">
+		<div class="tag_list row">
+		<a class="btn btn-default btn-xs tag green" >microarray</a>
+		<a class="btn btn-default btn-xs tag red" >transcriptional regulation</a>
+		<a class="btn btn-default btn-xs tag red" >network analysis</a>
+		<a class="btn btn-default btn-xs tag red" >module network</a>
+		</div>
+		<div class="row">
+		<div class="col-xs-1">
+		<span class="text-success"><span class="glyphicon glyphicon-thumbs-up"></span> 2</span>
+		</div>
+		<div class="col-xs-1">
+		<span class="text-danger"><span class="glyphicon glyphicon-thumbs-down"></span> 0</span>
+		</div>
+		<div class="col-xs-2">
+									Steps: 4
+								</div>
+		<div class="col-xs-5">
+									Tools: Genomica, Cytoscape 3
+								</div>
+		<div class="col-xs-3">
+		<span class="pull-right"><img alt="Official logo" data-content="Offical GenomeSpace Recipe" data-toggle="popover" src="/assets/official_logo.png"/></span>
+		</div>
+		</div>
+		</div>
+		</div>
+		</div>
+		<div class="gs-recipe-panel panel panel-default panel-hover" data-page="1">
+		<div class="panel-heading gs-recipe-panel-head showOnClick clickable clickable-1">
+		<table><tr>
+		<td><img alt="Gp galaxy" class="recipeAvatar" src="/system/recipes/avatars/000/000/054/original/gp_galaxy.png?1479751690"/></td>
+		<td><h4><a class="aRealLink tag-tooltip" href="/view/54" title="Click the title to see the full recipe">Eliminate batch effects in RNA-seq data</a> <small><span class="glyphicon glyphicon-chevron-right tag-tooltip toggle-glyph" title="Click to expand"></span></small></h4></td>
+		</tr></table>
+		</div>
+		<div class="panel-body">
+		<p><span style="font-family:arial,sans-serif;font-size:16px;"><i>Does my RNA-Seq data contain noticeable batch effects? Can I remove any batch effects I find?</i></span></p>
+		<p>This recipe provides one method to assess RNA-seq count data for potential batch effects. Identified batch effects are removed using the ComBat algorithm (Johnson, Rabinovic, and Li). An example use case of this recipe is when an investigator wants to correct data and account for confounding variables generated by effects such as using different reagents or processing samples at different times.</p>
+		<p><img alt="" src="/ckeditor_assets/pictures/380/content_eliminatingbatcheffects.png" style="width: 441px; height: 345px; float: right; padding: 10px;"/></p>
+		<p> </p>
+		<p>This recipe uses count data and sample annotations derived from two separate RNA-seq experiments and relies upon Principal Component Analysis (PCA) as a primary means of evaluating the dataset for batch effects. In particular, this recipe utilizes a number of GenePattern modules to filter and preprocess the RNA-seq count data and to normalize the dataset using the ComBat algorithm. We then use Galaxy to view the influence of batch effects in our pre- and post-normalization datasets.</p>
+		<p><strong>Why consider batch effects (a.k.a. confounders)?</strong> A "batch" or "confounding" variable can be generally defined as an extraneous variable that may correlate or anti-correlate with our variables of interest. Failing to account for confounding variables or batch effects can lead us to draw spurious conclusions from our data. For example:</p>
+		<p><span style="font-family: verdana,geneva,sans-serif; color: rgb(120, 120, 120); font-size: 90%;">“<em>Albert is comparing the hardiness of two different E. coli strains, X and Y, by measuring their production of various stress proteins under a mild bactericide. However, Albert's bactericide stock is running low and he ends up using two different stocks of the same bactericide over the course of this experiment. Here, bactericide stock is a confounding or batch variable. Perhaps one bactericide stock is more potent than the other. Albert will need to be careful in how he analyzes his data. He must somehow ensure that differences in stress protein abundances between his X and Y strains are driven by the biological differences of these two strains rather than differences in the bactericide stocks.</em>”</span></p>
+		<p>Efforts can be undertaken to minimize batch effects by ensuring proper experimental design, e.g., simplifying protocols to eliminate potential confounders. If batches are unavoidable, it is also important to randomize samples across these batches such that differences between batches can be attributed to batch effects rather than biological differences. But despite these efforts, unforeseen batch effects may still be present in any experiment. Thus, we should be aware of the degree to which these unwanted factors influence our results and be prepared to use various statistical methods to remove these unwanted factors if needed.</p>
+		<p><strong>How do we identify batch effects?</strong> There are a variety of methods for identifying batch effects. Sometimes, potential batches can be identified at the outset of a project based on its experimental design. For example, if samples must be processed in separate groups due to the limiting capacity of a sequencer, then these processing groups are likely to introduce batch effects. If batches can be pre-identified, then the scientist can include identical control samples in each batch. Any variation in measurements from these control samples can then be attributed to and used to quantify a batch effect.</p>
+		<p>Another common method is to visualize data using a PCA projection. PCA uses a linear transformation to transform a dataset into a space of linearly uncorrelated, orthogonal "principal components". More simply, PCA is a way of visualizing data such that underlying structures are revealed. We encourage users to learn more about PCA (Ma and Dai's 2011 <a href="http://www.ncbi.nlm.nih.gov/pubmed/21242203">article</a> in <em>Briefings in Bioinformatics</em> is a good starting point). By re-projecting with PCA, we can identify those variables, including batch variables, that are contributing to large variances in the dataset.</p>
+		<div class="row" style="padding-right: 15px; text-align: right;font-style: italic;"><a class="aRealLink tag-tooltip" href="/view/54" title="Click the title to see the full recipe">Continue on to the full recipe...</a></div>
+		<div class="panel-footer">
+		<div class="tag_list row">
+		<a class="btn btn-default btn-xs tag green" >RNA-seq</a>
+		<a class="btn btn-default btn-xs tag yellow" >Batch effects</a>
+		<a class="btn btn-default btn-xs tag yellow" >expression data</a>
+		<a class="btn btn-default btn-xs tag yellow" >mouse</a>
+		<a class="btn btn-default btn-xs tag yellow" >PCA</a>
+		</div>
+		<div class="row">
+		<div class="col-xs-1">
+		<span class="text-success"><span class="glyphicon glyphicon-thumbs-up"></span> 0</span>
+		</div>
+		<div class="col-xs-1">
+		<span class="text-danger"><span class="glyphicon glyphicon-thumbs-down"></span> 0</span>
+		</div>
+		<div class="col-xs-2">
+									Steps: 7
+								</div>
+		<div class="col-xs-5">
+									Tools: GenePattern, Galaxy
+								</div>
+		<div class="col-xs-3">
+		<span class="pull-right"><img alt="Official logo" data-content="Offical GenomeSpace Recipe" data-toggle="popover" src="/assets/official_logo.png"/></span>
+		</div>
+		</div>
+		</div>
+		</div>
+		</div>
+		<div class="gs-recipe-panel panel panel-default panel-hover" data-page="1">
+		<div class="panel-heading gs-recipe-panel-head showOnClick clickable clickable-1">
+		<table><tr>
+		<td><img alt="Content ucsc gp igv" class="recipeAvatar" src="/system/recipes/avatars/000/000/006/original/content_ucsc_gp_igv.png?1445288372"/></td>
+		<td><h4><a class="aRealLink tag-tooltip" href="/view/6" title="Click the title to see the full recipe">Find differentially expressed genes in RNA-seq data</a> <small><span class="glyphicon glyphicon-chevron-right tag-tooltip toggle-glyph" title="Click to expand"></span></small></h4></td>
+		</tr></table>
+		</div>
+		<div class="panel-body">
+		<p><span style="font-family:arial,sans-serif;"><span style="font-size:16px;"><i>Which genes are differentially expressed between my two phenotypes, based on my RNA-seq data?</i></span></span></p>
+		<p>This recipe provides one method to identify differentially expressed genes in RNA-seq read data. An example use of this recipe is a case where an investigator may want to compare two phenotypes, such as two types of cancer, to determine which genes are up- or down-regulated differently between these phenotypes.</p>
+		<p><img alt="" src="/ckeditor_assets/pictures/361/content_finddifferentiallyexpressedgenes.png" style="width: 458px; height: 247px; float: right; padding: 10px;"/></p>
+		<p> </p>
+		<p>In particular, this recipe uses the UCSC Table Browser to retrieve a reference genome to align RNA-seq reads against. We also used several modules in GenePattern to align the reads against the reference genome, and to identify differentially expressed genes when comparing two conditions. Finally, we use IGV to visualize the differentially expressed genes.</p>
+		<p><strong>Why differential expression analysis?</strong> We assume that most genes are not expressed all the time, but rather are expressed in specific tissues, stages of development, or under certain conditions. Genes which are expressed in one condition, such as cancerous tissue, are said to be differentially expressed when compared to normal conditions. To identify which genes change in response to specific conditions (e.g. cancer), we must filter or process the dataset to remove genes which are not informative.</p>
+		<p> </p>
+		<p> </p>
+		<div class="row" style="padding-right: 15px; text-align: right;font-style: italic;"><a class="aRealLink tag-tooltip" href="/view/6" title="Click the title to see the full recipe">Continue on to the full recipe...</a></div>
+		<div class="panel-footer">
+		<div class="tag_list row">
+		<a class="btn btn-default btn-xs tag green" >RNA-seq</a>
+		<a class="btn btn-default btn-xs tag red" >visualization</a>
+		<a class="btn btn-default btn-xs tag red" >differential gene expression</a>
+		</div>
+		<div class="row">
+		<div class="col-xs-1">
+		<span class="text-success"><span class="glyphicon glyphicon-thumbs-up"></span> 4</span>
+		</div>
+		<div class="col-xs-1">
+		<span class="text-danger"><span class="glyphicon glyphicon-thumbs-down"></span> 0</span>
+		</div>
+		<div class="col-xs-2">
+									Steps: 7
+								</div>
+		<div class="col-xs-5">
+									Tools: UCSC Table Browser, GenePattern, IGV
+								</div>
+		<div class="col-xs-3">
+		<span class="pull-right"><img alt="Official logo" data-content="Offical GenomeSpace Recipe" data-toggle="popover" src="/assets/official_logo.png"/></span>
+		</div>
+		</div>
+		</div>
+		</div>
+		</div>
+		<div class="gs-recipe-panel panel panel-default panel-hover" data-page="1">
+		<div class="panel-heading gs-recipe-panel-head showOnClick clickable clickable-1">
+		<table><tr>
+		<td><img alt="Gp to cytoscape3" class="recipeAvatar" src="/system/recipes/avatars/000/000/002/original/gp_to_cytoscape3.png?1476887617"/></td>
+		<td><h4><a class="aRealLink tag-tooltip" href="/view/2" title="Click the title to see the full recipe">Find subnetworks of differentially expressed genes and identify associated biological functions</a> <small><span class="glyphicon glyphicon-chevron-right tag-tooltip toggle-glyph" title="Click to expand"></span></small></h4></td>
+		</tr></table>
+		</div>
+		<div class="panel-body">
+		<p><span style="font-family:arial,sans-serif;"><span style="font-size:16px;"><i>What subnetworks of differentially expressed genes are enriched in my samples? What biological functions are they related to?</i></span></span></p>
+		<p>This recipe provides a method for identifying differentially expressed genes between two phenotypes, such as tumor and normal, to find subnetworks of interacting proteins and determine their functional annotations. An example use of this recipe is a case where an investigator may want to compare two phenotypes to determine which gene networks are similar between phenotypes, and to determine how functional annotation changes between phenotypes.</p>
+		<p><img alt="" src="/ckeditor_assets/pictures/354/content_find_subnetworks.png" style="width: 433px; height: 211px; float: right; padding: 10px;"/></p>
+		<p> </p>
+		<p>In particular, this recipe makes use of several GenePattern modules to identify differentially regulated genes, then uses several Cytoscape plugins to identify potential interactions between gene products, and to visualize the resulting network.</p>
+		<p><strong>Why differential expression analysis?</strong> We assume that most genes are not expressed all the time, but rather are expressed in specific tissues, stages of development, or under certain conditions. Genes which are expressed in one condition, such as cancer tissue, are said to be differentially expressed when compared to normal conditions. To identify which genes change in response to specific conditions (e.g. cancer), we must filter or process the dataset to remove genes which are not informative.</p>
+		<p><strong>Why protein interaction network analysis?</strong> Gene expression analysis results in a list of differentially expressed genes, but it does not explain whether these genes are connected biologically in a pathway or network. To better understanding the underlying biology that drives changes in gene expression analysis, we can perform network analysis to determine whether gene products (e.g. proteins) are reported to interact. To identify potential networks or pathways, we search for highly interconnected subnetworks within a large interaction network.</p>
+		<div class="row" style="padding-right: 15px; text-align: right;font-style: italic;"><a class="aRealLink tag-tooltip" href="/view/2" title="Click the title to see the full recipe">Continue on to the full recipe...</a></div>
+		<div class="panel-footer">
+		<div class="tag_list row">
+		<a class="btn btn-default btn-xs tag red" >gene expression analysis</a>
+		<a class="btn btn-default btn-xs tag red" >network analysis</a>
+		<a class="btn btn-default btn-xs tag red" >differential gene expression</a>
+		<a class="btn btn-default btn-xs tag green" >microarray</a>
+		</div>
+		<div class="row">
+		<div class="col-xs-1">
+		<span class="text-success"><span class="glyphicon glyphicon-thumbs-up"></span> 5</span>
+		</div>
+		<div class="col-xs-1">
+		<span class="text-danger"><span class="glyphicon glyphicon-thumbs-down"></span> 0</span>
+		</div>
+		<div class="col-xs-2">
+									Steps: 9
+								</div>
+		<div class="col-xs-5">
+									Tools: GenePattern, Cytoscape 3
+								</div>
+		<div class="col-xs-3">
+		<span class="pull-right"><img alt="Official logo" data-content="Offical GenomeSpace Recipe" data-toggle="popover" src="/assets/official_logo.png"/></span>
+		</div>
+		</div>
+		</div>
+		</div>
+		</div>
+		<div class="gs-recipe-panel panel panel-default panel-hover" data-page="1">
+		<div class="panel-heading gs-recipe-panel-head showOnClick clickable clickable-1">
+		<table><tr>
+		<td><img alt="Gp msigdb" class="recipeAvatar" src="/system/recipes/avatars/000/000/008/original/gp_msigdb.png?1488916494"/></td>
+		<td><h4><a class="aRealLink tag-tooltip" href="/view/8" title="Click the title to see the full recipe">Identify an up- or down-regulated pathway from expression data</a> <small><span class="glyphicon glyphicon-chevron-right tag-tooltip toggle-glyph" title="Click to expand"></span></small></h4></td>
+		</tr></table>
+		</div>
+		<div class="panel-body">
+		<p><span style="font-family:arial,sans-serif;"><span style="font-size:16px;"><i>Which genes are differentially expressed in my microarray data? Are these genes enriched for certain biological pathways?</i></span></span></p>
+		<p>This recipe provides an outline of one method to identify known biological functions for genes that are differentially expressed between two conditions or phenotypes, using microarray data. An example use of this recipe is a case where an investigator may want to determine if a specific cancer phenotype is associated with expression of certain pathways.</p>
+		<p><img alt="" src="/ckeditor_assets/pictures/451/content_identifyupdownregulatedpathways_updated.png" style="width: 410px; height: 184px; float: right; padding: 10px;"/></p>
+		<p> </p>
+		<p>Given a set of differentially expressed genes, the goal is to infer which biological functions (for example, Gene Ontology biological processes) are overrepresented in the set of reference genes found to be differentially expressed. In particular, this recipe uses a gene expression dataset which has two conditions: normal and mild hyperthermia. Then, GenePattern is used to identify differentially expressed genes, and finally MSigDB is used to identify biological functions and pathways that are enriched in the gene set.</p>
+		<p><strong>Why differential expression analysis?</strong> We assume that most genes are not expressed all the time, but rather are expressed in specific tissues, stages of development, or under certain conditions. Genes which are expressed in one condition, such as cancerous tissue, are said to be differentially expressed when compared to normal conditions. To identify which genes change in response to specific conditions (e.g. cancer), we must filter or process the dataset to remove genes which are not informative.</p>
+		<p><strong>Why perform functional annotation?</strong> Many analyses end with the retrieval of a gene list, e.g. gene expression analysis identifies a list of genes which are differentially expressed when comparing multiple conditions. However, often times a researcher has additional questions about the function or relatedness of genes in a gene list: Are the genes a part of the same pathway? Do the gene products interact physically? Do the gene products localize to a specific part of the cell? Are the genes only expressed during a certain stage of development? These questions, and others like them, can be answered by performing functional annotation on gene lists, to better understand the underlying connections between genes.</p>
+		<div class="row" style="padding-right: 15px; text-align: right;font-style: italic;"><a class="aRealLink tag-tooltip" href="/view/8" title="Click the title to see the full recipe">Continue on to the full recipe...</a></div>
+		<div class="panel-footer">
+		<div class="tag_list row">
+		<a class="btn btn-default btn-xs tag green" >microarray</a>
+		<a class="btn btn-default btn-xs tag red" >differential gene expression</a>
+		<a class="btn btn-default btn-xs tag red" >functional annotation</a>
+		</div>
+		<div class="row">
+		<div class="col-xs-1">
+		<span class="text-success"><span class="glyphicon glyphicon-thumbs-up"></span> 5</span>
+		</div>
+		<div class="col-xs-1">
+		<span class="text-danger"><span class="glyphicon glyphicon-thumbs-down"></span> 0</span>
+		</div>
+		<div class="col-xs-2">
+									Steps: 6
+								</div>
+		<div class="col-xs-5">
+									Tools: GenePattern, MSigDB
+								</div>
+		<div class="col-xs-3">
+		<span class="pull-right"><img alt="Official logo" data-content="Offical GenomeSpace Recipe" data-toggle="popover" src="/assets/official_logo.png"/></span>
+		</div>
+		</div>
+		</div>
+		</div>
+		</div>
+		<div class="gs-recipe-panel panel panel-default panel-hover" data-page="1">
+		<div class="panel-heading gs-recipe-panel-head showOnClick clickable clickable-1">
+		<table><tr>
+		<td><img alt="Gp galaxy" class="recipeAvatar" src="/system/recipes/avatars/000/000/011/original/gp_galaxy.png?1488576462"/></td>
+		<td><h4><a class="aRealLink tag-tooltip" href="/view/11" title="Click the title to see the full recipe">Identify and validate a consensus signature using gene expression data</a> <small><span class="glyphicon glyphicon-chevron-right tag-tooltip toggle-glyph" title="Click to expand"></span></small></h4></td>
+		</tr></table>
+		</div>
+		<div class="panel-body">
+		<p><img alt="" src="/ckeditor_assets/pictures/453/content_identify_validate_consensus_signature_exprdata_cartoon_updated.png" style="float: right; height: 171px; width: 450px;"/></p>
+		<p><span style="font-family:arial,sans-serif;font-size:16px;"><i>Do phenotypically different expression datasets share a common signature? Can the signature distinguish phenotypes in an independent dataset?</i></span></p>
+		<p>This recipe provides one method for identifying a consensus gene signature from a training set of several phenotypically distinct gene expression dataset. The recipe then validates the ability of the consensus signature to accurately distinguish phenotypes by using an independent test gene expression dataset. An example use case of this recipe is when an investigator may want to develop a gene expression signature to predict a specific phenotype, such as cancer or another disease.</p>
+		<p> </p>
+		<p><span style="font-size:16px; font-family: 'Univers Condensed', sans-serif; color: #626264;"><strong>Background information:</strong></span> What is a consensus <span style="line-height: 20.8px;">gene expression </span><span style="line-height: 1.6;">signature?</span></p>
+		<p>A gene expression signature is the pattern of expression in a specific group of genes, usually ones that are related by function, position or other biological process. A <em>consensus</em> gene signature is an expression pattern for a specific group of genes, which is shared among different samples or across different phenotypes. For example, a group of genes regulating immune response could be similarly up-regulated during many different, unrelated infections. There are several types of consensus signatures; those that can be derived from gene expression data are called transcriptional consensus signatures. Consensus signatures can be created by overlapping individual gene signatures derived from multiple datasets. Compared to individual gene expression signatures, consensus signatures may be more accurate at distinguishing different phenotypes, such as diseased vs. normal samples.</p>
+		<p><img alt="" src="/ckeditor_assets/pictures/452/content_identifyvalidateconsensussignature_updated.png" style="width: 441px; height: 265px; float: right; padding: 10px;"/></p>
+		<p> </p>
+		<p><span style="font-size:16px; font-family: 'Univers Condensed', sans-serif; color: #626264;"><strong>Use case:</strong></span> <a href="http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3672953/">Targeting MYCN in Neuroblastoma by BET Bromodomain Inhibition</a> (Puissant <em>et al. </em>, <em>Cancer Discov</em>. 2013).</p>
+		<p>This study analyzed gene expression data generated from primary neuroblastoma tumors of two genetic classes: tumors harboring MYCN amplification (“MYCN amplified”) and tumors without MYCN amplification (“MYCN non-amplified”). MYCN amplified neuroblastoma is exquisitely dependent on the bromodomain and extra-terminal (BET) family of proteins. As such, treatment of MYCN amplified cell lines or tumors with JQ1, a small-molecule inhibitor of BET proteins, leads to dramatic transcriptional changes and induces cell death.</p>
+		<p>To identify a consensus signature to predict sensitivity to JQ1 treatment, two training datasets and one test dataset were used. The training dataset included acute myeloid leukemia (AML) and a multiple myeloid leukemia (MM) cell lines, which had been treated with either DMSO (control) or with JQ1 (treatment). The test dataset included MYCN amplified and MYCN nonamplified neuroblastoma primary tumor samples. GenePattern was used to analyze the AML and MM cell lines; for each dataset, a gene expression signature was derived to identify JQ1 response in the cell line. Using Galaxy, the two signatures were then overlapped to determine the consensus signature between the two phenotypes.</p>
+		<p>GenePattern was used to validate the ability of this JQ1-associated consensus signature to differentiate between phenotypes, by using the signature to hierarchically cluster the test dataset (neuroblastoma). Since the MYCN amplified and MYCN non-amplified neuroblastoma samples should have differing expression profiles, it was hypothesized that the consensus signature would be able to separate the samples by phenotype. Indeed, the consensus signature was able to cluster the MYCN-amplified and MYCN-nonamplified samples separately, revealing that the consensus signature accurately distinguishes the sensitivity-to-JQ1 phenotype.</p>
+		<div class="row" style="padding-right: 15px; text-align: right;font-style: italic;"><a class="aRealLink tag-tooltip" href="/view/11" title="Click the title to see the full recipe">Continue on to the full recipe...</a></div>
+		<div class="panel-footer">
+		<div class="tag_list row">
+		<a class="btn btn-default btn-xs tag green" >microarray</a>
+		<a class="btn btn-default btn-xs tag red" >differential gene expression</a>
+		<a class="btn btn-default btn-xs tag red" >hierarchical clustering</a>
+		</div>
+		<div class="row">
+		<div class="col-xs-1">
+		<span class="text-success"><span class="glyphicon glyphicon-thumbs-up"></span> 0</span>
+		</div>
+		<div class="col-xs-1">
+		<span class="text-danger"><span class="glyphicon glyphicon-thumbs-down"></span> 0</span>
+		</div>
+		<div class="col-xs-2">
+									Steps: 6
+								</div>
+		<div class="col-xs-5">
+									Tools: GenePattern, Galaxy
+								</div>
+		<div class="col-xs-3">
+		<span class="pull-right"><img alt="Official logo" data-content="Offical GenomeSpace Recipe" data-toggle="popover" src="/assets/official_logo.png"/></span>
+		</div>
+		</div>
+		</div>
+		</div>
+		</div>
+		<div class="gs-recipe-panel panel panel-default panel-hover" data-page="1">
+		<div class="panel-heading gs-recipe-panel-head showOnClick clickable clickable-1">
+		<table><tr>
+		<td><img alt="Galaxy igv" class="recipeAvatar" src="/system/recipes/avatars/000/000/017/original/galaxy_igv.png?1445288676"/></td>
+		<td><h4><a class="aRealLink tag-tooltip" href="/view/17" title="Click the title to see the full recipe">Identify and validate coding variants from exome sequencing data</a> <small><span class="glyphicon glyphicon-chevron-right tag-tooltip toggle-glyph" title="Click to expand"></span></small></h4></td>
+		</tr></table>
+		</div>
+		<div class="panel-body">
+		<p><span style="font-family:arial,sans-serif;"><span style="font-size:16px;"><i>What coding variants do my exome sequences contain, and are any of them phenotypically interesting?</i></span></span></p>
+		<p>This recipe provides a method to identify coding variants from exome sequencing data. An example use of this recipe is a case where an investigator may want to identify variants from their alignment data and evaluate the phenotypes.</p>
+		<p><img alt="" src="/ckeditor_assets/pictures/371/content_identifyvalidatecodingvariants.png" style="width: 529px; height: 212px; float: right; padding: 10px;"/></p>
+		<p> </p>
+		<p>In particular, this recipe uses the variant detector, FreeBayes, in Galaxy to identify potential variants from short-read alignments and assign them quality scores. We also use other Galaxy tools to pare these potential variants down to a high quality subset and to compare them against a catalog of gold-standard variants. Finally, we use IGV to visualize these variants alongside known pathogenic variants.</p>
+		<p><strong>Why identify genetic variants?</strong> Genetic variants are DNA sequence differences that occur with relative frequency in a population. These variants include single nucleotide polymorphisms (SNPs), insertions and deletions (indels), multi-nucleotide polymorphisms (MNPs), and complex events that are combinations of indels and polymorphisms. With the advent of next generation sequencing technologies, it has become common practice to identify variants using sequence data. This is usually accomplished by comparing sequence data from many samples or individuals against a reference. Identified variants can have many practical applications. For instance, variants that correlate strongly with disease risk may provide insight into the disease's genetic underpinnings. Variants may also be used as biomarkers for disease risk or to DNA "fingerprint" individuals.</p>
+		<p><strong>Why use exome sequencing data?</strong> The human exome comprises all the exonic regions of the human genome. That is, it includes all the DNA sequences that, after transcription into RNA, remain after RNA-splicing, which amounts to about 1% of the entire genome. Whole exome sequencing (WES) thus generates much less data than whole genome sequencing (WGS). Furthermore, since WES focuses almost exclusively on protein-coding regions it is an effective method for identifying coding variants.</p>
+		<p><small><em><strong>NOTE:</strong> Working with DNA sequencing data is a computationally and resource intensive process. Files containing raw sequence reads can be many gigabytes in size and can be cumbersome to manage. To maintain the usability of this recipe, we have chosen to work with only a partial region of the human genome, specifically th</em><em>e exonic regions of a chromosome 20.</em></small></p>
+		<div class="row" style="padding-right: 15px; text-align: right;font-style: italic;"><a class="aRealLink tag-tooltip" href="/view/17" title="Click the title to see the full recipe">Continue on to the full recipe...</a></div>
+		<div class="panel-footer">
+		<div class="tag_list row">
+		<a class="btn btn-default btn-xs tag green" >whole exome sequencing</a>
+		<a class="btn btn-default btn-xs tag green" >DNA sequencing</a>
+		<a class="btn btn-default btn-xs tag green" >SNPs</a>
+		<a class="btn btn-default btn-xs tag red" >variant calling</a>
+		</div>
+		<div class="row">
+		<div class="col-xs-1">
+		<span class="text-success"><span class="glyphicon glyphicon-thumbs-up"></span> 0</span>
+		</div>
+		<div class="col-xs-1">
+		<span class="text-danger"><span class="glyphicon glyphicon-thumbs-down"></span> 0</span>
+		</div>
+		<div class="col-xs-2">
+									Steps: 3
+								</div>
+		<div class="col-xs-5">
+									Tools: Galaxy, IGV
+								</div>
+		<div class="col-xs-3">
+		<span class="pull-right"><img alt="Official logo" data-content="Offical GenomeSpace Recipe" data-toggle="popover" src="/assets/official_logo.png"/></span>
+		</div>
+		</div>
+		</div>
+		</div>
+		</div>
+		<div class="gs-recipe-panel panel panel-default panel-hover" data-page="1">
+		<div class="panel-heading gs-recipe-panel-head showOnClick clickable clickable-1">
+		<table><tr>
+		<td><img alt="Content ucsc gp igv" class="recipeAvatar" src="/system/recipes/avatars/000/000/007/original/content_ucsc_gp_igv.png?1445288777"/></td>
+		<td><h4><a class="aRealLink tag-tooltip" href="/view/7" title="Click the title to see the full recipe">Identify and visualize expressed transcripts in RNA-seq data</a> <small><span class="glyphicon glyphicon-chevron-right tag-tooltip toggle-glyph" title="Click to expand"></span></small></h4></td>
+		</tr></table>
+		</div>
+		<div class="panel-body">
+		<p><span style="font-family:arial,sans-serif;"><span style="font-size:16px;"><i>Which genes are highly expressed, based on my RNA-seq data? Are any of the highly expressed genes also differentially expressed?</i></span></span></p>
+		<p>This recipe provides an outline of one method to identify and visualize genes and isoforms that are highly expressed in RNA-seq data. In particular, this recipe utilizes an analysis pipeline, allowing a user to chain together multiple analysis steps into one workflow that can be run in one step. An example use of this recipe is a case where an investigator wants to process several datasets in the same way, in which case the pipeline will allow the investigator to re-use the same modules and parameters, over and over again.</p>
+		<p><img alt="" src="/ckeditor_assets/pictures/368/content_identifyvalidatepipeline.png" style="width: 454px; height: 208px; float: right; padding: 10px;"/></p>
+		<p> </p>
+		<p>Given a set of raw RNA-seq reads, the goal is to align the reads to a reference genome, estimate expression abundance levels for reference genes and isoforms, filter out low-expressed genes and isoforms, and visualize the read alignments and their expression levels. In particular, this recipe uses the UCSC Table Browser to retrieve a reference genome to align RNA-seq reads against. We also uses several modules in GenePattern to align the reads against the reference genome, and to identify differentially expressed genes when comparing two conditions. Finally, we use IGV to visualize the differentially expressed genes.</p>
+		<p><strong>Why differential expression analysis?</strong> We assume that most genes are not expressed all the time, but rather are expressed in specific tissues, stages of development, or under certain conditions. Genes which are expressed in one condition, such as cancerous tissue, are said to be differentially expressed when compared to normal conditions. To identify which genes change in response to specific conditions (e.g. cancer), we must filter or process the dataset to remove genes which are not informative.</p>
+		<p> </p>
+		<div class="row" style="padding-right: 15px; text-align: right;font-style: italic;"><a class="aRealLink tag-tooltip" href="/view/7" title="Click the title to see the full recipe">Continue on to the full recipe...</a></div>
+		<div class="panel-footer">
+		<div class="tag_list row">
+		<a class="btn btn-default btn-xs tag green" >RNA-seq</a>
+		<a class="btn btn-default btn-xs tag red" >visualization</a>
+		<a class="btn btn-default btn-xs tag green" >isoform abundance</a>
+		<a class="btn btn-default btn-xs tag red" >differential gene expression</a>
+		</div>
+		<div class="row">
+		<div class="col-xs-1">
+		<span class="text-success"><span class="glyphicon glyphicon-thumbs-up"></span> 3</span>
+		</div>
+		<div class="col-xs-1">
+		<span class="text-danger"><span class="glyphicon glyphicon-thumbs-down"></span> 0</span>
+		</div>
+		<div class="col-xs-2">
+									Steps: 6
+								</div>
+		<div class="col-xs-5">
+									Tools: UCSC Table Browser, GenePattern, IGV
+								</div>
+		<div class="col-xs-3">
+		<span class="pull-right"><img alt="Official logo" data-content="Offical GenomeSpace Recipe" data-toggle="popover" src="/assets/official_logo.png"/></span>
+		</div>
+		</div>
+		</div>
+		</div>
+		</div>
+		<div class="gs-recipe-panel panel panel-default panel-hover" data-page="1">
+
+		<div class="panel-heading gs-recipe-panel-head showOnClick clickable clickable-1">
+		<table><tr>
+		<td><img alt="Content ucsc galaxy msigdb" class="recipeAvatar" src="/system/recipes/avatars/000/000/009/original/content_ucsc_galaxy_msigdb.png?1445288859"/></td>
+		<td><h4><a class="aRealLink tag-tooltip" href="/view/9" title="Click the title to see the full recipe">Identify biological functions for genes in copy number variation regions</a> <small><span class="glyphicon glyphicon-chevron-right tag-tooltip toggle-glyph" title="Click to expand"></span></small></h4></td>
+		</tr></table>
+		</div>
+
+		<div class="panel-body">
+		<p><span style="font-family:arial,sans-serif;"><span style="font-size:16px;"><i>Which genes lie in my copy number variation regions? Are these genes enriched for any biological functions or pathways?</i></span></span></p>
+		<p>This recipe provides a method for identifying biological functions for genes lying in copy number variation (CNV) regions. An example use of this recipe is a case where an investigator may want to examine their list of CNVs to see which genetic regions are amplified or deleted, and determine the biological functions or pathways associated with these amplified or deleted regions.</p>
+		<p><img alt="" src="/ckeditor_assets/pictures/367/content_identifyenrichedbiologicalfunctions.png" style="width: 477px; height: 283px; float: right; padding: 10px;"/></p>
+		<p> </p>
+		<p>Copy number variations (CNVs) are large alterations to genomes, such as amplification or deletion of large segments of a chromosome. They can range in size from a focal aberration in a single gene to aberrations covering entire chromosome arms. These variations in the genome have been associated with different conditions, such as cancer. Many genomic analyses produce a set of genes which are assumed to be relevant to an underlying biological mechanism or phenotype. Thus, an investigator often has additional questions about the function or relatedness of these genes: Are they part of the same pathway? Do the gene products interact physically? Do the gene products localize to a specific part of the cell? Are the genes associated with certain stages of development? These questions, and others like them, can be answered by performing functional annotation of gene lists to better understand the underlying connections between genes.</p>
+		<p>In this particular example, we imagine a scenario in which an investigator identifies CNV regions that are amplified or deleted in glioblastoma multiforme (GBM) tumor samples, using a method called Genomic Identification of Significant Targets in Cancer (GISTIC, <a href="http://www.ncbi.nlm.nih.gov/pubmed/21527027">Mermel et al. (2011) Genome Biol.</a>). Given a set of CNV regions, the goal is to infer which biological functions (e.g., metabolic and regulatory pathways, chemical perturbation signatures, etc.) are overrepresented in the set of reference genes that overlap with these regions. In particular, this recipe uses several Galaxy tools to find the overlap between CNV regions and reference genes obtained from the UCSC Table Browser. Then it uses the Molecular Signatures Database (MSigDB) to identify biological functions of the overlapped genes.</p>
+		<p><strong>How can I use this recipe?</strong> This recipe may be modified to analyze CNV regions derived from any organism for which an annotated reference genome exists. Nor does the recipe depend on the algorithm used to identify these regions (GISTIC); any source of CNV data can be used. Once an investigator has pinpointed the CNV regions believed to be influencing their phenotype (disease state, cell type, etc.) of study he/she can use this recipe to identify functional pathways that may be affected by these copy number changes and draw closer to an understanding of the mechanisms behind these CNV effects.</p>
+		<div class="row" style="padding-right: 15px; text-align: right;font-style: italic;"><a class="aRealLink tag-tooltip" href="/view/9" title="Click the title to see the full recipe">Continue on to the full recipe...</a></div>
+		<div class="panel-footer">
+		<div class="tag_list row">
+		<a class="btn btn-default btn-xs tag green" >copy number variation</a>
+		<a class="btn btn-default btn-xs tag red" >gene set enrichment analysis</a>
+		<a class="btn btn-default btn-xs tag green" >genomic loci</a>
+		</div>
+		<div class="row">
+		<div class="col-xs-1">
+		<span class="text-success"><span class="glyphicon glyphicon-thumbs-up"></span> 0</span>
+		</div>
+		<div class="col-xs-1">
+		<span class="text-danger"><span class="glyphicon glyphicon-thumbs-down"></span> 0</span>
+		</div>
+		<div class="col-xs-2">
+									Steps: 4
+								</div>
+		<div class="col-xs-5">
+									Tools: UCSC Table Browser, Galaxy, MSigDB
+								</div>
+		<div class="col-xs-3">
+		<span class="pull-right"><img alt="Official logo" data-content="Offical GenomeSpace Recipe" data-toggle="popover" src="/assets/official_logo.png"/></span>
+		</div>
+		</div>
+		</div>
+		</div>
+
+		</div>
+
+		<div class="gs-recipe-panel panel panel-default panel-hover" data-page="1">
+			<div class="panel-heading gs-recipe-panel-head showOnClick clickable clickable-1">
+				<table><tbody><tr>
+					<td><img alt="Genomica gp msigdb" class="recipeAvatar" src="/system/recipes/avatars/000/000/019/original/genomica_gp_msigdb.png?1455048788"></td>
+					<td><h4><a class="aRealLink tag-tooltip" href="/view/19" title="Click the title to see the full recipe">Identify copy number variation (CNV)-associated transcriptional regulators with unique gene expression profiles by stepwise linkage analysis</a> <small><span class="glyphicon tag-tooltip toggle-glyph glyphicon-chevron-right" title="Click to expand"></span></small></h4></td>
+					</tr></tbody></table>
+			</div>
+			<div class="panel-body">
+				<p><span style="font-family:arial,sans-serif;"><span style="font-size:16px;"><i>Are there specific transcriptional regulators, whose expression and copy number correlate with the expression of genes associated with a specific phenotype?</i></span></span></p>
+
+<p>This recipe provides a method for identifying transcriptional regulators of a gene set associated with a specific phenotype. An example use of this recipe is a case where an investigator may want to identify determine which transcriptional regulators exhibit unique expression phenotypes (e.g. up-regulation or down-regulation). This recipe uses a procedure called "Stepwise Linkage Analysis of Microarray Signatures", first described by <a href="https://www.ncbi.nlm.nih.gov/pubmed/16518402">Adler et al. (<em>Nat Genetics</em> 2006)</a>. This recipe does not use the&nbsp;SLAMS software tool.</p>
+
+<p><img alt="" src="/ckeditor_assets/pictures/366/content_identifycnv.png" style="width: 617px; height: 317px; float: right; padding: 10px;"></p>
+
+<p>In particular, the phenotype is the embryonic stem cell (ESC) state, which is&nbsp;common to ESCs, as well as induced pluripotent stem cells (iPSCs), and also in a compendium of human cancers, such as breast cancer. In this recipe, we are interested in determining which genes transcriptionally regulate&nbsp;this&nbsp;'stemness signature' of gene expression.&nbsp;This recipe recapitulates research by Wong <em>et al.</em>, in <em>Cell Stem Cell</em> (2008), "<a href="http://www.ncbi.nlm.nih.gov/pubmed/18397753">Module map of stem cell genes guides creation of epithelial cancer stem cells</a>". To recapitulate this research, we will use a procedure called Stepwise Linkage Analysis of Microarray Signatures (SLAMS), which is described by Adler <em>et&nbsp;al.</em> in <em>Nature Genetics</em> (2006), "<a href="http://www.ncbi.nlm.nih.gov/pubmed/16518402">Genetic regulators of large-scale transcriptional signatures in cancer</a>". A summary description of the SLAMS procedure is listed below, and more information about SLAMS can be found in the review paper, "<a href="http://www.ncbi.nlm.nih.gov/pubmed/16680134">A SLAMS dunk for cancer regulators</a>", by Kumar-Sinha and Chinnaiyan.</p>
+
+<p>We use a gene expression dataset of primary human breast cancer tumor samples, with a complementary dataset of copy number variation data in array comparative genomic hybridization (aCGH)&nbsp;format, as described in&nbsp;<a href="http://www.ncbi.nlm.nih.gov/pubmed/17157792" style="line-height: 20.7999992370605px;">Chin, K. <em>et al</em>, <em>Cancer Cell</em>, 2006</a>. We use a set of stemness signature genes to separate breast cancer tumor samples into those which exhibit the stemness signature and those that do not by creating a module map in Genomica.&nbsp; A module map characterizes the expression of the gene expression dataset, providing information about sets of genes within the dataset.</p>
+
+<p>We use the classified samples (e.g. stemness signature present vs.&nbsp;stemness signature absent)&nbsp;to&nbsp;normalize the copy number variation data in GenePattern. Next, we identify transcriptional regulators that correlate with the changes in the copy number dataset&nbsp;using&nbsp;a gene set collection from MSigDB, in Genomica. Finally, we identify transcriptional regulators whose amplification or deletion is correlated with up- or downregulation of gene expression. We consider these genes to be 'stemness regulators', i.e. genes which regulate the genes associated with the stemness signature.</p>
+
+<p>Description of the <strong>Stepwise Linkage Analysis of Microarray Signatures</strong> (SLAMS) procedure (<a href="http://www.ncbi.nlm.nih.gov/pubmed/16680134" style="line-height: 20.7999992370605px;">Kumar-Sinha and Chinnaiyan</a>):</p>
+
+<ol>
+	<li>Sort tumor samples into groups based on whether the stemness signature is present (“ON”) or absent (“OFF”).</li>
+	<li>Compare the DNA copy number changes between the groups of tumor samples. Calculate the association between stemness expression and CNV datasets to identify amplifications/deletions associated with the stemness signature.</li>
+	<li>Select genes which are potential candidate regulators of the stemness signature, based on coordinate gene amplification/deletion and gene expression upregulation/downregulation.</li>
+	<li>Validate the candidate regulators by assessing their predictive ability in independent samples of tumor samples.</li>
+</ol>
+
+
+
+                <div class="row" style="padding-right: 15px; text-align: right;font-style: italic;"><a class="aRealLink tag-tooltip" href="/view/19" title="Click the title to see the full recipe">Continue on to the full recipe...</a></div>
+                <div class="panel-footer">
+
+
+                    <div class="tag_list row">
+                            <a class="btn btn-default btn-xs tag green" >microarray</a>
+                            <a class="btn btn-default btn-xs tag green" >copy number variation</a>
+                            <a class="btn btn-default btn-xs tag green" >gene sets</a>
+                            <a class="btn btn-default btn-xs tag red" >module map</a>
+                            </div>
+                    <div class="row">
+                        <div class="col-xs-1">
+                            <span class="text-success"><span class="glyphicon glyphicon-thumbs-up glyphicon-chevron-right glyphicon-chevron-down"></span> 0</span>
+                        </div>
+                        <div class="col-xs-1">
+                            <span class="text-danger"><span class="glyphicon glyphicon-thumbs-down glyphicon-chevron-right glyphicon-chevron-down"></span> 0</span>
+                        </div>
+                        <div class="col-xs-2">
+                            Steps: 5
+                        </div>
+                        <div class="col-xs-5">
+                            Tools: Genomica, GenePattern, MSigDB
+                        </div>
+                        <div class="col-xs-3">
+                            <span class="pull-right"><img alt="Official logo" data-content="Offical&nbsp;GenomeSpace&nbsp;Recipe" data-toggle="popover" src="/assets/official_logo.png" data-original-title="" title=""></span>
+                        </div>
+                    </div>
+                </div>
+			</div>
+		</div>
+
+		<div class="gs-recipe-panel panel panel-default panel-hover" data-page="1">
+			<div class="panel-heading gs-recipe-panel-head showOnClick clickable clickable-1">
+				<table><tbody><tr>
+                <td><img alt="Galaxy gp genomica" class="recipeAvatar" src="/system/recipes/avatars/000/000/014/original/galaxy_gp_genomica.png?1455048884"></td>
+				<td><h4><a class="aRealLink tag-tooltip" href="/view/14" title="Click the title to see the full recipe">Identify enriched biological functions in single-nucleotide polymorphisms (SNPs)</a> <small><span class="glyphicon glyphicon-chevron-right tag-tooltip toggle-glyph " title="Click to expand"></span></small></h4></td>
+                </tr></tbody></table>
+			</div>
+			<div class="panel-body">
+				<p><span style="font-family:arial,sans-serif;"><span style="font-size:16px;"><i>How are SNP-related genes regulated in an expression dataset? Are these genes enriched for particular biological functions?</i></span></span></p>
+
+<p>This recipe provides one method for identifying enriched biological functions in single-nucleotide polymorphisms (SNPs). An example use of this recipe is a case where an investigator may complete a genome-wide association study (GWAS) and wants to know the SNPs that are associated with certain genomic coordinates, in order to determine which genes have particular biological functions.</p>
+
+<p><img alt="" src="/ckeditor_assets/pictures/365/content_identifyenrichedbiologicalfunctions.png" style="width: 477px; height: 283px; float: right; padding: 10px;"></p>
+
+<p>In this particular example, we imagine a scenario in which an investigator completes a GWAS study, obtaining a list of genomic coordinates that are associated with SNPs. However, simply knowing these genomic coordinates is not always informative; the investigator is also interested in knowing which genes lie in these regions, and what kinds of biological functions these genes may have. In this particular example, we are interested in answering two questions:</p>
+
+<ol>
+	<li>Are the genes near these SNPs enriched with particular biological functions?</li>
+	<li>Are the genes near these SNPs significantly up- or down-regulated in some other biological conditions, such as cancer?</li>
+</ol>
+
+<p>To answer the first question, we will find Gene Ontology functional annotations using Genomica. To answer the second question, we will use the Gene Set Enrichment Analysis (GSEA) module in GenePattern, comparing the SNP-associated genes to a gene expression dataset from a study of epithelial cancer stem cells. This study evaluated the ability of oncogenes to activate an embryonic stem cell program in differentiated adult tumor cells, by transforming human keratinocytes into squamous cell carcinomas using oncogenic Ras and IκBα, plus one of three genes: c-Myc, E2F3, and GFP (<a href="http://www.ncbi.nlm.nih.gov/pmc/articles/PMC2628721/">Wong et al. 2009. Cell Stem Cell</a>). Comparisons between these three genes showed that c-Myc could re-activate the embroynic stem cell program. Comparing the SNPs to this gene expression dataset can determine whether this set of SNP-associated genes are differentially regulated in c-Myc samples, when compared to other genes such as GFP and E2F3.</p>
+
+
+
+                <div class="row" style="padding-right: 15px; text-align: right;font-style: italic;"><a class="aRealLink tag-tooltip" href="/view/14" title="Click the title to see the full recipe">Continue on to the full recipe...</a></div>
+                <div class="panel-footer">
+
+
+                    <div class="tag_list row">
+                            <a class="btn btn-default btn-xs tag green" >SNP array</a>
+                            <a class="btn btn-default btn-xs tag green" >genomic loci</a>
+                            <a class="btn btn-default btn-xs tag red" >gene set enrichment analysis</a>
+                            <a class="btn btn-default btn-xs tag red" >functional annotation</a>
+                            </div>
+                    <div class="row">
+                        <div class="col-xs-1">
+                            <span class="text-success"><span class="glyphicon glyphicon-thumbs-up"></span> 0</span>
+                        </div>
+                        <div class="col-xs-1">
+                            <span class="text-danger"><span class="glyphicon glyphicon-thumbs-down"></span> 0</span>
+                        </div>
+                        <div class="col-xs-2">
+                            Steps: 6
+                        </div>
+                        <div class="col-xs-5">
+                            Tools: Galaxy, GenePattern, Genomica
+                        </div>
+                        <div class="col-xs-3">
+                            <span class="pull-right"><img alt="Official logo" data-content="Offical&nbsp;GenomeSpace&nbsp;Recipe" data-toggle="popover" src="/assets/official_logo.png" data-original-title="" title=""></span>
+                        </div>
+                    </div>
+                </div>
+			</div>
+		</div>
+
+		<div class="gs-recipe-panel panel panel-default panel-hover" data-page="1">
+			<div class="panel-heading gs-recipe-panel-head showOnClick clickable clickable-1">
+				<table><tr>
+				<td><img alt="Galaxy gp genomica" class="recipeAvatar" src="/system/recipes/avatars/000/000/075/original/mageck-title-image.png?1508799783"/></td>
+				<td><h4><a class="aRealLink tag-tooltip" href="/view/75" title="Click the title to see the full recipe">Identify essential genes and associated subnetworks from Genome-Scale CRISPR-Cas9 knockout screens</a> <small><span class="glyphicon glyphicon-chevron-right tag-tooltip toggle-glyph" title="Click to expand"></span></small></h4></td>
+				</tr></table>
+			</div>
+			<div class="panel-body">
+				<p><span style="font-family:arial,sans-serif;"><span style="font-size:16px;"><i>What genes are essential to a cell’s survival in a specific environment?</i></span></span></p>
+				<p>This recipe provides a way to process the results of genome-wide CRISPR-Cas9 knockout screens. In these screens, single guide RNAs (sgRNAs) are designed to bind to and inhibit specific target DNA sequences in genes. Multiple sgRNAs may target the same gene to increase knockout efficiency. In positive screens, essential genes are identified through the sequencing of surviving cells post-selection. The loss of these ‘winning’ genes create cells that are resistant to the selective pressure. In negative screens, essential genes are identified by measuring which genes are lower in abundance post selection. These screens require a non-selected control, which is used to find which genes are essential to survival  under the given selective pressures (<a href="http://onlinelibrary.wiley.com/doi/10.1111/febs.13770/full">Miles <em>et al.</em>, 2016</a>). Since a large number of sgRNAs can be introduced in a single screen, many genes can be tested for a selection criteria. However, there are many factors to consider in processing of sequenced reads; often multiple sgRNAs in a library target the same gene but with different specificities and efficiencies, and read count distributions vary depending on library and study designs. Additionally, positive selection screens often result in relatively few sgRNAs that dominate the total sequenced reads. The MAGeCK (
+				<a href="https://www.ncbi.nlm.nih.gov/pubmed/25476604">Li <em>et al.</em>, 2014</a>) method was specifically developed for CRISPR screen analyses with these conditions in mind.</p>
+				<p><img alt="" src="/ckeditor_assets/pictures/496/content_workflow.png" style="height: 400px; float: right; width: 533px;"></p>
+				<div>
+					<p><strong>How can we find the molecular mechanism responsible for resistance?</strong></p>
+					
+					<p>By looking at how the hits in the screen aggregate on an interaction&nbsp;network, we can get an idea of the&nbsp;mechanisms that are essential for the organism to survive an environmental challenge. &nbsp;The network neighborhood that contains a high concentration of essential genes is strongly implicated as&nbsp;the molecular mechanism by which an organism handles the challenge.</p>
+					
+					<p>We can find the&nbsp;network neighborhood that is enriched for the screen hits through an algorithm called network propagation (Carlin et al., in press) that is implemented as a feature of the popular network analysis program Cytoscape. &nbsp;This algorithm will find the closely clustered hits and their network neighbors to build a network diagram of the resistance mechanism. &nbsp;We can then use GeneMANIA plugin to find enriched terms that easily summarize the biological terms that are enriched in the diagram.</p>
+					
+					<p><strong>What is Model-based Analysis of Genome-wide CRIPSR/Cas9 Knockout (MAGeCK)?</strong></p>
+					
+					<p>Model-based Analysis of Genome-wide CRIPSR/Cas9 Knockout (MAGeCK) is an algorithm for identifying both positively and negatively selected sgRNAs and genes from genome-scale&nbsp;CRIPSR/Cas9 knockout screens. The MAGeCK method can be summarized by the following steps:</p>
+					
+					<p>1. sgRNA read counts are median-ratio normalized.</p>
+					
+					<p>2. Mean-variance modeling is then used to model each replicate. The statistical significance of each sgRNA is calculated using the learned mean-variance model.</p>
+					
+					<p>3. Essential genes are determined by looking for genes with consistently highly significant sgRNAs using robust rank aggregation.</p>
+					
+					<p><strong>Use Case:</strong> MAGeCK enables robust identification of essential genes from genome-scale CRISPR/Cas9 knockout screens&nbsp;(<a href="https://www.ncbi.nlm.nih.gov/pubmed/25476604">Li&nbsp;<em>et&nbsp;al. 2014</em></a>).</p>
+				</div>
+				<div class="row" style="padding-right: 15px; text-align: right;font-style: italic;"><a class="aRealLink tag-tooltip" href="/view/75" title="Click the title to see the full recipe">Continue on to the full recipe...</a>
+				</div>
+				<div class="panel-footer">
+                    <div class="tag_list row">
+                            <a class="btn btn-default btn-xs tag yellow" >sgRNAs</a>
+                            <a class="btn btn-default btn-xs tag yellow" >mouse</a>
+                            <a class="btn btn-default btn-xs tag yellow" >processing</a>
+                            <a class="btn btn-default btn-xs tag yellow" >CRISPR</a>
+                            <a class="btn btn-default btn-xs tag red" >network analysis</a>
+                            </div>
+                    <div class="row">
+                        <div class="col-xs-1">
+                            <span class="text-success"><span class="glyphicon glyphicon-thumbs-up glyphicon-chevron-right glyphicon-chevron-down"></span> 0</span>
+                        </div>
+                        <div class="col-xs-1">
+                            <span class="text-danger"><span class="glyphicon glyphicon-thumbs-down glyphicon-chevron-right glyphicon-chevron-down"></span> 0</span>
+                        </div>
+                        <div class="col-xs-2">
+                            Steps: 7
+                        </div>
+                        <div class="col-xs-5">
+                            Tools: GenePattern, Cytoscape 3
+                        </div>
+                        <div class="col-xs-3">
+                            <span class="pull-right"><img alt="Official logo" data-content="Offical&nbsp;GenomeSpace&nbsp;Recipe" data-toggle="popover" src="/assets/official_logo.png" data-original-title="" title=""></span>
+                        </div>
+                    </div>
+                </div>
+			</div>
+		</div>
+
+		<div class="gs-recipe-panel panel panel-default panel-hover" data-page="1">
+			<div class="panel-heading gs-recipe-panel-head showOnClick clickable clickable-1">
+				<table><tbody><tr>
+					<td><img alt="Gp gal igv" class="recipeAvatar" src="/system/recipes/avatars/000/000/069/original/gp_gal_igv.png?1489687594"></td>
+					<td><h4><a class="aRealLink tag-tooltip" href="/view/69" title="Click the title to see the full recipe">Identify Regions of Protein-DNA Binding and Their Influence on Associated Gene Expression</a> <small><span class="glyphicon glyphicon-chevron-right tag-tooltip toggle-glyph " title="Click to expand"></span></small></h4></td>
+					</tr></tbody></table>
+			</div>
+			<div class="panel-body">
+				<p><span style="font-family:arial,sans-serif;"><span style="font-size:16px;"><i>Which genes are differentially expressed between my two phenotypes, based on my RNA-seq data?</i></span></span></p>
+
+<p>This recipe provides one method to identify and visualize gene expression in different diseases and during cell differentiation and development. In collecting ChIP-seq data, we can obtain genome-wide maps of transcription factor occupancies or histone modifications between a treatment and control. In locating these regions, we can integrate ChIP-seq and RNA-seq data to better understand how these binding events regulate associated gene expression of nearby genes. An example use case of this recipe is when <a href="http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0122518#pone.0122518.ref018">Laurent et al.</a> observed how the binding of the Prep1 transcription factor influences gene regulation in mouse embryonic stem cells. The integration of both RNA-seq and Chip-seq data allows a user to identify target genes that are directly regulated by transcription factor binding or any other epigenetic occupancy in the genome.</p>
+
+<p><img alt="" src="/ckeditor_assets/pictures/415/content_ss_workflow.png" style=" float: right; padding: 10px;" width="550"></p>
+
+<p><strong>What is Model-based Analysis of ChiP-seq (MACS)?</strong></p>
+
+<p>Model-based Analysis of ChIP-seq (MACS) is a computational algorithm that identifies genome-wide locations of transcription/chromatin factor binding or histone modifications. It is often preferred over other peak calling algorithms due to its consistency in reporting fewer false positives and its finer spatial resolution. First, it removes redundant reads to account for possible over-amplification of ChIP-DNA, which may affect peak-calling downstream. Then it shifts read positions based on the fragment size distribution to better represent the original ChIP-DNA fragment positions. Once read positions are adjusted, peak enrichment is calculated by identifying regions that are significantly enriched relative to the genomic background. MACS empirically estimates the FDR for experiments with controls for each peak, which can be used as a cutoff to filter enriched peaks. The treatment and control samples are swapped and any enriched peaks found in the control sample are regarded as false positives.</p>
+
+<p><strong>Why differential expression analysis?</strong></p>
+
+<p>We assume that most genes are not expressed all the time, but rather are expressed in specific tissues, stages of development, or under certain conditions. Genes which are expressed in one condition, such as cancerous tissue, are said to be differentially expressed when compared to normal conditions.</p>
+
+<p><strong>Use Case:</strong> ChIP-Seq and RNA-Seq Analyses Identify Components of the Wnt and Fgf Signaling Pathways as Prep1 Target Genes in Mouse Embryonic Stem Cells (<a href="http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0122518#pone.0122518.ref018">Laurent et al., PLoS ONE, 2015)</a></p>
+
+<p>The sample datatset, <a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE63282">Series GSE6328,</a> used for this recipe are from NCBI's GEO. We identify the interplay between epigentics and transcriptomics mouse embryonic stems cells by observing how the binding of the transcription factor, <em>Prep1</em>, influences gene expression. <em>Prep1</em> is predominantly known for its contribution in embryonic development. In comparing genome-wide maps of mouse embryonic cells experiencing <i>Prep1</i> binding to those that do not, we can identify potential target genes that are being differentially regulated by these binding events.</p>
+
+
+
+                <div class="row" style="padding-right: 15px; text-align: right;font-style: italic;"><a class="aRealLink tag-tooltip" href="/view/69" title="Click the title to see the full recipe">Continue on to the full recipe...</a></div>
+                <div class="panel-footer">
+
+
+                    <div class="tag_list row">
+                            <a class="btn btn-default btn-xs tag yellow" >peak calling</a>
+                            <a class="btn btn-default btn-xs tag green" >gene sets</a>
+                            <a class="btn btn-default btn-xs tag red" >gene expression analysis</a>
+                            <a class="btn btn-default btn-xs tag green" >RNA-seq</a>
+                            <a class="btn btn-default btn-xs tag yellow" >ChIP-seq</a>
+                            <a class="btn btn-default btn-xs tag red" >differential gene expression</a>
+                            </div>
+                    <div class="row">
+                        <div class="col-xs-1">
+                            <span class="text-success"><span class="glyphicon glyphicon-thumbs-up"></span> 1</span>
+                        </div>
+                        <div class="col-xs-1">
+                            <span class="text-danger"><span class="glyphicon glyphicon-thumbs-down"></span> 0</span>
+                        </div>
+                        <div class="col-xs-2">
+                            Steps: 11
+                        </div>
+                        <div class="col-xs-5">
+                            Tools: GenePattern, Galaxy, IGV
+                        </div>
+                        <div class="col-xs-3">
+                            <span class="pull-right"><img alt="Official logo" data-content="Offical&nbsp;GenomeSpace&nbsp;Recipe" data-toggle="popover" src="/assets/official_logo.png" data-original-title="" title=""></span>
+                        </div>
+                    </div>
+                </div>
+			</div>
+		</div>
+
+		<div class="gs-recipe-panel panel panel-default panel-hover" data-page="1">
+			<div class="panel-heading gs-recipe-panel-head showOnClick clickable clickable-1">
+				<table><tbody><tr>
+					<td><img alt="Fb galaxy gp" class="recipeAvatar" src="/system/recipes/avatars/000/000/060/original/fb-galaxy-gp.png?1467138651"></td>
+					<td><h4><a class="aRealLink tag-tooltip" href="/view/60" title="Click the title to see the full recipe">Identify TCGA data that have specific mutational profiles</a> <small><span class="glyphicon glyphicon-chevron-right tag-tooltip toggle-glyph " title="Click to expand"></span></small></h4></td>
+					</tr></tbody></table>
+			</div>
+			<div class="panel-body">
+				<p><span style="font-family:arial,sans-serif;"><span style="font-size:16px;"><i>How do I obtain and analyze data from The Cancer Genome Atlas (TCGA)? Which TCGA datasets have specific mutations in my gene of interest?</i></span></span></p>
+
+<p>This recipe provides a method for identifying and obtaining specific&nbsp;datasets of interest from The Cancer Genome Atlas (TCGA), through a web-based tool called FireBrowse. An example use of this recipe is a case where an investigator may have a gene they are interested in, such as ERCC2, and would like to know if there are mutations in this gene in specific datasets of interest, such as bladder cancer.</p>
+
+<p><img alt="" src="/ckeditor_assets/pictures/364/content_identifytcgadata.png" style="width: 397px; height: 306px; float: right; padding: 10px;"></p>
+
+<p>&nbsp;</p>
+
+<p>Tumors arise from mutational changes to healthy cells, and are frequently deficient in one or more DNA repair pathways. The accumulation of mutations in tumor can be described by the “mutational signature”, a pattern of genetic mutations found in tumor DNA, which reflect different mutation events. Mutational signatures can be specific to certain tissues or cancer types. Many of these mutational signatures are associated with DNA repair pathways.</p>
+
+<p>An in-depth study of urothelial carcinoma, which causes ~150,000 deaths annually, by <a href="http://www.nature.com/ng/journal/vaop/ncurrent/full/ng.3557.html" target="_blank">Kim et al. (<em>Nature Genetics</em>,&nbsp;2016)</a> has identified a mutational signature in bladder cancer involving the nucleotide-excision repair (NER) pathway. Kim et al. identified a mutational signature involving ERCC2, a gene encoding a DNA helicase which plays a critical role in the NER pathway. Somatic mutations in this gene may prevent proper functioning of the NER pathway, allowing mutations to accumulate. Uniquely, urothelial cancer is the only known tumor type to date in which ERCC2 is significantly mutated.</p>
+
+<p>Kim et al. used the collection of bladder carcinoma (BLCA) samples in <a href="http://cancergenome.nih.gov/" target="_blank">The Cancer Genome Atlas (TCGA)</a> to complete their analysis. Data were downloaded from the Broad Institute TCGA Genome Data Analysis Center, and samples were categorized based on mutational status. Tumors with somatic, missense mutations in ERCC2 were compared to non-mutated (wild-type) samples to identify the comprehensive mutational landscape of bladder cancer (<a href="http://www.nature.com/nature/journal/v507/n7492/full/nature12965.html" target="_blank">also described in this TCGA paper</a>).</p>
+
+<p>This recipe provides a method for processing data from The Cancer Genome Atlas (TCGA), to identify samples which have mutations in specific genes. The purpose of this recipe is to categorize data by mutational status, for further downstream analysis (e.g. comparing tumors of different mutational status, etc.). Data is collected from FireBrowse; Galaxy and GenePattern are used to categorize samples by mutational status and generate&nbsp;<a href="http://www.broadinstitute.org/cancer/software/genepattern/file-formats-guide#GCT" target="_blank">GCT</a> and <a href="http://www.broadinstitute.org/cancer/software/genepattern/file-formats-guide#CLS" target="_blank">CLS</a> files. The RNA-seq datasets are gene-level normalized <a href="http://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-12-323" target="_blank">RSEM expression estimates</a>.</p>
+
+<p>&nbsp;</p>
+
+<p><strong>TCGA Barcodes</strong></p>
+
+<p>The Cancer Genome Atlas labels its datasets with the TCGA barcode, an identifer that describes the metadata associated with sample. You can learn more about the <a href="https://wiki.nci.nih.gov/display/TCGA/TCGA+barcode" target="_blank">TCGA Barcodes on the NIH National Cancer Institute Wiki page</a>&nbsp;(see also: <a href="https://wiki.nci.nih.gov/display/TCGA/Working+with+TCGA+Data" target="_blank">working with TCGA data</a>).</p>
+
+<p>TCGA barcodes adhere to a certain format: <code class="note">TCGA-00-1111-<strong>22A</strong>-33B-4444-55</code>. For this recipe, we are interested in the&nbsp;<a href="https://wiki.nci.nih.gov/display/TCGA/Sample" target="_blank">Sample type</a>,&nbsp;indicated by the <strong><code class="note">22A</code></strong> section of the barcode. For this recipe we are interested in samples with designation <code class="note">01</code> (solid tumor, or TP) or <code class="note">11</code> (solid tissue normal, or NT), which are paired tumor-normal samples.</p>
+
+
+
+                <div class="row" style="padding-right: 15px; text-align: right;font-style: italic;"><a class="aRealLink tag-tooltip" href="/view/60" title="Click the title to see the full recipe">Continue on to the full recipe...</a></div>
+                <div class="panel-footer">
+
+
+                    <div class="tag_list row">
+                            <a class="btn btn-default btn-xs tag green" >RNA-seq</a>
+                            <a class="btn btn-default btn-xs tag yellow" >TCGA</a>
+                            <a class="btn btn-default btn-xs tag yellow" >mutation annotations</a>
+                            <a class="btn btn-default btn-xs tag yellow" >processing</a>
+                            </div>
+                    <div class="row">
+                        <div class="col-xs-1">
+                            <span class="text-success"><span class="glyphicon glyphicon-thumbs-up"></span> 1</span>
+                        </div>
+                        <div class="col-xs-1">
+                            <span class="text-danger"><span class="glyphicon glyphicon-thumbs-down"></span> 0</span>
+                        </div>
+                        <div class="col-xs-2">
+                            Steps: 8
+                        </div>
+                        <div class="col-xs-5">
+                            Tools: FireBrowse, GenomeSpace, Galaxy, GenePattern
+                        </div>
+                        <div class="col-xs-3">
+                            <span class="pull-right"><img alt="Official logo" data-content="Offical&nbsp;GenomeSpace&nbsp;Recipe" data-toggle="popover" src="/assets/official_logo.png" data-original-title="" title=""></span>
+                        </div>
+                    </div>
+                </div>
+			</div>
+		</div>
+
+		<div class="gs-recipe-panel panel panel-default panel-hover" data-page="1">
+			<div class="panel-heading gs-recipe-panel-head showOnClick clickable clickable-1">
+				<table><tbody><tr>
+					<td><img alt="Content galaxy gp" class="recipeAvatar" src="/system/recipes/avatars/000/000/005/original/content_galaxy_gp.png?1443549694"></td>
+					<td><h4><a class="aRealLink tag-tooltip" href="/view/5" title="Click the title to see the full recipe">Preprocess and quality check RNA-seq data</a> <small><span class="glyphicon glyphicon-chevron-right tag-tooltip toggle-glyph " title="Click to expand"></span></small></h4></td>
+					</tr></tbody></table>
+			</div>
+			<div class="panel-body">
+				<p><span style="font-family:arial,sans-serif;"><span style="font-size:16px;"><i>What is the quality of my RNA-seq reads? Are my RNA-seq reads of good quality or are there artifacts and errors I should remove and/or be aware of?</i></span></span></p>
+
+<p>This recipe provides an outline of one method to preprocess and determine the quality of RNA-seq libraries. An example use of this recipe is a case where an investigator has completed sequencing of samples, and wants to evaluate and check the quality of the sequencing results before going through the time-consuming process of aligning the reads against a genome.</p>
+
+<p><img alt="" src="/ckeditor_assets/pictures/362/content_preprocessqualitycheckrnaseq.png" style="width: 399px; height: 203px; float: right; padding: 10px;"></p>
+
+<p>&nbsp;</p>
+
+<p>Given a set of raw RNA-seq reads, the goal is to align the reads to a reference genome and assess the quality of the read alignments by obtaining metrics such as depth of coverage, rRNA contamination, continuity of coverage, and GC bias. The purpose of this recipe is to process raw RNA-seq reads prior to aligning them against a reference genome. In particular, this recipe uses a dataset which has RNA-seq reads contaminated with adapter sequences. First we identify and remove adapter sequences using Galaxy, then we process the data and align it to a reference genome using GenePattern.</p>
+
+<p><strong>Why remove adapter sequences?</strong> Adapter sequences are short pieces of DNA with known sequence, which are used to link DNA molecules together. In particular, these are used to link an unknown DNA sequence to a sequencing primer, in order to sequence the unknown DNA strand. Most of the time adapter sequences are removed during pre-processing when data is sent to a researcher; however, sometimes some adapter sequences remain. It is important to remove these sequences before aligning reads to a genome.</p>
+
+<p>&nbsp;</p>
+
+
+
+                <div class="row" style="padding-right: 15px; text-align: right;font-style: italic;"><a class="aRealLink tag-tooltip" href="/view/5" title="Click the title to see the full recipe">Continue on to the full recipe...</a></div>
+                <div class="panel-footer">
+
+
+                    <div class="tag_list row">
+                            <a class="btn btn-default btn-xs tag green" >RNA-seq</a>
+                            <a class="btn btn-default btn-xs tag red" >quality checking</a>
+                            <a class="btn btn-default btn-xs tag red" >alignment</a>
+                            </div>
+                    <div class="row">
+                        <div class="col-xs-1">
+                            <span class="text-success"><span class="glyphicon glyphicon-thumbs-up"></span> 1</span>
+                        </div>
+                        <div class="col-xs-1">
+                            <span class="text-danger"><span class="glyphicon glyphicon-thumbs-down"></span> 0</span>
+                        </div>
+                        <div class="col-xs-2">
+                            Steps: 10
+                        </div>
+                        <div class="col-xs-5">
+                            Tools: Galaxy, GenePattern
+                        </div>
+                        <div class="col-xs-3">
+                            <span class="pull-right"><img alt="Official logo" data-content="Offical&nbsp;GenomeSpace&nbsp;Recipe" data-toggle="popover" src="/assets/official_logo.png" data-original-title="" title=""></span>
+                        </div>
+                    </div>
+                </div>
+			</div>
+		</div>
+
+		<div class="gs-recipe-panel panel panel-default panel-hover" data-page="1">
+			<div class="panel-heading gs-recipe-panel-head showOnClick clickable clickable-1">
+				<table><tbody><tr>
+					<td><img alt="Gp msigdb" class="recipeAvatar" src="/system/recipes/avatars/000/000/053/original/gp_msigdb.png?1457422340"></td>
+					<td><h4><a class="aRealLink tag-tooltip" href="/view/53" title="Click the title to see the full recipe">Recapitulate cross-species analysis results to credential genetically engineered mouse models of breast cancer (PMID: 24220145)</a> <small><span class="glyphicon tag-tooltip toggle-glyph glyphicon-chevron-right" title="Click to expand"></span></small></h4></td>
+					</tr></tbody></table>
+			</div>
+			<div class="panel-body">
+				<p>This recipe recapitulates research by Pfefferle et al., in Genome Biology(2013), "<a href="http://www.ncbi.nlm.nih.gov/pubmed/24220145">Transcriptomic classification of genetically engineered mouse models of breast cancer identifies human subtype counterparts</a>", conducted by <a href="http://www.med.unc.edu/genetics/faculty/perou">Charles M Perou</a>'s group.&nbsp; This study encompasses the largest comprehensive genomic dataset to date to identify human-to-mouse disease subtype counterparts, consisting of three independent human breast cancer datasets and 385 DNA gene expression microarrays from 27 GEMMs of mammary carcinoma(Gene Expression Omnibus accession numbers GSE3165, GSE8516, GSE9343, GSE14457, GSE15263, GSE17916, GSE27101, and GSE42640).&nbsp; In the original study, the similarity between specific human and mouse subtypes was measured using <a href="http://projecteuclid.org/euclid.aoas/1183143731">gene set analysis</a> (GSA)(<a href="http://genomebiology.biomedcentral.com/articles/10.1186/gb-2013-14-11-r125#Tab2">Table 2</a> in the publication).&nbsp; To recapitulate this research, we will use <a href="http://www.ncbi.nlm.nih.gov/pubmed/16199517">Gene Set Enrichment Analysis module</a>(v17) in GenePattern, as an independent method to further validate the research findings.&nbsp; This effort is supported by <a href="http://grants.nih.gov/grants/guide/pa-files/PAR-14-239.html">NCI Oncology Models Forum</a>(OMF), a collaborative effort to credential cancer mouse models for translational research.</p>
+
+
+
+                <div class="row" style="padding-right: 15px; text-align: right;font-style: italic;"><a class="aRealLink tag-tooltip" href="/view/53" title="Click the title to see the full recipe">Continue on to the full recipe...</a></div>
+                <div class="panel-footer">
+
+
+                    <div class="tag_list row">
+                            <a class="btn btn-default btn-xs tag yellow" >DNA microarray</a>
+                            <a class="btn btn-default btn-xs tag red" >gene set enrichment analysis</a>
+                            </div>
+                    <div class="row">
+                        <div class="col-xs-1">
+                            <span class="text-success"><span class="glyphicon glyphicon-thumbs-up glyphicon-chevron-right glyphicon-chevron-down"></span> 0</span>
+                        </div>
+                        <div class="col-xs-1">
+                            <span class="text-danger"><span class="glyphicon glyphicon-thumbs-down glyphicon-chevron-right glyphicon-chevron-down"></span> 0</span>
+                        </div>
+                        <div class="col-xs-2">
+                            Steps: 3
+                        </div>
+                        <div class="col-xs-5">
+                            Tools: GenePattern
+                        </div>
+                        <div class="col-xs-3">
+                            <span class="pull-right"></span>
+                        </div>
+                    </div>
+                </div>
+			</div>
+		</div>
+
+		<div class="gs-recipe-panel panel panel-default panel-hover" data-page="1">
+			<div class="panel-heading gs-recipe-panel-head showOnClick clickable clickable-1">
+				<table><tbody><tr>
+					<td><img alt="Gp msigdb galaxy" class="recipeAvatar" src="/system/recipes/avatars/000/000/015/original/gp_msigdb_galaxy.png?1455048843"></td>
+					<td><h4><a class="aRealLink tag-tooltip" href="/view/15" title="Click the title to see the full recipe">Use Gene Set Enrichment Analysis to identify common signatures between gene sets</a> <small><span class="glyphicon glyphicon-chevron-right tag-tooltip toggle-glyph " title="Click to expand"></span></small></h4></td>
+					</tr></tbody></table>
+			</div>
+			<div class="panel-body">
+				<p><span style="font-family:arial,sans-serif;"><span style="font-size:16px;"><i>How do I create a custom-generated gene set?&nbsp;Are there any commonalities between custom-generated gene sets,&nbsp;and MSigDB hallmark gene sets?</i></span></span></p>
+
+<p>This recipe provides a method for identifying and visualizing similarities between diverse gene sets relevant to a study. An example use of this recipe is a case where an investigator may want to compare two phenotypes, such as two types of cancer, to determine which gene sets may be similar between these phenotypes.</p>
+
+<p>&nbsp;</p>
+
+<p><span style="font-size:16px; font-family: 'Univers Condensed', sans-serif; color: #626264;"><strong>Background information:</strong></span> What is Gene Set Enrichment Analysis, and why should I use it?</p>
+
+<p>Gene sets are lists of genes that share similar functions, transcriptional regulation, chromosomal positions, pathways, or other biological processes. It is possible to identify gene sets that are enriched or over-represented in a particular phenotype, such as a specific disease. Gene Set Enrichment Analysis (GSEA) is a computational method which determines whether an <em>a priori</em> defined set of genes shows statistically significant, concordant differences between two phenotypes. GSEA can be used with a custom gene set generated by the user, or with the annotated, standardized gene sets which are available in the Molecular Signatures Database (MSigDB) collection. Completing GSEA on a gene expression dataset will identify those gene sets which are significantly enriched in a particular phenotype. Comparing similarities between the top gene sets following GSEA can yield unique insights into the mechanisms associated with a specific phenotype, which cannot be observed using a single-gene analysis.</p>
+
+<p><img alt="" src="/ckeditor_assets/pictures/359/content_usegsea.png" style="width: 450px; height: 304px; float: right; padding: 10px;"></p>
+
+<p>&nbsp;</p>
+
+<p><span style="font-size:16px; font-family: 'Univers Condensed', sans-serif; color: #626264;"><strong>Use case:</strong></span> <a href="http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3672953/">Targeting MYCN in Neuroblastoma by BET Bromodomain Inhibition</a> (Puissant <em>et al. </em>, <em>Cancer Discov</em>. 2013).</p>
+
+<p>This study analyzed gene expression data generated from primary neuroblastoma tumors of two genetic classes: tumors harboring MYCN amplification (“MYCN amplified”) and tumors without MYCN amplification (“MYCN non-amplified”). MYCN amplified neuroblastoma is exquisitely dependent on the bromodomain and extra-terminal (BET) family of proteins. As such, treatment of MYCN amplified cell lines or tumors with JQ1, a small-molecule inhibitor of BET proteins, leads to dramatic transcriptional changes and induces cell death.</p>
+
+<p>A training set of gene expression data was analyzed using GenePattern, and custom gene sets were generated representing the MYCN amplified and MYCN non-amplified datasets. The custom-generated gene sets were then concatenated with the Hallmark gene set from MSigDB using tools in Galaxy. Subsequently, a test gene expression dataset of neuroblastoma cell lines treated with JQ1 (treatment) or DMSO (control) was used to rank this collection of gene sets using single-sample Gene Set Enrichment Analysis (ssGSEA).</p>
+
+<p>This analysis reveals that MYCN-associated gene sets are enriched in JQ1-associated datasets, and suggests that JQ1 functions to suppress transcriptional programs mediated by MYCN amplification. The resulting similarities of the top-ranked gene sets are visualized using ConstellationMap, a module available in GenePattern. This helps to highlight similarities and overlaps between gene sets.</p>
+
+
+
+                <div class="row" style="padding-right: 15px; text-align: right;font-style: italic;"><a class="aRealLink tag-tooltip" href="/view/15" title="Click the title to see the full recipe">Continue on to the full recipe...</a></div>
+                <div class="panel-footer">
+
+
+                    <div class="tag_list row">
+                            <a class="btn btn-default btn-xs tag red" >gene expression analysis</a>
+                            <a class="btn btn-default btn-xs tag red" >gene set enrichment analysis</a>
+                            <a class="btn btn-default btn-xs tag green" >microarray</a>
+                            <a class="btn btn-default btn-xs tag green" >gene sets</a>
+                            </div>
+                    <div class="row">
+                        <div class="col-xs-1">
+                            <span class="text-success"><span class="glyphicon glyphicon-thumbs-up"></span> 1</span>
+                        </div>
+                        <div class="col-xs-1">
+                            <span class="text-danger"><span class="glyphicon glyphicon-thumbs-down"></span> 0</span>
+                        </div>
+                        <div class="col-xs-2">
+                            Steps: 6
+                        </div>
+                        <div class="col-xs-5">
+                            Tools: GenePattern, MSigDB, Galaxy
+                        </div>
+                        <div class="col-xs-3">
+                            <span class="pull-right"><img alt="Official logo" data-content="Offical&nbsp;GenomeSpace&nbsp;Recipe" data-toggle="popover" src="/assets/official_logo.png" data-original-title="" title=""></span>
+                        </div>
+                    </div>
+                </div>
+			</div>
+		</div>
+
+		<script>
+		//<![CDATA[
+		
+		
+		
+		
+			$('[data-toggle="popover"]').popover({trigger: "hover", placement: "top"});
+		
+				function toggleRecipePanel(parent){
+					var panel = $(parent).find('.panel-body');
+					if(panel.is(':visible')) {
+								panel.slideUp('fast');
+								toggleGlyph($(parent).find('span.glyphicon'));
+					} else {
+								panel.slideDown('fast');
+								toggleGlyph($(parent).find('span.glyphicon'));
+					}
+					setTimeout(function(){tellParentWindowMySize()}, 200);
+				}
+		
+		
+			/* below is a hack to make sure the click handler isn't applied multiple times during pagination events */
+			function titleClicked(e) {
+					console.log("Click: " + e.target);
+					if ($(e.target).hasClass('aRealLink')) return true;
+					var parent = $(this).closest('.gs-recipe-panel');
+					toggleRecipePanel(parent);
+		
+			}
+			$.each($('.showOnClick'), function(idx, target){
+					$(target).click(titleClicked);
+					$(target).removeClass("showOnClick");
+				});
+		
+								$(document).on("ready page:change", function() {
+								$('.tag-tooltip').tooltip();
+								});
+		
+		//]]>
+		</script>
+		</div>
+		</div>
+		</div>
+	</div>
+</div>
+</div>
+
+</div></body></html>
+<br/>
+</div>
+
+
+
+<script>
+//<![CDATA[
+
+		$(window).scroll(bindScroll);
+
+		function bindScroll(){
+			if($(window).scrollTop() + $(window).height() > $(document).height() - 1) {
+				$(window).unbind('scroll');
+				paginateRecipes("", 3, "");
+			}
+		}
+
+		if ( "" == "" && 3 == 1) {
+			$(window).unbind('scroll');
+			$("#pagination").toggle();
+		}
+
+		$("#pagination").click(function() {
+			$(window).unbind('scroll');
+			paginateRecipes("", 3, "");
+		});
+
+
+//]]>
+</script>
+<div class="container-fluid footer gs-recipe-footer">
+<p class="copy-right-block">Copyright ©2016 The Regents of the University of California and The Broad Institute of MIT &amp; Harvard</p>
+</div>
+
+

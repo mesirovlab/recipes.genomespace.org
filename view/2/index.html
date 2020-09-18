@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>GenomeSpace Recipe: Find subnetworks of differentially expressed genes and identify associated biological functions</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link href="/assets/docs.min.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/featured_article.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/pages.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/recipes.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/site.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/tags.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/jquery-ui/theme.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/jquery-ui/core.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/application.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/dataTables/bootstrap/3/jquery.dataTables.bootstrap.css?body=1" media="all" rel="stylesheet"/>
+<script src="/assets/jquery.js?body=1"></script>
+<script src="/assets/jquery_ujs.js?body=1"></script>
+<script src="/assets/jquery-ui/core.js?body=1"></script>
+<script src="/assets/jquery-ui/widget.js?body=1"></script>
+<script src="/assets/jquery-ui/position.js?body=1"></script>
+<script src="/assets/jquery-ui/menu.js?body=1"></script>
+<script src="/assets/jquery-ui/autocomplete.js?body=1"></script>
+<script src="/assets/jquery-ui/mouse.js?body=1"></script>
+<script src="/assets/jquery-ui/sortable.js?body=1"></script>
+<script src="/assets/bootstrap/affix.js?body=1"></script>
+<script src="/assets/bootstrap/alert.js?body=1"></script>
+<script src="/assets/bootstrap/button.js?body=1"></script>
+<script src="/assets/bootstrap/carousel.js?body=1"></script>
+<script src="/assets/bootstrap/collapse.js?body=1"></script>
+<script src="/assets/bootstrap/dropdown.js?body=1"></script>
+<script src="/assets/bootstrap/tab.js?body=1"></script>
+<script src="/assets/bootstrap/transition.js?body=1"></script>
+<script src="/assets/bootstrap/scrollspy.js?body=1"></script>
+<script src="/assets/bootstrap/modal.js?body=1"></script>
+<script src="/assets/bootstrap/tooltip.js?body=1"></script>
+<script src="/assets/bootstrap/popover.js?body=1"></script>
+<script src="/assets/bootstrap-sprockets.js?body=1"></script>
+<script src="/assets/ckeditor/init.js?body=1"></script>
+<script src="/assets/ckeditor/ckeditor.js?body=1"></script>
+<script src="/assets/jquery_nested_form.js?body=1"></script>
+<script src="/assets/dataTables/jquery.dataTables.js?body=1"></script>
+<script src="/assets/dataTables/bootstrap/3/jquery.dataTables.bootstrap.js?body=1"></script>
+<script src="/assets/autocomplete-rails.js?body=1"></script>
+<script src="/assets/spin.min.js?body=1"></script>
+<script src="/assets/docs.min.js?body=1"></script>
+<script src="/assets/jquery.hoverIntent.minified.js?body=1"></script>
+<script src="/assets/ckeditor/config.js?body=1"></script>
+<script src="/assets/featured_article.js?body=1"></script>
+<script src="/assets/pages.js?body=1"></script>
+<script src="/assets/recipes.js?body=1"></script>
+<script src="/assets/site.js?body=1"></script>
+<script src="/assets/tags.js?body=1"></script>
+<script src="/assets/application.js?body=1"></script>
+<meta content="authenticity_token" name="csrf-param"/>
+<meta content="gX8YwTntWltqewJkOMTYiSfslcd6nUQtvW642g0OuUc=" name="csrf-token"/>
+<link href="https://fonts.googleapis.com/css?family=Wire+One" rel="stylesheet" type="text/css"/>
+<link href="https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:300" rel="stylesheet" type="text/css"/>
+<link href="/assets/favicon.ico" rel="shortcut icon">
+<script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-74623322-1', 'auto');
+        ga('send', 'pageview');
+       // ga('set', 'userId', {{"anonymous"}}); // Set the user ID using signed-in user_id.
+        ga('set', 'userId', 'anonymous'); // Set the user ID using signed-in user_id.
+
+    </script>
+</link></head>
+<body onload="tellParentWindowMySize()">
+<div id="nav_page_wrapper">
+<div id="logo"><a href="http://www.genomespace.org/"><img alt="Gslogo" src="/assets/gslogo.png"/></a></div>
+<div class="clickable" id="login_menu">
+<form accept-charset="UTF-8" action="/users/sign_in" class="new_user" id="gs-login" method="post"><div style="display:none"><input name="utf8" type="hidden" value="✓"/><input name="authenticity_token" type="hidden" value="gX8YwTntWltqewJkOMTYiSfslcd6nUQtvW642g0OuUc="/></div>
+<input id="user_identity_url" name="user[identity_url]" type="hidden" value="https://identity.genomespace.org/identityServer/xrd.jsp"/>
+<a onclick="document.getElementById('gs-login').submit(); return false;">Login<span class="glyphicon glyphicon-chevron-right"></span></a>
+</form></div>
+<ul id="nav">
+<li class="dropdown">
+<a href="/"><span class="glyphicon glyphicon-home"></span> GenomeSpace Recipes</a>
+</li>
+<!-- <li id="recipe_link"><a href="/recipes"><span class="gparc-nav-icon glyphicon glyphicon-list"></span> My Recipes</a></li> -->
+<!-- links to main genomespace.org -->
+<li id="gsdotorg"><a href="http://www.genomespace.org/"><img alt="Gslogo" height="24px" src="/assets/official_logo.png"/>GenomeSpace.org</a><ul>
+<li id="what-is-genomespace"><a href="http://www.genomespace.org/what-is-genomespace">What is GenomeSpace?</a>
+<li id="tools"><a href="http://www.genomespace.org/support/tools">Tools</a>
+</li>
+<li id="recipes"><a href="http://recipes.genomespace.org/">Recipes</a></li>
+<li id="documentation"><a href="http://www.genomespace.org/documentation">Documentation</a>
+<ul>
+<li><a href="http://www.genomespace.org/support/guides/user-guide">User Guide</a>
+<p>Read the detailed guide to the user interface</p>
+</li>
+<li><a href="http://www.genomespace.org/support/guides/tool-guide">Tool Guide</a>
+<p>Learn how to access GenomeSpace functionality for each Tool</p>
+</li>
+<li><a href="http://www.genomespace.org/faq">FAQ</a>
+<p>See answers to frequently asked questions</p>
+</li>
+<li><a href="http://www.genomespace.org/presentations-and-videos">Presentations and Videos</a>
+<p>Access talks by the GenomeSpace community</p>
+</li>
+<li><a href="http://www.genomespace.org/support/guides/end-to-end-analyses">End-to-End Analyses</a>
+<p>Provides description for end-to-end analyses.</p>
+</li>
+</ul>
+</li>
+<li id="developers"><a href="http://www.genomespace.org/for-developers">Developers</a>
+<ul>
+<li><a href="http://www.genomespace.org/what-can-genomespace-do-for-tool-developers">What Can GenomeSpace Do For Tool Developers?</a>
+<p></p>
+</li>
+<li><a href="http://www.genomespace.org/adopters">Technical Documentation</a>
+<p></p>
+</li>
+<li><a href="http://www.genomespace.org/source-code">Source Code and Distributions</a>
+<p></p>
+</li>
+<li><a href="http://www.genomespace.org/developer-support-and-feedback">Developer Support and Feedback</a>
+<p></p>
+</li>
+</ul>
+</li>
+<li id="support"><a href="http://www.genomespace.org/support">Support</a>
+</li>
+<li id="about"><a href="http://www.genomespace.org/about">About</a>
+</li>
+</li></ul></li>
+<!-- end of links to main GenomeSpace.org -->
+<li class="search">
+<div id="search_box">
+<form accept-charset="UTF-8" action="/search" class="form" method="get" role="form"><div style="display:none"><input name="utf8" type="hidden" value="✓"/></div>
+<div style="margin:0;padding:0;display:inline">
+<input class="search" id="search" name="search" type="text"/>
+</div>
+<input class="searchBtn" type="submit"/>
+</form> </div>
+</li>
+</ul>
+</div>
+<div class="container fluid gs-recipe-">
+<div class="row">
+<div class="col-md-10">
+<table><tr><td><img alt="Gp to cytoscape3" class="recipeAvatar" src="/system/recipes/avatars/000/000/002/original/gp_to_cytoscape3.png?1476887617"/></td><td>
+<h3>Find subnetworks of differentially expressed genes and identify associated biological functions
+                        </h3>
+</td></tr></table>
+<p class="text-muted">Added by GenomeSpaceTeam on 2015.03.16 <span class="official"><img alt="Official logo" data-content="Offical GenomeSpace Recipe" data-toggle="popover" src="/assets/official_logo.png"/></span>
+<br/>
+            Last updated on over 3 years ago.
+            </p>
+<div class="row">
+<div class="col-md-8">
+<p>
+<a class="btn btn-default btn-xs tag red" >gene expression analysis</a>
+<a class="btn btn-default btn-xs tag red" >network analysis</a>
+<a class="btn btn-default btn-xs tag red" >differential gene expression</a>
+<a class="btn btn-default btn-xs tag green" >microarray</a>
+</p>
+</div>
+<div class="col-md-2 voting">
+<p class="text-success"><span class="glyphicon glyphicon-thumbs-up"></span> 5</p>
+</div>
+<div class="col-md-2 voting">
+<p class="text-danger"><span class="glyphicon glyphicon-thumbs-down"></span> 0</p>
+</div>
+</div>
+<hr/>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/9_9qsYWE_K8?list=PL4ZmSx1n2Kw5GSbGu3rBzLt7SVszM4eA3&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+<section id="summary"></section>
+<h3 class="divider">Summary</h3>
+<div class="responsive-content">
+<p><span style="font-family:arial,sans-serif;"><span style="font-size:16px;"><i>What subnetworks of differentially expressed genes are enriched in my samples? What biological functions are they related to?</i></span></span></p>
+<p>This recipe provides a method for identifying differentially expressed genes between two phenotypes, such as tumor and normal, to find subnetworks of interacting proteins and determine their functional annotations. An example use of this recipe is a case where an investigator may want to compare two phenotypes to determine which gene networks are similar between phenotypes, and to determine how functional annotation changes between phenotypes.</p>
+<p><img alt="" src="/ckeditor_assets/pictures/354/content_find_subnetworks.png" style="width: 433px; height: 211px; float: right; padding: 10px;"/></p>
+<p> </p>
+<p>In particular, this recipe makes use of several GenePattern modules to identify differentially regulated genes, then uses several Cytoscape plugins to identify potential interactions between gene products, and to visualize the resulting network.</p>
+<p><strong>Why differential expression analysis?</strong> We assume that most genes are not expressed all the time, but rather are expressed in specific tissues, stages of development, or under certain conditions. Genes which are expressed in one condition, such as cancer tissue, are said to be differentially expressed when compared to normal conditions. To identify which genes change in response to specific conditions (e.g. cancer), we must filter or process the dataset to remove genes which are not informative.</p>
+<p><strong>Why protein interaction network analysis?</strong> Gene expression analysis results in a list of differentially expressed genes, but it does not explain whether these genes are connected biologically in a pathway or network. To better understanding the underlying biology that drives changes in gene expression analysis, we can perform network analysis to determine whether gene products (e.g. proteins) are reported to interact. To identify potential networks or pathways, we search for highly interconnected subnetworks within a large interaction network.</p>
+</div>
+<section id="inputs"></section>
+<h3 class="divider">Inputs</h3>
+<div class="responsive-content">
+<p>To complete this recipe, we will need a gene expression dataset describing two conditions or phenotypes, such as cancer tissue vs. normal tissue. In this example, we will use gene expression data from a study in which committed granulocyte macrophage progenitor cells (normal phenotype) were transformed into leukemia stem cells (leukemic phenotype) by introduction of the MLL-AF9 protein. This example data is derived from mouse (<em>Mus musculus</em>) cell lines. We will need the following datasets, which can be downloaded from the following GenomeSpace Public folder:</p>
+<p><code class="directory">Public</code> &gt; <code class="directory">RecipeData</code> &gt; <code class="directory">ExpressionData</code>: <strong><code class="filename"><a href="https://gsui.genomespace.org/jsui/gsui.html?pathOrUrl=/Home/Public/RecipeData/ExpressionData/Normal_Leu.gct" target="_blank">Normal_Leu.gct</a></code></strong>: This file contains gene expression data of two phenotypes: normal and leukemic. The file is available in GenePattern's GCT format.</p>
+<p><code class="directory">Public</code> &gt; <code class="directory">RecipeData</code> &gt; <code class="directory">ExpressionData</code>: <strong><code class="filename"><a href="https://gsui.genomespace.org/jsui/gsui.html?pathOrUrl=/Home/Public/RecipeData/ExpressionData/Normal_Leu.cls" target="_blank">Normal_Leu.cls</a></code></strong>: This file contains class assignments (normal or leukemic) for all the samples in the GCT file, as identified by the GenePattern CLS format.</p>
+</div>
+<div id="recipeOutputSection">
+<section id="outputs"></section>
+<h3 class="divider">Outputs</h3>
+<div class="responsive-content" id="recipeOutputText">
+<p>The visual representation of a subnetwork of differentially expressed genes.</p>
+</div>
+</div>
+<section id="overview"></section>
+<h3 class="divider">Recipe steps</h3>
+<ul>
+<li><strong>GenePattern</strong></li>
+<ol start="1">
+<li>Loading data</li>
+<li>Filtering genes by expression value</li>
+<li>Identifying differentially expressed genes</li>
+<li>Selecting the top genes</li>
+<li>Save the files to GenomeSpace</li>
+</ol>
+</ul>
+<ul>
+<li><strong>Cytoscape 3</strong></li>
+<ol start="6">
+<li>Loading data into Cytoscape</li>
+<li>Identifying interacting proteins</li>
+<li>Finding differentially expressed subnetworks</li>
+<li>Exploring the subnetworks</li>
+</ol>
+</ul>
+<div class="row">
+<div class="col-md-6" style="text-align: right; display: inline;width: 250px !important;">
+<a class="btn btn-info" href="javascript:void(0);" id="show-all"><span class="glyphicon glyphicon-plus"></span> Expand All Steps</a>
+</div>
+<div class="col-md-6" style="display: inline;width: 250px !important;">
+<a class="btn btn-info" href="javascript:void(0);" id="hide-all"><span class="glyphicon glyphicon-minus"></span> Collapse All Steps</a>
+</div>
+</div>
+<p></p>
+<div aria-multiselectable="true" class="panel-group" id="steps" role="tablist">
+<div class="panel panel-default">
+<section id="step_0"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Genepattern" class="stepAvatar tag-tooltip" src="/assets/GenePattern.png" title="GenePattern"/>
+<a data-toggle="toggle" href="#collapse_0" onclick="$('#collapse_0').collapse('toggle')">1: Loading data <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>This is one method that can be used to load data into GenePattern.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_0" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<p><em><small><strong>NOTE:</strong> If you have not yet associated your GenomeSpace account with your GenePattern account, you will be asked to do so. If you do not yet have a GenePattern account, you can automatically generate a new account that will be associated with your GenomeSpace account.</small></em></p>
+<ol>
+<li>Open GenePattern from GenomeSpace, navigate to the <code class="parameter">GenomeSpace</code> tab, then navigate to your personal directory.</li>
+</ol>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/9_9qsYWE_K8?list=https://www.youtube.com/watch?v=9_9qsYWE_K8&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+<br>
+<div class="panel-group">
+<div class="panel panel-warning">
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title">
+<img alt="Genepattern" class="stepAvatar tag-tooltip" src="/assets/GenePattern.png" title="GenePattern"/><a data-toggle="collapse" href="#alternate_1_0">Alternative: other ways to load data into GenePattern <span class="glyphicon glyphicon-chevron-right"></span></a>
+</h4>
+<p class="text-muted">Tool: GenePattern</p>
+</div>
+<div class="panel-collapse step-container collapse" id="alternate_1_0" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<p>1. Click on the file (e.g., <code class="filename">Normal_Leu.gct</code>) in GenomeSpace, then use the GenePattern context menu and click <code class="parameter">Launch on File</code>.</p>
+<p><i>OR</i></p>
+<p>2. Click on the file (e.g., <code class="filename">Normal_Leu.gct</code>) in GenomeSpace, then drag it to the GenePattern icon to launch.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</br></div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_1"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Genepattern" class="stepAvatar tag-tooltip" src="/assets/GenePattern.png" title="GenePattern"/>
+<a data-toggle="toggle" href="#collapse_1" onclick="$('#collapse_1').collapse('toggle')">2: Filtering genes by expression value <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>We will use the <code class="subtool">PreprocessDataset</code> module to filter out any genes that are not differentially expressed. In this recipe, we set the cut-off for differential expression at 3-fold up- or down-regulation. This module uses the GCT file.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_1" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>Change to the <code class="parameter">Modules</code> tab, and search for "PreprocessDataset".</li>
+<li>Once the module is loaded, change the following parameters:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li><code class="parameter">input filename:</code> load the GCT file, e.g., <code class="filename">Normal_Leu.gct</code>. To do this, navigate to the <code class="parameter">GenomeSpace</code> tab, and navigating to the folder containing the GCT file: <code class="directory">Public</code> &gt; <code class="directory">RecipeData</code> &gt; <code class="directory">ExpressionData</code>. Load the file into the <code class="parameter">input filename</code> parameter by clicking and dragging the file to the <code class="parameter">input filename</code> input box.</li>
+</ol>
+</li>
+<li>Click <code class="parameter">Run</code> to run <code class="subtool">PreprocessDataset</code>. This will generate a processed GCT file.
+	<p><img alt="" src="/ckeditor_assets/pictures/448/content_content_r1_s1_0_updated.png" style="width: 800px; height: 195px;"/></p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_2"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Genepattern" class="stepAvatar tag-tooltip" src="/assets/GenePattern.png" title="GenePattern"/>
+<a data-toggle="toggle" href="#collapse_2" onclick="$('#collapse_2').collapse('toggle')">3: Identifying differentially expressed genes <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>We will use the <code class="subtool">ComparativeMarkerSelection</code> module to identify genes which are differentially expressed and can distinguish between two phenotypes (e.g., normal vs. leukemic). This module uses the processed GCT file and the CLS file.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_2" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>Change to the <code class="parameter">Modules</code> tab, and search for "ComparativeMarkerSelection".</li>
+<li>Once the module is loaded, change the following parameters:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li><code class="parameter">input file:</code> load the processed GCT file, e.g., <code class="filename">Normal_Leu.preprocessed.gct</code>. To do this, navigate to the <code class="parameter">Jobs</code> tab, and find the preprocessed GCT file from the previous job. Click and drag the file to the <code class="parameter">input file</code> input box.</li>
+<li><code class="parameter">cls file:</code> load the CLS file, e.g., <code class="filename">Normal_Leu.cls</code>. To do this, navigate to the <code class="parameter">GenomeSpace</code> tab, and navigating to the folder containing the CLS file: <code class="directory">Public</code> &gt; <code class="directory">RecipeData</code> &gt; <code class="directory">ExpressionData</code>. Click on the file and choose <code class="parameter">Send to cls file</code>, or by dragging the file to the <code class="parameter">cls file</code> input box.</li>
+</ol>
+</li>
+<li>Click <code class="parameter">Run</code> to submit your job. This will generate an ODF file.
+	<p><img alt="" src="/ckeditor_assets/pictures/449/content_content_r1_s2_0_updated.png" style="height: 260px; width: 800px;"/></p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_3"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Genepattern" class="stepAvatar tag-tooltip" src="/assets/GenePattern.png" title="GenePattern"/>
+<a data-toggle="toggle" href="#collapse_3" onclick="$('#collapse_3').collapse('toggle')">4: Selecting the top genes <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>We will use the <code class="subtool">ExtractComparativeMarkerResults</code> module to select the top genes that distinguish between phenotypes. In this recipe, we will extract the top 50 genes by rank.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_3" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>Change to the <code class="parameter">Modules</code> tab, and search for "ExtractComparativeMarkerResults".</li>
+<li>Once the module is loaded, change the following parameters:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li><code class="parameter">comparative marker selection filename:</code> load the ODF file from the previous job, e.g., <code class="filename">Normal_Leu.preprocessed.comp.marker.odf</code>. To do this, navigate to the <code class="parameter">Jobs</code> tab, and find the processed ODF file from the previous job. Click and drag the file to the <code class="parameter">comparative marker selection filename</code> input box.</li>
+<li><code class="parameter">dataset filename:</code> load the processed GCT file, e.g., <code class="filename">Normal_Leu.preprocessed.gct</code>. To do this, navigate to the <code class="parameter">Jobs</code> tab, and find the preprocessed GCT file from a previous job. Click and drag the file to the <code class="parameter">dataset filename</code> input box.</li>
+<li><code class="parameter">statistic:</code> Rank</li>
+<li><code class="parameter">max:</code> 50</li>
+</ol>
+</li>
+<li>Click <code class="parameter">Run</code> to submit your job. This will generate two filtered files, a filtered GCT file, and a filtered TXT file.
+	<p><img alt="" src="/uploaded/content_r1_s3_0.png" style="height:566px; width:800px"/></p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_4"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Genepattern" class="stepAvatar tag-tooltip" src="/assets/GenePattern.png" title="GenePattern"/>
+<a data-toggle="toggle" href="#collapse_4" onclick="$('#collapse_4').collapse('toggle')">5: Save the files to GenomeSpace <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>We will use the <code class="subtool">SelectFileMatrix</code> module to select the gene names from our list of top 50 genes, allowing us to later import the file into Cytoscape. This module selects features from a file based on the rows and columns specified by the user. In this recipe, we will extract only the gene names.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_4" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>Change to the <code class="parameter">Modules</code> tab, and search for "SelectFileMatrix".</li>
+<li>Once the module is loaded, change the following parameters:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li><code class="parameter">input file:</code> load the filtered GCT file, e.g., <code class="filename">Normal_Leu.preprocessed.comp.marker.filt.gct</code>. To do this, navigate to the <code class="parameter">Jobs</code> tab, and find the processed GCT file from the previous job. Click and drag the file to the <code class="parameter">input file</code> input box.</li>
+<li><code class="parameter">output file base name:</code> set the output file base name parameter to a new output file name, e.g., <code class="filename">Normal_Leu.genes</code>.</li>
+<li><code class="parameter">start row:</code> 3</li>
+<li><code class="parameter">end row:</code> 53</li>
+<li><code class="parameter">start column:</code> 2</li>
+<li><code class="parameter">end column:</code> 2<br>
+<em>NOTE: to keep more information from this gene list, e.g. the values in the remaining columns, set the <code class="parameter">start column</code> and <code class="parameter">end column</code> parameters to be blank. This will select all the columns in the file.</em></br></li>
+</ol>
+</li>
+<li>Click <code class="parameter">Run</code> to submit your job. This will generate a new TXT file which contains only the gene names (column 2), with the first row as a header, e.g., <code class="filename">Normals_Leu.genes.txt</code>.
+	<p><img alt="" src="/ckeditor_assets/pictures/450/content_content_r1_s4_0_updated.png" style="height: 454px; width: 800px;"/></p>
+</li>
+</ol>
+<p> </p>
+<p><span style="line-height: 20.8px;">Save the </span><code class="filename" style="line-height: 20.8px;">Normals_Leu.genes.txt</code><span style="line-height: 20.8px;"> file to GenomeSpace using one of the following methods.</span></p>
+<ol style="line-height: 20.8px;">
+<li>From the job processing view, click the context menu (blue arrow) next to the dataset (e.g., <code class="filename">Normals_Leu.genes.txt</code>), then choose <code class="parameter">Save to GenomeSpace</code>. Save the file to your folder.</li>
+<li>From the <code class="parameter">Modules and Pipeline</code> start page, navigate to <code class="parameter">Jobs</code>. Click on the file, then choose <code class="parameter">Send to GenomeSpace</code>. Save the file to your folder.</li>
+<li>OPTIONAL: close GenePattern.</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_5"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Cytoscape 3" class="stepAvatar tag-tooltip" src="/assets/Cytoscape 3.png" title="Cytoscape 3"/>
+<a data-toggle="toggle" href="#collapse_5" onclick="$('#collapse_5').collapse('toggle')">6: Loading data into Cytoscape <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>Load the data into Cytoscape.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_5" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>Launch Cytoscape from GenomeSpace by clicking on the Cytoscape icon in the tool menu, prompting the download of a <code class="filename">cytoscape.jnlp</code> file. Double-click the file to launch Cytoscape.</li>
+<li>Once Cytoscape has launched, it will prompt a start menu. Under the <code class="parameter">Start New Session</code> label, choose <code class="parameter">With Empty Network</code>.<br>
+<img alt="" src="/ckeditor_assets/pictures/325/content_cy3_step1.png" style="width: 500px; height: 381px;"/></br></li>
+<li>Once the Cytoscape 3 software has loaded, it will prompt the user to name their network. Feel free to change the network name, or leave the parameters as default. Click <code class="parameter">OK</code>.<br>
+<img alt="" src="/ckeditor_assets/pictures/326/content_cy3_step2.png" style="width: 344px; height: 155px;"/></br></li>
+<li>To load files, navigate to the GenomeSpace import menu: <code class="parameter">File &gt; Import &gt; Network &gt; GenomeSpace</code>.<br>
+<img alt="" src="/ckeditor_assets/pictures/341/content_cy3_step1_4.png" style="height: 296px; width: 600px;"/></br></li>
+<li>Navigate to the file which contains the gene names, e.g., <code class="filename">Normals_Leu.genes.txt</code>. Choose <code class="parameter">Select</code> to load the file. This will load a new menu for importing a network from a table.</li>
+<li>In the <code class="parameter">Import Network From Table</code> box, click the arrow to expand the menu. If no arrow appears, continue to step 8.<br>
+<img alt="" src="/ckeditor_assets/pictures/342/content_cy3_step1_6.png" style="width: 600px; height: 357px;"/></br></li>
+<li>Under the <code class="parameter">Meaning:</code> box, choose the green circle icon that designates "source interaction".<br/>
+<img alt="" src="/ckeditor_assets/pictures/343/content_cy3_step1_7.png" style="width: 600px; height: 350px;"/></li>
+<li>Click <code class="parameter">OK</code> to import the file.<br/>
+<img alt="" src="/ckeditor_assets/pictures/344/content_cy3_step1_8.png" style="width: 600px; height: 347px;"/></li>
+<li>Cytoscape will prompt a warning that only nodes are being imported, and that no interactions/edges will be generated. Click <code class="parameter">Yes</code> to confirm that the network should be imported.<br/>
+<img alt="" src="/ckeditor_assets/pictures/345/content_cy3_step1_9.png" style="width: 511px; height: 165px;"/><br/>
+	You should see many nodes (gene names), but no interaction edges.</li>
+<li>Under the <code class="parameter">Table Panel</code>, select all the node ID names by clicking on the top/first node name (e.g. "Trf"), then choosing shift and scrolling downward. Then use ctrl+c (Windows) or ctrl+click (Mac) to copy the list of names.<br/>
+<img alt="" src="/ckeditor_assets/pictures/346/content_cy3_step1_10.png" style="width: 269px; height: 332px;"/></li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_6"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Cytoscape 3" class="stepAvatar tag-tooltip" src="/assets/Cytoscape 3.png" title="Cytoscape 3"/>
+<a data-toggle="toggle" href="#collapse_6" onclick="$('#collapse_6').collapse('toggle')">7: Identifying interacting proteins <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>We will use the <code class="subtool">GeneMANIA</code> plugin to find the network of interacting proteins associated with our gene list. <code class="subtool">GeneMANIA</code> can find genes related to our set of input genes by using a very large set of functional association data, which includes protein and genetic interactions, pathways, co-expression, co-localization and protein domain similarity. <code class="subtool">GeneMANIA</code> can find new members of a pathway or complex, find additional genes that may have been missed in a screen, or find new genes with a specific function, such as protein kinases.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_6" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>To install GeneMANIA, navigate to <code class="parameter">Apps &gt; AppManager</code>.<br>
+<img alt="" src="/ckeditor_assets/pictures/347/content_cy3_step1_11.png" style="width: 600px; height: 95px;"/></br></li>
+<li>Install GeneMania using the following method:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li>Under <code class="parameter">Install Apps</code>, search for "GeneMANIA".</li>
+<li>Click on the tool name.</li>
+<li>Click <code class="parameter">Install</code>. This may take several minutes.</li>
+<li>Once the app has installed, click <code class="parameter">Close</code>.<br/>
+<img alt="" src="/ckeditor_assets/pictures/348/content_cy3_step1_12.png" style="width: 600px; height: 523px;"/></li>
+</ol>
+</li>
+<li>If you've already installed GeneMania, navigate to: <code class="parameter">Apps &gt; GeneMANIA &gt; Search</code>.<br/>
+<em>NOTE: if you have never run <code class="subtool">GeneMANIA</code> before, you will be prompted to install a database. Use the following steps:</em>
+<ol start="1" style="list-style-type: upper-alpha;">
+<li>Click <code class="parameter">Install Data...</code>.<br/>
+<img alt="" src="/ckeditor_assets/pictures/349/content_cy3_step1_13.png" style="width: 600px; height: 74px;"/></li>
+<li>Under the <code class="parameter">Download</code> tab, choose <i>Mus musculus Mouse</i>.<br/>
+<em>NOTE: You may use your own database files; however, the species should match that of your expression data; i.e., if you are using H. sapiens data, make sure the database is also from H. sapiens.</em></li>
+<li>Click <code class="parameter">Install</code>. This may take several minutes.</li>
+<li>Once the database is installed, click <code class="parameter">Close</code>.<br/>
+<img alt="" src="/ckeditor_assets/pictures/350/content_cy3_step1_14.png" style="width: 600px; height: 452px;"/></li>
+</ol>
+</li>
+<li>Once <code class="subtool">GeneMANIA</code> is loaded, change the following parameters:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li><code class="parameter">Organism:</code> M. musculus (mouse). If you are using your own database, make sure to select the appropriate species.</li>
+<li><code class="parameter">Genes of Interest</code>: Click the empty box, then ctrl+v (Windows) or ctrl+click (Mac) to load your gene list into <code class="subtool">GeneMANIA</code>.<br/>
+<em>NOTE: A dialog box may appear, telling you that some genes were not found in the <code class="subtool">GeneMANIA</code> database; you can click <code class="parameter">OK</code>.</em></li>
+</ol>
+</li>
+<li>Click <code class="parameter">Start</code> to begin identifying connections between genes. This may take several minutes. Once the job is complete, close the <code class="subtool">GeneMania</code> pop-up.<br/>
+<img alt="" src="/ckeditor_assets/pictures/351/content_cy3_step1_15.png" style="width: 600px; height: 478px;"/></li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_7"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Cytoscape 3" class="stepAvatar tag-tooltip" src="/assets/Cytoscape 3.png" title="Cytoscape 3"/>
+<a data-toggle="toggle" href="#collapse_7" onclick="$('#collapse_7').collapse('toggle')">8: Finding differentially expressed subnetworks <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>We will use the <code class="subtool">MCODE</code> plugin to find clusters (highly interconnected nodes) within the network. Clusters in a protein-protein interaction network may represent protein complexes or parts of a pathway, and therefore convey important biological information about the network.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_7" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>To install MCODE, navigate to <code class="parameter">Apps &gt; AppManager</code>.</li>
+<li>Install MCODE using the following method:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li>Under <code class="parameter">Install Apps</code>, search for "MCODE".</li>
+<li>Click on the tool name.</li>
+<li>Click <code class="parameter">Install</code>. This may take several minutes.</li>
+<li>Once the app has installed, click <code class="parameter">Close</code>.</li>
+</ol>
+</li>
+<li>In Cytoscape, navigate to the <code class="subtool">MCODE</code> plugin: <code class="directory">Apps &gt; MCODE &gt; Open MCODE</code>.</li>
+<li>Once <code class="subtool">MCODE</code> is loaded, it will create a new tab in the <code class="parameter">Control Panel</code>. To run <code class="subtool">MCODE</code>, change the following parameters:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li><code class="parameter">Find Cluster(s)</code>: in Whole Network</li>
+<li>Click the arrow next to <code class="parameter">Advanced Options</code></li>
+<li><code class="parameter">Cluster Finding</code>: Check the <code class="parameter">Haircut</code> parameter.</li>
+</ol>
+</li>
+<li>Click <code class="parameter">Analyze the Current Network</code> to identify subnetworks in your network. The results from this search will appear in the <code class="parameter">Results Panel</code> on the upper right.<br>
+<img alt="" src="/ckeditor_assets/pictures/352/content_cy3_step1_16.png" style="width: 379px; height: 466px;"/></br></li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_8"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Cytoscape 3" class="stepAvatar tag-tooltip" src="/assets/Cytoscape 3.png" title="Cytoscape 3"/>
+<a data-toggle="toggle" href="#collapse_8" onclick="$('#collapse_8').collapse('toggle')">9: Exploring the subnetworks <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>Explore the subnetworks and visualize them using Cytoscape.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_8" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ul>
+<li>To highlight the proteins in a cluster, select the cluster in the <code class="parameter">Results Panel</code>. This will also list the proteins in the <code class="parameter">Table Panel</code>.</li>
+<li>Cytoscape provides many options for displaying a network. For example:
+	<ul>
+<li>A spring-embedded layout finds an optimal way to display nodes and edges by simulating nodes as objects and edges as springs connecting objects together. Cytoscape provides several variations on a spring-embedded layout. To create a spring-embedded layout, navigate through the following menu:<br>
+<code class="parameter">Layout &gt; Edge Weighted Spring Embedded Layout</code></br></li>
+<li>A circular layout arranges nodes in a circle. Layouts can use information about a node, such as the node's degree, to determine the order of nodes within the circle. To create a circular layout, navigate through the following menu:<br/>
+<code class="parameter">Layout &gt; Circular Layout</code></li>
+</ul>
+</li>
+<li>To control the density of the network (how far nodes are from one another), you can use the <code class="parameter">Scale</code> function. Select <code class="parameter">Layout &gt; Scale</code>, then use the sliding scale bar to increase or decrease network density.</li>
+<li>To change the visual style of the network, e.g., by coloring nodes or adding arrows to edges, navigate to the <code class="parameter">Style</code> tab in the <code class="parameter">Control Panel</code>. You can choose preset styles using a drop-down menu. You can create your own styles by clicking on the <code class="parameter">Defaults</code> pane, then adjusting the parameters.<br/>
+	For example, to adjust edge color first choose the <code class="parameter">Edge</code> tab in the bottom part of the pane. Then click on <code class="parameter">EDGE_COLOR</code>, choose a new color, and click <code class="parameter">OK</code>. Some variables take numeric inputs, such as <code class="parameter">EDGE_LINE_WIDTH</code>.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="recipeInterpSection">
+<section id="results"></section>
+<h3 class="divider">Results Interpretation</h3>
+<div class="responsive-content" id="recipeInterpText">
+<p>This is an example interpretation of the results from this recipe. First, we identified the top 50 genes which differentiated between two phenotypes, leukemic and normal. We then used the <code class="subtool">GeneMANIA</code> tool in Cytoscape to identify connections between these genes, although some genes were not annotated and therefore only a subset were actually analyzed. We included all possible sources of interaction, i.e. we are equally interested in connections between genes that arise from co-expression, as we are in connections arising from physical interactions.<br/>
+After running <code class="subtool">GeneMANIA</code> we created a network which connected our subset of genes. We can see from the <code class="subtool">GeneMANIA</code> results that, e.g. 3 genes (out of 45) have the Gene Ontology (GO) annotation 'zinc ion homeostasis', which has a total of 16 genes associated with it. The significance of this enrichment is reported as a q-value, calculated from a FDR corrected hypergeometric test for enrichment. The q-value is analogous to a p-value, and therefore a lower q-value is considered more significant.</p>
+<p>Once we learn about the functional enrichment associated with the genes in our network, we are interested in determining whether we can find subnetworks, i.e. areas of the network which have motifs. We use <code class="subtool">MCODE</code> to identify subnetworks. For example, <code class="subtool">MCODE</code> identifies a small subnetwork of 5 nodes and 6 edges. When we click on this subnetwork in the <code class="subtool">MCODE</code> panel, it will highlight the nodes in the network.</p>
+<p><img alt="" src="/uploaded/content_r1_s8_2.png" style="height:461px; width:800px"/></p>
+<p>We can separate this set of genes into a subnetwork by clicking the <code class="parameter">Create sub-network</code> button in <code class="subtool">MCODE</code>. This generates a new view containing the subnetwork, arranged according to the <code class="subtool">MCODE</code> subnetwork view. Looking at this subnetwork of genes, we can examine their annotation and see that 3 of these genes are associated with zinc ion binding.</p>
+<p><img alt="" src="/uploaded/content_r1_s8_3.png" style="height:543px; width:800px"/></p>
+<p>These results suggest that there is a collection of zinc ion binding genes in our set of 50 genes which differentiated between leukemic and normal phenotypes. However, the results in this example are not necessarily significant and are only a simple representation of possible results.</p>
+</div>
+</div>
+<hr/>
+<div class="panel-group" id="comments">
+<div class="panel panel-default">
+<div class="panel-heading">
+<h4 class="panel-title"><a data-toggle="collapse" href="#comments_list">Comments (0)</a> <span class="glyphicon glyphicon-chevron-down toggle-glyph"></span></h4>
+</div>
+<div class="panel-collapse collapse in" id="comments_list">
+<div class="panel-body">
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<h4 class="panel-title">Submit a Comment</h4>
+</div>
+<div class="panel-body">
+<form accept-charset="UTF-8" action="/users/sign_in" class="form" id="new_user" method="post" role="form"><div style="display:none"><input name="utf8" type="hidden" value="✓"/><input name="authenticity_token" type="hidden" value="gX8YwTntWltqewJkOMTYiSfslcd6nUQtvW642g0OuUc="/></div>
+<input id="user_identity_url" name="user[identity_url]" type="hidden" value="https://identity.genomespace.org/identityServer/xrd.jsp"/>
+<input class="btn btn-sm btn-success" name="commit" type="submit" value="Sign in using GenomeSpace"/>
+</form> </div>
+</div>
+</div>
+<script>
+//<![CDATA[
+
+
+
+                $('.responsive-content img').addClass('img-responsive').css({"height" : "", "width" : ""});
+				$('[data-toggle="popover"]').popover({trigger: "hover", placement: "top"});
+
+				$("#show-all").click(function() {
+					$(".step-container").collapse("show");
+
+				});
+
+				$("#hide-all").click(function() {
+					$(".step-container").collapse("hide");
+
+				});
+
+                 $('.tag-tooltip').tooltip();
+
+
+
+//]]>
+</script> </div>
+<div class="col-md-2">
+<div class="bs-docs-sidebar hidden-print gp-side-menu" role="complementary">
+<ul class="nav bs-docs-sidenav" data-spy="affix">
+<li><a href="#summary">Summary</a></li>
+<li><a href="#inputs">Inputs</a></li>
+<li id="recipeOutputNav"><a href="#outputs">Outputs</a></li>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#steps">Steps</a>
+<ul class="nav">
+<li><a class="step-anchor" href="#step_0">Loading data</a></li>
+<li><a class="step-anchor" href="#step_1">Filtering genes by expression value</a></li>
+<li><a class="step-anchor" href="#step_2">Identifying differentially expressed genes</a></li>
+<li><a class="step-anchor" href="#step_3">Selecting the top genes</a></li>
+<li><a class="step-anchor" href="#step_4">Save the files to GenomeSpace</a></li>
+<li><a class="step-anchor" href="#step_5">Loading data into Cytoscape</a></li>
+<li><a class="step-anchor" href="#step_6">Identifying interacting proteins</a></li>
+<li><a class="step-anchor" href="#step_7">Finding differentially expressed subnetworks</a></li>
+<li><a class="step-anchor" href="#step_8">Exploring the subnetworks</a></li>
+</ul>
+</li>
+<li id="recipeInterpNav"><a href="#results">Results Interpretation</a></li>
+<!-- <li><a href="#comments">Comments</a></li> -->
+<!-- <li><a href="#history">History</a></li> -->
+<li><a href="javascript:void(0);" id="scroll-top">Back to the Top</a></li>
+</ul>
+</div>
+<script>
+//<![CDATA[
+
+				$('.step-anchor').click(function() {
+					var step = $(this).attr('href').split('_')[1];
+					$('#collapse_' + step).collapse("show");
+				});
+
+//]]>
+</script> </div>
+</div>
+</div>
+<script>
+//<![CDATA[
+
+     if ($("#recipeOutputText").html().trim().length == 0){
+       $("#recipeOutputSection").hide();
+       $("#recipeOutputNav").hide();
+     }
+      if ($("#recipeInterpText").html().trim().length == 0){
+            $("#recipeInterpSection").hide();
+              $("#recipeInterpNav").hide();
+      }
+
+
+//]]>
+</script> <div class="container" id="history">
+<h1>History</h1>
+<ul>
+<li>Saved <b>almost 4 years ago</b>
+                                                        on 11/21/2016 18:12:46 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/2?lastVersion=true&amp;versionIndex=4" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>almost 4 years ago</b>
+                                                        on 10/31/2016 20:31:19 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/2?lastVersion=true&amp;versionIndex=3" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>almost 4 years ago</b>
+                                                        on 10/19/2016 14:43:24 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/2?lastVersion=true&amp;versionIndex=2" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>almost 4 years ago</b>
+                                                        on 10/19/2016 14:33:37 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/2?lastVersion=true&amp;versionIndex=1" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>almost 4 years ago</b>
+                                                        on 10/14/2016 16:11:06 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/2?lastVersion=true&amp;versionIndex=0" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+</ul>
+</div>
+<div class="container-fluid footer gs-recipe-footer">
+<p class="copy-right-block">Copyright ©2016 The Regents of the University of California and The Broad Institute of MIT &amp; Harvard</p>
+</div>
+</body>
+</html>

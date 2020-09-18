@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>GenomeSpace Recipe: Preprocess and quality check RNA-seq data</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link href="/assets/docs.min.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/featured_article.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/pages.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/recipes.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/site.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/tags.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/jquery-ui/theme.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/jquery-ui/core.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/application.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/dataTables/bootstrap/3/jquery.dataTables.bootstrap.css?body=1" media="all" rel="stylesheet"/>
+<script src="/assets/jquery.js?body=1"></script>
+<script src="/assets/jquery_ujs.js?body=1"></script>
+<script src="/assets/jquery-ui/core.js?body=1"></script>
+<script src="/assets/jquery-ui/widget.js?body=1"></script>
+<script src="/assets/jquery-ui/position.js?body=1"></script>
+<script src="/assets/jquery-ui/menu.js?body=1"></script>
+<script src="/assets/jquery-ui/autocomplete.js?body=1"></script>
+<script src="/assets/jquery-ui/mouse.js?body=1"></script>
+<script src="/assets/jquery-ui/sortable.js?body=1"></script>
+<script src="/assets/bootstrap/affix.js?body=1"></script>
+<script src="/assets/bootstrap/alert.js?body=1"></script>
+<script src="/assets/bootstrap/button.js?body=1"></script>
+<script src="/assets/bootstrap/carousel.js?body=1"></script>
+<script src="/assets/bootstrap/collapse.js?body=1"></script>
+<script src="/assets/bootstrap/dropdown.js?body=1"></script>
+<script src="/assets/bootstrap/tab.js?body=1"></script>
+<script src="/assets/bootstrap/transition.js?body=1"></script>
+<script src="/assets/bootstrap/scrollspy.js?body=1"></script>
+<script src="/assets/bootstrap/modal.js?body=1"></script>
+<script src="/assets/bootstrap/tooltip.js?body=1"></script>
+<script src="/assets/bootstrap/popover.js?body=1"></script>
+<script src="/assets/bootstrap-sprockets.js?body=1"></script>
+<script src="/assets/ckeditor/init.js?body=1"></script>
+<script src="/assets/ckeditor/ckeditor.js?body=1"></script>
+<script src="/assets/jquery_nested_form.js?body=1"></script>
+<script src="/assets/dataTables/jquery.dataTables.js?body=1"></script>
+<script src="/assets/dataTables/bootstrap/3/jquery.dataTables.bootstrap.js?body=1"></script>
+<script src="/assets/autocomplete-rails.js?body=1"></script>
+<script src="/assets/spin.min.js?body=1"></script>
+<script src="/assets/docs.min.js?body=1"></script>
+<script src="/assets/jquery.hoverIntent.minified.js?body=1"></script>
+<script src="/assets/ckeditor/config.js?body=1"></script>
+<script src="/assets/featured_article.js?body=1"></script>
+<script src="/assets/pages.js?body=1"></script>
+<script src="/assets/recipes.js?body=1"></script>
+<script src="/assets/site.js?body=1"></script>
+<script src="/assets/tags.js?body=1"></script>
+<script src="/assets/application.js?body=1"></script>
+<meta content="authenticity_token" name="csrf-param"/>
+<meta content="o4tsf/tdU7ZpMIsKx1uRpQ9AqxfvWhGtwjis5wM1Bw0=" name="csrf-token"/>
+<link href="https://fonts.googleapis.com/css?family=Wire+One" rel="stylesheet" type="text/css"/>
+<link href="https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:300" rel="stylesheet" type="text/css"/>
+<link href="/assets/favicon.ico" rel="shortcut icon">
+<script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-74623322-1', 'auto');
+        ga('send', 'pageview');
+       // ga('set', 'userId', {{"anonymous"}}); // Set the user ID using signed-in user_id.
+        ga('set', 'userId', 'anonymous'); // Set the user ID using signed-in user_id.
+
+    </script>
+</link></head>
+<body onload="tellParentWindowMySize()">
+<div id="nav_page_wrapper">
+<div id="logo"><a href="http://www.genomespace.org/"><img alt="Gslogo" src="/assets/gslogo.png"/></a></div>
+<div class="clickable" id="login_menu">
+<form accept-charset="UTF-8" action="/users/sign_in" class="new_user" id="gs-login" method="post"><div style="display:none"><input name="utf8" type="hidden" value="✓"/><input name="authenticity_token" type="hidden" value="o4tsf/tdU7ZpMIsKx1uRpQ9AqxfvWhGtwjis5wM1Bw0="/></div>
+<input id="user_identity_url" name="user[identity_url]" type="hidden" value="https://identity.genomespace.org/identityServer/xrd.jsp"/>
+<a onclick="document.getElementById('gs-login').submit(); return false;">Login<span class="glyphicon glyphicon-chevron-right"></span></a>
+</form></div>
+<ul id="nav">
+<li class="dropdown">
+<a href="/"><span class="glyphicon glyphicon-home"></span> GenomeSpace Recipes</a>
+</li>
+<!-- <li id="recipe_link"><a href="/recipes"><span class="gparc-nav-icon glyphicon glyphicon-list"></span> My Recipes</a></li> -->
+<!-- links to main genomespace.org -->
+<li id="gsdotorg"><a href="http://www.genomespace.org/"><img alt="Gslogo" height="24px" src="/assets/official_logo.png"/>GenomeSpace.org</a><ul>
+<li id="what-is-genomespace"><a href="http://www.genomespace.org/what-is-genomespace">What is GenomeSpace?</a>
+<li id="tools"><a href="http://www.genomespace.org/support/tools">Tools</a>
+</li>
+<li id="recipes"><a href="http://recipes.genomespace.org/">Recipes</a></li>
+<li id="documentation"><a href="http://www.genomespace.org/documentation">Documentation</a>
+<ul>
+<li><a href="http://www.genomespace.org/support/guides/user-guide">User Guide</a>
+<p>Read the detailed guide to the user interface</p>
+</li>
+<li><a href="http://www.genomespace.org/support/guides/tool-guide">Tool Guide</a>
+<p>Learn how to access GenomeSpace functionality for each Tool</p>
+</li>
+<li><a href="http://www.genomespace.org/faq">FAQ</a>
+<p>See answers to frequently asked questions</p>
+</li>
+<li><a href="http://www.genomespace.org/presentations-and-videos">Presentations and Videos</a>
+<p>Access talks by the GenomeSpace community</p>
+</li>
+<li><a href="http://www.genomespace.org/support/guides/end-to-end-analyses">End-to-End Analyses</a>
+<p>Provides description for end-to-end analyses.</p>
+</li>
+</ul>
+</li>
+<li id="developers"><a href="http://www.genomespace.org/for-developers">Developers</a>
+<ul>
+<li><a href="http://www.genomespace.org/what-can-genomespace-do-for-tool-developers">What Can GenomeSpace Do For Tool Developers?</a>
+<p></p>
+</li>
+<li><a href="http://www.genomespace.org/adopters">Technical Documentation</a>
+<p></p>
+</li>
+<li><a href="http://www.genomespace.org/source-code">Source Code and Distributions</a>
+<p></p>
+</li>
+<li><a href="http://www.genomespace.org/developer-support-and-feedback">Developer Support and Feedback</a>
+<p></p>
+</li>
+</ul>
+</li>
+<li id="support"><a href="http://www.genomespace.org/support">Support</a>
+</li>
+<li id="about"><a href="http://www.genomespace.org/about">About</a>
+</li>
+</li></ul></li>
+<!-- end of links to main GenomeSpace.org -->
+<li class="search">
+<div id="search_box">
+<form accept-charset="UTF-8" action="/search" class="form" method="get" role="form"><div style="display:none"><input name="utf8" type="hidden" value="✓"/></div>
+<div style="margin:0;padding:0;display:inline">
+<input class="search" id="search" name="search" type="text"/>
+</div>
+<input class="searchBtn" type="submit"/>
+</form> </div>
+</li>
+</ul>
+</div>
+<div class="container fluid gs-recipe-">
+<div class="row">
+<div class="col-md-10">
+<table><tr><td><img alt="Content galaxy gp" class="recipeAvatar" src="/system/recipes/avatars/000/000/005/original/content_galaxy_gp.png?1443549694"/></td><td>
+<h3>Preprocess and quality check RNA-seq data
+                        </h3>
+</td></tr></table>
+<p class="text-muted">Added by GenomeSpaceTeam on 2015.04.21 <span class="official"><img alt="Official logo" data-content="Offical GenomeSpace Recipe" data-toggle="popover" src="/assets/official_logo.png"/></span>
+<br/>
+            Last updated on over 3 years ago.
+            </p>
+<div class="row">
+<div class="col-md-8">
+<p>
+<a class="btn btn-default btn-xs tag green" >RNA-seq</a>
+<a class="btn btn-default btn-xs tag red" >quality checking</a>
+<a class="btn btn-default btn-xs tag red" >alignment</a>
+</p>
+</div>
+<div class="col-md-2 voting">
+<p class="text-success"><span class="glyphicon glyphicon-thumbs-up"></span> 1</p>
+</div>
+<div class="col-md-2 voting">
+<p class="text-danger"><span class="glyphicon glyphicon-thumbs-down"></span> 0</p>
+</div>
+</div>
+<hr/>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/Izc7DWseCTc?list=PL4ZmSx1n2Kw4m0W_cRk0o-iHes6ycuQfZ&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+<section id="summary"></section>
+<h3 class="divider">Summary</h3>
+<div class="responsive-content">
+<p><span style="font-family:arial,sans-serif;"><span style="font-size:16px;"><i>What is the quality of my RNA-seq reads? Are my RNA-seq reads of good quality or are there artifacts and errors I should remove and/or be aware of?</i></span></span></p>
+<p>This recipe provides an outline of one method to preprocess and determine the quality of RNA-seq libraries. An example use of this recipe is a case where an investigator has completed sequencing of samples, and wants to evaluate and check the quality of the sequencing results before going through the time-consuming process of aligning the reads against a genome.</p>
+<p><img alt="" src="/ckeditor_assets/pictures/362/content_preprocessqualitycheckrnaseq.png" style="width: 399px; height: 203px; float: right; padding: 10px;"/></p>
+<p> </p>
+<p>Given a set of raw RNA-seq reads, the goal is to align the reads to a reference genome and assess the quality of the read alignments by obtaining metrics such as depth of coverage, rRNA contamination, continuity of coverage, and GC bias. The purpose of this recipe is to process raw RNA-seq reads prior to aligning them against a reference genome. In particular, this recipe uses a dataset which has RNA-seq reads contaminated with adapter sequences. First we identify and remove adapter sequences using Galaxy, then we process the data and align it to a reference genome using GenePattern.</p>
+<p><strong>Why remove adapter sequences?</strong> Adapter sequences are short pieces of DNA with known sequence, which are used to link DNA molecules together. In particular, these are used to link an unknown DNA sequence to a sequencing primer, in order to sequence the unknown DNA strand. Most of the time adapter sequences are removed during pre-processing when data is sent to a researcher; however, sometimes some adapter sequences remain. It is important to remove these sequences before aligning reads to a genome.</p>
+<p> </p>
+</div>
+<section id="inputs"></section>
+<h3 class="divider">Inputs</h3>
+<div class="responsive-content">
+<p>To complete this recipe, we will need raw RNA-seq reads that we will process and align to a reference genome. In this example, we will use RNA-seq data of a <i>S. cerevisiae</i> wild-type strain. In this recipe we will focus on pre-processing and aligning reads. We will need the following datasets, which can be downloaded from the following GenomeSpace Public folder: <code class="directory">Public &gt; RecipeData</code>.</p>
+<p><strong><code class="directory">SequenceData</code> &gt; <code class="filename"><a href="https://gsui.genomespace.org/jsui/gsui.html?pathOrUrl=/Home/Public/RecipeData/SequenceData/RNA-Seq.fastq" target="_blank">RNA-Seq.fastq</a></code></strong>: This is an RNA-seq file containing reads from the wild-type strain of <i>S. cerevisiae</i>.</p>
+<p><strong><code class="directory">SequenceData</code> &gt; <code class="filename"><a href="https://gsui.genomespace.org/jsui/gsui.html?pathOrUrl=/Home/Public/RecipeData/SequenceData/SacCer3.fa" target="_blank">SacCer3.fa</a></code></strong>: This is a FASTA file containing sequences for a reference genome for <i>S. cerevisiae</i>.</p>
+<p><strong><code class="directory">GenomicFeatureData</code> &gt; <code class="filename"><a href="https://gsui.genomespace.org/jsui/gsui.html?pathOrUrl=/Home/Public/RecipeData/GenomicFeatureData/SacCer3.gtf" target="_blank">SacCer3.gtf</a></code></strong>: This is a GTF file which contains reference gene annotations for the <i>S. cerevisiae</i> genome.</p>
+</div>
+<div id="recipeOutputSection">
+<section id="outputs"></section>
+<h3 class="divider">Outputs</h3>
+<div class="responsive-content" id="recipeOutputText">
+</div>
+</div>
+<section id="overview"></section>
+<h3 class="divider">Recipe steps</h3>
+<ul>
+<li><strong>Galaxy</strong></li>
+<ol start="1">
+<li>Loading data</li>
+<li>Assessing the quality of RNA-seq reads using FastQC</li>
+<li>Removing adapter sequences from RNA-seq data</li>
+<li>Transferring the clipped FASTQ files to GenomeSpace</li>
+</ol>
+</ul>
+<ul>
+<li><strong>GenePattern</strong></li>
+<ol start="5">
+<li>Loading data </li>
+<li>Aligning RNA-seq reads</li>
+<li>Processing the reference genome</li>
+<li>Reordering and annotating an RNA-seq dataset</li>
+<li>Identifying duplicate reads</li>
+<li>Creating indices for aligned read files</li>
+</ol>
+</ul>
+<div class="row">
+<div class="col-md-6" style="text-align: right; display: inline;width: 250px !important;">
+<a class="btn btn-info" href="javascript:void(0);" id="show-all"><span class="glyphicon glyphicon-plus"></span> Expand All Steps</a>
+</div>
+<div class="col-md-6" style="display: inline;width: 250px !important;">
+<a class="btn btn-info" href="javascript:void(0);" id="hide-all"><span class="glyphicon glyphicon-minus"></span> Collapse All Steps</a>
+</div>
+</div>
+<p></p>
+<div aria-multiselectable="true" class="panel-group" id="steps" role="tablist">
+<div class="panel panel-default">
+<section id="step_0"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Galaxy" class="stepAvatar tag-tooltip" src="/assets/Galaxy.png" title="Galaxy"/>
+<a data-toggle="toggle" href="#collapse_0" onclick="$('#collapse_0').collapse('toggle')">1: Loading data <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>This is one method that can be used to load data into Galaxy.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_0" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<p><em><small><strong>NOTE:</strong> If you have not yet associated your GenomeSpace account with your Galaxy account, you will be asked to do so. If you do not yet have a Galaxy account, you can automatically generate a new account that will be associated with your GenomeSpace account.</small></em></p>
+<ol>
+<li>Open Galaxy from GenomeSpace, navigate to the <code class="subtool">Get Data</code> tool, then click on <code class="parameter">GenomeSpace import</code>, then navigate to your personal directory (eg. <code class="directory">SequenceData</code> &gt; <code class="filename"><a href="https://gsui.genomespace.org/jsui/gsui.html?pathOrUrl=/Home/Public/RecipeData/SequenceData/RNA-Seq.fastq" target="_blank">RNA-Seq.fastq</a></code>)</li>
+</ol>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/Izc7DWseCTc?list=https://www.youtube.com/watch?v=Izc7DWseCTc&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+<br>
+<div class="panel-group">
+<div class="panel panel-warning">
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title">
+<img alt="Galaxy" class="stepAvatar tag-tooltip" src="/assets/Galaxy.png" title="Galaxy"/><a data-toggle="collapse" href="#alternate_12_0">Alternative: other methods to load data into Galaxy <span class="glyphicon glyphicon-chevron-right"></span></a>
+</h4>
+<p class="text-muted">Tool: Galaxy</p>
+</div>
+<div class="panel-collapse step-container collapse" id="alternate_12_0" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<p>1. Click on the file (e.g., <code class="filename">RNA-Seq.fastq</code>) in GenomeSpace, then use the Galaxy context menu and click <code class="parameter">Launch on File</code>.</p>
+<p><i>OR</i></p>
+<p>2. Click on the file (e.g., <code class="filename">RNA-Seq.fastq</code>) in GenomeSpace, then drag it to the Galaxy icon to launch.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</br></div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_1"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Galaxy" class="stepAvatar tag-tooltip" src="/assets/Galaxy.png" title="Galaxy"/>
+<a data-toggle="toggle" href="#collapse_1" onclick="$('#collapse_1').collapse('toggle')">2: Assessing the quality of RNA-seq reads using FastQC <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>We will use the <code class="subtool">FastQC</code> tool to evaluate the quality of our FASTQ files. In this recipe, we use the <code class="subtool">FastQC</code> tool to identify adapter sequences which are contaminated in the RNA-seq dataset. This tool uses the two FASTQ files.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_1" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>Navigate to the following menu: <code class="parameter">NGS: QC and manipulation &gt; FastQC:Read Quality reports</code></li>
+<li>In the dialog box, enter the following parameters:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li><code class="parameter">Short read data from your current history</code>: Your fastq file (e.g., <code class="filename">RNA-Seq.fastq</code>)<br>
+<em><small><strong>NOTE:</strong> If you used the GenomeSpace importer, the file will be prefaced with, e.g. <code class="parameter">1: GenomeSpace importer on RNA-Seq.fastq</code></small></em></br></li>
+</ol>
+</li>
+<li>Click the <code class="parameter">Execute</code> button to submit your job. This will generate a <code class="subtool">FastQC</code> report as an HTML document.
+	<p><img alt="" src="/ckeditor_assets/pictures/271/content_processrnaseq.png" style="width: 800px; height: 613px; border: 1px solid grey;"/></p>
+</li>
+</ol>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/kNYYttDT3Dw?list=https://www.youtube.com/watch?v=kNYYttDT3Dw&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_2"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Galaxy" class="stepAvatar tag-tooltip" src="/assets/Galaxy.png" title="Galaxy"/>
+<a data-toggle="toggle" href="#collapse_2" onclick="$('#collapse_2').collapse('toggle')">3: Removing adapter sequences from RNA-seq data <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>There are various ways to interpret the <code class="subtool">FastQC</code> report. In this recipe, we are most interested in identifying adapter sequences which we believe are contaminating our RNA-seq data.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_2" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<h3>Find Adapter Sequences</h3>
+<ol>
+<li>Open your <code class="subtool">FastQC</code> report by clicking on the eye icon next to the job titled <code class="parameter">FastQC on data 1: RawData</code>.</li>
+<li>Scroll down to or click on the <code class="parameter">Overrepresented</code> sequences link. You should see a table similar to the one below:
+	<table border="1" cellpadding="10" cellspacing="10">
+<thead>
+<tr>
+<th scope="col">Sequence</th>
+<th scope="col">Count</th>
+<th scope="col">Percentage</th>
+<th scope="col">Possible Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GATCGGAAGAGCGGTTCAGCAG...</td>
+<td>8122</td>
+<td>8.122</td>
+<td>Illumina Paired End PCR Primer 2 (100% over 40bp)</td>
+</tr>
+<tr>
+<td>GATCGGAAGAGCGGTTCAGCAG...</td>
+<td>5086</td>
+<td>5.086</td>
+<td>Illumina Paired End PCR Primer 2 (97% over 36bp)</td>
+</tr>
+<tr>
+<td>AATGATACGGCGACCACCGAGA...</td>
+<td>1085</td>
+<td>1.085</td>
+<td>Illumina Single End PCR Primer 1 (100% over 40bp)</td>
+</tr>
+<tr>
+<td>. . .</td>
+<td>. . .</td>
+<td>. . .</td>
+<td>. . .</td>
+</tr>
+<tr>
+<td>CGGTTCAGCAGGAATGCCGAGA...</td>
+<td>113</td>
+<td>0.1129</td>
+<td>Illumina Paired End PCR Primer 2 (96% over 25bp)</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>You can identify adapter sequences by looking for the most overrepresented sequences in the reads. In the example above, there is one sequence which occurs in 8.122% of the reads in our dataset. This sequence maps to the adapter "Illumina Paired End PCR Primer 2 (100% over 40bp)".</li>
+<li>If an adapter sequence is identified, highlight the sequence and copy it to the clipboard using <kbd>ctrl+c</kbd>.<br>
+<em><small><strong>NOTE:</strong>Don't use <kbd>ctrl+c</kbd> until the adapter sequence is pasted into the <code class="subtool">Clip</code> tool or else the adapter sequence will be overwritten.</small></em></br></li>
+<li>Next we will use the <code class="subtool">FASTQ Groomer</code> tool to convert the dataset from one FASTQ format to another. Then, we will use the <code class="subtool">Clip</code> tool to remove the adapter sequences from the RNA-seq dataset. This tool uses the original FASTQ files.</li>
+</ol>
+<p> </p>
+<h3>FASTQ Groomer</h3>
+<ol>
+<li>Navigate to the following menu: <code class="parameter">NGS: QC and manipulation &gt; FASTQ Groomer</code></li>
+<li>In the dialog box, enter the following parameters:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li><code class="parameter">File to groom</code>: Choose your fastq file, e.g., <code class="filename">RNA-Seq.fastq</code></li>
+</ol>
+</li>
+<li>Click <code class="parameter">Execute</code> to submit your job. This will generate a new FASTQ file which has been converted into a different format.
+	<p><img alt="" src="/uploaded/content_r6_s2_0.png" style="height:582px; width:800px; border: 1px solid grey;"/></p>
+</li>
+</ol>
+<h3>Clip</h3>
+<p>Now, we remove the adapter sequences from the RNA-seq data by using Galaxy's <code class="subtool">Clip</code> tool.</p>
+<ol>
+<li>Once the job has finished running, navigate to the following menu: <code class="parameter">NGS: QC and manipulation &gt; Clip</code></li>
+<li>In the dialog box, enter the following parameters:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li><code class="parameter">Library to clip</code>: Choose the FASTQ output from the <code class="subtool">FASTQ Groomer</code> tool</li>
+<li><code class="parameter">Source</code>: Enter custom sequence</li>
+<li><code class="parameter">Enter custom clipping sequence</code>: Paste the previously copied overrepresented adapter sequence</li>
+<li><code class="parameter">Output option</code>: Output both clipped and non-clipped sequences<br/>
+<em><small><strong>NOTE:</strong> This parameter choice is specific to this recipe and need not be changed in personalized analyses.</small></em></li>
+</ol>
+</li>
+<li>Click <code class="parameter">Execute</code> to submit your job. This will generate a new FASTQ file which has the adapter sequences removed.
+	<p><img alt="" src="/uploaded/content_r6_s3_0.png" style="height:526px; width:800px; border: 1px solid grey;"/></p>
+</li>
+</ol>
+<p><strong>OPTIONAL:</strong> To observe the improved quality of the FASTQ after adapter sequences are removed, re-run <code class="subtool">FastQC</code> on the clipped FASTQ file. Under <code class="parameter">Basic statistics</code>, you should see that the sequence length is now variable, because some reads did not have adapter sequences and so were not clipped; other sequences contained the adapter sequence, and are therefore much shorter. You should also notes that the rest of metrics have improved in score; previously we had many bad quality scores (e.g. WARNING or FAIL), now we have more scores that pass the quality threshold (OK). If we examine the <code class="parameter">Overrepresented sequences</code> statistic, we see that only 1.4% of our reads now contain an adapter sequence. If desired, you may again copy and clip this adapter sequence from your RNA-seq dataset.</p>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/IGZjhu4AIR0?list=https://www.youtube.com/watch?v=IGZjhu4AIR0&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_3"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Galaxy" class="stepAvatar tag-tooltip" src="/assets/Galaxy.png" title="Galaxy"/>
+<a data-toggle="toggle" href="#collapse_3" onclick="$('#collapse_3').collapse('toggle')">4: Transferring the clipped FASTQ files to GenomeSpace <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>We will use the <code class="subtool">SendData</code> tool to send the clipped FASTQ files back to GenomeSpace, so that we can later align the reads using GenePattern.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_3" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>Navigate to the following menu: <code class="parameter">Send Data &gt; GenomeSpace Exporter</code></li>
+<li>In the dialog box, enter the following parameters:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li><code class="parameter">Send this dataset to GenomeSpace</code>: Your clipped FASTQ file</li>
+<li><code class="parameter">Choose target directory</code>: navigate to your GenomeSpace directory</li>
+<li><code class="parameter">filename</code>: choose a filename, e.g., <code class="filename">S.cerevisiae_wt_clipped.fastq</code></li>
+</ol>
+</li>
+<li>Click <code class="parameter">Execute</code> to submit your job. This will send your data to GenomeSpace.
+	<p><img alt="" src="/ckeditor_assets/pictures/272/content_processrnaseq2.png" style="width: 800px; height: 382px; border: 1px solid grey;"/></p>
+</li>
+<li><strong>OPTIONAL:</strong> close Galaxy.</li>
+</ol>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/xxTWj3pVIcU?list=https://www.youtube.com/watch?v=xxTWj3pVIcU&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_4"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Genepattern" class="stepAvatar tag-tooltip" src="/assets/GenePattern.png" title="GenePattern"/>
+<a data-toggle="toggle" href="#collapse_4" onclick="$('#collapse_4').collapse('toggle')">5: Loading data  <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>This is one method that can be used to load data into GenePattern.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_4" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<p><em><small><strong>NOTE:</strong> If you have not yet associated your GenomeSpace account with your GenePattern account, you will be asked to do so. If you do not yet have a GenePattern account, you can automatically generate a new account that will be associated with your GenomeSpace account.</small></em></p>
+<ol>
+<li>Open GenePattern from GenomeSpace, navigate to the <code class="parameter">GenomeSpace</code> tab, then navigate to your personal directory. (e.g., <code class="filename">S.cerevisiae_wt_clipped.fastq</code>)</li>
+</ol>
+</div>
+<br>
+<div class="panel-group">
+<div class="panel panel-warning">
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title">
+<img alt="Genepattern" class="stepAvatar tag-tooltip" src="/assets/GenePattern.png" title="GenePattern"/><a data-toggle="collapse" href="#alternate_16_0">Alternative: other ways to load data into GenePattern <span class="glyphicon glyphicon-chevron-right"></span></a>
+</h4>
+<p class="text-muted">Tool: GenePattern</p>
+</div>
+<div class="panel-collapse step-container collapse" id="alternate_16_0" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<p>1. Click on the file (e.g., <code class="filename">S.cerevisiae_wt_clipped.fastq</code>) in GenomeSpace, then use the GenePattern context menu and click <code class="parameter">Launch on File</code>.</p>
+<p><i>OR</i></p>
+<p>2. Click on the file (e.g., <code class="filename">S.cerevisiae_wt_clipped.fastq</code>) in GenomeSpace, then drag it to the GenePattern icon to launch.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</br></div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_5"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Genepattern" class="stepAvatar tag-tooltip" src="/assets/GenePattern.png" title="GenePattern"/>
+<a data-toggle="toggle" href="#collapse_5" onclick="$('#collapse_5').collapse('toggle')">6: Aligning RNA-seq reads <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>We will use <code class="subtool">TopHat</code> in GenePattern to align the RNA-seq raw reads to a reference genome. This module uses the clipped FASTA/FASTQ files (e.g., <code class="filename">S.cerevisiae_wt_clipped.fastq</code>), the reference gene annotations (e.g., <code class="filename">sacCer3.gtf</code>) and a reference genome with an index (pre-built in GenePattern). If you are using your own data, you can load your own reference genome instead.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_5" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>Change to the <code class="parameter">Modules</code> tab, and search for "TopHat". For this example recipe, we use <code class="subtool">TopHat</code> Version 8. Once the module is loaded, make sure the <code class="parameter">Version</code> is set to 8. Change the following parameters:</li>
+<li><code class="parameter">bowtie index</code>: choose a genome from the drop-down menu. In this example we use <code class="parameter">Saccharomyces_cerevisiae_sacCer3_UCSC</code>.</li>
+<li><code class="parameter">reads pair 1</code>: load the raw RNA-seq data, e.g., <code class="filename">S.cerevisiae_wt_clipped.fastq</code>. To do this, use the <code class="parameter">GenomeSpace</code> tab to navigate to the directory containing your FASTQ file, then drag the file to the input box.</li>
+<li><code class="parameter">GTF file</code>: load the GTF file. To do this, navigate to the <code class="parameter">GenomeSpace</code> tab, and navigating to the folder containing the GTF file. Load the file into the <code class="parameter">GTF file</code> parameter by clicking on the file and choosing <code class="parameter">Send to GTF</code>, or by dragging the file to the <code class="parameter">GTF file</code> input box.</li>
+<li><code class="parameter">output prefix</code>: choose a filename prefix, e.g., wt_reads</li>
+<li>Click <code class="parameter">Run</code> to run <code class="subtool">TopHat</code>. This will generate several files; in this recipe, we will use the <code class="filename">*.accepted_hits.bam</code> file.<br>
+<em><small><strong>NOTE:</strong> Each file of reads must be aligned separately; i.e., run <code class="subtool">TopHat</code> on <code class="filename">S.cerevisiae_wt_clipped.fastq</code> first, then again on another dataset, e.g., <code class="filename">S.cerevisiae_mutant_clipped.fastq</code>. It may take several hours to run <code class="subtool">TopHat</code>, depending on the size of the files and whether you are using the GenePattern public server.</small></em>
+<p><img alt="" src="/ckeditor_assets/pictures/274/content_processrnaseq3.png" style="width: 800px; height: 616px; border: 1px solid grey;"/></p>
+</br></li>
+<li><strong>(optional, not done in default tutorial) To run another FASTA/FASTQ file, use the following steps:</strong>
+<ol start="1" style="list-style-type: upper-alpha;">
+<li>Click on the <code class="subtool">TopHat</code> job number to bring up the context menu for jobs.</li>
+<li>Click on <code class="parameter">Reload job</code>, which will reload the job with the same parameters.</li>
+<li>Remove the original FASTA/FASTQ reads file from the job, by clicking on the <img alt="" src="/ckeditor_assets/pictures/120/content_gp_x.png" style="width: 15px; height: 14px; display: inline;"/> next to the file in the <code class="parameter">reads pair 1</code> parameter.</li>
+<li>Using the <code class="parameter">GenomeSpace</code> tab, navigate to the second FASTA/FASTQ file (e.g., <code class="filename">S.cerevisiae_mutant_clipped.fastq</code>). Load it into the <code class="parameter">reads pair 1</code> parameter by dragging the file to the input box.</li>
+</ol>
+</li>
+</ol>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/PSNu54zYNGg?list=https://www.youtube.com/watch?v=PSNu54zYNGg&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_6"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Genepattern" class="stepAvatar tag-tooltip" src="/assets/GenePattern.png" title="GenePattern"/>
+<a data-toggle="toggle" href="#collapse_6" onclick="$('#collapse_6').collapse('toggle')">7: Processing the reference genome <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>We will use <code class="subtool">Picard.CreateSequenceDictionary</code> in GenePattern to create a readable sequence dictionary from our reference genome FASTA file.</p>
+<p>We will also separately use the <code class="subtool">SAMtools.FastaIndex</code> file to generate a FASTA index file for our reference genome. This will make searching and aligning against the reference genome faster.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_6" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<h3>Create Sequence Dictionary</h3>
+<ol>
+<li>Change to the <code class="parameter">Modules</code> tab, and search for "Picard.CreateSequenceDictionary".</li>
+<li>Change to the <code class="parameter">GenomeSpace</code> tab, navigate to the directory containing your reference genome FASTA file, and drag the file to the reference sequence file parameter box.</li>
+<li>Click <code class="parameter">Run</code> to run the module. This will generate a dictionary file for the reference genome, e.g., <code class="filename">sacCer3.dict</code>
+<p><img alt="" src="/uploaded/content_r6_s6_0.png" style="height:448px; width:800px; border: 1px solid grey;"/></p>
+</li>
+<li><strong>OPTIONAL:</strong> Save the file to GenomeSpace by clicking on the file, then choosing <code class="parameter">Save to GenomeSpace</code>, navigating to the directory containing your other files (e.g., <code class="filename">sacCer3.fa</code>), and then clicking <code class="parameter">Save</code>.</li>
+</ol>
+<h3>FASTA Index</h3>
+<ol>
+<li>Change to the <code class="parameter">Modules</code> tab, and search for "SAMtools.FastaIndex".</li>
+<li>Change to the <code class="parameter">GenomeSpace</code> tab, navigate to the directory containing your reference genome FASTA file, and drag the file to the <code class="parameter">fasta file</code> parameter box.</li>
+<li>In the <code class="parameter">output prefix</code> parameter, enter a filename, e.g., <code class="filename">sacCer3_indexed</code>. This will prevent GenePattern from overwriting the original file.</li>
+<li>Click <code class="parameter">Run</code> to run the module. This will generate a new fasta file (.fa) and a fasta index file (.fai) for the reference genome, e.g., <code class="filename">sacCer3_indexed.fa</code>, and <code class="filename">sacCer3_indexed.fa.fai</code>.
+	<p><img alt="" src="/uploaded/content_r6_s10_0.png" style="height:249px; width:800px; border: 1px solid grey;"/></p>
+</li>
+<li><strong>OPTIONAL:</strong> Save each file to GenomeSpace by clicking on the file, then choosing <code class="parameter">Save to GenomeSpace</code>, navigating to the directory containing your other files (e.g., <code class="filename">sacCer3.fa</code>), and then clicking <code class="parameter">Save</code>. To save the second file, navigate to the <code class="parameter">Jobs</code> tab, find the file in the list, then repeat the process.</li>
+</ol>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/PBT_iG602kU?list=https://www.youtube.com/watch?v=PBT_iG602kU&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_7"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Genepattern" class="stepAvatar tag-tooltip" src="/assets/GenePattern.png" title="GenePattern"/>
+<a data-toggle="toggle" href="#collapse_7" onclick="$('#collapse_7').collapse('toggle')">8: Reordering and annotating an RNA-seq dataset <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>We will use <code class="subtool">Picard.ReorderSAM</code> in GenePattern to re-order the aligned reads from <code class="subtool">TopHat</code>, so that they match the ordering of the reference genome.</p>
+<p>We will also use <code class="subtool">Picard.AddorReplaceReadGroups</code> to rename additional parameters of each read in the RNA-seq dataset, e.g. changing the read group IDs and library annotation information. This will make it easier to later identify duplicate reads.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_7" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<h3>Reorder SAM</h3>
+<ol>
+<li>Change to the <code class="parameter">Modules</code> tab, and search for "Picard.ReorderSAM".</li>
+<li>Change to the <code class="parameter">Jobs</code> tab, and find the outputs from your previous <code class="subtool">TopHat</code> job, then drag the BAM file (e.g., <code class="filename">wt_reads.accepted_hits.bam</code>) to the <code class="parameter">input file</code> parameter.</li>
+<li>Change to the <code class="parameter">GenomeSpace</code> tab, and navigate to the location of your original reference genome file, and the reference dictionary file. Drag the reference genome file (e.g., <code class="filename">sacCer3.fa</code>) to the <code class="parameter">reference file</code> parameter.</li>
+<li>Drag the reference genome dictionary file (e.g., <code class="filename">sacCer3.dict</code>) to the <code class="parameter">reference sequence dictionary</code> parameter.</li>
+<li>Click <code class="parameter">Run</code> to run the module. This will generate a reordered BAM file, e.g., <code class="filename">wt_reads.accepted_hits.reorder.bam</code>
+<p><img alt="" src="/ckeditor_assets/pictures/356/content_81.png" style="width: 800px; height: 462px; border: 1px solid grey;"/></p>
+</li>
+<li><strong>OPTIONAL:</strong> Save the file to GenomeSpace by clicking on the file, then choosing <code class="parameter">Save to GenomeSpace</code>, navigating to the directory containing your other files (e.g., <code class="filename">sacCer3.fa</code>), and then clicking <code class="parameter">Save</code></li>
+</ol>
+<h3>Add or Replace Read Groups</h3>
+<ol>
+<li>Change to the <code class="parameter">Modules</code> tab, and search for "Picard.AddorReplaceReadGroups".</li>
+<li>Change to the <code class="parameter">Jobs</code> tab, and find the output from the <code class="subtool">Picard.ReorderSam</code> job, then drag the reordered BAM file (e.g., <code class="filename">wt_reads.accepted_hits.reorder.bam</code>) to the <code class="parameter">input file</code> parameter</li>
+<li>Change the following parameters:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li><code class="parameter">read group id</code>: Test</li>
+<li><code class="parameter">read group library</code>: Testing</li>
+<li><code class="parameter">read group platform</code>: Illumina</li>
+<li><code class="parameter">read group platform unit</code>: T1</li>
+<li><code class="parameter">read group sample name</code>: T2</li>
+</ol>
+</li>
+<li>Click <code class="parameter">Run</code> to run the module. This will generate a re-grouped BAM file, e.g., <code class="filename">wt_reads.accepted_hits.reorder.rgroup.bam</code>
+<p><img alt="" src="/ckeditor_assets/pictures/357/content_82.png" style="width: 800px; height: 477px; border: 1px solid grey;"/></p>
+</li>
+<li><strong>OPTIONAL:</strong> Save the file to GenomeSpace by clicking on the file, then choosing <code class="parameter">Save to GenomeSpace</code>, navigating to the directory containing your other files (e.g., <code class="filename">sacCer3.fa</code>), and then clicking <code class="parameter">Save</code>.</li>
+</ol>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/jo_MLnSABr8?list=https://www.youtube.com/watch?v=jo_MLnSABr8&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_8"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Genepattern" class="stepAvatar tag-tooltip" src="/assets/GenePattern.png" title="GenePattern"/>
+<a data-toggle="toggle" href="#collapse_8" onclick="$('#collapse_8').collapse('toggle')">9: Identifying duplicate reads <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>We will use the <code class="subtool">Picard.MarkDuplicates</code> module to identify and tag reads which are duplicated in the RNA-seq dataset. This module uses the processed BAM file from the <code class="subtool">Picard.AddOrReplaceReadGroups</code> module.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_8" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>Change to the <code class="parameter">Modules</code> tab, and search for "Picard.MarkDuplicates".</li>
+<li>Change to the <code class="parameter">Jobs</code> tab, and find the outputs from the <code class="subtool">Picard.AddOrReplaceReadGroups</code> job, then drag the modified BAM file (e.g., <code class="filename">wt_reads.accepted_hits.reorder.rgroup.bam</code>) to the <code class="parameter">input file</code> parameter</li>
+<li>Click <code class="parameter">Run</code> to run the module. This will generate a new BAM file containing the marked duplicates (e.g., <code class="filename">wt_reads.accepted_hits.reorder.rgroup.mdup.bam</code>), and a TXT file of metrics.
+	<p><img alt="" src="/ckeditor_assets/pictures/358/content_91.png" style="width: 800px; height: 461px; border: 1px solid grey;"/></p>
+</li>
+</ol>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/qN2dZTd90mk?list=https://www.youtube.com/watch?v=qN2dZTd90mk&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_9"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Genepattern" class="stepAvatar tag-tooltip" src="/assets/GenePattern.png" title="GenePattern"/>
+<a data-toggle="toggle" href="#collapse_9" onclick="$('#collapse_9').collapse('toggle')">10: Creating indices for aligned read files <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>We will use the <code class="subtool">Picard.SortSam</code> module to create a companion index file (BAI) for our modified BAM file. The <code class="subtool">Picard.SortSam</code> module will sort the file and generate the index. This module uses the modified BAM file (e.g., <code class="filename">wt_reads.accepted_hits.reorder.rgroup.mdup.bam</code>).</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_9" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>Change to the <code class="parameter">Modules</code> tab, and search for "Picard.SortSam". Click on the <code class="parameter">Jobs</code> tab, then navigate to one of the <code class="subtool">Picard.MarkDuplicates</code> job.</li>
+<li>Load the BAM file into the <code class="subtool">Picard.SortSam</code> module by dragging the file into the <code class="parameter">input file</code> parameter.</li>
+<li><code class="parameter">Set the output format parameter to</code>: BAM</li>
+<li>Click <code class="parameter">Run</code> to submit your job. This will generate a new sorted BAM file, as well as an index BAI file.
+	<p><img alt="" src="/uploaded/content_r6_s11.png" style="height:344px; width:800px; border: 1px solid grey;"/></p>
+</li>
+<li>Save the sorted BAM files and the BAI files to GenomeSpace using one of the following methods:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li>From the job processing view, on the text file (e.g., <code class="filename">wt_reads.accepted_hits.reorder.rgroup.mdup.sorted.bam</code>), then choose <code class="parameter">Save to GenomeSpace</code>.</li>
+<li>From the <code class="parameter">Modules &amp; Pipeline</code> start page, navigate to <code class="parameter">Jobs</code>. Click on the file, then choose <code class="parameter">Send to GenomeSpace</code>.</li>
+</ol>
+</li>
+<li><strong>OPTIONAL:</strong> close GenePattern.</li>
+</ol>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/U7p3nXpqwKQ?list=https://www.youtube.com/watch?v=U7p3nXpqwKQ&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="recipeInterpSection">
+<section id="results"></section>
+<h3 class="divider">Results Interpretation</h3>
+<div class="responsive-content" id="recipeInterpText">
+<p><strong>This is an example interpretation of the results from this recipe.</strong> In particular, we will focus on interpreting the results from the <code class="subtool">FastQC</code> tool in Galaxy.</p>
+<p>The <code class="parameter">Per base sequence quality</code> graph shows the quality of each base from the start to the end of a read. In general, areas in green are considered good scores (&gt;30). We can see that toward the end of our reads we have some bad scores, e.g. at position 38, our reads have large error bars which potentially reflect bad scores (&gt;20). The <code class="parameter">Per sequence GC content</code> graph shows the distribution of GC content for our reads. The blue line indicates the predicted, normal distribution, and the red line indicates the distribution from our read. There is an obvious spike around 55-59% GC content; this spike can indicate contamination from adapter sequences. The <code class="parameter">Overrepresented sequences</code> table shows that there is one sequence which is observed in over 8% of the reads in our dataset. In addition, <code class="subtool">FastQC</code> checks the sequences against a list of known adapter sequences, and in this case our sequence matches an Illumina paired end PCR primer. Therefore, we know this is a definite source of error in our reads.</p>
+<p>After removing the adapter sequences, we can run <code class="subtool">FastQC</code> again to see that our data is much improved. The <code class="parameter">Per base sequence quality</code> graph shows that all the bases in the read have high quality, across the read. In particular, no positions in the read have a quality score which &lt;20 on the y-axis. The <code class="parameter">Per sequence GC content</code> graph shows that the distribution of GC content in our dataset (red line) is now comparable to the predicted distribution (blue line). This suggests the cause of the GC spike in the original dataset is due to adapter sequences, which we have now removed. Finally, the <code class="parameter">Overrepresented sequences</code> table shows that only 1.4% of our reads have an adapter sequence. This is a significant improvement, compared to the 8% we had previously.</p>
+<p>These results suggest that our RNA-seq dataset was contaminated with adapter sequences and was of poor quality, compared with the dataset after adapter sequences were removed. However, the results in this example are not necessarily significant and are only a simple representation of possible results.</p>
+</div>
+</div>
+<hr/>
+<div class="panel-group" id="comments">
+<div class="panel panel-default">
+<div class="panel-heading">
+<h4 class="panel-title"><a data-toggle="collapse" href="#comments_list">Comments (0)</a> <span class="glyphicon glyphicon-chevron-down toggle-glyph"></span></h4>
+</div>
+<div class="panel-collapse collapse in" id="comments_list">
+<div class="panel-body">
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<h4 class="panel-title">Submit a Comment</h4>
+</div>
+<div class="panel-body">
+<form accept-charset="UTF-8" action="/users/sign_in" class="form" id="new_user" method="post" role="form"><div style="display:none"><input name="utf8" type="hidden" value="✓"/><input name="authenticity_token" type="hidden" value="o4tsf/tdU7ZpMIsKx1uRpQ9AqxfvWhGtwjis5wM1Bw0="/></div>
+<input id="user_identity_url" name="user[identity_url]" type="hidden" value="https://identity.genomespace.org/identityServer/xrd.jsp"/>
+<input class="btn btn-sm btn-success" name="commit" type="submit" value="Sign in using GenomeSpace"/>
+</form> </div>
+</div>
+</div>
+<script>
+//<![CDATA[
+
+
+
+                $('.responsive-content img').addClass('img-responsive').css({"height" : "", "width" : ""});
+				$('[data-toggle="popover"]').popover({trigger: "hover", placement: "top"});
+
+				$("#show-all").click(function() {
+					$(".step-container").collapse("show");
+
+				});
+
+				$("#hide-all").click(function() {
+					$(".step-container").collapse("hide");
+
+				});
+
+                 $('.tag-tooltip').tooltip();
+
+
+
+//]]>
+</script> </div>
+<div class="col-md-2">
+<div class="bs-docs-sidebar hidden-print gp-side-menu" role="complementary">
+<ul class="nav bs-docs-sidenav" data-spy="affix">
+<li><a href="#summary">Summary</a></li>
+<li><a href="#inputs">Inputs</a></li>
+<li id="recipeOutputNav"><a href="#outputs">Outputs</a></li>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#steps">Steps</a>
+<ul class="nav">
+<li><a class="step-anchor" href="#step_0">Loading data</a></li>
+<li><a class="step-anchor" href="#step_1">Assessing the quality of RNA-seq reads using FastQC</a></li>
+<li><a class="step-anchor" href="#step_2">Removing adapter sequences from RNA-seq data</a></li>
+<li><a class="step-anchor" href="#step_3">Transferring the clipped FASTQ files to GenomeSpace</a></li>
+<li><a class="step-anchor" href="#step_4">Loading data </a></li>
+<li><a class="step-anchor" href="#step_5">Aligning RNA-seq reads</a></li>
+<li><a class="step-anchor" href="#step_6">Processing the reference genome</a></li>
+<li><a class="step-anchor" href="#step_7">Reordering and annotating an RNA-seq dataset</a></li>
+<li><a class="step-anchor" href="#step_8">Identifying duplicate reads</a></li>
+<li><a class="step-anchor" href="#step_9">Creating indices for aligned read files</a></li>
+</ul>
+</li>
+<li id="recipeInterpNav"><a href="#results">Results Interpretation</a></li>
+<!-- <li><a href="#comments">Comments</a></li> -->
+<!-- <li><a href="#history">History</a></li> -->
+<li><a href="javascript:void(0);" id="scroll-top">Back to the Top</a></li>
+</ul>
+</div>
+<script>
+//<![CDATA[
+
+				$('.step-anchor').click(function() {
+					var step = $(this).attr('href').split('_')[1];
+					$('#collapse_' + step).collapse("show");
+				});
+
+//]]>
+</script> </div>
+</div>
+</div>
+<script>
+//<![CDATA[
+
+     if ($("#recipeOutputText").html().trim().length == 0){
+       $("#recipeOutputSection").hide();
+       $("#recipeOutputNav").hide();
+     }
+      if ($("#recipeInterpText").html().trim().length == 0){
+            $("#recipeInterpSection").hide();
+              $("#recipeInterpNav").hide();
+      }
+
+
+//]]>
+</script> <div class="container" id="history">
+<h1>History</h1>
+<ul>
+<li>Saved <b>almost 4 years ago</b>
+                                                        on 11/21/2016 18:46:13 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/5?lastVersion=true&amp;versionIndex=4" target="_oldRecipe" title="View this version in a new window">View this version</a><br>
+<div>
+</div>
+</br></li>
+<li>Saved <b>almost 4 years ago</b>
+                                                        on 11/01/2016 15:54:29 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/5?lastVersion=true&amp;versionIndex=3" target="_oldRecipe" title="View this version in a new window">View this version</a><br>
+<div>
+</div>
+</br></li>
+<li>Saved <b>almost 4 years ago</b>
+                                                        on 10/06/2016 15:20:23 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/5?lastVersion=true&amp;versionIndex=2" target="_oldRecipe" title="View this version in a new window">View this version</a><br>
+<div>
+</div>
+</br></li>
+<li>Saved <b>almost 4 years ago</b>
+                                                        on 09/08/2016 16:25:17 UTC by <b>andyis</b>.
+                                                        <a href="/view/5?lastVersion=true&amp;versionIndex=1" target="_oldRecipe" title="View this version in a new window">View this version</a><br>
+<div>
+</div>
+</br></li>
+<li>Saved <b>over 4 years ago</b>
+                                                        on 06/02/2016 20:17:11 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/5?lastVersion=true&amp;versionIndex=0" target="_oldRecipe" title="View this version in a new window">View this version</a><br>
+<div>
+</div>
+</br></li>
+</ul>
+</div>
+<div class="container-fluid footer gs-recipe-footer">
+<p class="copy-right-block">Copyright ©2016 The Regents of the University of California and The Broad Institute of MIT &amp; Harvard</p>
+</div>
+</body>
+</html>

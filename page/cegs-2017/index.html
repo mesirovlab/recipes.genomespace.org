@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+
+<html>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<title>GenomeSpace Recipe Resource: CEGS 2017 Workshop: RNA-Seq Differential Expression Analysis</title>
+<link href="/assets/docs.min.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/featured_article.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/pages.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/recipes.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/site.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/tags.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/jquery-ui/theme.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/jquery-ui/core.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/application.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/dataTables/bootstrap/3/jquery.dataTables.bootstrap.css?body=1" media="all" rel="stylesheet"/>
+<script src="/assets/jquery.js?body=1"></script>
+<script src="/assets/jquery_ujs.js?body=1"></script>
+<script src="/assets/jquery-ui/core.js?body=1"></script>
+<script src="/assets/jquery-ui/widget.js?body=1"></script>
+<script src="/assets/jquery-ui/position.js?body=1"></script>
+<script src="/assets/jquery-ui/menu.js?body=1"></script>
+<script src="/assets/jquery-ui/autocomplete.js?body=1"></script>
+<script src="/assets/jquery-ui/mouse.js?body=1"></script>
+<script src="/assets/jquery-ui/sortable.js?body=1"></script>
+<script src="/assets/bootstrap/affix.js?body=1"></script>
+<script src="/assets/bootstrap/alert.js?body=1"></script>
+<script src="/assets/bootstrap/button.js?body=1"></script>
+<script src="/assets/bootstrap/carousel.js?body=1"></script>
+<script src="/assets/bootstrap/collapse.js?body=1"></script>
+<script src="/assets/bootstrap/dropdown.js?body=1"></script>
+<script src="/assets/bootstrap/tab.js?body=1"></script>
+<script src="/assets/bootstrap/transition.js?body=1"></script>
+<script src="/assets/bootstrap/scrollspy.js?body=1"></script>
+<script src="/assets/bootstrap/modal.js?body=1"></script>
+<script src="/assets/bootstrap/tooltip.js?body=1"></script>
+<script src="/assets/bootstrap/popover.js?body=1"></script>
+<script src="/assets/bootstrap-sprockets.js?body=1"></script>
+<script src="/assets/ckeditor/init.js?body=1"></script>
+<script src="/assets/ckeditor/ckeditor.js?body=1"></script>
+<script src="/assets/jquery_nested_form.js?body=1"></script>
+<script src="/assets/dataTables/jquery.dataTables.js?body=1"></script>
+<script src="/assets/dataTables/bootstrap/3/jquery.dataTables.bootstrap.js?body=1"></script>
+<script src="/assets/autocomplete-rails.js?body=1"></script>
+<script src="/assets/spin.min.js?body=1"></script>
+<script src="/assets/docs.min.js?body=1"></script>
+<script src="/assets/jquery.hoverIntent.minified.js?body=1"></script>
+<script src="/assets/ckeditor/config.js?body=1"></script>
+<script src="/assets/featured_article.js?body=1"></script>
+<script src="/assets/pages.js?body=1"></script>
+<script src="/assets/recipes.js?body=1"></script>
+<script src="/assets/site.js?body=1"></script>
+<script src="/assets/tags.js?body=1"></script>
+<script src="/assets/application.js?body=1"></script>
+<meta content="authenticity_token" name="csrf-param"/>
+<meta content="VMcGDNkMUcFah7KppIju7zoELVbAK6F7uko3Sbesq30=" name="csrf-token"/>
+<link href="https://fonts.googleapis.com/css?family=Wire+One" rel="stylesheet" type="text/css"/>
+<link href="https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:300" rel="stylesheet" type="text/css"/>
+<link href="/assets/favicon.ico" rel="shortcut icon">
+<script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-74623322-1', 'auto');
+        ga('send', 'pageview');
+       // ga('set', 'userId', {{"anonymous"}}); // Set the user ID using signed-in user_id.
+        ga('set', 'userId', 'anonymous'); // Set the user ID using signed-in user_id.
+
+    </script>
+</link></head>
+<body onload="tellParentWindowMySize()">
+<div id="nav_page_wrapper">
+<div id="logo"><a href="http://www.genomespace.org/"><img alt="Gslogo" src="/assets/gslogo.png"/></a></div>
+<div class="clickable" id="login_menu">
+<form accept-charset="UTF-8" action="/users/sign_in" class="new_user" id="gs-login" method="post"><div style="display:none"><input name="utf8" type="hidden" value="✓"/><input name="authenticity_token" type="hidden" value="VMcGDNkMUcFah7KppIju7zoELVbAK6F7uko3Sbesq30="/></div>
+<input id="user_identity_url" name="user[identity_url]" type="hidden" value="https://identity.genomespace.org/identityServer/xrd.jsp"/>
+<a onclick="document.getElementById('gs-login').submit(); return false;">Login<span class="glyphicon glyphicon-chevron-right"></span></a>
+</form></div>
+<ul id="nav">
+<li class="dropdown">
+<a href="/"><span class="glyphicon glyphicon-home"></span> GenomeSpace Recipes</a>
+</li>
+<!-- <li id="recipe_link"><a href="/recipes"><span class="gparc-nav-icon glyphicon glyphicon-list"></span> My Recipes</a></li> -->
+<!-- links to main genomespace.org -->
+<li id="gsdotorg"><a href="http://www.genomespace.org/"><img alt="Gslogo" height="24px" src="/assets/official_logo.png"/>GenomeSpace.org</a><ul>
+<li id="what-is-genomespace"><a href="http://www.genomespace.org/what-is-genomespace">What is GenomeSpace?</a>
+<li id="tools"><a href="http://www.genomespace.org/support/tools">Tools</a>
+</li>
+<li id="recipes"><a href="http://recipes.genomespace.org/">Recipes</a></li>
+<li id="documentation"><a href="http://www.genomespace.org/documentation">Documentation</a>
+<ul>
+<li><a href="http://www.genomespace.org/support/guides/user-guide">User Guide</a>
+<p>Read the detailed guide to the user interface</p>
+</li>
+<li><a href="http://www.genomespace.org/support/guides/tool-guide">Tool Guide</a>
+<p>Learn how to access GenomeSpace functionality for each Tool</p>
+</li>
+<li><a href="http://www.genomespace.org/faq">FAQ</a>
+<p>See answers to frequently asked questions</p>
+</li>
+<li><a href="http://www.genomespace.org/presentations-and-videos">Presentations and Videos</a>
+<p>Access talks by the GenomeSpace community</p>
+</li>
+<li><a href="http://www.genomespace.org/support/guides/end-to-end-analyses">End-to-End Analyses</a>
+<p>Provides description for end-to-end analyses.</p>
+</li>
+</ul>
+</li>
+<li id="developers"><a href="http://www.genomespace.org/for-developers">Developers</a>
+<ul>
+<li><a href="http://www.genomespace.org/what-can-genomespace-do-for-tool-developers">What Can GenomeSpace Do For Tool Developers?</a>
+<p></p>
+</li>
+<li><a href="http://www.genomespace.org/adopters">Technical Documentation</a>
+<p></p>
+</li>
+<li><a href="http://www.genomespace.org/source-code">Source Code and Distributions</a>
+<p></p>
+</li>
+<li><a href="http://www.genomespace.org/developer-support-and-feedback">Developer Support and Feedback</a>
+<p></p>
+</li>
+</ul>
+</li>
+<li id="support"><a href="http://www.genomespace.org/support">Support</a>
+</li>
+<li id="about"><a href="http://www.genomespace.org/about">About</a>
+</li>
+</li></ul></li>
+<!-- end of links to main GenomeSpace.org -->
+<li class="search">
+<div id="search_box">
+<form accept-charset="UTF-8" action="/search" class="form" method="get" role="form"><div style="display:none"><input name="utf8" type="hidden" value="✓"/></div>
+<div style="margin:0;padding:0;display:inline">
+<input class="search" id="search" name="search" type="text"/>
+</div>
+<input class="searchBtn" type="submit"/>
+</form> </div>
+</li>
+</ul>
+</div>
+<div class="container fluid gs-recipe-">
+<div class="row">
+<div class="col-md-9">
+<h1>CEGS 2017 Workshop: RNA-Seq Differential Expression Analysis
+      </h1>
+<p><span style="color:#a9a9a9;"><span style="font-size:11px;">Document originally produced by Chet Birger and Marc-Danie Nazaire (2014). Updated by Sara Garamszegi (2017).</span></span></p>
+<p>The computational workflow supporting the differential expression (DE) analysis of RNA-Seq data typically consists of several high-level steps; GenePattern supports modules for conducting each of these steps.  Today’s exercise makes use of GenomeSpace, GenePattern and IGV. The steps necessary to complete today’s DE analysis of RNA-Seq data are illustrated below:</p>
+<p> </p>
+<p style="text-align: center"><img alt="" src="/ckeditor_assets/pictures/422/content_cegs_workflow.png" style="width: 692px; height: 500px;"/></p>
+<p> </p>
+<p>Slides for this workshop can be found on the public GenomeSpace user account, <code class="directory">SharedData</code>, by navigating to the following folder: <code class="directory">Public &gt; SharedData &gt; Presentations &gt; CEGS_2017-01-31</code>.</p>
+<p> </p>
+<hr/>
+<p><a id="dataused" name="dataused"><strong style="font-size:16px; font-variant:small-caps;"><u>Data used in this exercise:</u></strong></a></p>
+<p>This exercise recapitulates and extends (employing gene set enrichment analysis) some of the findings in the following paper by Himes <em>et al.</em> (2014), "<a href="http://www.ncbi.nlm.nih.gov/pubmed/24926665" target="_blank">RNA-Seq Transcriptome Profiling Identifies CRISPLD2 as a Glucocorticoid Responsive Gene that Modulates Cytokine Function in Airway Smooth Muscle Cells</a>". The authors, using an <em>in vitro</em> model, employed RNA-Seq to comprehensively characterize changes in the transcriptome of airway smooth muscle (ASM) cells in response to treatment with Glucocorticoids (GCs), a common class of medications used to treat inflammatory diseases, including asthma.  One of the goals of the study was to increase understanding of how GCs work in ASM cells to alleviate asthma symptoms.</p>
+<p><strong>Paper methods:</strong></p>
+<p style="margin-left:9.0pt;"><strong>Sample collection:</strong><br/>
+ASM cells were isolated and cultured from lung tissue of four donors.  Total RNA was extracted from control and treated ASM cells from each donor culture, yielding 8 total samples, 4 untreated and 4 treated.  Treatment consisted of exposure to dexamethasone, a synthetic glucocorticoid (1 for 18 hours).</p>
+<p style="margin-left:9.0pt;"><strong>Sequencing:</strong><br/>
+Sequencing of 75 bp paired-end reads was performed with an Illumina HiSeq 2000 instrument at the Partners HealthCare Center for Personalized Genetic Medicine (Boston, MA).  Preliminary processing of raw reads was performed using Casava 1.8 (Illumina, Inc., San Diego, CA).<br/>
+Data from the study is publicly available from NCBI/GEO/SRA: <a href="http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE52778" target="_blank">http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE52778</a></p>
+<p style="margin-left:9.0pt;"><strong>Data preprocessing:</strong><br/>
+The data the authors posted to NCBI/SRA had already undergone some preliminary trimming.  Using the FastQC tool to obtain QC metrics, the authors observed sequence bias in the initial 12 bases on the 5’ ends of reads.  The first 12 bases of all reads were trimmed (using the FASTX toolkit), and the trimmed data was submitted to SRA.  Thus, the reported read length is 63 bp rather than 75 bp.<br/>
+Below is the entry in NCBI’s Sequence Read Archive (SRA) for one of the untreated samples, which illustrates the difference in read length:</p>
+<p style="margin-left:9.35pt;"><img alt="" src="/uploaded/content_pic2.png" style="width: 800px; height: 479px; border-width: 1px; border-style: solid;"/></p>
+<p style="margin-left:9.35pt;"> </p>
+<p><span style="font-size:14px;"><strong>Description of samples:</strong></span></p>
+<table border="1" bordercolor="8d8d8d" cellpadding="5" cellspacing="0" width="600">
+<tbody>
+<tr style="background-color: #bfbfbf;">
+<th>SRA run accession</th>
+<th>Donor ID</th>
+<th>Phenotype</th>
+<th>Base Read Count (Gbp)</th>
+</tr>
+<tr>
+<td>SRR1039508</td>
+<td>N061311</td>
+<td>untreated</td>
+<td>2.9</td>
+</tr>
+<tr>
+<td>SRR1039509</td>
+<td>N061311</td>
+<td>dex</td>
+<td>2.7</td>
+</tr>
+<tr style="background-color: #f2f2f2;">
+<td>SRR1039512</td>
+<td>N052611</td>
+<td>untreated</td>
+<td>3.5</td>
+</tr>
+<tr style="background-color: #f2f2f2;">
+<td>SRR1039513</td>
+<td>N052611</td>
+<td>dex</td>
+<td>3.8</td>
+</tr>
+<tr>
+<td>SRR1039516</td>
+<td>N080611</td>
+<td>untreated</td>
+<td>3.6</td>
+</tr>
+<tr>
+<td>SRR1039517</td>
+<td>N080611</td>
+<td>dex</td>
+<td>4.3</td>
+</tr>
+<tr style="background-color: #f2f2f2;">
+<td>SRR1039520</td>
+<td>N061011</td>
+<td>untreated</td>
+<td>3.5</td>
+</tr>
+<tr style="background-color: #f2f2f2;">
+<td>SRR1039521</td>
+<td>N061011</td>
+<td>dex</td>
+<td>4.1</td>
+</tr>
+</tbody>
+</table>
+<p> </p>
+<hr/>
+<p> </p>
+<p><a id="recreate" name="recreate"><strong style="font-size:16px; font-variant:small-caps;"><u>Re-creating the workflow</u></strong></a></p>
+<p>This document contains detailed instructions on how to run through each step in the computational workflow.  The GenePattern part of the computational workflow has been previously run on the public GenePattern server.  Public read access has been granted to all these jobs and links have been provided for accessing each of these completed jobs, e.g.,</p>
+<p style="margin-left:27.0pt;"><a href="http://bit.ly/ZxbsqV" target="_blank">http://bit.ly/ZxbsqV</a>: job status page for <strong><em>TopHat</em></strong> alignment job on sample SRR1039508</p>
+<p>Enter the link in your browser’s address bar (make sure you have already logged into the public GenePattern server), and the job status page from the previously run job will appear, e.g.,</p>
+<p><img alt="" src="/uploaded/content_pic3.png" style="width: 800px; height: 491px; border-width: 1px; border-style: solid;"/></p>
+<p>To re-run a GenePattern job from its job status page, click on the module name (e.g., <strong><em>TopHat</em></strong>), and a slide-out menu will appear.  Clicking on the <em>Reload Job</em> selection from that menu will allow you to re-run that job.</p>
+<p>Since we are working with the complete dataset from an actual study, the processing time required to run through the workflow (hours) far exceeds the time allotted to us in the workshop.  We will be examining the results of the previously run jobs.  You may re-run this workflow, outside of the workshop, by following the detailed instructions below.</p>
+<p> </p>
+<hr/>
+<p> </p>
+<p><a id="step1" name="step1"><span style="font-size:16px;"><span style="color:#365f91;"><strong><u>STEP 1:</u></strong></span> Retrieve the FASTQ files from GenomeSpace</span></a></p>
+<p>We begin by downloading the raw sequence data. This data was originally obtained by using GenePattern’s <strong><em>SraToFastQ</em></strong> module to retrieve the RNA-Seq read data from NCBI’s Sequence Read Archive (SRA) website, and converting it from the compressed SRA format to the FASTQ format. <strong>However, in this exercise we provide the converted, paired FASTQ files on a GenomeSpace public folder for users.</strong> Each sample has two gzipped files. For example, sample SRR1039508 has files SRR1039508_1.fastq.gz, and SRR1039508_2.fastq.gz.</p>
+<p><strong>Steps:</strong></p>
+<ul>
+<li>Go to GenomeSpace (<a href="http://gsui.genomespace.org/" target="_blank">http://gsui.genomespace.org</a>).</li>
+<li>Navigate to the following folder: <strong>Home/Public/SharedData/Presentations/CEGS_Oct 1_2015/Data</strong> (<a href="http://bit.ly/1FuJAaP" target="_blank">http://bit.ly/1FuJAaP</a>)</li>
+<li>We will use the data in this folder to run jobs in GenePattern in the next step.</li>
+</ul>
+<p>Links to the files on GenomeSpace (<span style="color:#ff0000;"><strong>NOTE:</strong> clicking the links will begin downloading the files!</span>):</p>
+<table border="1" bordercolor="8d8d8d" cellpadding="5" cellspacing="0" width="600">
+<tbody>
+<tr style="background-color: #bfbfbf;">
+<th>SRA run accession</th>
+<th>Donor ID</th>
+<th>Phenotype</th>
+<th>Link to read_1</th>
+<th>Link to read _2</th>
+</tr>
+<tr>
+<td>SRR1039508</td>
+<td>N061311</td>
+<td>untreated</td>
+<td><a href="http://bit.ly/1QyG2oh">http://bit.ly/1QyG2oh</a></td>
+<td><a href="http://bit.ly/1VaT0tK">http://bit.ly/1VaT0tK</a></td>
+</tr>
+<tr>
+<td>SRR1039509</td>
+<td>N061311</td>
+<td>dex</td>
+<td><a href="http://bit.ly/1LOj5dh">http://bit.ly/1LOj5dh</a></td>
+<td><a href="http://bit.ly/1V9CgZn">http://bit.ly/1V9CgZn</a></td>
+</tr>
+<tr style="background-color: #f2f2f2;">
+<td>SRR1039512</td>
+<td>N052611</td>
+<td>untreated</td>
+<td><a href="http://bit.ly/1V9CkrT">http://bit.ly/1V9CkrT</a></td>
+<td><a href="http://bit.ly/1Mq9zjb">http://bit.ly/1Mq9zjb</a></td>
+</tr>
+<tr style="background-color: #f2f2f2;">
+<td>SRR1039513</td>
+<td>N052611</td>
+<td>dex</td>
+<td><a href="http://bit.ly/1VaTfVN">http://bit.ly/1VaTfVN</a></td>
+<td><a href="http://bit.ly/1NU0B0X">http://bit.ly/1NU0B0X</a></td>
+</tr>
+<tr>
+<td>SRR1039516</td>
+<td>N080611</td>
+<td>untreated</td>
+<td><a href="http://bit.ly/1NU0Edl">http://bit.ly/1NU0Edl</a></td>
+<td><a href="http://bit.ly/1PtEawQ">http://bit.ly/1PtEawQ</a></td>
+</tr>
+<tr>
+<td>SRR1039517</td>
+<td>N080611</td>
+<td>dex</td>
+<td><a href="http://bit.ly/1MJlJ9T">http://bit.ly/1MJlJ9T</a></td>
+<td><a href="http://bit.ly/1iwVRRk">http://bit.ly/1iwVRRk</a></td>
+</tr>
+<tr style="background-color: #f2f2f2;">
+<td>SRR1039520</td>
+<td>N061011</td>
+<td>untreated</td>
+<td><a href="http://bit.ly/1L6tdUj">http://bit.ly/1L6tdUj</a></td>
+<td><a href="http://bit.ly/1Mq9Enh">http://bit.ly/1Mq9Enh</a></td>
+</tr>
+<tr style="background-color: #f2f2f2;">
+<td>SRR1039521</td>
+<td>N061011</td>
+<td>dex</td>
+<td><a href="http://bit.ly/1FfNIeM">http://bit.ly/1FfNIeM</a></td>
+<td><a href="http://bit.ly/1NU0XEI">http://bit.ly/1NU0XEI</a></td>
+</tr>
+</tbody>
+</table>
+<p> </p>
+<hr/>
+<p> </p>
+<p><a id="step2" name="step2"><span style="font-size:16px;"><span style="color:#365f91;"><strong><u>STEP 2:</u></strong></span> Run <strong><em>FastQC</em></strong> on all pairs of FASTQ files</span></a></p>
+<p>We will run quality control checks on each of the FASTQ files before alignment. We utilize a GenePattern module that runs the <strong><em>FastQC</em></strong> quality control tool for high-throughput sequence data (<a href="http://www.bioinformatics.babraham.ac.uk/projects/fastqc/" target="_blank">Babraham Institute, 2012</a>). This tool detects irregularities in the short reads data and generates a report that guides subsequent data trimming and filtering. Typically, one would run the <strong><em>FastQC</em></strong> module on each RNA-Seq reads input file. For paired-end experiments, each mate of a pair of read files undergoes <strong><em>FastQC </em></strong>analysis separately. We will use GenePattern’s <em>batch</em> feature to launch two <strong><em>FastQC</em></strong> jobs per sample, one for each of the two mated read files.</p>
+<p><strong>Steps:</strong></p>
+<ol>
+<li>Go to the GenePattern main page (<a href="http://cloud.genepattern.org" target="_blank">http://cloud.genepattern.org</a>)</li>
+<li>Select the <em>Modules</em> tab, and search for “FastQC”</li>
+<li>Select <strong><em>FastQC</em></strong></li>
+<li>Select the <em>Files</em> tab, then navigate to the public GenomeSpace folder containing the FASTQ files: <strong>Home/Public/SharedData/Presentations/CEGS_Oct 1_2015/Data</strong></li>
+<li>Change the following parameters:
+	<ol type="a">
+<li>Under <em>Basic</em>:
+		<ol type="i">
+<li><em>input file</em>: check “batch”</li>
+<li>Drag two paired fastq.gz files to the parameter’s input box.<br/>
+			For example, for sample SRR1039508, use files SRR1039508_1.fastq.gz and SRR1039508_2.fastq.gz</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Click <em>Run</em>. This will launch two <strong><em>FastQC</em></strong> jobs, one for each fastq.gz file.<br/>
+	For example, for sample SRR1039508, this will generate the following two outputs:<br/>
+	 - <a href="http://bit.ly/ZCOLSq" target="_blank">http://bit.ly/ZCOLSq</a>: job status page for <strong><em>FastQC</em></strong> job on SRR1039508_1.fastq.gz<br/>
+	 - <a href="http://bit.ly/1sV4KlI" target="_blank">http://bit.ly/1sV4KlI</a>: job status page for <strong><em>FastQC</em></strong> job on SRR1039508_2.fastq.gz<br/>
+	The approximate run time is 10 minutes for each job (20 minutes per sample).</li>
+<li>Repeat Steps 1-5 for the remaining 7 samples.</li>
+</ol>
+<p>Below is an example output from running <strong><em>FastQC</em></strong>, for the sample SRR1039508_1.fastq.gz:</p>
+<p><img alt="" src="/uploaded/content_pic4.png" style="width: 800px; height: 542px; border-width: 1px; border-style: solid;"/></p>
+<p>Links to the job status pages for runs of <strong><em>FastQC</em></strong> on all eight samples:</p>
+<table border="1" bordercolor="8d8d8d" cellpadding="5" cellspacing="0" width="600">
+<tbody>
+<tr style="background-color: #bfbfbf;">
+<th>SRA run accession</th>
+<th>Donor ID</th>
+<th>Phenotype</th>
+<th><em>FastQC</em> Job Status page for read _1</th>
+<th><em>FastQC</em> Job Status page for read _2</th>
+</tr>
+<tr>
+<td>SRR1039508</td>
+<td>N061311</td>
+<td>untreated</td>
+<td><a href="http://bit.ly/ZCOLSq" target="_blank">http://bit.ly/ZCOLSq</a></td>
+<td><a href="http://bit.ly/1sV4KlI" target="_blank">http://bit.ly/1sV4KlI</a></td>
+</tr>
+<tr>
+<td>SRR1039509</td>
+<td>N061311</td>
+<td>dex</td>
+<td><a href="http://bit.ly/1paSLze" target="_blank">http://bit.ly/1paSLze</a></td>
+<td><a href="http://bit.ly/1qnzuKj" target="_blank">http://bit.ly/1qnzuKj</a></td>
+</tr>
+<tr style="background-color: #f2f2f2;">
+<td>SRR1039512</td>
+<td>N052611</td>
+<td>untreated</td>
+<td><a href="http://bit.ly/1sV78cg" target="_blank">http://bit.ly/1sV78cg</a></td>
+<td><a href="http://bit.ly/1siuLkD" target="_blank">http://bit.ly/1siuLkD</a></td>
+</tr>
+<tr style="background-color: #f2f2f2;">
+<td>SRR1039513</td>
+<td>N052611</td>
+<td>dex</td>
+<td><a href="http://bit.ly/1tVTH00" target="_blank">http://bit.ly/1tVTH00</a></td>
+<td><a href="http://bit.ly/1odQAuN" target="_blank">http://bit.ly/1odQAuN</a></td>
+</tr>
+<tr>
+<td>SRR1039516</td>
+<td>N080611</td>
+<td>untreated</td>
+<td><a href="http://bit.ly/1odQIdw" target="_blank">http://bit.ly/1odQIdw</a></td>
+<td><a href="http://bit.ly/1v9d3x7" target="_blank">http://bit.ly/1v9d3x7</a></td>
+</tr>
+<tr>
+<td>SRR1039517</td>
+<td>N080611</td>
+<td>dex</td>
+<td><a href="http://bit.ly/1tVTRED" target="_blank">http://bit.ly/1tVTRED</a></td>
+<td><a href="http://bit.ly/XOwjon" target="_blank">http://bit.ly/XOwjon</a></td>
+</tr>
+<tr style="background-color: #f2f2f2;">
+<td>SRR1039520</td>
+<td>N061011</td>
+<td>untreated</td>
+<td><a href="http://bit.ly/1poJVNq" target="_blank">http://bit.ly/1poJVNq</a></td>
+<td><a href="http://bit.ly/1uSZ00t" target="_blank">http://bit.ly/1uSZ00t</a></td>
+</tr>
+<tr style="background-color: #f2f2f2;">
+<td>SRR1039521</td>
+<td>N061011</td>
+<td>dex</td>
+<td><a href="http://bit.ly/1v9ejQO" target="_blank">http://bit.ly/1v9ejQO</a></td>
+<td><a href="http://bit.ly/1tVU62u" target="_blank">http://bit.ly/1tVU62u</a></td>
+</tr>
+</tbody>
+</table>
+<p> </p>
+<p><strong>View results:</strong></p>
+<p>To view the results of the job, click on any of the <em>…fastqc/fastqc_report.html</em> output files. For example, to view the results for the first mate in the paired sample SRR1039508, click on the file, <em>SRR1039508_1_fastqc/fastqc_report.html</em>. A menu will slide out. Select <em>Open Link</em> to open the <strong><em>FastQC</em></strong> report in a new tab.</p>
+<p>Below is the <strong><em>FastQC</em></strong> report generated from running the module on SRR109508_1.fastq.gz:</p>
+<p><img alt="" src="/uploaded/content_pic5.png" style="width: 800px; height: 347px;"/></p>
+<p>Three areas are flagged as requiring some level of review: <strong>Sequence Duplication Levels</strong>, <strong>Overrepresented sequences</strong> and <strong>Kmer Content</strong>.</p>
+<p>An error flag is raised for <strong>Sequence Duplication Levels</strong> if non-unique sequences make up more than 50% of the total number of reads.  A warning or error flag in this <strong><em>FastQC</em></strong> module is simply a statement that you have exhausted the diversity in at least part of your library and are re-sequencing the same sequences repeatedly.  Sequences from different transcripts will be present at a wide range of different levels in the starting population.  In order to be able to observe lowly expressed transcripts it is therefore common to greatly over-sequence highly expressed transcripts, leading to large sets of duplicates. Thus moderate to high levels of duplication may indicate a very high level of coverage of highly expressed transcripts.  A high level of duplication may also indicate some kind of enrichment bias (e.g., PCR over-amplification).</p>
+<p>The <strong>Overrepresented sequences</strong> report indicates the presence of a contaminant TruSeq adapter sequence at relatively high level.  Contaminant sequences may be removed using GenePattern’s <strong><em>Trimmomatic</em></strong> module (see <strong>STEP 3</strong>). An example of an overrepresented sequence from a contaminating TruSeq adapter is shown below:</p>
+<p><img alt="" src="/uploaded/content_pic6.png" style="width: 800px; height: 99px;"/></p>
+<p>Reviewing the <strong><em>FastQC</em></strong> reports for all 16 fastq files (two per sample) shows that a handful of the fastq files have evidence of adapter contamination, and most have reports of sequence duplication levels at the warning or error levels.  Most of the fastq files were also flagged at the warning level for Kmer content.</p>
+<p>In the next step we will run the <strong><em>Trimmomatic</em></strong> module on each sample’s reads to eliminate contaminant sequences.</p>
+<p> </p>
+<hr/>
+<p><a id="step3" name="step3" style="background-color: rgb(255, 255, 255);"><span style="font-size: 16px;"><span style="color: rgb(54, 95, 145);"><strong><u>STEP 3:</u></strong></span> Remove contaminant sequences and re-evaluate quality</span></a></p>
+<p><a id="step31" name="step31"><span style="font-size:16px;"><span style="color:#365f91;"><strong><u>STEP 3.1:</u></strong></span> Run <strong><em>Trimmomatic</em></strong> on all paired FASTQ files</span></a></p>
+<p>Here, we will run GenePattern’s <strong><em>Trimmomatic</em></strong> module on each sample’s paired end reads. The module directly exposes through its GUI six of the most frequently used trimming/filtering operations on raw RNA-Seq data. These are:</p>
+<ol>
+<li>Trimming Illumina Adapters</li>
+<li>Trimming Leading Low-quality Base Reads</li>
+<li>Trimming Trailing Low-quality Base Reads</li>
+<li>Sliding Window Quality Trimming</li>
+<li>Adaptive Quality Trimming</li>
+<li>Minimum-length Read Filtering</li>
+</ol>
+<p>We will enable <strong>Trimming Illumina Adapters</strong> and <strong>Minimum-length Read Filtering</strong>.  Short reads are more likely to align to multiple sites on a reference genome, and thus provide ambiguous information. After adapter clipping operations have been completed, you should filter the reads so that they all satisfy a specific minimum length. To enable read length filtering, set the <em>min read length</em> parameter. In this exercise, we set the <em>min read length</em> parameter to 50 bp.  After completing the trimming operation, we re-run <strong><em>FastQC</em></strong> on the trimmed forward reads for sample SRR1039508 (i.e. SRR1039508_1.fastq.gz) and observe the elimination of the contaminating TruSeq adapter sequences.</p>
+<p><strong>Steps:</strong></p>
+<ol>
+<li>Go to the GenePattern main page (<a href="http://cloud.genepattern.org" target="_blank">http://cloud.genepattern.org</a>)</li>
+<li>Select the <em>Modules</em> tab, and search for “Trimmomatic”</li>
+<li>Select <strong><em>Trimmomatic</em></strong></li>
+<li>Change the following parameters:
+	<ol type="a">
+<li>Under <em>Basic Input Parameters and Options</em>:
+		<ol type="i">
+<li><em>input file 1</em>: drag the first of the mated read files generated from a run of <strong><em>SraToFastQ</em></strong> to the parameter’s input box.  For example, sample SRR1039508, would be SRR1039508_1.fastq.gz.</li>
+<li><em>input file 2</em>: drag the second of the mated read files generated from a run of <strong><em>SraToFastQ</em></strong> to the parameter’s input box.  For example, sample SRR1039508, would be SRR1039508_2.fastq.gz.</li>
+</ol>
+</li>
+<li>Under <em>Adapter Clipping</em>:
+		<ol type="i">
+<li><em>adapter clip sequence file</em>: TruSeq2-PE.fa</li>
+<li><em>adapter clip seed mismatches</em>: 2</li>
+<li><em>adapter clip palindrome clip threshold</em>: 40</li>
+<li><em>adapter clip simple clip threshold</em>: 15</li>
+</ol>
+</li>
+<li>Under <em>Min Read Length</em>:
+		<ol type="i">
+<li><em>min read length</em>: 50</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Click <em>Run</em>. This will launch one <strong><em>Trimmomatic</em></strong> job per sample.<br/>
+	The approximate run time is 15 minutes for each job.</li>
+<li>Repeat Steps 1-4 for the remaining 7 samples.</li>
+</ol>
+<p>Links to the job status pages for runs of <strong><em>Trimmomatic</em></strong> on all eight samples:</p>
+<table border="1" bordercolor="8d8d8d" cellpadding="5" cellspacing="0" width="600">
+<tbody>
+<tr style="background-color: #bfbfbf;">
+<th>SRA run accession</th>
+<th>Donor ID</th>
+<th>Phenotype</th>
+<th><em>Trimmomatic</em> Job Status page</th>
+</tr>
+<tr>
+<td>SRR1039508</td>
+<td>N061311</td>
+<td>untreated</td>
+<td><a href="http://bit.ly/1mqueeb" target="_blank">http://bit.ly/1mqueeb</a></td>
+</tr>
+<tr>
+<td>SRR1039509</td>
+<td>N061311</td>
+<td>dex</td>
+<td><a href="http://bit.ly/1u9edM5" target="_blank">http://bit.ly/1u9edM5</a></td>
+</tr>
+<tr style="background-color: #f2f2f2;">
+<td>SRR1039512</td>
+<td>N052611</td>
+<td>untreated</td>
+<td><a href="http://bit.ly/1v3gnd1" target="_blank">http://bit.ly/1v3gnd1</a></td>
+</tr>
+<tr style="background-color: #f2f2f2;">
+<td>SRR1039513</td>
+<td>N052611</td>
+<td>dex</td>
+<td><a href="http://bit.ly/1p60sGQ" target="_blank">http://bit.ly/1p60sGQ</a></td>
+</tr>
+<tr>
+<td>SRR1039516</td>
+<td>N080611</td>
+<td>untreated</td>
+<td><a href="http://bit.ly/Z1Z9Dd" target="_blank">http://bit.ly/Z1Z9Dd</a></td>
+</tr>
+<tr>
+<td>SRR1039517</td>
+<td>N080611</td>
+<td>dex</td>
+<td><a href="http://bit.ly/1u9eGOa" target="_blank">http://bit.ly/1u9eGOa</a></td>
+</tr>
+<tr style="background-color: #f2f2f2;">
+<td>SRR1039520</td>
+<td>N061011</td>
+<td>untreated</td>
+<td><a href="http://bit.ly/1radGpq" target="_blank">http://bit.ly/1radGpq</a></td>
+</tr>
+<tr style="background-color: #f2f2f2;">
+<td>SRR1039521</td>
+<td>N061011</td>
+<td>dex</td>
+<td><a href="http://bit.ly/1scnEu5" target="_blank">http://bit.ly/1scnEu5</a></td>
+</tr>
+</tbody>
+</table>
+<p>For paired-end input, <strong><em>Trimmomatic</em></strong> creates four FASTQ output files:</p>
+<ul>
+<li>Two for the paired output where both reads of a pairing survived the trimming/filtering step. Denoted with a <em>_#P</em> in the filename, where # is either <em>1</em> or <em>2</em>.</li>
+<li>Two for the leftover <em>unpaired</em> output containing unmatched reads where only one of the two paired reads survived trimming/filtering. Denoted with a <em>_#U</em> in the filename, where # is either <em>1</em> or <em>2</em>.</li>
+</ul>
+<p style="margin-left:3.0pt;">For paired-end inputs, it is <strong><em>Trimmomatic</em></strong>’s paired output files (containing <em>_#P</em> in their names) that should undergo read alignment. For example, for sample SRR1039508, the SRR1039508_1P.fastq.gz and SRR1039508_2P.fastq.gz files would be further analyzed.</p>
+<p style="margin-left:3.0pt;"> </p>
+<p><a id="step32" name="step32"><span style="font-size:16px;"><span style="color:#365f91;"><strong><u>STEP 3.2:</u></strong></span> Re-run <strong><em>FastQC</em></strong> on paired FASTQ files</span></a></p>
+<p>Once the trimming and filtering steps are completed, we can run the <strong><em>FastQC</em></strong> module on the <strong><em>Trimmomatic</em></strong> output files to observe the elimination of contaminant adapter sequences.  For example, we can run SRR1039508_1P.fastq.gz and look at resulting <em>fastqc_report.html</em>.</p>
+<p><strong>Steps:</strong></p>
+<ol>
+<li>Go to the GenePattern main page (<a href="http://cloud.genepattern.org" target="_blank">http://cloud.genepattern.org</a>)</li>
+<li>Select the <em>Modules</em> tab, and search for “FastQC”</li>
+<li>Select <strong><em>FastQC</em></strong></li>
+<li>Change the following parameters:
+	<ol type="a">
+<li>Under <em>Basic</em>:
+		<ol type="i">
+<li><em>input file</em>: drag the trimmed fastq.gz files generated from a run of <strong><em>Trimmomatic</em></strong> to the parameter’s input box<br/>
+			For example, sample SRR1039508, would use SRR1039508_1P.fastq.gz.</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Click <em>Run</em>. The approximate run time is 10 minutes for each job.</li>
+<li>Repeat Steps 1-5 for any remaining samples which were trimmed and had adapter sequences removed.</li>
+</ol>
+<p><strong>View results:</strong></p>
+<p>To view the results of the job, click on the <em>…fastqc/fastqc_report.html</em> output file. For example, for the trimmed sample SRR1039508_1P, the file is <em>SRR1039508_1P_fastqc/fastqc_report.html</em>. A menu will slide out, select <em>Open Link</em> to open the <strong><em>FastQC</em></strong> report in a new tab.</p>
+<p>Below is the <strong><em>FastQC</em></strong> report generated from running the module on SRR109508_1P.fastq.gz:</p>
+<p><img alt="" src="/uploaded/content_pic7.png" style="width: 800px; height: 345px;"/></p>
+<p>We can see that the <strong>Overrepresented sequences</strong> section is no longer flagged as having issues. You can see the full <strong><em>FastQC</em></strong> report for sample SRR1039508_1P at the following link:</p>
+<p style="margin-left:27.0pt;"><a href="http://bit.ly/1p61J0P" target="_blank">http://bit.ly/1p61J0P</a>: job status page for <strong><em>FastQC</em></strong> job on SRR1039508_1P.fastq.gz</p>
+<p><strong>Note:</strong> <strong><em>TopHat</em></strong>’s alignment engine (Bowtie) takes into account base read quality scores when aligning reads. Thus, if using <strong><em>TopHat</em></strong>, there is no need to conduct quality base trimming before aligning the reads.</p>
+<p> </p>
+<hr/>
+<p> </p>
+<p><a id="step4" name="step4"><span style="font-size:16px;"><span style="color:#365f91;"><strong><u>STEP 4:</u></strong></span> Run <strong><em>TopHat</em></strong> to align reads to a reference transcriptome</span></a></p>
+<p><strong><em>TopHat</em></strong> is an alignment algorithm using the Bowtie alignment engine. It is typically run in one of the following three modes:</p>
+<ol>
+<li><strong>Alignment to the genome only</strong><br/>
+	No genome annotation file (GTF) is provided, and the short sequence reads will be aligned directly to the reference genome. The optional <em>GTF file</em> and <em>transcriptome index</em> parameters are left blank. The quantification step requires a genome annotation; thus when aligning to the genome, it will be necessary to assemble the transcripts from the aligned reads and generate a GTF file specifying the assembled transcripts.</li>
+<li><strong>Annotation-assisted alignment to the genome</strong><br/>
+	If a genome annotation is available, but is believed to be incomplete, <strong><em>TopHat</em></strong> may be configured to use the incomplete annotation to assist the alignment to the genome. <strong><em>TopHat</em></strong> will extract the transcript sequences from the provided annotation and use Bowtie to directly align the reads to the known transcripts. Unmapped reads will be aligned to the genome. This mode requires either a genome annotation file (the <em>GTF file</em> parameter) or a transcriptome index (the <em>transcriptome index</em> parameter). As with genome-only alignment, annotation-assisted alignment requires transcript assembly.</li>
+<li><strong>Alignment to the transcriptome only</strong><br/>
+	If a high-quality reference annotation is available, the short sequence reads can be mapped directly to the known transcript sequences. <strong><em>TopHat</em></strong> will extract the transcript sequences from the provided annotation and use Bowtie to directly align the reads to the known transcripts. However, <strong><em>TopHat</em></strong> will not attempt to align unmapped reads to the transcriptome; unmapped reads are dropped from the analysis. This is the least computationally intensive mode of <strong><em>TopHat</em></strong> alignment. This mode requires either a genome annotation file (the <em>GTF file</em> parameter) or a transcriptome index (the <em>transcriptome index</em> parameter) and set the <em>transcriptome only</em> input option to yes.</li>
+</ol>
+<p><strong><em>TopHat</em></strong> records read alignments to a BAM (binary version of SAM) formatted file. It attaches a score to each alignment. This alignment score takes into account the read quality scores captured in the input FASTQ files as well as mismatches and indels.</p>
+<p>In this exercise, we will align to the known transcript sequences only (<strong>Mode #3</strong>), relying on the <strong>UCSC hg19 reference annotation</strong>.</p>
+<p>We must provide <strong><em>TopHat</em></strong> with either a genome annotation file (the <em>GTF file</em> parameter) or a transcriptome index (the <em>transcriptome index</em> parameter). If we provide a GTF file, <strong><em>TopHat</em></strong> builds a transcriptome sequence and a corresponding Bowtie index. Creating the Bowtie index for the transcriptome can be time-consuming. <strong><em>TopHat</em></strong> allows the reuse of a previously created transcriptome index to avoid its costly regeneration in each <strong><em>TopHat</em></strong> run. An initial run of <strong><em>TopHat</em></strong> can be made whose sole purpose is the creation of the transcriptome index: the <em>bowtie index</em> and <em>GTF file</em> parameters should be set, but the <em>transcriptome index</em> and <em>read pairs</em> parameters left blank. In subsequent runs, the directory containing the generated transcriptome index can be provided via the <em>transcriptome index</em> parameter.</p>
+<p><a id="step41" name="step41"><span style="font-size:16px;"><span style="color:#365f91;"><strong><u>STEP 4.1:</u></strong></span> Create a transcriptome index</span></a></p>
+<p>First, we run <strong><em>TopHat</em></strong> to generate a transcriptome index for UCSC’s hg19 reference annotation, which we will use in subsequent <strong><em>TopHat</em></strong> runs to align each sample’s trimmed reads to the reference transcriptome.</p>
+<p><strong>Steps:</strong></p>
+<ol>
+<li>Go to the GenePattern main page (<a href="http://cloud.genepattern.org" target="_blank">http://cloud.genepattern.org</a>)</li>
+<li>Select the <em>Modules</em> tab, and search for “TopHat”</li>
+<li>Select <strong><em>TopHat</em></strong></li>
+<li>Change the following parameters:
+	<ol type="a">
+<li>Under <em>Basic Parameters</em>:
+		<ol type="i">
+<li><em>Bowtie index</em>: Homo_sapiens_hg19_UCSC</li>
+<li><em>GTF file</em>: Homo_sapiens_hg19_UCSC.gtf</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Click <em>Run</em>. The approximate run time is 20 minutes.</li>
+</ol>
+<p>The result of this job will be a new Bowtie reference transcriptome index for UCSC’s hg19 reference annotation. The result of the job can be found at the following link:</p>
+<p style="margin-left:27.0pt;"><a href="http://bit.ly/1BTrDwL" target="_blank">http://bit.ly/1BTrDwL</a>: job status page for <strong><em>TopHat</em></strong> job generating a trancriptome index</p>
+<p> </p>
+<p><a id="step42" name="step42"><span style="font-size:16px;"><span style="color:#365f91;"><strong><u>STEP 4.2:</u></strong></span> Align reads to a transcriptome</span></a></p>
+<p><strong>Steps:</strong></p>
+<ol>
+<li>Go to the GenePattern main page (<a href="http://cloud.genepattern.org" target="_blank">http://cloud.genepattern.org</a>)</li>
+<li>Select the <em>Modules</em> tab, and search for “TopHat”</li>
+<li>Select <strong><em>TopHat</em></strong></li>
+<li>Change the following parameters:
+	<ol type="a">
+<li>Under <em>Basic Parameters</em>:
+		<ol type="i">
+<li><em>Bowtie index</em>: Homo_sapiens_hg19_UCSC</li>
+<li><em>Transcriptome index</em>
+<ol>
+<li>Click <em>Add Path or URL…</em></li>
+<li>Set the <em>Enter URL</em> to: <strong>http://genepattern.broadinstitute.org/gp/jobResults/972317/transcriptome_index/</strong></li>
+</ol>
+</li>
+<li><em>reads pair 1</em>: drag the first paired read file output from <strong><em>Trimmomatic</em></strong> to the input box.  For example, use file SRR1039508_1P.fastq.gz.</li>
+<li><em>reads pair 2</em>: drag the second paired read file output from <strong><em>Trimmomatic</em></strong> to the input box. For example, use file SRR1039508_2P.fastq.gz.</li>
+<li><em>library type</em>: Standard Illumina (fr-unstranded)</li>
+<li><em>output prefix</em>: SRR1039508</li>
+</ol>
+</li>
+<li>Under <em>Parameters Relevant when Transcriptome Search is Activated</em>:
+		<ol type="i">
+<li><em>transcriptome only</em>: yes</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Click <em>Run</em>. The approximate run time is 1 hour 15 minutes.</li>
+<li>Repeat steps 1-5 on the remaining 7 samples. Make sure to personalize the <em>output prefix</em> parameter for each sample. If <strong><em>Trimmomatic</em></strong> was not run on a sample, then use the _1.fastq.gz file and _2.fastq.gz files for <em>reads pair 1</em> and <em>reads pair 2</em> instead.</li>
+</ol>
+<p>Links to the job status pages for runs of <strong><em>TopHat</em></strong> on all eight samples:</p>
+<table border="1" bordercolor="8d8d8d" cellpadding="5" cellspacing="0" width="600">
+<tbody>
+<tr style="background-color: #bfbfbf;">
+<th>SRA run accession</th>
+<th>Donor ID</th>
+<th>Phenotype</th>
+<th>Link to Tophat Job Status page</th>
+</tr>
+<tr>
+<td>SRR1039508</td>
+<td>N061311</td>
+<td>untreated</td>
+<td><a href="http://bit.ly/ZxbsqV" target="_blank">http://bit.ly/ZxbsqV</a></td>
+</tr>
+<tr>
+<td>SRR1039509</td>
+<td>N061311</td>
+<td>Dex</td>
+<td><a href="http://bit.ly/1v3BThY" target="_blank">http://bit.ly/1v3BThY</a></td>
+</tr>
+<tr style="background-color: #f2f2f2;">
+<td>SRR1039512</td>
+<td>N052611</td>
+<td>untreated</td>
+<td><a href="http://bit.ly/1yklZoW" target="_blank">http://bit.ly/1yklZoW</a></td>
+</tr>
+<tr style="background-color: #f2f2f2;">
+<td>SRR1039513</td>
+<td>N052611</td>
+<td>Dex</td>
+<td><a href="http://bit.ly/1uS0ZBa" target="_blank">http://bit.ly/1uS0ZBa</a></td>
+</tr>
+<tr>
+<td>SRR1039516</td>
+<td>N080611</td>
+<td>untreated</td>
+<td><a href="http://bit.ly/XS0Y4v" target="_blank">http://bit.ly/XS0Y4v</a></td>
+</tr>
+<tr>
+<td>SRR1039517</td>
+<td>N080611</td>
+<td>Dex</td>
+<td><a href="http://bit.ly/Z2kFaM" target="_blank">http://bit.ly/Z2kFaM</a></td>
+</tr>
+<tr style="background-color: #f2f2f2;">
+<td>SRR1039520</td>
+<td>N061011</td>
+<td>untreated</td>
+<td><a href="http://bit.ly/1ravfpp" target="_blank">http://bit.ly/1ravfpp</a></td>
+</tr>
+<tr style="background-color: #f2f2f2;">
+<td>SRR1039521</td>
+<td>N061011</td>
+<td>Dex</td>
+<td><a href="http://bit.ly/1tGcLzk" target="_blank">http://bit.ly/1tGcLzk</a></td>
+</tr>
+</tbody>
+</table>
+<p> </p>
+<hr/>
+<p> </p>
+<p><a id="step5" name="step5"><span style="font-size:16px;"><span style="color:#365f91;"><strong><u>STEP 5:</u></strong></span> Run <strong><em>CuffDiff</em></strong> to summarize and quantitate aligned reads, normalize expression estimates, and conduct differential expression analysis</span></a></p>
+<p>The goal of summarization/quantitation is to accurately derive gene and transcript expression values from the aligned reads and a genome annotation. The annotation may have been constructed from the aligned reads or be an externally generated reference annotation. In the summarization/quantitation step, reads are assigned to the annotation’s transcripts that are most likely to have served as the transcription template for the sequenced cDNA.</p>
+<p>Summarization/quantitation is not a simplistic accounting of the number of reads that map to each feature. Early methods for quantitating gene expression from RNA-Seq data counted the reads that mapped to the exons of each gene and divided each count by a scaling factor that was based on the total length of a gene’s exons. These “raw count” methods were shown to be less accurate than “isoform deconvolution” methods that estimate the expression levels of a gene’s alternative isoforms (transcripts) and then sum those transcript-level estimates to derive gene-level expression estimates.</p>
+<p>Estimating transcript-level expression levels is complicated by the fact that a gene’s multiple isoforms often share exons and hence there is uncertainty in assigning a read to a specific isoform if the read maps to a shared exon. In other words, splicing structure introduces uncertainty that must be accounted for when deriving expression estimates from mapped reads. Many eukaryotic genes have multiple isoforms that share exons, leading to uncertainty around the assignment of a read to a particular transcript.</p>
+<p>Normalization of the expression estimates permits accurate comparisons of features’ (transcripts or genes) expression levels within a single sample, and comparison of a single feature’s expression across different samples (phenotypes or conditions).</p>
+<p>Following summarization/quantitation and normalization, differences in estimated transcript and gene expression levels across conditions can be analyzed. Differences in a feature’s estimated expression values across two conditions will be impacted by both true differences in expression levels and the inherent noise in the experimental data. Sources of experimental variability include sampling variance, technical variance, and biological variance. In addition to these three sources of experimental variance, RNA-Seq expression estimates are also subject to variability resulting from read assignment uncertainties. If there is a lot of similarity between a gene’s isoforms (e.g., shared exons) there will be a great deal of uncertainty attached to the expression estimates for each of those isoforms, which in turn will lead to uncertainty in the gene-level expression estimates.</p>
+<p>Thus, differential expression analysis of RNA-Seq data requires the modeling of both experimental variation and read assignment uncertainty in order to assess the statistical significance of any observed difference in a transcript’s or gene’s expression levels across two conditions. In other words ,without a means of accurately assessing the amount of variability and uncertainty present in a feature’s expression estimates, one cannot determine whether observed differences in that feature’s expression levels across two conditions is the result of true differential expression, or an artifact of the inherent noise in the underlying expression estimates. Differential expression analysis tools, like <strong><em>Cuffdiff</em></strong>, calculate a variance for each transcript’s or gene’s expression estimates and uses that variance to estimate the variance of whatever statistic is employed to measure differential expression, e.g., log-fold change.</p>
+<p>By conducting both quantification and differential analysis, <strong><em>Cuffdiff</em></strong> takes into account the uncertainty of mapping reads to isoforms when calculating variances of transcript-level expression estimates. This leads to more accurate assessments of the statistical significances of the observed changes in expression levels across conditions.</p>
+<p><strong>Steps:</strong></p>
+<ol>
+<li>Go to the GenePattern main page (<a href="http://cloud.genepattern.org" target="_blank">http://cloud.genepattern.org</a>)</li>
+<li>Select the <em>Modules</em> tab, and search for “Cuffdiff”</li>
+<li>Select <strong><em>Cuffdiff</em></strong></li>
+<li>Change the following parameters:
+	<ol type="a">
+<li>Under <em>Basic Parameters and Options</em>:
+		<ol type="i">
+<li><em>aligned files</em>
+<ol>
+<li>Set <em>condition</em> to untreated</li>
+<li>For each of the untreated samples (SRR1039508, SRR1039512, SRR1039516, SRR1039520), drag the <strong><em>TopHat</em></strong> output file SRR10395<em>XX</em>.accepted_hits.bam to the drag target</li>
+<li>Click <em>Add Another Condition</em></li>
+<li>Set <em>condition</em> to dex</li>
+<li>For each of the dexamethasone-treated samples (SRR1039509, SRR1039513, SRR1039517, SRR1039521), drag the <strong><em>TopHat</em></strong> output file SRR10395<em>XX</em>.accepted_hits.bam to the drag target.</li>
+</ol>
+</li>
+<li><em>GTF file</em>: Homo_sapiens_hg19_UCSC.gtf</li>
+<li><em>frag bias correct</em>: Homo_sapiens_hg19_UCSC.fa</li>
+<li><em>library type</em>: fr-unstranded</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Click <em>Run</em>. The approximate run time is 6 hours.</li>
+</ol>
+<p>This job will create one output representing the comparison of untreated and dexamethasone-treated samples, for all 8 samples:</p>
+<p style="margin-left:27.0pt;"><a href="http://bit.ly/1poBEt9" target="_blank">http://bit.ly/1poBEt9</a>: job status page for <strong><em>Cuffdiff</em></strong> job.</p>
+<p> </p>
+<hr/>
+<p> </p>
+<p><a id="step6" name="step6"><span style="font-size:16px;"><span style="color:#365f91;"><strong><u>STEP 6:</u></strong></span> Run <strong><em>CummeRbund.QcReport</em></strong> to identify the top differentially expressed genes</span></a></p>
+<p><strong><em>CummeRbund</em></strong> is an R/Bioconductor package that supports analysis and visualization of the data produced by the <strong><em>Cuffdiff</em></strong> tool, both the expression datasets coming out of the quantitation and normalization steps and the test results from <strong><em>Cuffdiff</em></strong>’s differential expression analysis.</p>
+<p>GenePattern supports four modules that utilize the <strong><em>CummeRbund</em></strong> package, which creates sets of plots and visualizations to better understand experimental results.</p>
+<ol>
+<li><strong><em>CummeRbund.QcReport</em></strong><strong>:</strong> creates high-level visualizations, allowing for comparisons across all conditions and all genes</li>
+<li><strong><em>CummeRbund.GeneSetReport</em></strong><strong>:</strong> creates visualizations focusing on a specific list of genes</li>
+<li><strong><em>CummeRbund.SelectedGeneReport</em></strong><strong>:</strong> creates visualizations focusing on a single user-chosen gene</li>
+<li><strong><em>CummeRbund.SelectedConditionsReport</em></strong><strong>:</strong> creates visualizations across all genes, but limited to a specific set of conditions</li>
+</ol>
+<p>In this exercise, we will use the <strong><em>CummeRbund.QcReport</em></strong> module to obtain global statistics and plots, and to identify the top differentially expressed genes, based on specific thresholds and cut-off values. In particular, this module lists those genes that <strong><em>CuffDiff</em></strong> found to be differentially expressed with a Q-value (FDR) less than the specified FDR threshold, which by default is set to 0.05.  These files can be found in the output file, <em>QC_sig_diffExp_genes.txt</em> (see below).</p>
+<p><strong>Steps:</strong></p>
+<ol>
+<li>Go to the GenePattern main page (<a href="http://cloud.genepattern.org" target="_blank">http://cloud.genepattern.org</a>)</li>
+<li>Select the <em>Modules</em> tab, and search for “CummeRbund.QcReport”</li>
+<li>Select <strong><em>CummeRbund.QcReport</em></strong></li>
+<li>Change the following parameters:
+	<ol type="a">
+<li><em>cuffdiff input: </em>drag the <strong><em>Cuffdiff</em></strong> job from the <em>Jobs</em> tab into the parameter input field.</li>
+</ol>
+</li>
+<li>Click <em>Run</em>. The approximate run time is 5 minutes.</li>
+</ol>
+<p>This job will create one output representing the comparison of untreated and dexamethasone-treated samples, for all 8 samples:</p>
+<p style="margin-left:27.0pt;"><a href="http://bit.ly/1uz8Vpt" target="_blank">http://bit.ly/1uz8Vpt</a>: job status page for <strong><em>CummeRbund.QcReport</em></strong> job</p>
+<p> </p>
+<hr/>
+<p><a id="step7" name="step7"><span style="font-size:16px;"><span style="color:#365f91;"><strong><u>STEP 7:</u></strong></span> Visualize aligned reads and gene expression using <strong><em>IGV</em></strong></span></a></p>
+<p>Finally, we are interested in visualizing the results of our alignment. To do this, we will use the Integrative Genomics Viewer (<strong><em>IGV</em></strong>), a high-performance visualization tool for interactive exploration of large, integrated genomic datasets (<a href="http://www.ncbi.nlm.nih.gov/pubmed/21221095" target="_blank">Robinson et al. 2011</a>). It supports a wide variety of data types, including array-based and next-generation sequence data, and genomic annotations.</p>
+<p>We will load data into <strong><em>IGV</em></strong> directly from GenomeSpace, and visualize three sets of data:</p>
+<ul>
+<li><strong>Genes.fpkm_tracking</strong> (<a href="http://bit.ly/1LQ1dPj" target="_blank">http://bit.ly/1LQ1dPj</a>): this is a result from the <strong><em>Cuffdiff</em></strong> job (<strong>Step 5</strong>), which contains estimated gene-level expression values in the <em><u>F</u>ragments <u>P</u>er <u>K</u>ilobase of transcript per <u>M</u>illion mapped reads</em> (FPKM) tracking format. This file contains expression information for both phenotypes (untreated vs. dex).</li>
+<li><strong>SRR1039508.accepted_hits.sorted.bam</strong> (<a href="http://bit.ly/1NWlJnb" target="_blank">http://bit.ly/1NWlJnb</a>): this file contains the accepted hits from a TopHat alignment on an <em>untreated sample</em>. This sample is from the same patient as SRR1039509. The reads have been aligned to the UCSC hg19 transcriptome. This file is also accompanied by a BAM index (.bai) file.</li>
+<li><strong>SRR1039509.accepted_hits.sorted.bam</strong> (<a href="http://bit.ly/1JrKfVr" target="_blank">http://bit.ly/1JrKfVr</a>): this file contains the accepted hits from a TopHat alignment on a <em>dex-treated</em> sample. This sample is from the same patient as SRR1039508. The reads have been aligned to the UCSC hg19 transcriptome. This file is also accompanied by a BAM index (.bai) file.</li>
+</ul>
+<p><strong>Steps:</strong></p>
+<ol>
+<li>Go to GenomeSpace (<a href="http://gsui.genomespace.org/" target="_blank">http://gsui.genomespace.org</a>).</li>
+<li>Click the <strong><em>IGV</em></strong> icon to launch <strong><em>IGV</em></strong>.
+	<ol type="a">
+<li>A <strong>igv.jnlp</strong> file will be downloaded. Double-click the file to start <strong><em>IGV</em></strong>.</li>
+<li>You may receive a security warning; please ignore it.</li>
+</ol>
+</li>
+<li>Once <strong><em>IGV</em></strong> is loaded, make sure that the <strong>Human (hg19)</strong> genome is selected.</li>
+<li>Load the above datasets into <strong>IGV</strong> by completing the following steps:
+	<ol type="a">
+<li>Navigate to the following menu: <strong>GenomeSpace/Load File from GenomeSpace…</strong></li>
+<li>In the file menu, navigate to the following folder: <strong>Public/SharedData/Presentations/CEGS_Oct 1_2015/Data</strong></li>
+<li>Select <strong>genes.fpkm_tracking</strong>, then click “Open” to load the file.<br/>
+<strong>NOTE:</strong> the tracks loaded in genes.fpkm_tracking may look mostly empty. This is due to an issue with scaling the data. To properly visualize the results, use ctrl+click to select both the genes.fpkm_tracking<strong> q00</strong> and genes.fpkm_tracking <strong>q01</strong> tracks, then right-click and select “<strong>log scale</strong>” to re-scale this data.</li>
+</ol>
+</li>
+<li>Repeat Step 4 two more times to load the <strong>SRR1039508.accepted_hits.sorted.bam</strong> and <strong>SRR1039509.accepted_hits.sorted.bam</strong> files.</li>
+</ol>
+<p><strong>Viewing results:</strong></p>
+<p>We can now explore in <strong><em>IGV</em></strong> and visualize our results. You should see something that looks similar to the image below:</p>
+<p><img alt="" src="/uploaded/content_pic8.png" style="width: 800px; height: 448px;"/></p>
+<p>Here, we have a genome-level view of our results. To look at gene-specific results, you can enter the name of a gene in the search bar. From our results, we know that certain genes are differentially expressed when comparing the untreated and dex-treated phenotypes. We predict that these genes may have interesting patterns of aligned reads or expression.</p>
+<p>Try searching for some of the following genes in <strong><em>IGV</em></strong>: C7, CCDC69, DUSP1, FKBP5, GPX3, KLF15, MAOA, SAMHD1, SERPINA3, SPARCL3, TSC22D3, CRISPLD2, C13orf15, PER1, KCTD12, ERRFI1, STEAP4.</p>
+<p>For an example, see the expression profile of the gene C7. Here, we see that there is higher expression in C7 in the dex phenotype (q01) than the untreated phenotype (q00). If we look at some BAM files representing these phenotypes, we similarly observe that there are fewer reads aligned against this gene in the untreated phenotype (SRR1039508) than the dex-treated phenotype (SRR1039509). The difference in the number of reads aligning to the gene location complements the difference observed in the gene-level expression profile of the untreated and dex-treated phenotypes.</p>
+<p><img alt="" src="/uploaded/content_pic9.png" style="width: 800px; height: 894px;"/></p>
+</div>
+<div class="col-md-3">
+<div class="bs-docs-sidebar hidden-print gp-side-menu" role="complementary">
+<ul class="nav bs-docs-sidenav">
+<li><a href="#dataused">Data used in this exercise</a>
+</li>
+<li><a href="#recreate">Recreating the workflow</a>
+</li>
+<li><a href="#step1">Step 1: Retrieve FASTQ files</a>
+</li>
+<li><a href="#step2">Step 2: Evaluate read quality</a>
+</li>
+<li><a href="#step3">Step 3: Remove contaminant sequences and re-evaluate quality</a>
+<ul class="nav">
+<li><a href="#step31">Step 3.1: Trim over-represented sequences</a>
+</li>
+<li><a href="#step32">Step 3.2: Re-evaluate read quality</a>
+</li>
+</ul>
+</li>
+<li><a href="#step4">Step 4: Align reads to a reference transcriptome</a>
+<ul class="nav">
+<li><a href="#step41">Step 4.1: Create a transcriptome index</a>
+</li>
+<li><a href="#step42">Step 4.2: Align reads to a transcriptome</a>
+</li>
+</ul>
+</li>
+<li><a href="#step5">Step 5: Summarize and quantitate aligned reads</a>
+</li>
+<li><a href="#step6">Step 6: Identify the top differentially expressed genes</a>
+</li>
+<li><a href="#step7">Step 7: Visualize aligned reads and gene expression</a>
+</li>
+<li><a href="javascript:void(0);" id="scroll-top">Back to the Top</a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="container-fluid footer gs-recipe-footer">
+<p class="copy-right-block">Copyright ©2016 The Regents of the University of California and The Broad Institute of MIT &amp; Harvard</p>
+</div>
+</body>
+</html>

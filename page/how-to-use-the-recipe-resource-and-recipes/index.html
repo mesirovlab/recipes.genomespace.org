@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>GenomeSpace Recipe Resource: How to use the Recipe Resource and recipes</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link href="/assets/docs.min.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/featured_article.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/pages.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/recipes.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/site.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/tags.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/jquery-ui/theme.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/jquery-ui/core.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/application.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/dataTables/bootstrap/3/jquery.dataTables.bootstrap.css?body=1" media="all" rel="stylesheet"/>
+<script src="/assets/jquery.js?body=1"></script>
+<script src="/assets/jquery_ujs.js?body=1"></script>
+<script src="/assets/jquery-ui/core.js?body=1"></script>
+<script src="/assets/jquery-ui/widget.js?body=1"></script>
+<script src="/assets/jquery-ui/position.js?body=1"></script>
+<script src="/assets/jquery-ui/menu.js?body=1"></script>
+<script src="/assets/jquery-ui/autocomplete.js?body=1"></script>
+<script src="/assets/jquery-ui/mouse.js?body=1"></script>
+<script src="/assets/jquery-ui/sortable.js?body=1"></script>
+<script src="/assets/bootstrap/affix.js?body=1"></script>
+<script src="/assets/bootstrap/alert.js?body=1"></script>
+<script src="/assets/bootstrap/button.js?body=1"></script>
+<script src="/assets/bootstrap/carousel.js?body=1"></script>
+<script src="/assets/bootstrap/collapse.js?body=1"></script>
+<script src="/assets/bootstrap/dropdown.js?body=1"></script>
+<script src="/assets/bootstrap/tab.js?body=1"></script>
+<script src="/assets/bootstrap/transition.js?body=1"></script>
+<script src="/assets/bootstrap/scrollspy.js?body=1"></script>
+<script src="/assets/bootstrap/modal.js?body=1"></script>
+<script src="/assets/bootstrap/tooltip.js?body=1"></script>
+<script src="/assets/bootstrap/popover.js?body=1"></script>
+<script src="/assets/bootstrap-sprockets.js?body=1"></script>
+<script src="/assets/ckeditor/init.js?body=1"></script>
+<script src="/assets/ckeditor/ckeditor.js?body=1"></script>
+<script src="/assets/jquery_nested_form.js?body=1"></script>
+<script src="/assets/dataTables/jquery.dataTables.js?body=1"></script>
+<script src="/assets/dataTables/bootstrap/3/jquery.dataTables.bootstrap.js?body=1"></script>
+<script src="/assets/autocomplete-rails.js?body=1"></script>
+<script src="/assets/spin.min.js?body=1"></script>
+<script src="/assets/docs.min.js?body=1"></script>
+<script src="/assets/jquery.hoverIntent.minified.js?body=1"></script>
+<script src="/assets/ckeditor/config.js?body=1"></script>
+<script src="/assets/featured_article.js?body=1"></script>
+<script src="/assets/pages.js?body=1"></script>
+<script src="/assets/recipes.js?body=1"></script>
+<script src="/assets/site.js?body=1"></script>
+<script src="/assets/tags.js?body=1"></script>
+<script src="/assets/application.js?body=1"></script>
+<meta content="authenticity_token" name="csrf-param"/>
+<meta content="t7rBwbZEMHbo2RbPiI3LWVPEishFs0az/FHNOzOOnGY=" name="csrf-token"/>
+<link href="https://fonts.googleapis.com/css?family=Wire+One" rel="stylesheet" type="text/css"/>
+<link href="https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:300" rel="stylesheet" type="text/css"/>
+<link href="/assets/favicon.ico" rel="shortcut icon">
+<script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-74623322-1', 'auto');
+        ga('send', 'pageview');
+       // ga('set', 'userId', {{"anonymous"}}); // Set the user ID using signed-in user_id.
+        ga('set', 'userId', 'anonymous'); // Set the user ID using signed-in user_id.
+
+    </script>
+</link></head>
+<body onload="tellParentWindowMySize()">
+<div id="nav_page_wrapper">
+<div id="logo"><a href="http://www.genomespace.org/"><img alt="Gslogo" src="/assets/gslogo.png"/></a></div>
+<div class="clickable" id="login_menu">
+<form accept-charset="UTF-8" action="/users/sign_in" class="new_user" id="gs-login" method="post"><div style="display:none"><input name="utf8" type="hidden" value="✓"/><input name="authenticity_token" type="hidden" value="t7rBwbZEMHbo2RbPiI3LWVPEishFs0az/FHNOzOOnGY="/></div>
+<input id="user_identity_url" name="user[identity_url]" type="hidden" value="https://identity.genomespace.org/identityServer/xrd.jsp"/>
+<a onclick="document.getElementById('gs-login').submit(); return false;">Login<span class="glyphicon glyphicon-chevron-right"></span></a>
+</form></div>
+<ul id="nav">
+<li class="dropdown">
+<a href="/"><span class="glyphicon glyphicon-home"></span> GenomeSpace Recipes</a>
+</li>
+<!-- <li id="recipe_link"><a href="/recipes"><span class="gparc-nav-icon glyphicon glyphicon-list"></span> My Recipes</a></li> -->
+<!-- links to main genomespace.org -->
+<li id="gsdotorg"><a href="http://www.genomespace.org/"><img alt="Gslogo" height="24px" src="/assets/official_logo.png"/>GenomeSpace.org</a><ul>
+<li id="what-is-genomespace"><a href="http://www.genomespace.org/what-is-genomespace">What is GenomeSpace?</a>
+<li id="tools"><a href="http://www.genomespace.org/support/tools">Tools</a>
+</li>
+<li id="recipes"><a href="http://recipes.genomespace.org/">Recipes</a></li>
+<li id="documentation"><a href="http://www.genomespace.org/documentation">Documentation</a>
+<ul>
+<li><a href="http://www.genomespace.org/support/guides/user-guide">User Guide</a>
+<p>Read the detailed guide to the user interface</p>
+</li>
+<li><a href="http://www.genomespace.org/support/guides/tool-guide">Tool Guide</a>
+<p>Learn how to access GenomeSpace functionality for each Tool</p>
+</li>
+<li><a href="http://www.genomespace.org/faq">FAQ</a>
+<p>See answers to frequently asked questions</p>
+</li>
+<li><a href="http://www.genomespace.org/presentations-and-videos">Presentations and Videos</a>
+<p>Access talks by the GenomeSpace community</p>
+</li>
+<li><a href="http://www.genomespace.org/support/guides/end-to-end-analyses">End-to-End Analyses</a>
+<p>Provides description for end-to-end analyses.</p>
+</li>
+</ul>
+</li>
+<li id="developers"><a href="http://www.genomespace.org/for-developers">Developers</a>
+<ul>
+<li><a href="http://www.genomespace.org/what-can-genomespace-do-for-tool-developers">What Can GenomeSpace Do For Tool Developers?</a>
+<p></p>
+</li>
+<li><a href="http://www.genomespace.org/adopters">Technical Documentation</a>
+<p></p>
+</li>
+<li><a href="http://www.genomespace.org/source-code">Source Code and Distributions</a>
+<p></p>
+</li>
+<li><a href="http://www.genomespace.org/developer-support-and-feedback">Developer Support and Feedback</a>
+<p></p>
+</li>
+</ul>
+</li>
+<li id="support"><a href="http://www.genomespace.org/support">Support</a>
+</li>
+<li id="about"><a href="http://www.genomespace.org/about">About</a>
+</li>
+</li></ul></li>
+<!-- end of links to main GenomeSpace.org -->
+<li class="search">
+<div id="search_box">
+<form accept-charset="UTF-8" action="/search" class="form" method="get" role="form"><div style="display:none"><input name="utf8" type="hidden" value="✓"/></div>
+<div style="margin:0;padding:0;display:inline">
+<input class="search" id="search" name="search" type="text"/>
+</div>
+<input class="searchBtn" type="submit"/>
+</form> </div>
+</li>
+</ul>
+</div>
+<div class="container fluid gs-recipe-">
+<div class="row">
+<div class="col-md-9">
+<h1>How to use the Recipe Resource and recipes
+      </h1>
+<p><a id="homepage" name="homepage"></a></p>
+<h2>How to use the recipe homepage</h2>
+<p>The Recipe Resource is a repository for GenomeSpace recipes - short, standalone workflows for completing complex bioinformatic analyses. Recipes use GenomeSpace-enabled tools and data resources to demonstrate integrative analysis, walking users step-by-step through the process of obtaining and analyzing data. The Recipe Resource homepage functions as an access portal to recipes and recipe-related content, such as documentation for using and developing recipes.</p>
+<p>The content of the Recipe Resource homepage is organized into the following categories:</p>
+<dl>
+<dt><strong>Recipe Resource Guide</strong></dt>
+<dd>The guide links to other useful recipe-related documentation, e.g. how to use the recipe resource (this page), how to create your own recipes, and how to participate in the GenomeSpace community.</dd>
+</dl>
+<dl>
+<dt><strong>Browse Recipes</strong></dt>
+<dd><img alt="" src="/ckeditor_assets/pictures/104/content_0_browse_recipes.png" style="float: right; width: 300px; height: 126px; padding: 10px; border: 1px solid rgb(211, 211, 211); margin-left: 10px;"/>Access the current list of published recipes using the search box with a search term (e.g. a tag or other word of interest), or by clicking on the <em><strong><a href="">List All Recipes</a></strong></em> button to jump straight to the recipe list.</dd>
+</dl>
+<dl>
+<dt><strong>Featured Recipes</strong></dt>
+<dd>Featured recipes are chosen by the GenomeSpace team based on the quality, utility and popularity of the recipe. The featured recipe rotates frequently, so check back often to see our latest pick!</dd>
+</dl>
+<dl>
+<dt><strong>Contribute Recipes</strong></dt>
+<dd>To post a recipe to the Recipe Resource, please read the <a href="/page/best-practices-for-creating-recipes">Best Practices</a> guideline for recipe development first. User-contributed recipes will first be reviewed by the GenomeSpace team to prevent misuse, and once approved will be made available to for public use. We make use of <a href="http://f1000research.com/" target="_blank">Faculty of 1000 (F1000) Research</a> to publish open access and peer-reviewed recipes from the Recipe Resource. Once your recipe has been added to the Recipe Resource, you are invited to publish the recipe in the<span style="line-height: 20.8px;"> <a href="http://f1000research.com/channels/genomespace" target="_blank">GenomeSpace <em>F1000Research</em> channel</a>. Please make sure to only publish F1000 papers on recipes that have been contributed to the Recipe Resource, and which have been reviewed by the GenomeSpace team.  To submit to the F1000 channel, please <a href="mailto:gs-info@broadinstitute.org">email the </a></span><a href="mailto:gs-info@broadinstitute.org">GenomeSpace team</a> to coordinate the submission. Once the publication is submitted to F1000, it will undergo peer review according to the <a href="http://f1000research.com/for-authors/publish-your-research" target="new">F1000 publication guidelines</a>.</dd>
+</dl>
+<dl>
+<dt><strong>Community</strong></dt>
+<dd>To contribute to community discussions, join the <a href="https://groups.google.com/a/broadinstitute.org/forum/?hl=en#!forum/genomespace-users" target="new">GenomeSpace community forum</a>! You can also <a href="mailto:gs-help@broadinstitute.org">email us</a> with questions or comments. If you have questions or suggestions about a particular recipe, please use the comment area at the bottom of each recipe page, which allows logged-in GenomeSpace members to give us feedback on recipes.</dd>
+</dl>
+<p> </p>
+<p><a id="recipelist" name="recipelist"></a></p>
+<h2>How to use the recipe list</h2>
+<p>The Recipe Resource list is the list of all currently published recipes. This is the portal to reading, browsing, searching, and filtering all published recipes. The following explains how to navigate the recipe list, in order to find the recipe that best suits your interests and analysis needs.</p>
+<dl>
+<dt><strong>Login navigation</strong></dt>
+<dd><img alt="" src="/ckeditor_assets/pictures/107/content_1_login.png" style="width: 300px; height: 93px; padding: 10px; border: 1px solid #D3D3D3; margin-left: 10px; float: right;"/>
+<p>When logged in, a GenomeSpace user will see a login navigation menu allowing access to features of the Recipe Resource. The house icon will return the user to the recipe homepage. The <em><strong>My Recipes</strong></em> icon allows users to access the recipes they have created. Here, users can add, edit, or delete recipes, or re-order the steps in the recipes.</p>
+<p>Users can also search through the published list of recipes by using the search bar. If users have searched for a specific term, limiting the number of recipes displayed, they can re-set the list to show all recipes by clicking the <b><i>List All</i></b> button.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>Recipe descriptions and links</strong></dt>
+<dd><img alt="" src="/ckeditor_assets/pictures/105/content_0_recipe_descriptions.png" style="width: 400px; height: 83px; padding: 10px; border: 1px solid #D3D3D3; float: right; margin-left: 10px;"/>
+<p>Each recipe listing has a descriptive title of the analysis, e.g. "Build and visualize a module network using putative aberrant regions and expression data". Each title is accompanied by a graphic depicting the tools used in the recipe (e.g. Galaxy and GenePattern). Each recipe has a short description of the basic input and analysis of the recipe, which can be accessed by clicking on the recipe title box to expand or collapse the short description. Clicking on the recipe title will re-direct the page to the recipe itself. To see all the recipe descriptions, click the <em><strong>Expand all recipe descriptions</strong></em> link. Once expanded, the link can be used to collapse all recipe descriptions, as well.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>Filtering recipes</strong></dt>
+<dd><img alt="" src="/ckeditor_assets/pictures/106/content_0_filter.png" style="width: 300px; height: 149px; padding: 10px; border: 1px solid #D3D3D3; margin-left: 10px; float: right;"/>
+<p>Recipes are tagged with certain information to make searching and filtering recipes easier. Recipes can be filtered by tags, which are categorized into several types:</p>
+<ul>
+<li><strong>Tool type</strong>: Identifies which GenomeSpace-enabled tool is used in a recipe. More than one tool can be used in a recipe.</li>
+<li><strong>Data type</strong>: Identifies the input data type being used in a recipe, e.g. whether the input data is DNA or RNA, array data or sequencing data, etc.</li>
+<li><strong>Analysis type</strong>: Identifies the analysis completed in the recipe, e.g. building a network, identifying differentially expressed genes, etc. The analysis type is related to data type in some ways, but many different data types can be associated with an analysis.</li>
+</ul>
+<p>To filter the list of recipes by tags of interest, select the tag that you are interested in filtering by. For example, if you want to find all recipes utilizing GenePattern, click on the <i>GenePattern</i> tag under the <b>Filter by tool</b> category. The list of recipes is automatically updated based on the user selection of tags. More than one tag can be selected both within and between categories.</p>
+<p>Within a category, multiple tags can be selected by either clicking and dragging, or by using ctrl+click to select tags. Selecting more than one tag within a category will filter the list of recipes as an <i>inclusive or</i> query, e.g. selecting both the <i>GenePattern</i> and <i>Cytoscape</i> tags will reduce the list to recipe utilizing GenePattern <i>OR</i> Cytoscape. If a recipe uses both tools, that recipe will be included.</p>
+<p>Between categories, if multiple tags are selected the list of recipes will be filtered as an <i>and</i> query. For example, selecting <i>GenePattern</i> from the list of tool tags and <i>RNA-Seq</i> from the list of data tags, will filter the recipes to include only recipes that utilize GenePattern <i>AND</i> feature RNA-Seq datasets.</p>
+<p>Filters can be combined across datasets in a similar way. Selecting the <i>GenePattern</i>, <i>Cytoscape</i>, and <i>RNA-Seq</i> tags results in a list of recipes that utilize (GenePattern <i>OR</i> Cytoscape) <i>AND</i> feature RNA-Seq data.</p>
+<p>To clear the filters, click the <em><strong>clear</strong></em> button.</p>
+</dd>
+</dl>
+<p> </p>
+<p><a id="howtorecipes" name="howtorecipes"></a></p>
+<h2>How to use recipes</h2>
+<p>Recipes are short, standalone workflows describing the steps necessary to complete a common bioinformatic analysis, such as quality-checking RNA-Seq data, building a network from a list of genes, or identifying differentially regulated genes. Recipes usually feature two-three GenomeSpace-enabled tools or data sources. They can be used sequentially to create a longer or more complex analysis.</p>
+<p>Recipes can be navigated to using the recipe list, or by using the search box on the Recipe Resource home page. There are several features on recipe pages to help users understand and utilize the recipe content.</p>
+<dl>
+<dt><strong>Metadata</strong></dt>
+<dd><img alt="" src="/ckeditor_assets/pictures/108/content_2_header.png" style="height: 106px; width: 500px; padding: 10px; border: 1px solid #D3D3D3; margin-left: 10px; float: right;"/>
+<p>Each recipe features a header, which lists metadata about that recipe. For example, an image accompanies the title, illustrating the tools used in the recipe. The date and author of the recipe is listed. A GenomeSpace cloud icon ( <img alt="" src="/assets/official_logo-2169fff2a7f1419f3e0ba83fa83e93a8.png"/>) indicates 'official' recipes that have been created by the GenomeSpace team. Underneath this, tags for data type and analysis type are listed for each recipe. Finally, each recipe features a rating system where users can either upvote (<span class="text-success glyphicon glyphicon-thumbs-up"></span>) or downvote (<span class="text-danger glyphicon glyphicon-thumbs-down"></span>) the recipes to give feedback on recipes. Ideally, users will also comment on the recipe to leave questions, or feedback about the recipe quality or utility. However, looking at the upvotes and downvote on a recipe allows a user to quickly judge if that recipe is considered useful by the GenomeSpace user community. Only logged-in users can upvote or downvote recipes.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>Sidebar navigation menu</strong></dt>
+<dd><img alt="" src="/ckeditor_assets/pictures/109/content_3_nav.png" style="width: 100px; height: 196px; border: 1px solid rgb(211, 211, 211); margin-left: 10px; float: right;"/>
+<p>Recipes have a dynamically-generated navigation menu. Users can click on individual items of the navigation bar, to automatically jump to that part of the recipe page. The navigation menu will scroll with the user. The navigation menu will display the top-level links for each section of a recipe. In the case of recipe sections that have sub-headings (e.g. the <em><strong>Steps</strong></em> section of a recipe) the navigation menu will expand to list the sub-steps once the user has reached that section of the recipe. Upon moving to a different section, this will collapse to hide the extra sub-headings. The <em><strong>Back to the Top</strong></em> link allows the user to jump to the top of the recipe page at any time.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>Summary</strong></dt>
+<dd>Recipes contain a section for the summary of the recipe. This typically contains an <b>overview cartoon</b>, which is a visually appealing flowchart of the recipe, listing the input data, analysis, and output data which are used in a recipe. The summary section describes the biological premise for doing a bioinformatic analysis as described in the recipe. If the recipe is recapitulating published data, it will feature a brief description of the published research and its conclusions, as well as links to the articles in PubMed.</dd>
+</dl>
+<dl>
+<dt><strong>Inputs</strong></dt>
+<dd>This section describes the input data necessary to complete the recipe. Users can either use the example data featured in the recipe, or they can provide their own data. If users choose to use example data, links to the data are provided, and directions for importing or obtaining the data are described.</dd>
+</dl>
+<dl>
+<dt><strong>Outputs</strong></dt>
+<dd>This section briefly describes the output that a user can expect, if following the recipe steps using the recipe example input data.</dd>
+</dl>
+<dl>
+<dt><strong>Recipe steps</strong></dt>
+<dd>The overview of recipe steps lists, briefly, the basic instructions for each step of the recipe, grouped by the tool being used. If a user is moderately familiar with bioinformatic analyses, or is interested in using some of their own methods for analysis, this overview section provides the basic information necessary to complete the recipe, which the user can alter to suit their own needs.</dd>
+</dl>
+<dl>
+<dt><strong>Recipe steps</strong></dt>
+<dd>Recipe steps are the individual steps for completing the analysis, e.g. "loading data files". Recipe steps usually feature three ways to describe the step: (1) a brief description; (2) a detailed step-by-step description, including instructions on which parameters to use, or buttons to click; and, (3) a video which completes the step-by-step instructions. A user may want to utilize some or all of these descriptions, depending on their level of familiarity with the analysis.
+	<p><img alt="" src="/ckeditor_assets/pictures/111/content_5_expandcollapse.png" style="width: 354px; padding: 10px; border: 1px solid rgb(211, 211, 211); margin-left: 10px; float: right; height: 47px;"/></p>
+<p>The brief description of a recipe step is always displayed to the user. However, due to the amount of content, the step-by-step instructions and the videos are contained in collapsible/expandable boxes, for ease of use. To expand or collapse a step, a user should click on the step box to toggle it. To expand or collapse all the steps, the user can click on the <b><i>Expand All Steps</i></b> or <em><b>Collapse All Steps</b></em> buttons.</p>
+<div style="width: 515px; padding: 10px; border: 1px solid #D3D3D3; margin-left: auto; margin-right: auto;"><img alt="" src="/ckeditor_assets/pictures/112/content_6_eg_step.png" style="width: 500px; height: 87px;"/>
+<p>Example of a recipe step, in its collapsed configuration. The text visible is a brief description of the recipe step. When the recipe step is clicked, it expands to reveal the step-by-step instructions, screenshots, and videos.</p>
+</div>
+	 
+
+	<p><img alt="" src="/ckeditor_assets/pictures/110/content_4_vidplaylist.png" style="width: 400px; height: 237px; padding: 10px; border: 1px solid #D3D3D3; margin-left: 10px; float: right;"/></p>
+<p>Step-by-step instructions for recipes will feature screenshots. These screenshots usually depict the interface of the tool being used, and contain highlights or other indicators to help users understand the parameters being changed in the interface. In addition, the detailed step-by-step instructions accompany the screenshots. For steps with videos, the video is embedded into the webpage. For individual steps, the videos are short for ease of viewing. If a user is interested in viewing all of the videos in a recipe, there is a video playlist featured at the top of each recipe. This is a YouTube compilation of the individual videos, which can also be watched on the <a href="https://www.youtube.com/channel/UCfJ2_KaGrcmsNguNor5cgtg" target="new">GenomeSpace YouTube channel</a>.</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>Results Interpretation</strong></dt>
+<dd>Recipes feature a results interpretation section to help users understand the biological meaning of the recipe output. If the user follows along with the recipe and uses the recipe example input data, the results interpretation section should accurately represent the results the user obtains. However, they are by no means a comprehensive description of the results, and are only meant to act as an example interpretation of the data. The results interpretation section also typically features screenshots of the results.</dd>
+</dl>
+<dl>
+<dt><strong>Comments</strong></dt>
+<dd><img alt="" src="/ckeditor_assets/pictures/113/content_7_comments.png" style="width: 500px; height: 199px; padding: 10px; border: 1px solid #D3D3D3; margin-left: 10px; float: right;"/>
+<p>GenomeSpace users are encouraged to comment on recipes and leave feedback about the recipe content. If logged in, users can type a comment into the <b><i>Content</i></b> box, and click the <b><i>Submit Your Comment</i></b> button to submit the comment. The comment will be logged with the date, time, and author's GenomeSpace username. Users are invited to ask questions about recipes, suggest alternative parameters or analyses, suggest improvements to recipes, and leave other feedback for the GenomeSpace team.</p>
+</dd>
+</dl>
+</div>
+<div class="col-md-3">
+<div class="bs-docs-sidebar hidden-print gp-side-menu" role="complementary">
+<ul class="nav bs-docs-sidenav">
+<li><a href="#homepage">How to use the recipe homepage</a>
+</li>
+<li><a href="#recipelist">How to use the recipe list</a>
+</li>
+<li><a href="#howtorecipes">How to use recipes</a>
+</li>
+<li><a href="javascript:void(0);" id="scroll-top">Back to the Top</a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="container-fluid footer gs-recipe-footer">
+<p class="copy-right-block">Copyright ©2016 The Regents of the University of California and The Broad Institute of MIT &amp; Harvard</p>
+</div>
+</body>
+</html>

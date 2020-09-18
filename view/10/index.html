@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+
+<html>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<title>GenomeSpace Recipe: Build and visualize a module network using putative aberrant regions and expression data</title>
+<link href="/assets/docs.min.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/featured_article.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/pages.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/recipes.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/site.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/tags.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/jquery-ui/theme.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/jquery-ui/core.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/application.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/dataTables/bootstrap/3/jquery.dataTables.bootstrap.css?body=1" media="all" rel="stylesheet"/>
+<script src="/assets/jquery.js?body=1"></script>
+<script src="/assets/jquery_ujs.js?body=1"></script>
+<script src="/assets/jquery-ui/core.js?body=1"></script>
+<script src="/assets/jquery-ui/widget.js?body=1"></script>
+<script src="/assets/jquery-ui/position.js?body=1"></script>
+<script src="/assets/jquery-ui/menu.js?body=1"></script>
+<script src="/assets/jquery-ui/autocomplete.js?body=1"></script>
+<script src="/assets/jquery-ui/mouse.js?body=1"></script>
+<script src="/assets/jquery-ui/sortable.js?body=1"></script>
+<script src="/assets/bootstrap/affix.js?body=1"></script>
+<script src="/assets/bootstrap/alert.js?body=1"></script>
+<script src="/assets/bootstrap/button.js?body=1"></script>
+<script src="/assets/bootstrap/carousel.js?body=1"></script>
+<script src="/assets/bootstrap/collapse.js?body=1"></script>
+<script src="/assets/bootstrap/dropdown.js?body=1"></script>
+<script src="/assets/bootstrap/tab.js?body=1"></script>
+<script src="/assets/bootstrap/transition.js?body=1"></script>
+<script src="/assets/bootstrap/scrollspy.js?body=1"></script>
+<script src="/assets/bootstrap/modal.js?body=1"></script>
+<script src="/assets/bootstrap/tooltip.js?body=1"></script>
+<script src="/assets/bootstrap/popover.js?body=1"></script>
+<script src="/assets/bootstrap-sprockets.js?body=1"></script>
+<script src="/assets/ckeditor/init.js?body=1"></script>
+<script src="/assets/ckeditor/ckeditor.js?body=1"></script>
+<script src="/assets/jquery_nested_form.js?body=1"></script>
+<script src="/assets/dataTables/jquery.dataTables.js?body=1"></script>
+<script src="/assets/dataTables/bootstrap/3/jquery.dataTables.bootstrap.js?body=1"></script>
+<script src="/assets/autocomplete-rails.js?body=1"></script>
+<script src="/assets/spin.min.js?body=1"></script>
+<script src="/assets/docs.min.js?body=1"></script>
+<script src="/assets/jquery.hoverIntent.minified.js?body=1"></script>
+<script src="/assets/ckeditor/config.js?body=1"></script>
+<script src="/assets/featured_article.js?body=1"></script>
+<script src="/assets/pages.js?body=1"></script>
+<script src="/assets/recipes.js?body=1"></script>
+<script src="/assets/site.js?body=1"></script>
+<script src="/assets/tags.js?body=1"></script>
+<script src="/assets/application.js?body=1"></script>
+<meta content="authenticity_token" name="csrf-param"/>
+<meta content="5wPwXDnhV/ao6RZC/GZNz7X2yqBrtiBhuQ6/9V7+b3c=" name="csrf-token"/>
+<link href="https://fonts.googleapis.com/css?family=Wire+One" rel="stylesheet" type="text/css"/>
+<link href="https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:300" rel="stylesheet" type="text/css"/>
+<link href="/assets/favicon.ico" rel="shortcut icon">
+<script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-74623322-1', 'auto');
+        ga('send', 'pageview');
+       // ga('set', 'userId', {{"anonymous"}}); // Set the user ID using signed-in user_id.
+        ga('set', 'userId', 'anonymous'); // Set the user ID using signed-in user_id.
+
+    </script>
+</link></head>
+<body onload="tellParentWindowMySize()">
+<div id="nav_page_wrapper">
+<div id="logo"><a href="http://www.genomespace.org/"><img alt="Gslogo" src="/assets/gslogo.png"/></a></div>
+<div class="clickable" id="login_menu">
+<form accept-charset="UTF-8" action="/users/sign_in" class="new_user" id="gs-login" method="post"><div style="display:none"><input name="utf8" type="hidden" value="✓"/><input name="authenticity_token" type="hidden" value="5wPwXDnhV/ao6RZC/GZNz7X2yqBrtiBhuQ6/9V7+b3c="/></div>
+<input id="user_identity_url" name="user[identity_url]" type="hidden" value="https://identity.genomespace.org/identityServer/xrd.jsp"/>
+<a onclick="document.getElementById('gs-login').submit(); return false;">Login<span class="glyphicon glyphicon-chevron-right"></span></a>
+</form></div>
+<ul id="nav">
+<li class="dropdown">
+<a href="/"><span class="glyphicon glyphicon-home"></span> GenomeSpace Recipes</a>
+</li>
+<!-- <li id="recipe_link"><a href="/recipes"><span class="gparc-nav-icon glyphicon glyphicon-list"></span> My Recipes</a></li> -->
+<!-- links to main genomespace.org -->
+<li id="gsdotorg"><a href="http://www.genomespace.org/"><img alt="Gslogo" height="24px" src="/assets/official_logo.png"/>GenomeSpace.org</a><ul>
+<li id="what-is-genomespace"><a href="http://www.genomespace.org/what-is-genomespace">What is GenomeSpace?</a>
+<li id="tools"><a href="http://www.genomespace.org/support/tools">Tools</a>
+</li>
+<li id="recipes"><a href="http://recipes.genomespace.org/">Recipes</a></li>
+<li id="documentation"><a href="http://www.genomespace.org/documentation">Documentation</a>
+<ul>
+<li><a href="http://www.genomespace.org/support/guides/user-guide">User Guide</a>
+<p>Read the detailed guide to the user interface</p>
+</li>
+<li><a href="http://www.genomespace.org/support/guides/tool-guide">Tool Guide</a>
+<p>Learn how to access GenomeSpace functionality for each Tool</p>
+</li>
+<li><a href="http://www.genomespace.org/faq">FAQ</a>
+<p>See answers to frequently asked questions</p>
+</li>
+<li><a href="http://www.genomespace.org/presentations-and-videos">Presentations and Videos</a>
+<p>Access talks by the GenomeSpace community</p>
+</li>
+<li><a href="http://www.genomespace.org/support/guides/end-to-end-analyses">End-to-End Analyses</a>
+<p>Provides description for end-to-end analyses.</p>
+</li>
+</ul>
+</li>
+<li id="developers"><a href="http://www.genomespace.org/for-developers">Developers</a>
+<ul>
+<li><a href="http://www.genomespace.org/what-can-genomespace-do-for-tool-developers">What Can GenomeSpace Do For Tool Developers?</a>
+<p></p>
+</li>
+<li><a href="http://www.genomespace.org/adopters">Technical Documentation</a>
+<p></p>
+</li>
+<li><a href="http://www.genomespace.org/source-code">Source Code and Distributions</a>
+<p></p>
+</li>
+<li><a href="http://www.genomespace.org/developer-support-and-feedback">Developer Support and Feedback</a>
+<p></p>
+</li>
+</ul>
+</li>
+<li id="support"><a href="http://www.genomespace.org/support">Support</a>
+</li>
+<li id="about"><a href="http://www.genomespace.org/about">About</a>
+</li>
+</li></ul></li>
+<!-- end of links to main GenomeSpace.org -->
+<li class="search">
+<div id="search_box">
+<form accept-charset="UTF-8" action="/search" class="form" method="get" role="form"><div style="display:none"><input name="utf8" type="hidden" value="✓"/></div>
+<div style="margin:0;padding:0;display:inline">
+<input class="search" id="search" name="search" type="text"/>
+</div>
+<input class="searchBtn" type="submit"/>
+</form> </div>
+</li>
+</ul>
+</div>
+<div class="container fluid gs-recipe-">
+<div class="row">
+<div class="col-md-10">
+<table><tr><td><img alt="Galaxy gp genomica" class="recipeAvatar" src="/system/recipes/avatars/000/000/010/original/galaxy_gp_genomica.png?1456515163"/></td><td>
+<h3>Build and visualize a module network using putative aberrant regions and expression data
+                        </h3>
+</td></tr></table>
+<p class="text-muted">Added by GenomeSpaceTeam on 2015.04.21 <span class="official"><img alt="Official logo" data-content="Offical GenomeSpace Recipe" data-toggle="popover" src="/assets/official_logo.png"/></span>
+<br/>
+            Last updated on over 3 years ago.
+            </p>
+<div class="row">
+<div class="col-md-8">
+<p>
+<a class="btn btn-default btn-xs tag green" >SNP array</a>
+<a class="btn btn-default btn-xs tag green" >microarray</a>
+<a class="btn btn-default btn-xs tag red" >module network</a>
+<a class="btn btn-default btn-xs tag green" >copy number variation</a>
+</p>
+</div>
+<div class="col-md-2 voting">
+<p class="text-success"><span class="glyphicon glyphicon-thumbs-up"></span> 3</p>
+</div>
+<div class="col-md-2 voting">
+<p class="text-danger"><span class="glyphicon glyphicon-thumbs-down"></span> 0</p>
+</div>
+</div>
+<hr/>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/s3WRXhlaTO4?list=PL4ZmSx1n2Kw7LcefdncJ7jpkjK1utgZNb&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+<section id="summary"></section>
+<h3 class="divider">Summary</h3>
+<div class="responsive-content">
+<p><span style="font-family:arial,sans-serif;"><span style="font-size:16px;"><i>Which genes lie in my copy number variation regions? Are there any sets of co-regulated genes in these aberrant regions?</i></span></span></p>
+<p>This recipe provides a method for identifying and visualizing a network of co-regulated genes that are associated with aberrant regions identified by single nucleotide polymorphism (SNP) arrays. An example use of this recipe is a case where an investigator may want to find which genes are located in regions that exhibit significant changes (e.g. amplification or deletion) in cancer cells.</p>
+<p><img alt="" src="/ckeditor_assets/pictures/360/content_buildvisualizemodulenetwork.png" style="width: 479px; height: 262px; float: right; padding: 10px;"/></p>
+<p> </p>
+<p>This recipe provides one method for identifying and visualizing aberrant regions in Diffuse Large B-Cell Lymphoma (DLBCL) cancer cells. This recipe uses copy-number variation (CNV) data from SNP arrays, and evaluates the expression of aberrant regions using a microarray dataset. Regions that are significantly changed (e.g., amplified or deleted) in cancer cells are defined by the GISTIC algorithm. In particular, this recipe makes use of several Galaxy tools to find the overlap between the aberrant regions and reference genes, and uses GenePattern to process the microarray dataset. Genomica is used to find module networks of co-regulated genes associated with these aberrant regions. A module network is a model which identifies regulatory modules from gene expression data, especially modules of co-regulated genes and their regulators. The module also identifies the conditions under which the regulation can occur.</p>
+<p><strong>Why analyze copy number variation regions?</strong> Copy number variations (CNVs) are large alterations to genomes, such as duplication or deletion of large segments of a chromosome. These variations in the genome have been associated with different conditions, such as cancer. In this recipe, we explore the scenario in which CNVs are elevated in a cancer cell line, and our goal is to determine the function of these duplicated genes.</p>
+</div>
+<section id="inputs"></section>
+<h3 class="divider">Inputs</h3>
+<div class="responsive-content">
+<p>To complete this recipe, we will need a file describing the locations of CNV regions in a specific condition. In this example, we use CNV regions identified in DLBCL cancer cell lines using the GISTIC algorithm, which identifies regions of a genome that are significantly amplified or deleted across a set of samples. For this particular recipe, the GISTIC file will need to have the .BED extension. In addition, we will need the accompanying gene expression dataset to evaluate the expression of these aberrant genes. We will need the following datasets, which can be downloaded from the following GenomeSpace Public folders:</p>
+<p><code class="directory">Public</code>  &gt;   <code class="directory">RecipeData</code>  &gt;   <code class="directory">GenomicFeatureData</code>  &gt;  <code class="filename"><a href="https://gsui.genomespace.org/jsui/gsui.html?pathOrUrl=/Home/Public/RecipeData/GenomicFeatureData/GISTIC_regions.bed" target="_blank">GISTIC_regions.bed</a></code>: This file lists CNV regions in the genome, organized by chromosome, and listing start and end positions in the genome for each CNV region.</p>
+<p><code class="directory">Public</code>  &gt;   <code class="directory">RecipeData</code>  &gt;   <code class="directory">ExpressionData</code>  &gt;  <code class="filename"><a href="https://gsui.genomespace.org/jsui/gsui.html?pathOrUrl=/Home/Public/RecipeData/ExpressionData/mrna_orig.gct" target="_blank">mrna_orig.gct</a></code>: This is a GCT file of the microarray data which accompanies the DLBCL SNP array data.</p>
+</div>
+<div id="recipeOutputSection">
+<section id="outputs"></section>
+<h3 class="divider">Outputs</h3>
+<div class="responsive-content" id="recipeOutputText">
+</div>
+</div>
+<section id="overview"></section>
+<h3 class="divider">Recipe steps</h3>
+<ul>
+<li><strong>Galaxy</strong></li>
+<ol start="1">
+<li>Loading data into Galaxy</li>
+<li>Obtaining a reference genome using Galaxy</li>
+<li>Finding genes in CNV regions</li>
+<li>Extracting information from files</li>
+<li>Removing duplicate Entrez Gene IDs</li>
+<li>Downloading the gene list to GenomeSpace</li>
+</ol>
+</ul>
+<ul>
+<li><strong>GenePattern</strong></li>
+<ol start="7">
+<li>Loading data</li>
+<li>Filtering genes by expression value</li>
+<li>Saving the files to GenomeSpace</li>
+</ol>
+</ul>
+<ul>
+<li><strong>Genomica</strong></li>
+<ol start="10">
+<li>Loading files into Genomica</li>
+<li>Creating a module network</li>
+<li>Identifying modules of differentially expressed genes</li>
+</ol>
+</ul>
+<div class="row">
+<div class="col-md-6" style="text-align: right; display: inline;width: 250px !important;">
+<a class="btn btn-info" href="javascript:void(0);" id="show-all"><span class="glyphicon glyphicon-plus"></span> Expand All Steps</a>
+</div>
+<div class="col-md-6" style="display: inline;width: 250px !important;">
+<a class="btn btn-info" href="javascript:void(0);" id="hide-all"><span class="glyphicon glyphicon-minus"></span> Collapse All Steps</a>
+</div>
+</div>
+<p></p>
+<div aria-multiselectable="true" class="panel-group" id="steps" role="tablist">
+<div class="panel panel-default">
+<section id="step_0"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Galaxy" class="stepAvatar tag-tooltip" src="/assets/Galaxy.png" title="Galaxy"/>
+<a data-toggle="toggle" href="#collapse_0" onclick="$('#collapse_0').collapse('toggle')">1: Loading data into Galaxy <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>This is one method that can be used to load data into Galaxy.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_0" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<p><em><small><strong>NOTE:</strong> If you have not yet associated your GenomeSpace account with your Galaxy account, you will be asked to do so. If you do not yet have a Galaxy account, you can automatically generate a new account that will be associated with your GenomeSpace account.</small></em></p>
+<ol>
+<li>Open Galaxy from GenomeSpace, navigate to the <code class="subtool">Get Data</code> tool, then click on <code class="parameter">GenomeSpace import from file browser</code>, then navigate to the example data file: <code class="directory">Public</code>  &gt;   <code class="directory">RecipeData</code>  &gt;   <code class="directory">GenomicFeatureData</code>  &gt;  <code class="filename"><a href="https://gsui.genomespace.org/jsui/gsui.html?pathOrUrl=/Home/Public/RecipeData/GenomicFeatureData/GISTIC_regions.bed" target="_blank">GISTIC_regions.bed</a></code>  (or to your personal directory)</li>
+<li>Once <code class="filename">GISTIC_regions.bed</code> is loaded into Galaxy, click the pencil icon to edit the attributes. Change the attributes to the following parameters:
+	<ol>
+<li><code class="parameter">Database</code>: Human Feb. 2009 (GRCh37/hg19) (hg19)</li>
+<li>Ensure that the <code class="parameter">chrom</code>, <code class="parameter">start</code>, and <code class="parameter">end</code> attributes are pointing to the correct columns in the GISTIC file.</li>
+</ol>
+</li>
+</ol>
+</div>
+<br>
+<div class="panel-group">
+<div class="panel panel-warning">
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title">
+<img alt="Galaxy" class="stepAvatar tag-tooltip" src="/assets/Galaxy.png" title="Galaxy"/><a data-toggle="collapse" href="#alternate_46_0">Alternative: other methods to load data into Galaxy. <span class="glyphicon glyphicon-chevron-right"></span></a>
+</h4>
+<p class="text-muted">Tool: Galaxy</p>
+</div>
+<div class="panel-collapse step-container collapse" id="alternate_46_0" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<p>1. Click on the file (e.g., <code class="filename">GISTIC_regions.bed</code>) in GenomeSpace, then use the Galaxy context menu and click <code class="parameter">Launch on File</code>.</p>
+<p><i>OR</i></p>
+<p>2.Click on the file (e.g., <code class="filename">GISTIC_regions.bed</code>) in GenomeSpace, then drag it to the Galaxy icon to launch.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</br></div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_1"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Galaxy" class="stepAvatar tag-tooltip" src="/assets/Galaxy.png" title="Galaxy"/>
+<a data-toggle="toggle" href="#collapse_1" onclick="$('#collapse_1').collapse('toggle')">2: Obtaining a reference genome using Galaxy <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>We will use the <code class="subtool">UCSC Main</code> tool to obtain a reference genome from the UCSC Table Browser, through Galaxy.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_1" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>Navigate to the following menu: <code class="parameter">Get Data &gt; UCSC Main</code></li>
+<li>In the dialog box, enter the following parameters:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li><code class="parameter">clade</code>: mammal</li>
+<li><code class="parameter">genome</code>: Human</li>
+<li><code class="parameter">assembly</code>: Feb. 2009 (GRCh37/hg19)</li>
+<li><code class="parameter">group</code>: Genes and Gene Predictions</li>
+<li><code class="parameter">track</code>: UCSC genes</li>
+<li><code class="parameter">table</code>: knownGene</li>
+<li><code class="parameter">region</code>: genome</li>
+<li><code class="parameter">output format</code>: selected fields from primary and related tables</li>
+<li><code class="parameter">send to</code>: Galaxy
+		<p><img alt="" src="/uploaded/content_r7_s1_0.png" style="height:506px; width:800px"/></p>
+</li>
+</ol>
+</li>
+<li>Click <code class="parameter">get output</code>. This will load a new page from which you can select specific annotations. Change the following parameters:
+	<ol start="A" style="list-style-type: upper-alpha;">
+<li>Scroll down the page. <strong>Under <code class="parameter">Linked Tables</code>, make sure <code class="parameter">hg19: knownToLocusLink</code> is checked.</strong></li>
+<li>Click <code class="parameter">allow selection from checked tables</code> to update the page.</li>
+<li>Under <code class="parameter">Select Fields from hg19.knownGene</code>, make sure the following parameters are checked:
+		<ol start="I" style="list-style-type: upper-roman;">
+<li><code class="parameter">chrom</code>: Reference sequence chromosome or scaffold</li>
+<li><code class="parameter">cdsStart</code>: Coding region start</li>
+<li><code class="parameter">cdsEnd</code>: Coding region end</li>
+</ol>
+</li>
+<li>Under the <code class="parameter">hg19.knownToLocusLink fields</code>, make sure the following parameters are checked:
+		<ol start="I" style="list-style-type: upper-roman;">
+<li><code class="parameter">value</code>: Entrez Gene ID (formerly known as LocusLink)</li>
+</ol>
+</li>
+<li>Click <code class="parameter">done with selection</code> to load the final output page.
+		<p><img alt="" src="/uploaded/content_r7_s1_1.png" style="height:536px; width:800px"/></p>
+</li>
+<li>Click <code class="parameter">Send query to Galaxy</code> to run the job. This will generate a new file of reference gene annotations.</li>
+<li>When the job has finished running, click the pencil icon to edit the attributes. Change the attributes to the following parameters:
+		<ol start="I" style="list-style-type: upper-roman;">
+<li>Under the <code class="parameter">Datatype</code> tab, set <code class="parameter">New Type</code>: interval OR bed</li>
+<li>Under the <code class="parameter">Attributes</code> tab, set <code class="parameter">Chrom column</code>: 1</li>
+<li><code class="parameter">Start column</code>: 2</li>
+<li><code class="parameter">End column</code>: 3</li>
+<li>Check the <code class="parameter">Name/Identifier column (click box &amp; select)</code> parameter, and set it equal to 4. This will set the identifier values to the Entrez IDs.</li>
+<li>Click <code class="parameter">Save</code> to save the new attributes. It may take some time to save the new attributes </li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/s3WRXhlaTO4?list=https://www.youtube.com/watch?v=s3WRXhlaTO4&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_2"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Galaxy" class="stepAvatar tag-tooltip" src="/assets/Galaxy.png" title="Galaxy"/>
+<a data-toggle="toggle" href="#collapse_2" onclick="$('#collapse_2').collapse('toggle')">3: Finding genes in CNV regions <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>We will use the <code class="subtool">Operate on Genomic Intervals</code> tool to find the overlap between the reference gene annotations and the CNV regions. In this recipe, we set the cut-off for an overlapping region to be at least 1 base pair. This tools uses the original BED file and the reference gene annotations.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_2" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>Navigate to the following menu: <code class="parameter">Operate on Genomic Intervals &gt; Intersect</code></li>
+<li>In the dialog box, enter the following parameters:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li><code class="parameter">Return</code>: Overlapping intervals</li>
+<li><code class="parameter">of</code>: the reference genome annotations, e.g., from the <em>UCSC Main on Human: knownGene (genome)</em> job.<br>
+<em><small><strong>NOTE:</strong> Make sure that the first file listed is the reference genome annotation file, as it contains the Entrez ID annotations for the gene regions, which we will need to extract later. If you make this file the second file, the annotations will be discarded.</small></em></br></li>
+<li><code class="parameter">that intersect</code>: the GenomeSpace import on <code class="filename">GISTIC_regions.bed</code></li>
+<li><code class="parameter">for at least</code>: 1</li>
+</ol>
+</li>
+<li>Click <code class="parameter">Execute</code> to submit your job. This will generate a processed BED file.
+	<p><img alt="" src="/ckeditor_assets/pictures/444/content_r7_s2_0_updated.png" style="height: 392px; width: 800px;"/></p>
+</li>
+</ol>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/a4ZidU1QHfA?list=https://www.youtube.com/watch?v=a4ZidU1QHfA&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_3"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Galaxy" class="stepAvatar tag-tooltip" src="/assets/Galaxy.png" title="Galaxy"/>
+<a data-toggle="toggle" href="#collapse_3" onclick="$('#collapse_3').collapse('toggle')">4: Extracting information from files <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>We will use the <code class="subtool">Text Manipulation</code> tool to select a specific row or column of our processed BED file. This tool uses the processed BED file.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_3" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<p><strong>Note</strong>: There are two versions of a "cut" tool in Galaxy. In this example we use the first version, also known as "Cut columns from a table". The second, similarly named tool is called "Cut columns from a table (cut)". Please make sure to match the parameters described in the screenshots to the tool parameters you see in Galaxy.</p>
+<ol>
+<li>Navigate to the following menu: <code class="parameter">Text Manipulation &gt; Cut</code></li>
+<li>In the dialog box, enter the following parameters:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li><code class="parameter">Cut columns</code>: c4</li>
+<li><code class="parameter">Delimited by</code>: tab</li>
+<li><code class="parameter">From</code>: the intersect output (e.g., the intersect of <code class="filename">GISTIC_regions.bed</code> and the reference gene annotations).</li>
+</ol>
+</li>
+<li>Click <code class="parameter">Execute</code> to submit your job. This will generate a processed TXT file. However, this file has duplicate entries which will be removed in the next step.
+	<p><img alt="" src="/ckeditor_assets/pictures/445/content_r7_s3_0_updated.png" style="height: 403px; width: 773px;"/></p>
+</li>
+</ol>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/BwXl_EYuscw?list=https://www.youtube.com/watch?v=BwXl_EYuscw&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_4"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Galaxy" class="stepAvatar tag-tooltip" src="/assets/Galaxy.png" title="Galaxy"/>
+<a data-toggle="toggle" href="#collapse_4" onclick="$('#collapse_4').collapse('toggle')">5: Removing duplicate Entrez Gene IDs <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>We will use the <code class="subtool">Join, Subtract and Group</code> tool to remove duplicate entries from our dataset. The goal is to extract only the unique Entrez ID gene annotations for the genes in the CNV region.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_4" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>Navigate to the following menu: <code class="parameter">Join, Subtract and Group &gt; Group</code></li>
+<li>In the dialog box, enter the following parameters:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li><code class="parameter">Select data</code>: the list of genes from the Cut job</li>
+<li><code class="parameter">Group by column</code>: column 1</li>
+</ol>
+</li>
+<li>Click <code class="parameter">Execute</code> to submit your job. This will generate a processed TXT file of only unique Entrez IDs.
+	<p><img alt="" src="/ckeditor_assets/pictures/446/content_r7_s4_0_updated.png" style="height: 569px; width: 800px;"/></p>
+</li>
+</ol>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/mBK-j2Ac0o8?list=https://www.youtube.com/watch?v=mBK-j2Ac0o8&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_5"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Galaxy" class="stepAvatar tag-tooltip" src="/assets/Galaxy.png" title="Galaxy"/>
+<a data-toggle="toggle" href="#collapse_5" onclick="$('#collapse_5').collapse('toggle')">6: Downloading the gene list to GenomeSpace <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>We will use the <code class="subtool">Send Data</code> tool to send our newly created TXT file back to GenomeSpace, so that we can later use the reference gene annotations in a different program.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_5" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>Navigate to the following menu: <code class="parameter">Send Data &gt; GenomeSpace Exporter</code></li>
+<li>In the dialog box, enter the following parameters:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li><code class="parameter">Send this dataset to GenomeSpace</code>: the list of Entrez Gene IDs with duplicates removed</li>
+<li><code class="parameter">Choose target directory</code>: navigate to your GenomeSpace directory</li>
+<li><code class="parameter">filename</code>: choose a filename, e.g., <code class="filename">GISTIC_genes.txt</code></li>
+</ol>
+</li>
+<li>Click <code class="parameter">Execute</code> to submit your job. This will send your data to GenomeSpace.
+	<p><img alt="" src="/ckeditor_assets/pictures/447/content_r7_s5_0_updated.png" style="height: 303px; width: 800px;"/></p>
+</li>
+<li><strong>OPTIONAL:</strong> close Galaxy.</li>
+</ol>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/xxTWj3pVIcU?list=https://www.youtube.com/watch?v=xxTWj3pVIcU&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_6"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Genepattern" class="stepAvatar tag-tooltip" src="/assets/GenePattern.png" title="GenePattern"/>
+<a data-toggle="toggle" href="#collapse_6" onclick="$('#collapse_6').collapse('toggle')">7: Loading data <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>This is one method that can be used to load data into GenePattern.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_6" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<p><em><small><strong>NOTE:</strong> If you have not yet associated your GenomeSpace account with your GenePattern account, you will be asked to do so. If you do not yet have a GenePattern account, you can automatically generate a new account that will be associated with your GenomeSpace account.</small></em></p>
+<ol>
+<li>Open GenePattern from GenomeSpace, navigate to the GenomeSpace tab, then navigate to the example data file: <code class="directory">Public</code>  &gt;   <code class="directory">RecipeData</code>  &gt;   <code class="directory">ExpressionData</code>  &gt;  <code class="filename"><a href="https://gsui.genomespace.org/jsui/gsui.html?pathOrUrl=/Home/Public/RecipeData/ExpressionData/mrna_orig.gct" target="_blank">mrna_orig.gct</a></code> ​ (or to your personal directory).</li>
+</ol>
+</div>
+<br>
+<div class="panel-group">
+<div class="panel panel-warning">
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title">
+<img alt="Genepattern" class="stepAvatar tag-tooltip" src="/assets/GenePattern.png" title="GenePattern"/><a data-toggle="collapse" href="#alternate_52_0">Alternative: other ways to load data into GenePattern <span class="glyphicon glyphicon-chevron-right"></span></a>
+</h4>
+<p class="text-muted">Tool: GenePattern</p>
+</div>
+<div class="panel-collapse step-container collapse" id="alternate_52_0" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<p>Click on the file (e.g., <code class="filename">mrna_orig.gct</code>) in GenomeSpace, then use the GenePattern context menu and click <code class="parameter">Launch on File</code>.</p>
+<p><i>OR</i></p>
+<p>Click on the file (e.g., <code class="filename">mrna_orig.gct</code>) in GenomeSpace, then drag it to the GenePattern icon to launch.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</br></div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_7"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Genepattern" class="stepAvatar tag-tooltip" src="/assets/GenePattern.png" title="GenePattern"/>
+<a data-toggle="toggle" href="#collapse_7" onclick="$('#collapse_7').collapse('toggle')">8: Filtering genes by expression value <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>We will use the <code class="subtool">PreprocessDataset</code> module to filter the expression dataset and normalize the data. This module uses the GCT file, <code class="filename">mrna_orig.gct</code>.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_7" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>Change to the <code class="parameter">Modules</code> tab, and search for "PreprocessDataset".</li>
+<li>When the module is loaded, change the following parameters:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li><code class="parameter">input filename</code>: load the GCT file, e.g., <code class="filename">mrna_orig.gct</code>. To do this, navigate to the <code class="parameter">GenomeSpace</code> tab, and navigating to the folder containing the GCT file. Load the file into the <code class="parameter">input filename</code> parameter by clicking and dragging the file to the <code class="parameter">input filename</code> input box.<br>
+<img 1px="" alt="" src="/ckeditor_assets/pictures/433/content_content_r7_s6_p1.png" style="width: 800px; height: 212px; border: 1px solid grey;"/></br></li>
+<li><code class="parameter">floor</code>: 0<br>
+<img alt="" src="/ckeditor_assets/pictures/429/content_content_r7_s6_p2.png" style="width: 533px; height: 73px; border: 1px solid grey;"/></br></li>
+<li><code class="parameter">min fold change</code>: 1</li>
+<li><code class="parameter">min delta</code>: 0<br>
+<img alt="" src="/ckeditor_assets/pictures/431/content_content_r7_s6_p3.png" style="width: 554px; height: 139px; border: 1px solid grey;"/></br></li>
+<li><code class="parameter">row normalization</code>: yes<br>
+<img alt="" src="/ckeditor_assets/pictures/432/content_content_r7_s6_p4.png" style="width: 545px; height: 74px; border: 1px solid grey;"/></br></li>
+</ol>
+</li>
+<li>Click <img alt="" src="/ckeditor_assets/pictures/435/content_gp_run.png" style="width: 64px; height: 29px;"/> to run <code class="subtool">PreprocessDataset</code>. This will generate a processed GCT file.</li>
+</ol>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/lxliCqMWhrg?list=https://www.youtube.com/watch?v=lxliCqMWhrg&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_8"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Genepattern" class="stepAvatar tag-tooltip" src="/assets/GenePattern.png" title="GenePattern"/>
+<a data-toggle="toggle" href="#collapse_8" onclick="$('#collapse_8').collapse('toggle')">9: Saving the files to GenomeSpace <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>Save the <code class="filename">mrna_orig.preprocessed.gct</code> file to GenomeSpace using one of the following methods.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_8" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>From the job processing view, click the context menu (blue arrow) next to the dataset (e.g., <code class="filename">mrna_orig.preprocessed.gct</code>), then choose <code class="parameter">Save to GenomeSpace</code>. Save the file to your folder.</li>
+<li><strong>OPTIONAL:</strong> close GenePattern.</li>
+</ol>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/Bs2iF2Y0FYs?list=https://www.youtube.com/watch?v=Bs2iF2Y0FYs&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+<br>
+<div class="panel-group">
+<div class="panel panel-warning">
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title">
+<img alt="Genepattern" class="stepAvatar tag-tooltip" src="/assets/GenePattern.png" title="GenePattern"/><a data-toggle="collapse" href="#alternate_54_0">Alternative: other ways to save files to GenomeSpace <span class="glyphicon glyphicon-chevron-right"></span></a>
+</h4>
+<p class="text-muted">Tool: GenePattern</p>
+</div>
+<div class="panel-collapse step-container collapse" id="alternate_54_0" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>From the <code class="parameter">Modules and Pipeline</code> start page, navigate to <code class="parameter">Jobs</code>. Click on the file, then choose <code class="parameter">Send to GenomeSpace</code>. Save the file to your folder.</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+</br></div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_9"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Genomica" class="stepAvatar tag-tooltip" src="/assets/Genomica.png" title="Genomica"/>
+<a data-toggle="toggle" href="#collapse_9" onclick="$('#collapse_9').collapse('toggle')">10: Loading files into Genomica <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>We will use Genomica to create and visualize a "module network" of co-regulated genes. This will illustrate similarities in expression of the genes associated with aberrant regions in cancer cells.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_9" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<p><em><small><strong>NOTE:</strong> Genomica requires a Java security exception. In order to open the Genomica JNLP, add <b>https://genie.weizmann.ac.il</b> to your Java exception site list. For more information on how to do so, go <a href="https://www.java.com/en/download/faq/exception_sitelist.xml"><b>HERE</b></a></small></em></p>
+<ol>
+<li>Launch Genomica from GenomeSpace by clicking on the Genomica icon. This will prompt the download of a <code class="filename">.jnlp</code> file. Double-click the file to launch Genomica.</li>
+<li>Navigate to the following menu: <code class="parameter">GenomeSpace &gt; Open From GenomeSpace...</code>. This will generate a small window with a file menu. Navigate to the location of the <code class="filename">mrna_orig.preprocessed.gct</code> file.</li>
+<li>Choose the file and click <code class="parameter">Select</code> to load the file. It may take several seconds to load the file. When the file is loaded, a heatmap should appear.</li>
+</ol>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/JdajxxhPrIs?list=https://www.youtube.com/watch?v=JdajxxhPrIs&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_10"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Genomica" class="stepAvatar tag-tooltip" src="/assets/Genomica.png" title="Genomica"/>
+<a data-toggle="toggle" href="#collapse_10" onclick="$('#collapse_10').collapse('toggle')">11: Creating a module network <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>To create a module expression network in Genomica, we use the <code class="subtool">Create Module Network</code> algorithm. A module network is a model which identifies regulatory modules from gene expression data, especially modules of co-regulated genes and their regulators. The module also identifies the conditions under which the regulation can occur.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_10" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>Navigate to the following menu: <code class="parameter">Algorithms &gt; Create a Module Network...</code>.</li>
+<li>When the dialog box appears, change the following parameters:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li>Under the <code class="parameter">General</code> tab, set <code class="parameter">Max number of iterations</code> to 5.</li>
+<li>Under the <code class="parameter">Regulation</code> tab, load the <code class="filename">GISTIC_genes.txt</code> file into the <code class="parameter">Candidate regulator genes</code> parameter. To do this, click the <code class="parameter">GenomeSpace Load...</code> button, navigate to the folder containing your <code class="filename">GISTIC_genes.txt</code> file, click it, and click <code class="parameter">Select</code>.</li>
+</ol>
+</li>
+<li>Click <code class="parameter">Run</code> to run the algorithm. A new dialog box will appear, showing the progress of the algorithm. This may take several minutes to run.
+	<p><img alt="" src="/uploaded/content_r7_s7_0.png"/></p>
+</li>
+</ol>
+<p><em><small><strong>NOTE:</strong> Depending on how many modules you are interested in findings, you can change the <code class="parameter">Max number of modules</code> parameter to a different number. In this example, we limit our regulator gene set to the 95 genes extracted using Galaxy. We then look for a maximum of 50 modules whose gene expression can be categorized by the expression of these candidate regulator genes. To save time, we only run 5 iterations to identify modules.</small></em></p>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_11"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Genomica" class="stepAvatar tag-tooltip" src="/assets/Genomica.png" title="Genomica"/>
+<a data-toggle="toggle" href="#collapse_11" onclick="$('#collapse_11').collapse('toggle')">12: Identifying modules of differentially expressed genes <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>When the algorithm completes running, you can view the different modules that it produces. There are different ways to view the data; we can use these visualizations to browse through the data and identify modules of differentially expressed genes.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_11" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>To view and browse the modules of differentially expressed genes, you can try the different data views in Genomica:
+	<ul>
+<li><strong>Cluster:</strong> A view of the raw data as arranged in a heatmap. The heatmap view can change depending on which tree branches are selected in the Tree view, and which modules are selected in the BirdsEye view.</li>
+<li><strong>Tree:</strong> A view of the data organized into a tree.</li>
+<li><strong>BirdsEye:</strong> This re-arranges the heatmap into strips of modules (horizontally). For each module, samples are sorted by the predicted regulation program into smaller expression profiles. Clicking on a module will re-arrange the Cluster heatmap view, so that the samples highlighted are now the left-most samples. A blue border will appear around the selected dataset in the BirdsEye view, and the samples will be labeled in blue in the Cluster view.</li>
+</ul>
+</li>
+<li>To more clearly view the regulation program that defines each module, you can display the gene regulation on the tree using the following steps:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li>Click on the <code class="parameter">Cluster</code> view, then under the <code class="parameter">Sort Experiments</code> option, choose <code class="parameter">By Descendents</code> from the drop-down menu.</li>
+<li>Navigate to <code class="parameter">View &gt; Cluster</code>, and make sure <code class="parameter">Experiments Tree</code> is checked.</li>
+<li>Finally, to view the gene regulation program, click on a module in the <code class="parameter">Cluster</code> view, then click the <code class="parameter">▲</code> button in the left-side menu to move up-ward in the regulation program.</li>
+</ol>
+</li>
+</ol>
+<p><img alt="" src="/uploaded/content_r7_s8_0.png"/></p>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/UM39B-apoQQ?list=https://www.youtube.com/watch?v=UM39B-apoQQ&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="recipeInterpSection">
+<section id="results"></section>
+<h3 class="divider">Results Interpretation</h3>
+<div class="responsive-content" id="recipeInterpText">
+<p>This is an example interpretation of the results from this recipe.</p>
+<p>First, we identified the overlap between reference gene annotations (Entrez ID format) and the aberrant regions in cancer cells, using Galaxy. This resulted in a list of annotated genes that are located in the aberrant regions associated with cancer. In this example, we find roughly ~650 genes. Independently, we processed and normalized the microarray dataset so that the expression of genes associated with the aberrant regions could be observed. In this example, the microarray has roughly ~4000 genes. Using Genomica, we view the expression of the genes identified in aberrant regions, and try to find modules of similarly regulated genes, based on the list of candidate regulator genes from Galaxy. There are roughly ~100 genes which Galaxy identified which were also in the microarray; these ~100 genes are our 'candidate regulator genes'.</p>
+<p><br>
+To view the regulatory program of a specific module, click on a part of the cluster heatmap and then use the triangle button in the left-side menu to view up-stream regulators of expression. In this example, we view one of the clusters and observe the regulatory program:</br></p>
+<p><img alt="" src="/uploaded/content_r7_s9_0.png"/></p>
+<p>In the left panel is the <code class="parameter">BirdsEye</code> view, which displays all the modules found by the algorithm. Each module is separated by horizontal yellow lines, and the splits within a module are separated by vertical yellow lines. Splits indicate that regulation of an up-stream gene changes from one group of arrays to the next. In this example, the module we are examining is highlighted in blue; note that only one part of the module is highlighted (we are examining only a few splits within the module). The right panel is the <code class="parameter">Cluster</code> view of the microarray, organized according to the <code class="parameter">BirdsEye</code> view. For example, the clusters we are examining (highlighted in blue) have been moved to the left side of the <code class="parameter">Cluster</code> view, even though they are the rightmost clusters in the <code class="parameter">BirdsEye</code> view. The top part of the second panel indicates the gene regulation program; the middle indicates the arrays grouped according to expression, and the bottom indicates the actual expression itself (as a microarray).</p>
+<p>The regulation program illustrates which genes are thought to be associated with the regulation observed in the microarrays. Gene names are displayed along arrows indicating how the gene is regulated in different modules. Arrays are sorted to the left and right of the split by a boolean answer to the question, "Is GeneA up-regulated?" Arrays which are up-regulated for a gene will fall on the righthand side; all other arrays fall on the lefthand side. Let's examine the regulation program more closely. We see that Gene 5205 is up-regulated in Groups 2, 3, and 4, but not in Group 1. Gene 825 is up-regulated in Group 4, but not Groups 2 and 3. Finally, Gene 1455 is up-regulated in Group 3, but not 2. Therefore, we could say that Group 2 is associated with up-regulation of Gene 5205, but no up-regulation of Genes 825 or 1455.</p>
+<p>However, the results in this example are just one interpretation and are only a simple representation of possible results.</p>
+</div>
+</div>
+<hr/>
+<div class="panel-group" id="comments">
+<div class="panel panel-default">
+<div class="panel-heading">
+<h4 class="panel-title"><a data-toggle="collapse" href="#comments_list">Comments (2)</a> <span class="glyphicon glyphicon-chevron-down toggle-glyph"></span></h4>
+</div>
+<div class="panel-collapse collapse in" id="comments_list">
+<div class="panel-body">
+<div class="well comment">
+<small class="help-block">Posted by AlexTall on April 03, 2016 07:51</small>
+<p>Hi everyone 
+I have some trouble in “10: Loading files into Genomica “.
+When I launched Genomica and wanted to “Open From GenomeSpace” new window does not appear to choose "mrna_orig.preprocessed.gct" file form it.
+
+Can anyone help me please?</p>
+</div>
+<div class="well comment">
+<small class="help-block">Posted by sgaramsz on April 05, 2016 13:51</small>
+<p>Hi AlexTall, thank you for contacting us! I just gave this a try and was not able to replicate the issue. For me there is a small pop-up window that gives me access to my GenomeSpace files. Please email us at gs-help[at]broadinstitute.org, so that we can open a ticket and help troubleshoot this issue.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<h4 class="panel-title">Submit a Comment</h4>
+</div>
+<div class="panel-body">
+<form accept-charset="UTF-8" action="/users/sign_in" class="form" id="new_user" method="post" role="form"><div style="display:none"><input name="utf8" type="hidden" value="✓"/><input name="authenticity_token" type="hidden" value="5wPwXDnhV/ao6RZC/GZNz7X2yqBrtiBhuQ6/9V7+b3c="/></div>
+<input id="user_identity_url" name="user[identity_url]" type="hidden" value="https://identity.genomespace.org/identityServer/xrd.jsp"/>
+<input class="btn btn-sm btn-success" name="commit" type="submit" value="Sign in using GenomeSpace"/>
+</form> </div>
+</div>
+</div>
+<script>
+//<![CDATA[
+
+
+
+                $('.responsive-content img').addClass('img-responsive').css({"height" : "", "width" : ""});
+				$('[data-toggle="popover"]').popover({trigger: "hover", placement: "top"});
+
+				$("#show-all").click(function() {
+					$(".step-container").collapse("show");
+
+				});
+
+				$("#hide-all").click(function() {
+					$(".step-container").collapse("hide");
+
+				});
+
+                 $('.tag-tooltip').tooltip();
+
+
+
+//]]>
+</script> </div>
+<div class="col-md-2">
+<div class="bs-docs-sidebar hidden-print gp-side-menu" role="complementary">
+<ul class="nav bs-docs-sidenav" data-spy="affix">
+<li><a href="#summary">Summary</a></li>
+<li><a href="#inputs">Inputs</a></li>
+<li id="recipeOutputNav"><a href="#outputs">Outputs</a></li>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#steps">Steps</a>
+<ul class="nav">
+<li><a class="step-anchor" href="#step_0">Loading data into Galaxy</a></li>
+<li><a class="step-anchor" href="#step_1">Obtaining a reference genome using Galaxy</a></li>
+<li><a class="step-anchor" href="#step_2">Finding genes in CNV regions</a></li>
+<li><a class="step-anchor" href="#step_3">Extracting information from files</a></li>
+<li><a class="step-anchor" href="#step_4">Removing duplicate Entrez Gene IDs</a></li>
+<li><a class="step-anchor" href="#step_5">Downloading the gene list to GenomeSpace</a></li>
+<li><a class="step-anchor" href="#step_6">Loading data</a></li>
+<li><a class="step-anchor" href="#step_7">Filtering genes by expression value</a></li>
+<li><a class="step-anchor" href="#step_8">Saving the files to GenomeSpace</a></li>
+<li><a class="step-anchor" href="#step_9">Loading files into Genomica</a></li>
+<li><a class="step-anchor" href="#step_10">Creating a module network</a></li>
+<li><a class="step-anchor" href="#step_11">Identifying modules of differentially expressed genes</a></li>
+</ul>
+</li>
+<li id="recipeInterpNav"><a href="#results">Results Interpretation</a></li>
+<!-- <li><a href="#comments">Comments</a></li> -->
+<!-- <li><a href="#history">History</a></li> -->
+<li><a href="javascript:void(0);" id="scroll-top">Back to the Top</a></li>
+</ul>
+</div>
+<script>
+//<![CDATA[
+
+				$('.step-anchor').click(function() {
+					var step = $(this).attr('href').split('_')[1];
+					$('#collapse_' + step).collapse("show");
+				});
+
+//]]>
+</script> </div>
+</div>
+</div>
+<script>
+//<![CDATA[
+
+     if ($("#recipeOutputText").html().trim().length == 0){
+       $("#recipeOutputSection").hide();
+       $("#recipeOutputNav").hide();
+     }
+      if ($("#recipeInterpText").html().trim().length == 0){
+            $("#recipeInterpSection").hide();
+              $("#recipeInterpNav").hide();
+      }
+
+
+//]]>
+</script> <div class="container" id="history">
+<h1>History</h1>
+<ul>
+<li>Saved <b>over 3 years ago</b>
+                                                        on 02/21/2017 18:56:20 UTC by <b>forrestkim</b>.
+                                                        <a href="/view/10?lastVersion=true&amp;versionIndex=7" target="_oldRecipe" title="View this version in a new window">View this version</a><br>
+<div>
+</div>
+</br></li>
+<li>Saved <b>over 3 years ago</b>
+                                                        on 02/21/2017 18:55:00 UTC by <b>forrestkim</b>.
+                                                        <a href="/view/10?lastVersion=true&amp;versionIndex=6" target="_oldRecipe" title="View this version in a new window">View this version</a><br>
+<div>
+</div>
+</br></li>
+<li>Saved <b>over 3 years ago</b>
+                                                        on 02/16/2017 22:55:16 UTC by <b>forrestkim</b>.
+                                                        <a href="/view/10?lastVersion=true&amp;versionIndex=5" target="_oldRecipe" title="View this version in a new window">View this version</a><br>
+<div>
+</div>
+</br></li>
+<li>Saved <b>over 3 years ago</b>
+                                                        on 02/16/2017 22:54:09 UTC by <b>forrestkim</b>.
+                                                        <a href="/view/10?lastVersion=true&amp;versionIndex=4" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>over 3 years ago</b>
+                                                        on 02/16/2017 22:53:19 UTC by <b>forrestkim</b>.
+                                                        <a href="/view/10?lastVersion=true&amp;versionIndex=3" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>almost 4 years ago</b>
+                                                        on 11/21/2016 17:48:39 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/10?lastVersion=true&amp;versionIndex=2" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>almost 4 years ago</b>
+                                                        on 10/31/2016 19:56:46 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/10?lastVersion=true&amp;versionIndex=1" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>almost 4 years ago</b>
+                                                        on 10/31/2016 19:56:15 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/10?lastVersion=true&amp;versionIndex=0" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+</ul>
+</div>
+<div class="container-fluid footer gs-recipe-footer">
+<p class="copy-right-block">Copyright ©2016 The Regents of the University of California and The Broad Institute of MIT &amp; Harvard</p>
+</div>
+</body>
+</html>

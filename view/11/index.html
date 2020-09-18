@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>GenomeSpace Recipe: Identify and validate a consensus signature using gene expression data</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link href="/assets/docs.min.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/featured_article.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/pages.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/recipes.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/site.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/tags.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/jquery-ui/theme.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/jquery-ui/core.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/application.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/dataTables/bootstrap/3/jquery.dataTables.bootstrap.css?body=1" media="all" rel="stylesheet"/>
+<script src="/assets/jquery.js?body=1"></script>
+<script src="/assets/jquery_ujs.js?body=1"></script>
+<script src="/assets/jquery-ui/core.js?body=1"></script>
+<script src="/assets/jquery-ui/widget.js?body=1"></script>
+<script src="/assets/jquery-ui/position.js?body=1"></script>
+<script src="/assets/jquery-ui/menu.js?body=1"></script>
+<script src="/assets/jquery-ui/autocomplete.js?body=1"></script>
+<script src="/assets/jquery-ui/mouse.js?body=1"></script>
+<script src="/assets/jquery-ui/sortable.js?body=1"></script>
+<script src="/assets/bootstrap/affix.js?body=1"></script>
+<script src="/assets/bootstrap/alert.js?body=1"></script>
+<script src="/assets/bootstrap/button.js?body=1"></script>
+<script src="/assets/bootstrap/carousel.js?body=1"></script>
+<script src="/assets/bootstrap/collapse.js?body=1"></script>
+<script src="/assets/bootstrap/dropdown.js?body=1"></script>
+<script src="/assets/bootstrap/tab.js?body=1"></script>
+<script src="/assets/bootstrap/transition.js?body=1"></script>
+<script src="/assets/bootstrap/scrollspy.js?body=1"></script>
+<script src="/assets/bootstrap/modal.js?body=1"></script>
+<script src="/assets/bootstrap/tooltip.js?body=1"></script>
+<script src="/assets/bootstrap/popover.js?body=1"></script>
+<script src="/assets/bootstrap-sprockets.js?body=1"></script>
+<script src="/assets/ckeditor/init.js?body=1"></script>
+<script src="/assets/ckeditor/ckeditor.js?body=1"></script>
+<script src="/assets/jquery_nested_form.js?body=1"></script>
+<script src="/assets/dataTables/jquery.dataTables.js?body=1"></script>
+<script src="/assets/dataTables/bootstrap/3/jquery.dataTables.bootstrap.js?body=1"></script>
+<script src="/assets/autocomplete-rails.js?body=1"></script>
+<script src="/assets/spin.min.js?body=1"></script>
+<script src="/assets/docs.min.js?body=1"></script>
+<script src="/assets/jquery.hoverIntent.minified.js?body=1"></script>
+<script src="/assets/ckeditor/config.js?body=1"></script>
+<script src="/assets/featured_article.js?body=1"></script>
+<script src="/assets/pages.js?body=1"></script>
+<script src="/assets/recipes.js?body=1"></script>
+<script src="/assets/site.js?body=1"></script>
+<script src="/assets/tags.js?body=1"></script>
+<script src="/assets/application.js?body=1"></script>
+<meta content="authenticity_token" name="csrf-param"/>
+<meta content="WuwaAZnWSPzUY0X7OsT6Dra/ESzak81DIA/bx2ycnMY=" name="csrf-token"/>
+<link href="https://fonts.googleapis.com/css?family=Wire+One" rel="stylesheet" type="text/css"/>
+<link href="https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:300" rel="stylesheet" type="text/css"/>
+<link href="/assets/favicon.ico" rel="shortcut icon">
+<script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-74623322-1', 'auto');
+        ga('send', 'pageview');
+       // ga('set', 'userId', {{"anonymous"}}); // Set the user ID using signed-in user_id.
+        ga('set', 'userId', 'anonymous'); // Set the user ID using signed-in user_id.
+
+    </script>
+</link></head>
+<body onload="tellParentWindowMySize()">
+<div id="nav_page_wrapper">
+<div id="logo"><a href="http://www.genomespace.org/"><img alt="Gslogo" src="/assets/gslogo.png"/></a></div>
+<div class="clickable" id="login_menu">
+<form accept-charset="UTF-8" action="/users/sign_in" class="new_user" id="gs-login" method="post"><div style="display:none"><input name="utf8" type="hidden" value="✓"/><input name="authenticity_token" type="hidden" value="WuwaAZnWSPzUY0X7OsT6Dra/ESzak81DIA/bx2ycnMY="/></div>
+<input id="user_identity_url" name="user[identity_url]" type="hidden" value="https://identity.genomespace.org/identityServer/xrd.jsp"/>
+<a onclick="document.getElementById('gs-login').submit(); return false;">Login<span class="glyphicon glyphicon-chevron-right"></span></a>
+</form></div>
+<ul id="nav">
+<li class="dropdown">
+<a href="/"><span class="glyphicon glyphicon-home"></span> GenomeSpace Recipes</a>
+</li>
+<!-- <li id="recipe_link"><a href="/recipes"><span class="gparc-nav-icon glyphicon glyphicon-list"></span> My Recipes</a></li> -->
+<!-- links to main genomespace.org -->
+<li id="gsdotorg"><a href="http://www.genomespace.org/"><img alt="Gslogo" height="24px" src="/assets/official_logo.png"/>GenomeSpace.org</a><ul>
+<li id="what-is-genomespace"><a href="http://www.genomespace.org/what-is-genomespace">What is GenomeSpace?</a>
+<li id="tools"><a href="http://www.genomespace.org/support/tools">Tools</a>
+</li>
+<li id="recipes"><a href="http://recipes.genomespace.org/">Recipes</a></li>
+<li id="documentation"><a href="http://www.genomespace.org/documentation">Documentation</a>
+<ul>
+<li><a href="http://www.genomespace.org/support/guides/user-guide">User Guide</a>
+<p>Read the detailed guide to the user interface</p>
+</li>
+<li><a href="http://www.genomespace.org/support/guides/tool-guide">Tool Guide</a>
+<p>Learn how to access GenomeSpace functionality for each Tool</p>
+</li>
+<li><a href="http://www.genomespace.org/faq">FAQ</a>
+<p>See answers to frequently asked questions</p>
+</li>
+<li><a href="http://www.genomespace.org/presentations-and-videos">Presentations and Videos</a>
+<p>Access talks by the GenomeSpace community</p>
+</li>
+<li><a href="http://www.genomespace.org/support/guides/end-to-end-analyses">End-to-End Analyses</a>
+<p>Provides description for end-to-end analyses.</p>
+</li>
+</ul>
+</li>
+<li id="developers"><a href="http://www.genomespace.org/for-developers">Developers</a>
+<ul>
+<li><a href="http://www.genomespace.org/what-can-genomespace-do-for-tool-developers">What Can GenomeSpace Do For Tool Developers?</a>
+<p></p>
+</li>
+<li><a href="http://www.genomespace.org/adopters">Technical Documentation</a>
+<p></p>
+</li>
+<li><a href="http://www.genomespace.org/source-code">Source Code and Distributions</a>
+<p></p>
+</li>
+<li><a href="http://www.genomespace.org/developer-support-and-feedback">Developer Support and Feedback</a>
+<p></p>
+</li>
+</ul>
+</li>
+<li id="support"><a href="http://www.genomespace.org/support">Support</a>
+</li>
+<li id="about"><a href="http://www.genomespace.org/about">About</a>
+</li>
+</li></ul></li>
+<!-- end of links to main GenomeSpace.org -->
+<li class="search">
+<div id="search_box">
+<form accept-charset="UTF-8" action="/search" class="form" method="get" role="form"><div style="display:none"><input name="utf8" type="hidden" value="✓"/></div>
+<div style="margin:0;padding:0;display:inline">
+<input class="search" id="search" name="search" type="text"/>
+</div>
+<input class="searchBtn" type="submit"/>
+</form> </div>
+</li>
+</ul>
+</div>
+<div class="container fluid gs-recipe-">
+<div class="row">
+<div class="col-md-10">
+<table><tr><td><img alt="Gp galaxy" class="recipeAvatar" src="/system/recipes/avatars/000/000/011/original/gp_galaxy.png?1488576462"/></td><td>
+<h3>Identify and validate a consensus signature using gene expression data
+                        </h3>
+</td></tr></table>
+<p class="text-muted">Added by GenomeSpaceTeam on 2015.04.22 <span class="official"><img alt="Official logo" data-content="Offical GenomeSpace Recipe" data-toggle="popover" src="/assets/official_logo.png"/></span>
+<br/>
+            Last updated on over 3 years ago.
+            </p>
+<div class="row">
+<div class="col-md-8">
+<p>
+<a class="btn btn-default btn-xs tag green" >microarray</a>
+<a class="btn btn-default btn-xs tag red" >differential gene expression</a>
+<a class="btn btn-default btn-xs tag red" >hierarchical clustering</a>
+</p>
+</div>
+<div class="col-md-2 voting">
+<p class="text-success"><span class="glyphicon glyphicon-thumbs-up"></span> 0</p>
+</div>
+<div class="col-md-2 voting">
+<p class="text-danger"><span class="glyphicon glyphicon-thumbs-down"></span> 0</p>
+</div>
+</div>
+<hr/>
+<section id="summary"></section>
+<h3 class="divider">Summary</h3>
+<div class="responsive-content">
+<p><img alt="" src="/ckeditor_assets/pictures/453/content_identify_validate_consensus_signature_exprdata_cartoon_updated.png" style="float: right; height: 171px; width: 450px;"/></p>
+<p><span style="font-family:arial,sans-serif;font-size:16px;"><i>Do phenotypically different expression datasets share a common signature? Can the signature distinguish phenotypes in an independent dataset?</i></span></p>
+<p>This recipe provides one method for identifying a consensus gene signature from a training set of several phenotypically distinct gene expression dataset. The recipe then validates the ability of the consensus signature to accurately distinguish phenotypes by using an independent test gene expression dataset. An example use case of this recipe is when an investigator may want to develop a gene expression signature to predict a specific phenotype, such as cancer or another disease.</p>
+<p> </p>
+<p><span style="font-size:16px; font-family: 'Univers Condensed', sans-serif; color: #626264;"><strong>Background information:</strong></span> What is a consensus <span style="line-height: 20.8px;">gene expression </span><span style="line-height: 1.6;">signature?</span></p>
+<p>A gene expression signature is the pattern of expression in a specific group of genes, usually ones that are related by function, position or other biological process. A <em>consensus</em> gene signature is an expression pattern for a specific group of genes, which is shared among different samples or across different phenotypes. For example, a group of genes regulating immune response could be similarly up-regulated during many different, unrelated infections. There are several types of consensus signatures; those that can be derived from gene expression data are called transcriptional consensus signatures. Consensus signatures can be created by overlapping individual gene signatures derived from multiple datasets. Compared to individual gene expression signatures, consensus signatures may be more accurate at distinguishing different phenotypes, such as diseased vs. normal samples.</p>
+<p><img alt="" src="/ckeditor_assets/pictures/452/content_identifyvalidateconsensussignature_updated.png" style="width: 441px; height: 265px; float: right; padding: 10px;"/></p>
+<p> </p>
+<p><span style="font-size:16px; font-family: 'Univers Condensed', sans-serif; color: #626264;"><strong>Use case:</strong></span> <a href="http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3672953/">Targeting MYCN in Neuroblastoma by BET Bromodomain Inhibition</a> (Puissant <em>et al. </em>, <em>Cancer Discov</em>. 2013).</p>
+<p>This study analyzed gene expression data generated from primary neuroblastoma tumors of two genetic classes: tumors harboring MYCN amplification (“MYCN amplified”) and tumors without MYCN amplification (“MYCN non-amplified”). MYCN amplified neuroblastoma is exquisitely dependent on the bromodomain and extra-terminal (BET) family of proteins. As such, treatment of MYCN amplified cell lines or tumors with JQ1, a small-molecule inhibitor of BET proteins, leads to dramatic transcriptional changes and induces cell death.</p>
+<p>To identify a consensus signature to predict sensitivity to JQ1 treatment, two training datasets and one test dataset were used. The training dataset included acute myeloid leukemia (AML) and a multiple myeloid leukemia (MM) cell lines, which had been treated with either DMSO (control) or with JQ1 (treatment). The test dataset included MYCN amplified and MYCN nonamplified neuroblastoma primary tumor samples. GenePattern was used to analyze the AML and MM cell lines; for each dataset, a gene expression signature was derived to identify JQ1 response in the cell line. Using Galaxy, the two signatures were then overlapped to determine the consensus signature between the two phenotypes.</p>
+<p>GenePattern was used to validate the ability of this JQ1-associated consensus signature to differentiate between phenotypes, by using the signature to hierarchically cluster the test dataset (neuroblastoma). Since the MYCN amplified and MYCN non-amplified neuroblastoma samples should have differing expression profiles, it was hypothesized that the consensus signature would be able to separate the samples by phenotype. Indeed, the consensus signature was able to cluster the MYCN-amplified and MYCN-nonamplified samples separately, revealing that the consensus signature accurately distinguishes the sensitivity-to-JQ1 phenotype.</p>
+</div>
+<section id="inputs"></section>
+<h3 class="divider">Inputs</h3>
+<div class="responsive-content">
+<p>To complete this recipe, we will need several gene expression datasets:</p>
+<ul>
+<li><code class="directory">Public</code> &gt; <code class="directory">RecipeData</code> &gt; <code class="directory">ExpressionData</code> &gt; <code class="filename"><strong><a href="https://gsui.genomespace.org/jsui/gsui.html?pathOrUrl=/Home/RecipeData/ExpressionData/GSE29799_AML/" target="_blank">GSE29799_AML</a></strong></code>: a JQ1-treated acute myeloid leukemia (AML) expression dataset (6 samples)</li>
+<li><code class="directory">Public</code> &gt; <code class="directory">RecipeData</code> &gt; <code class="directory">ExpressionData</code> &gt; <code class="filename"><strong><a href="https://gsui.genomespace.org/jsui/gsui.html?pathOrUrl=/Home/RecipeData/ExpressionData/GSE31365_MM/" target="_blank">GSE31365_MM</a></strong></code>: a JQ1-treated multiple myeloma (MM) expression dataset (12 samples)</li>
+<li><code class="directory">Public</code> &gt; <code class="directory">RecipeData</code> &gt; <code class="directory">ExpressionData</code> &gt; <code class="filename"><strong><a href="https://gsui.genomespace.org/jsui/gsui.html?pathOrUrl=/Home/Public/RecipeData/ExpressionData/GSE12460_NB/" target="_blank">GSE12460_NB</a></strong></code>: a neuroblastoma (NB) expression dataset which has MCYN-amplified and MYCN-nonamplified samples (64 samples)</li>
+</ul>
+</div>
+<div id="recipeOutputSection">
+<section id="outputs"></section>
+<h3 class="divider">Outputs</h3>
+<div class="responsive-content" id="recipeOutputText">
+</div>
+</div>
+<section id="overview"></section>
+<h3 class="divider">Recipe steps</h3>
+<ul>
+<li><strong>GenePattern</strong></li>
+<ol start="1">
+<li>Identifying differentially expressed genes in the JQ1-treated datasets</li>
+</ol>
+</ul>
+<ul>
+<li><strong>Galaxy</strong></li>
+<ol start="2">
+<li>Loading data into Galaxy</li>
+<li>Identifying a consensus gene signature by comparing the AML and MM datasets</li>
+</ol>
+</ul>
+<ul>
+<li><strong>GenePattern</strong></li>
+<ol start="4">
+<li>Processing the neuroblastoma dataset</li>
+<li>Projecting the consensus gene list onto the neuroblastoma dataset</li>
+<li>Validating the consensus signature using clustering</li>
+</ol>
+</ul>
+<div class="row">
+<div class="col-md-6" style="text-align: right; display: inline;width: 250px !important;">
+<a class="btn btn-info" href="javascript:void(0);" id="show-all"><span class="glyphicon glyphicon-plus"></span> Expand All Steps</a>
+</div>
+<div class="col-md-6" style="display: inline;width: 250px !important;">
+<a class="btn btn-info" href="javascript:void(0);" id="hide-all"><span class="glyphicon glyphicon-minus"></span> Collapse All Steps</a>
+</div>
+</div>
+<p></p>
+<div aria-multiselectable="true" class="panel-group" id="steps" role="tablist">
+<div class="panel panel-default">
+<section id="step_0"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Genepattern" class="stepAvatar tag-tooltip" src="/assets/GenePattern.png" title="GenePattern"/>
+<a data-toggle="toggle" href="#collapse_0" onclick="$('#collapse_0').collapse('toggle')">1: Identifying differentially expressed genes in the JQ1-treated datasets <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>We will use the <code class="subtool">ComparativeMarkerSelection</code> module to identify genes which are differentially expressed and can distinguish between two phenotypes (e.g. normal vs. JQ1-treated), separately for the acute myeloid leukemia (AML) and multiple myeloma (MM) datasets. This module uses the GCT file and the CLS file.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_0" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<p><em><small><strong>NOTE:</strong> If you have not yet associated your GenomeSpace account with your GenePattern account, you will be asked to do so. If you do not yet have a GenePattern account, you can automatically generate a new account that will be associated with your GenomeSpace account.</small></em></p>
+<ol>
+<li>Click on the GenePattern icon to launch the tool.</li>
+<li>Change to the <code class="parameter">Modules</code> tab, and search for "ComparativeMarkerSelection". Once the module is loaded, change the following parameters:
+	<ol type="A">
+<li><code class="parameter">input file</code>: load the AML GCT file, e.g., <code class="filename">GSE29799GPL6244_RNA_ORIGINALGENE_XXXXX.gct</code>. To do this, use the <code class="parameter">GenomeSpace</code> tab to navigate to <code class="directory">Public</code> &gt; <code class="directory">RecipeData</code> &gt; <code class="directory">ExpressionData</code> &gt; <code class="directory">GSE29799_AML</code>, then drag the file to the input box.</li>
+<li><code class="parameter">cls file</code>: load the AML treatment CLS file, e.g., <code class="filename">treatment.cls</code>, also located in the <code class="directory">GSE29799_AML</code> directory.</li>
+<li><code class="parameter">log transformed data</code>: yes</li>
+<li><code class="parameter">output filename</code>: <code class="filename">AML_genes.comp.marker.odf</code></li>
+</ol>
+</li>
+<li>Click <code class="parameter">Run</code> to run <code class="subtool">ComparativeMarkerSelection</code> on the AML dataset.
+	<p><br>
+<img alt="" src="/uploaded/content_r8_s2.png" style="width: 800px; height: 476px; border: 1px solid grey;"/></br></p>
+</li>
+<li>Once the job has finished running, save the resulting file back to GenomeSpace:
+	<ol type="A">
+<li>Click on the file, and choose <code class="parameter">Save to GenomeSpace</code>.</li>
+<li>Navigate to a directory of your choice and choose <code class="parameter">Save</code>.</li>
+</ol>
+</li>
+<li>Repeat these steps to identify differentially expressed genes for the MM dataset, GSE31365. Change the following parameters:
+	<ol type="A">
+<li><code class="parameter">input file</code>: load the MM GCT file, e.g., <code class="filename">GSE31365GPL6244_RNA_ORIGINALGENE_XXXXX.gct</code>. To do this, use the <code class="parameter">GenomeSpace</code> tab to navigate to <code class="directory">Public</code> &gt; <code class="directory">RecipeData</code> &gt; <code class="directory">ExpressionData</code> &gt; <code class="directory">GSE31365_MM</code>, then drag the file to the input box.</li>
+<li><code class="parameter">cls file</code>: load the MM treatment CLS file, e.g., <code class="filename">treatment.cls</code>, also located in the <code class="directory">GSE31365_MM</code> directory.</li>
+<li><code class="parameter">log transformed data</code>: yes</li>
+<li><code class="parameter">output filename</code>: <code class="filename">MM_genes.comp.marker.odf</code></li>
+</ol>
+</li>
+<li>Click <code class="parameter">Run</code> to run <code class="subtool">ComparativeMarkerSelection</code> on the MM dataset.</li>
+<li>Once the job has finished running, save the resulting file back to GenomeSpace, as before:
+	<ol type="A">
+<li>Click on the file, and choose <code class="parameter">Save to GenomeSpace</code>.</li>
+<li>Navigate to a directory of your choice and choose <code class="parameter">Save</code>.</li>
+</ol>
+</li>
+<li><strong>Optional:</strong> close GenePattern.</li>
+</ol>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/No8kYFtBHyo?list=https://www.youtube.com/watch?v=No8kYFtBHyo&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_1"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Galaxy" class="stepAvatar tag-tooltip" src="/assets/Galaxy.png" title="Galaxy"/>
+<a data-toggle="toggle" href="#collapse_1" onclick="$('#collapse_1').collapse('toggle')">2: Loading data into Galaxy <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>We will load the two sets of differentially expressed genes from the AML and MM datasets into Galaxy. Then, we will use a pre-built GenomeSpace workflow to process the datasets, filtering and removing features that do not pass certain cutoffs. Finally, we will create a consensus signature and send a list of gene symbols back to GenomeSpace for additional analysis.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_1" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<p><em><small><strong>NOTE:</strong> If you have not yet associated your GenomeSpace account with your Galaxy account, you will be asked to do so. If you do not yet have a Galaxy account, you can automatically generate a new account that will be associated with your GenomeSpace account.</small></em></p>
+<ol>
+<li>Click on the Galaxy icon to launch the tool.</li>
+<li>Navigate to the following menu: <code class="parameter">Get Data &gt; GenomeSpace import</code></li>
+<li>Select the <code class="filename">AML_genes.comp.marker.odf</code> and <code class="filename">MM_genes.comp.marker.odf</code> files.</li>
+<li>Click <code class="parameter">Send to Galaxy</code>.</li>
+<li>Once the files have been loaded, change the attributes for each file, by clicking the pencil icon and changing the following parameters:
+	<ol type="A">
+<li>Switch to the <code class="parameter">Datatype</code> tab.</li>
+<li><code class="parameter">New type</code>: tabular</li>
+<li>Click <code class="parameter">Save</code>. Ignore any warnings which may pop up.</li>
+</ol>
+	 
+
+	<p><img alt="" src="/uploaded/content_r8_s3.png" style="width: 800px; height: 504px; border: 1px solid grey;"/></p>
+</li>
+</ol>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/Izc7DWseCTc?list=https://www.youtube.com/watch?v=Izc7DWseCTc&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_2"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Galaxy" class="stepAvatar tag-tooltip" src="/assets/Galaxy.png" title="Galaxy"/>
+<a data-toggle="toggle" href="#collapse_2" onclick="$('#collapse_2').collapse('toggle')">3: Identifying a consensus gene signature by comparing the AML and MM datasets <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>We will use a pre-built GenomeSpace workflow to identify the consensus gene signature. This pre-built GenomeSpace workflow uses several steps to determine the overlap between the AML and MM datasets. First, we filter the AML and MM datasets to the top genes using the following cutoffs: (1) &gt;= 1.5 differential expression; and (2) FDR &lt; 0.05 as calculated by <code class="subtool">ComparativeMarkerSelection</code> (GenePattern).</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_2" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>Click on the following link: <a href="https://usegalaxy.org/u/genomespace/w/identify-and-validate-a-consensus-signature-using-gene-expression-data">Official GenomeSpace Galaxy Workflow: Identify and Validate a Consensus Signature Using Gene Expression Data</a>.</li>
+<li>Click the <img alt="" src="/ckeditor_assets/pictures/121/content_galplus.png" style="width: 14px; height: 14px; display:inline;"/> icon in the upper right corner to import the workflow.</li>
+<li>Click start using this workflow.</li>
+<li>Click on the workflow drop-down menu (e.g., <strong>imported: Identify and Validate a Consensus Signature Using Gene Expression Data</strong>), then choose <code class="parameter">Run</code>.</li>
+<li>Load the files into the correct fields. The input fields should have annotation indicating which file should be loaded:
+	<ol type="A">
+<li><code class="parameter">Step 1: Input Dataset</code>: <code class="filename">AML_genes.comp.marker.odf</code></li>
+<li><code class="parameter">Step 2: Input Dataset</code>: <code class="filename">MML_genes.comp.marker.odf</code></li>
+<li><code class="parameter">Choose Target Directory</code>: choose a directory to save the file to, e.g. your home directory.</li>
+</ol>
+</li>
+<li>Click <code class="parameter">Run workflow</code>.<br>
+<br>
+<img alt="" src="/ckeditor_assets/pictures/14/content_r8_s4_2.png" style="width: 796px; height: 1201px;"/></br></br></li>
+<br/>
+<li>Once the workflow has finished running, the files will automatically saved to your GenomeSpace folder that was chosen in Step 5C.</li>
+<li><strong>Optional:</strong> close Galaxy.</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_3"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Genepattern" class="stepAvatar tag-tooltip" src="/assets/GenePattern.png" title="GenePattern"/>
+<a data-toggle="toggle" href="#collapse_3" onclick="$('#collapse_3').collapse('toggle')">4: Processing the neuroblastoma dataset <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>We will use several GenePattern modules to extract the relevant information from our test dataset, which is the MYCN-amplified and MYCN-nonamplified neuroblastoma dataset. Then, we will project the consensus signature onto the neuroblastoma dataset and evaluate its ability to distinguish the two phenotypes (MYCN-amplified and MYCN-nonamplified) by clustering the resulting dataset.</p>
+<p>We will use <code class="subtool">SelectFeaturesColumns</code> to filter the neuroblastoma dataset to only those samples that are MYCN-amplified or MYCN-nonamplified. There is a third group of samples (called 'NILL'), in which MYCN amplification status was not determined; therefore, we filter these samples out and work only with the annotated data.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_3" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>Click on the GenePattern icon to launch the tool.</li>
+<li>Change to the <code class="parameter">Modules</code> tab, and search for <code class="filename">SelectFeaturesColumns</code>. Once the module is loaded, change the following parameters:
+	<ol type="A">
+<li><code class="parameter">input filename</code>: use the GenomeSpace tab to navigate to <code class="directory">Public &gt; RecipeData &gt; ExpressionData &gt; GSE12460</code>, then click and drag to load the neuroblastoma GCT file, e.g., <code class="filename">GSE12460GPL750_RNA_ORIGINALGENE_XXXX.gct</code>.</li>
+<li><code class="parameter">columns</code>: 0-2, 4-6, 8-16, 18-19, 21-25, 28, 30-36, 38-54</li>
+<li><code class="parameter">output</code>: <code class="filename">MYCN.gene.exp.gct</code></li>
+</ol>
+</li>
+<li>Click <code class="parameter">Run</code>.
+	<p><br>
+<img alt="" src="/uploaded/content_r8_s5.png" style="width: 800px; height: 488px; border: 1px solid grey;"/></br></p>
+</li>
+<li>Change to the <code class="parameter">Jobs</code> tab, and reload the <code class="subtool">SelectFeaturesColumns</code> module by clicking on the job and choosing <code class="parameter">Reload Job</code>.</li>
+<li>Once the module is loaded, change the following parameters:
+	<ol type="A">
+<li><code class="parameter">input filename</code>: load the neuroblastoma CLS file, e.g., <code class="filename">Myc.Expression.cls</code>. To do this, click the <img alt="" src="/ckeditor_assets/pictures/120/content_gp_x.png" style="width: 15px; height: 14px; display: inline;"/> next to the input filename parameter to remove the GCT file from the module. Then, use the GenomeSpace tab to navigate to the GSE12460_MYCN directory: <code class="directory">Public &gt; RecipeData &gt; ExpressionData &gt; GSE12460</code>, then drag the file to the input box.</li>
+<li><code class="parameter">output</code>: <code class="filename">MYCN.gene.exp.cls</code></li>
+</ol>
+</li>
+<li>Click <code class="parameter">Run</code>.</li>
+<li>Once the CLS file has been generated, click on the file and choose <code class="parameter">Save File</code> to download a copy of this to your local computer. We will need this file to be downloaded locally for a later step.</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_4"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Genepattern" class="stepAvatar tag-tooltip" src="/assets/GenePattern.png" title="GenePattern"/>
+<a data-toggle="toggle" href="#collapse_4" onclick="$('#collapse_4').collapse('toggle')">5: Projecting the consensus gene list onto the neuroblastoma dataset <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>We will use <code class="parameter">SelectFeaturesRows</code> to filter the neuroblastoma dataset to only those gene symbols which are in the consensus signature.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_4" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>Change to the <code class="parameter">Modules</code> tab, and search for "SelectFeaturesRows". Once the module is loaded, change the following parameters:
+	<ol type="A">
+<li><code class="parameter">input filename</code>: <code class="filename">MYCN.gene.exp.gct</code>, the previously filtered neuroblastoma GCT file. To do this, use the <code class="parameter">Jobs</code> tab to find the previous job results, then drag the file to the input box.</li>
+<li><code class="parameter">list filename</code>: <code class="filename">consensus.genelist.txt</code>, the consensus signature gene list. To do this, use the <code class="parameter">GenomeSpace</code> tab to navigate to the directory containing the consensus signature gene list, then drag the file to the input box.</li>
+<li><code class="parameter">output</code>: <code class="filename">MYCN.consensus.gct</code></li>
+</ol>
+</li>
+<li>Click <code class="parameter">Run</code>.
+	<p><br>
+<img alt="" src="/uploaded/content_r8_s6.png" style="border: 1px solid grey;"/></br></p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_5"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Genepattern" class="stepAvatar tag-tooltip" src="/assets/GenePattern.png" title="GenePattern"/>
+<a data-toggle="toggle" href="#collapse_5" onclick="$('#collapse_5').collapse('toggle')">6: Validating the consensus signature using clustering <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>We will use <code class="subtool">HierarchicalClustering</code> in GenePattern to create dendrogram of the filtered neuroblastoma dataset, clustering the data by phenotype (MYCN-amplified vs. MYCN-nonamplified), to determine how well the consensus signature can distinguish between phenotypes. Then, we will use <code class="subtool">HierarchicalClusteringViewer</code> to view the results of the clustering algorithm and to label samples by phenotype.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_5" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>Change to the <code class="parameter">Modules</code> tab, and search for <code class="subtool">HierarchicalClustering</code>.</li>
+<li>Once the module is loaded, change to the <code class="parameter">Jobs</code> tab, then change the following parameters:
+	<ol type="A">
+<li><code class="parameter">input file</code>: <code class="filename">MYCN.consensus.gct</code> (output from <code class="subtool">SelectFeaturesRows</code>).</li>
+<li><code class="parameter">column distance measure</code>: Euclidean distance</li>
+<li><code class="parameter">row distance measure</code>: No row clustering</li>
+<li><code class="parameter">clustering method</code>: Pairwise complete-linkage</li>
+</ol>
+</li>
+<li>Click <code class="parameter">Run</code>.
+	<p><br>
+<img alt="" src="/ckeditor_assets/pictures/465/content_hierarchicalclustering.png" style="width: 800px; height: 353px; border: 1px solid grey;"/></br></p>
+</li>
+<li>Once the job has finished running, change to the Modules tab and search for <code a="" class="subtool">HierarchicalClusteringViewer</code>.</li>
+<li>Once the module is loaded, change to the Jobs tab, then change the following parameters:
+	<ol type="A">
+<li><code class="parameter">cdt file</code>: <code class="filename">MYCN.consensus.cdt</code></li>
+<li><code class="parameter">atr file</code>: <code class="filename">MYCN.consensus.atr</code></li>
+</ol>
+</li>
+<li>Click <code class="parameter">Run</code>.
+	<p><br/>
+<img alt="" src="/ckeditor_assets/pictures/466/content_hierarchicalclusteringviewer.png" style="width: 800px; height: 399px; border: 1px solid grey;"/></p>
+</li>
+<li>Once <code class="subtool">HierarchicalClusteringViewer</code> has loaded, you should see a heatmap fo the original <code class="filename">MYCN.consensus.gct</code> file. To color the samples by phenotype, change the following parameters:
+	<ol type="A">
+<li>Click the add/edit labels button.</li>
+<li>Make sure the "Samples" type of label is selected, then click the "Add Label" button.</li>
+<li>Choose the <code class="filename">MYCN.consensus.cls</code> file you downloaded to your local directory from Step 5.</li>
+<li>Click "OK". This should color the samples according to the labels in the CLS file.
+		<p><br/>
+<img alt="" src="/ckeditor_assets/pictures/467/content_hierarchicalclusteringviewer_heatmap.png" style="width: 800px; height: 446px; border: 1px solid grey;"/></p>
+</li>
+</ol>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="recipeInterpSection">
+<section id="results"></section>
+<h3 class="divider">Results Interpretation</h3>
+<div class="responsive-content" id="recipeInterpText">
+<p><strong>This is an example interpretation of the results from this recipe.</strong> First, we identified a consensus gene signature of JQ1 activity by finding genes that became differentially expressed due to JQ1 treatment in both acute myeloid leukemia (AML) and multiple myeloma (MM). Then, we projected this consensus signature on a test dataset of neuroblastoma cells which were not treated with JQ1, but were either MYCN-amplified or MYCN-nonamplified. Since MYCN amplification is associated with an increased sensitivity to BET bromodomain inhibitors, such as JQ1, we expected that a signature of JQ1 activity would be able to separate MYCN-amplified and MYCN-nonamplified phenotypes.</p>
+<p><img alt="" src="/ckeditor_assets/pictures/470/content_gene-e_hierarch.png" style="width: 800px; height: 462px;"/></p>
+<p>These results suggest that the JQ1 consensus signature is capable of differentiating between MYCN-amplified neuroblastoma and MYCN-nonamplified neuroblastoma samples. In particular, we see that when we use hierarchical clustering to differentiate the two phenotypes, we observe three distinct groups of samples: (1) the majority of the MYCN-amplified samples (left cluster, light blue); (2) MYCN-nonamplified samples that are similar to MYCN-amplified samples (middle cluster, dark blue); and (3) MYCN-nonamplified samples which are distinct from MYCN-amplified samples (right cluster, dark blue). The significance of this possible result would need further confirmation.</p>
+</div>
+</div>
+<hr/>
+<div class="panel-group" id="comments">
+<div class="panel panel-default">
+<div class="panel-heading">
+<h4 class="panel-title"><a data-toggle="collapse" href="#comments_list">Comments (1)</a> <span class="glyphicon glyphicon-chevron-down toggle-glyph"></span></h4>
+</div>
+<div class="panel-collapse collapse in" id="comments_list">
+<div class="panel-body">
+<div class="well comment">
+<small class="help-block">Posted by xiaojuw on March 01, 2016 03:47</small>
+<p></p>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<h4 class="panel-title">Submit a Comment</h4>
+</div>
+<div class="panel-body">
+<form accept-charset="UTF-8" action="/users/sign_in" class="form" id="new_user" method="post" role="form"><div style="display:none"><input name="utf8" type="hidden" value="✓"/><input name="authenticity_token" type="hidden" value="WuwaAZnWSPzUY0X7OsT6Dra/ESzak81DIA/bx2ycnMY="/></div>
+<input id="user_identity_url" name="user[identity_url]" type="hidden" value="https://identity.genomespace.org/identityServer/xrd.jsp"/>
+<input class="btn btn-sm btn-success" name="commit" type="submit" value="Sign in using GenomeSpace"/>
+</form> </div>
+</div>
+</div>
+<script>
+//<![CDATA[
+
+
+
+                $('.responsive-content img').addClass('img-responsive').css({"height" : "", "width" : ""});
+				$('[data-toggle="popover"]').popover({trigger: "hover", placement: "top"});
+
+				$("#show-all").click(function() {
+					$(".step-container").collapse("show");
+
+				});
+
+				$("#hide-all").click(function() {
+					$(".step-container").collapse("hide");
+
+				});
+
+                 $('.tag-tooltip').tooltip();
+
+
+
+//]]>
+</script> </div>
+<div class="col-md-2">
+<div class="bs-docs-sidebar hidden-print gp-side-menu" role="complementary">
+<ul class="nav bs-docs-sidenav" data-spy="affix">
+<li><a href="#summary">Summary</a></li>
+<li><a href="#inputs">Inputs</a></li>
+<li id="recipeOutputNav"><a href="#outputs">Outputs</a></li>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#steps">Steps</a>
+<ul class="nav">
+<li><a class="step-anchor" href="#step_0">Identifying differentially expressed genes in the JQ1-treated datasets</a></li>
+<li><a class="step-anchor" href="#step_1">Loading data into Galaxy</a></li>
+<li><a class="step-anchor" href="#step_2">Identifying a consensus gene signature by comparing the AML and MM datasets</a></li>
+<li><a class="step-anchor" href="#step_3">Processing the neuroblastoma dataset</a></li>
+<li><a class="step-anchor" href="#step_4">Projecting the consensus gene list onto the neuroblastoma dataset</a></li>
+<li><a class="step-anchor" href="#step_5">Validating the consensus signature using clustering</a></li>
+</ul>
+</li>
+<li id="recipeInterpNav"><a href="#results">Results Interpretation</a></li>
+<!-- <li><a href="#comments">Comments</a></li> -->
+<!-- <li><a href="#history">History</a></li> -->
+<li><a href="javascript:void(0);" id="scroll-top">Back to the Top</a></li>
+</ul>
+</div>
+<script>
+//<![CDATA[
+
+				$('.step-anchor').click(function() {
+					var step = $(this).attr('href').split('_')[1];
+					$('#collapse_' + step).collapse("show");
+				});
+
+//]]>
+</script> </div>
+</div>
+</div>
+<script>
+//<![CDATA[
+
+     if ($("#recipeOutputText").html().trim().length == 0){
+       $("#recipeOutputSection").hide();
+       $("#recipeOutputNav").hide();
+     }
+      if ($("#recipeInterpText").html().trim().length == 0){
+            $("#recipeInterpSection").hide();
+              $("#recipeInterpNav").hide();
+      }
+
+
+//]]>
+</script> <div class="container" id="history">
+<h1>History</h1>
+<ul>
+<li>Saved <b>over 3 years ago</b>
+                                                        on 04/05/2017 22:38:14 UTC by <b>forrestkim</b>.
+                                                        <a href="/view/11?lastVersion=true&amp;versionIndex=13" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>over 3 years ago</b>
+                                                        on 04/05/2017 22:36:05 UTC by <b>forrestkim</b>.
+                                                        <a href="/view/11?lastVersion=true&amp;versionIndex=12" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>over 3 years ago</b>
+                                                        on 04/05/2017 22:35:07 UTC by <b>forrestkim</b>.
+                                                        <a href="/view/11?lastVersion=true&amp;versionIndex=11" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>over 3 years ago</b>
+                                                        on 04/05/2017 22:32:39 UTC by <b>forrestkim</b>.
+                                                        <a href="/view/11?lastVersion=true&amp;versionIndex=10" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>over 3 years ago</b>
+                                                        on 04/05/2017 22:30:58 UTC by <b>forrestkim</b>.
+                                                        <a href="/view/11?lastVersion=true&amp;versionIndex=9" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>over 3 years ago</b>
+                                                        on 04/03/2017 19:44:59 UTC by <b>asp006</b>.
+                                                        <a href="/view/11?lastVersion=true&amp;versionIndex=8" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>over 3 years ago</b>
+                                                        on 03/15/2017 19:03:19 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/11?lastVersion=true&amp;versionIndex=7" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>over 3 years ago</b>
+                                                        on 03/07/2017 20:10:29 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/11?lastVersion=true&amp;versionIndex=6" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>over 3 years ago</b>
+                                                        on 03/03/2017 21:27:42 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/11?lastVersion=true&amp;versionIndex=5" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>over 3 years ago</b>
+                                                        on 03/03/2017 21:23:52 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/11?lastVersion=true&amp;versionIndex=4" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>over 3 years ago</b>
+                                                        on 03/01/2017 20:35:38 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/11?lastVersion=true&amp;versionIndex=3" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>over 3 years ago</b>
+                                                        on 02/07/2017 20:09:24 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/11?lastVersion=true&amp;versionIndex=2" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>almost 4 years ago</b>
+                                                        on 11/09/2016 20:05:08 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/11?lastVersion=true&amp;versionIndex=1" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>almost 4 years ago</b>
+                                                        on 11/09/2016 20:00:44 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/11?lastVersion=true&amp;versionIndex=0" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+</ul>
+</div>
+<div class="container-fluid footer gs-recipe-footer">
+<p class="copy-right-block">Copyright ©2016 The Regents of the University of California and The Broad Institute of MIT &amp; Harvard</p>
+</div>
+</body>
+</html>

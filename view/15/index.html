@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>GenomeSpace Recipe: Use Gene Set Enrichment Analysis to identify common signatures between gene sets</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link href="/assets/docs.min.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/featured_article.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/pages.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/recipes.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/site.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/tags.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/jquery-ui/theme.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/jquery-ui/core.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/application.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/dataTables/bootstrap/3/jquery.dataTables.bootstrap.css?body=1" media="all" rel="stylesheet"/>
+<script src="/assets/jquery.js?body=1"></script>
+<script src="/assets/jquery_ujs.js?body=1"></script>
+<script src="/assets/jquery-ui/core.js?body=1"></script>
+<script src="/assets/jquery-ui/widget.js?body=1"></script>
+<script src="/assets/jquery-ui/position.js?body=1"></script>
+<script src="/assets/jquery-ui/menu.js?body=1"></script>
+<script src="/assets/jquery-ui/autocomplete.js?body=1"></script>
+<script src="/assets/jquery-ui/mouse.js?body=1"></script>
+<script src="/assets/jquery-ui/sortable.js?body=1"></script>
+<script src="/assets/bootstrap/affix.js?body=1"></script>
+<script src="/assets/bootstrap/alert.js?body=1"></script>
+<script src="/assets/bootstrap/button.js?body=1"></script>
+<script src="/assets/bootstrap/carousel.js?body=1"></script>
+<script src="/assets/bootstrap/collapse.js?body=1"></script>
+<script src="/assets/bootstrap/dropdown.js?body=1"></script>
+<script src="/assets/bootstrap/tab.js?body=1"></script>
+<script src="/assets/bootstrap/transition.js?body=1"></script>
+<script src="/assets/bootstrap/scrollspy.js?body=1"></script>
+<script src="/assets/bootstrap/modal.js?body=1"></script>
+<script src="/assets/bootstrap/tooltip.js?body=1"></script>
+<script src="/assets/bootstrap/popover.js?body=1"></script>
+<script src="/assets/bootstrap-sprockets.js?body=1"></script>
+<script src="/assets/ckeditor/init.js?body=1"></script>
+<script src="/assets/ckeditor/ckeditor.js?body=1"></script>
+<script src="/assets/jquery_nested_form.js?body=1"></script>
+<script src="/assets/dataTables/jquery.dataTables.js?body=1"></script>
+<script src="/assets/dataTables/bootstrap/3/jquery.dataTables.bootstrap.js?body=1"></script>
+<script src="/assets/autocomplete-rails.js?body=1"></script>
+<script src="/assets/spin.min.js?body=1"></script>
+<script src="/assets/docs.min.js?body=1"></script>
+<script src="/assets/jquery.hoverIntent.minified.js?body=1"></script>
+<script src="/assets/ckeditor/config.js?body=1"></script>
+<script src="/assets/featured_article.js?body=1"></script>
+<script src="/assets/pages.js?body=1"></script>
+<script src="/assets/recipes.js?body=1"></script>
+<script src="/assets/site.js?body=1"></script>
+<script src="/assets/tags.js?body=1"></script>
+<script src="/assets/application.js?body=1"></script>
+<meta content="authenticity_token" name="csrf-param"/>
+<meta content="TPlqgDC9ILWpCgCB4LENFB1vpT5eu/JTE3spaPAmH1U=" name="csrf-token"/>
+<link href="https://fonts.googleapis.com/css?family=Wire+One" rel="stylesheet" type="text/css"/>
+<link href="https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:300" rel="stylesheet" type="text/css"/>
+<link href="/assets/favicon.ico" rel="shortcut icon">
+<script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-74623322-1', 'auto');
+        ga('send', 'pageview');
+       // ga('set', 'userId', {{"anonymous"}}); // Set the user ID using signed-in user_id.
+        ga('set', 'userId', 'anonymous'); // Set the user ID using signed-in user_id.
+
+    </script>
+</link></head>
+<body onload="tellParentWindowMySize()">
+<div id="nav_page_wrapper">
+<div id="logo"><a href="http://www.genomespace.org/"><img alt="Gslogo" src="/assets/gslogo.png"/></a></div>
+<div class="clickable" id="login_menu">
+<form accept-charset="UTF-8" action="/users/sign_in" class="new_user" id="gs-login" method="post"><div style="display:none"><input name="utf8" type="hidden" value="✓"/><input name="authenticity_token" type="hidden" value="TPlqgDC9ILWpCgCB4LENFB1vpT5eu/JTE3spaPAmH1U="/></div>
+<input id="user_identity_url" name="user[identity_url]" type="hidden" value="https://identity.genomespace.org/identityServer/xrd.jsp"/>
+<a onclick="document.getElementById('gs-login').submit(); return false;">Login<span class="glyphicon glyphicon-chevron-right"></span></a>
+</form></div>
+<ul id="nav">
+<li class="dropdown">
+<a href="/"><span class="glyphicon glyphicon-home"></span> GenomeSpace Recipes</a>
+</li>
+<!-- <li id="recipe_link"><a href="/recipes"><span class="gparc-nav-icon glyphicon glyphicon-list"></span> My Recipes</a></li> -->
+<!-- links to main genomespace.org -->
+<li id="gsdotorg"><a href="http://www.genomespace.org/"><img alt="Gslogo" height="24px" src="/assets/official_logo.png"/>GenomeSpace.org</a><ul>
+<li id="what-is-genomespace"><a href="http://www.genomespace.org/what-is-genomespace">What is GenomeSpace?</a>
+<li id="tools"><a href="http://www.genomespace.org/support/tools">Tools</a>
+</li>
+<li id="recipes"><a href="http://recipes.genomespace.org/">Recipes</a></li>
+<li id="documentation"><a href="http://www.genomespace.org/documentation">Documentation</a>
+<ul>
+<li><a href="http://www.genomespace.org/support/guides/user-guide">User Guide</a>
+<p>Read the detailed guide to the user interface</p>
+</li>
+<li><a href="http://www.genomespace.org/support/guides/tool-guide">Tool Guide</a>
+<p>Learn how to access GenomeSpace functionality for each Tool</p>
+</li>
+<li><a href="http://www.genomespace.org/faq">FAQ</a>
+<p>See answers to frequently asked questions</p>
+</li>
+<li><a href="http://www.genomespace.org/presentations-and-videos">Presentations and Videos</a>
+<p>Access talks by the GenomeSpace community</p>
+</li>
+<li><a href="http://www.genomespace.org/support/guides/end-to-end-analyses">End-to-End Analyses</a>
+<p>Provides description for end-to-end analyses.</p>
+</li>
+</ul>
+</li>
+<li id="developers"><a href="http://www.genomespace.org/for-developers">Developers</a>
+<ul>
+<li><a href="http://www.genomespace.org/what-can-genomespace-do-for-tool-developers">What Can GenomeSpace Do For Tool Developers?</a>
+<p></p>
+</li>
+<li><a href="http://www.genomespace.org/adopters">Technical Documentation</a>
+<p></p>
+</li>
+<li><a href="http://www.genomespace.org/source-code">Source Code and Distributions</a>
+<p></p>
+</li>
+<li><a href="http://www.genomespace.org/developer-support-and-feedback">Developer Support and Feedback</a>
+<p></p>
+</li>
+</ul>
+</li>
+<li id="support"><a href="http://www.genomespace.org/support">Support</a>
+</li>
+<li id="about"><a href="http://www.genomespace.org/about">About</a>
+</li>
+</li></ul></li>
+<!-- end of links to main GenomeSpace.org -->
+<li class="search">
+<div id="search_box">
+<form accept-charset="UTF-8" action="/search" class="form" method="get" role="form"><div style="display:none"><input name="utf8" type="hidden" value="✓"/></div>
+<div style="margin:0;padding:0;display:inline">
+<input class="search" id="search" name="search" type="text"/>
+</div>
+<input class="searchBtn" type="submit"/>
+</form> </div>
+</li>
+</ul>
+</div>
+<div class="container fluid gs-recipe-">
+<div class="row">
+<div class="col-md-10">
+<table><tr><td><img alt="Gp msigdb galaxy" class="recipeAvatar" src="/system/recipes/avatars/000/000/015/original/gp_msigdb_galaxy.png?1455048843"/></td><td>
+<h3>Use Gene Set Enrichment Analysis to identify common signatures between gene sets
+                        </h3>
+</td></tr></table>
+<p class="text-muted">Added by GenomeSpaceTeam on 2015.05.06 <span class="official"><img alt="Official logo" data-content="Offical GenomeSpace Recipe" data-toggle="popover" src="/assets/official_logo.png"/></span>
+<br/>
+            Last updated on over 3 years ago.
+            </p>
+<div class="row">
+<div class="col-md-8">
+<p>
+<a class="btn btn-default btn-xs tag red" >gene expression analysis</a>
+<a class="btn btn-default btn-xs tag red" >gene set enrichment analysis</a>
+<a class="btn btn-default btn-xs tag green" >microarray</a>
+<a class="btn btn-default btn-xs tag green" >gene sets</a>
+</p>
+</div>
+<div class="col-md-2 voting">
+<p class="text-success"><span class="glyphicon glyphicon-thumbs-up"></span> 1</p>
+</div>
+<div class="col-md-2 voting">
+<p class="text-danger"><span class="glyphicon glyphicon-thumbs-down"></span> 0</p>
+</div>
+</div>
+<hr/>
+<section id="summary"></section>
+<h3 class="divider">Summary</h3>
+<div class="responsive-content">
+<p><span style="font-family:arial,sans-serif;"><span style="font-size:16px;"><i>How do I create a custom-generated gene set? Are there any commonalities between custom-generated gene sets, and MSigDB hallmark gene sets?</i></span></span></p>
+<p>This recipe provides a method for identifying and visualizing similarities between diverse gene sets relevant to a study. An example use of this recipe is a case where an investigator may want to compare two phenotypes, such as two types of cancer, to determine which gene sets may be similar between these phenotypes.</p>
+<p> </p>
+<p><span style="font-size:16px; font-family: 'Univers Condensed', sans-serif; color: #626264;"><strong>Background information:</strong></span> What is Gene Set Enrichment Analysis, and why should I use it?</p>
+<p>Gene sets are lists of genes that share similar functions, transcriptional regulation, chromosomal positions, pathways, or other biological processes. It is possible to identify gene sets that are enriched or over-represented in a particular phenotype, such as a specific disease. Gene Set Enrichment Analysis (GSEA) is a computational method which determines whether an <em>a priori</em> defined set of genes shows statistically significant, concordant differences between two phenotypes. GSEA can be used with a custom gene set generated by the user, or with the annotated, standardized gene sets which are available in the Molecular Signatures Database (MSigDB) collection. Completing GSEA on a gene expression dataset will identify those gene sets which are significantly enriched in a particular phenotype. Comparing similarities between the top gene sets following GSEA can yield unique insights into the mechanisms associated with a specific phenotype, which cannot be observed using a single-gene analysis.</p>
+<p><img alt="" src="/ckeditor_assets/pictures/359/content_usegsea.png" style="width: 450px; height: 304px; float: right; padding: 10px;"/></p>
+<p> </p>
+<p><span style="font-size:16px; font-family: 'Univers Condensed', sans-serif; color: #626264;"><strong>Use case:</strong></span> <a href="http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3672953/">Targeting MYCN in Neuroblastoma by BET Bromodomain Inhibition</a> (Puissant <em>et al. </em>, <em>Cancer Discov</em>. 2013).</p>
+<p>This study analyzed gene expression data generated from primary neuroblastoma tumors of two genetic classes: tumors harboring MYCN amplification (“MYCN amplified”) and tumors without MYCN amplification (“MYCN non-amplified”). MYCN amplified neuroblastoma is exquisitely dependent on the bromodomain and extra-terminal (BET) family of proteins. As such, treatment of MYCN amplified cell lines or tumors with JQ1, a small-molecule inhibitor of BET proteins, leads to dramatic transcriptional changes and induces cell death.</p>
+<p>A training set of gene expression data was analyzed using GenePattern, and custom gene sets were generated representing the MYCN amplified and MYCN non-amplified datasets. The custom-generated gene sets were then concatenated with the Hallmark gene set from MSigDB using tools in Galaxy. Subsequently, a test gene expression dataset of neuroblastoma cell lines treated with JQ1 (treatment) or DMSO (control) was used to rank this collection of gene sets using single-sample Gene Set Enrichment Analysis (ssGSEA).</p>
+<p>This analysis reveals that MYCN-associated gene sets are enriched in JQ1-associated datasets, and suggests that JQ1 functions to suppress transcriptional programs mediated by MYCN amplification. The resulting similarities of the top-ranked gene sets are visualized using ConstellationMap, a module available in GenePattern. This helps to highlight similarities and overlaps between gene sets.</p>
+</div>
+<section id="inputs"></section>
+<h3 class="divider">Inputs</h3>
+<div class="responsive-content">
+<p>To complete this recipe, we will need a gene expression dataset describing two conditions or phenotypes. In this example, we will use microarray samples from primary neuroblastoma tumors that have been categorized into tumors with amplification of MYCN, and tumors without amplification of MYCN. We will use this data to derive MYCN-associated gene sets. Then, we will also need a test dataset to complete gene set enrichment analysis of our MYCN-associated gene sets. We will use a test microarray dataset of neuroblastoma cell lines, which have either been treated with JQ1 (treatment), or with DMSO (control). We will need the following datasets, which can be downloaded from the following GenomeSpace Public folder:</p>
+<p><strong>A neuroblastoma primary tumor dataset (GSE12460):</strong></p>
+<p><code class="directory">Public</code> &gt; <code class="directory">RecipeData</code> &gt; <code class="directory">ExpressionData</code> &gt; <strong><code class="filename"><a href="https://gsui.genomespace.org/jsui/gsui.html?pathOrUrl=/Home/Public/RecipeData/ExpressionData/MYCN.gct" target="_blank">MYCN.gct</a></code></strong>: This file contains gene expression data of two phenotypes: MYCN-amplified and MYCN-nonamplified. The file is available in GenePattern's GCT format.</p>
+<p><code class="directory">Public</code> &gt; <code class="directory">RecipeData</code> &gt; <code class="directory">ExpressionData</code> &gt; <strong><code class="filename"><a href="https://gsui.genomespace.org/jsui/gsui.html?pathOrUrl=/Home/Public/RecipeData/ExpressionData/MYCN.cls" target="_blank">MYCN.cls</a></code></strong>: This file contains class assignments (MYCN+ or MYCN-) for all the samples in the GCT file, as identified by the GenePattern CLS format.</p>
+<p><strong>A test gene expression dataset (GSE43392):</strong></p>
+<p><code class="directory">Public</code> &gt; <code class="directory">RecipeData</code> &gt; <code class="directory">ExpressionData</code> &gt; <strong><code class="filename"><a href="https://gsui.genomespace.org/jsui/gsui.html?pathOrUrl=/Home/Public/RecipeData/ExpressionData/GSE43392null.collapsed.gct" target="_blank">GSE43392null.collapsed.gct</a></code></strong>: This file contains gene expression data of neuroblastoma cell lines treated with either JQ1 (treatment) or with DMSO (control). The file is available in GenePattern's GCT format. The file has already been preprocessed, normalized, and probe IDs have been collapsed to HUGO Gene Symbols.</p>
+<p><code class="directory">Public</code> &gt; <code class="directory">RecipeData</code> &gt; <code class="directory">ExpressionData</code> &gt; <strong><code class="filename"><a href="https://gsui.genomespace.org/jsui/gsui.html?pathOrUrl=/Home/Public/RecipeData/ExpressionData/GSE43392.cls" target="_blank">GSE43392.cls</a></code></strong>: This file contains class assignments (treatment or control) for all the samples in the GCT file, as identified by the GenePattern CLS format.</p>
+</div>
+<div id="recipeOutputSection">
+<section id="outputs"></section>
+<h3 class="divider">Outputs</h3>
+<div class="responsive-content" id="recipeOutputText">
+</div>
+</div>
+<section id="overview"></section>
+<h3 class="divider">Recipe steps</h3>
+<ul>
+<li><strong>GenePattern</strong></li>
+<ol start="1">
+<li>Identify differentially expressed genes</li>
+<li>Extract highly differentially expressed genes</li>
+</ol>
+</ul>
+<ul>
+<li><strong>MSigDB</strong></li>
+<ol start="3">
+<li>Obtain an MSigDB gene set</li>
+</ol>
+</ul>
+<ul>
+<li><strong>Galaxy</strong></li>
+<ol start="4">
+<li>Merge different gene sets</li>
+</ol>
+</ul>
+<ul>
+<li><strong>GenePattern</strong></li>
+<ol start="5">
+<li>Run single-sample gene set enrichment analysis (ssGSEA)</li>
+<li>Visualize ssGSEAProjection results using ConstellationMap</li>
+</ol>
+</ul>
+<div class="row">
+<div class="col-md-6" style="text-align: right; display: inline;width: 250px !important;">
+<a class="btn btn-info" href="javascript:void(0);" id="show-all"><span class="glyphicon glyphicon-plus"></span> Expand All Steps</a>
+</div>
+<div class="col-md-6" style="display: inline;width: 250px !important;">
+<a class="btn btn-info" href="javascript:void(0);" id="hide-all"><span class="glyphicon glyphicon-minus"></span> Collapse All Steps</a>
+</div>
+</div>
+<p></p>
+<div aria-multiselectable="true" class="panel-group" id="steps" role="tablist">
+<div class="panel panel-default">
+<section id="step_0"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Genepattern" class="stepAvatar tag-tooltip" src="/assets/GenePattern.png" title="GenePattern"/>
+<a data-toggle="toggle" href="#collapse_0" onclick="$('#collapse_0').collapse('toggle')">1: Identify differentially expressed genes <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>First, we will identify genes that are differentially expressed in the MYCN-amplified phenotype, compared to the MYCN-nonamplified phenotype. We will accomplish this using the <code class="subtool">ComparativeMarkerSelection</code> module in GenePattern.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_0" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>Launch GenePattern from GenomeSpace.</li>
+<li>Change to the <code class="parameter">Modules</code> tab, and search for "ComparativeMarkerSelection".</li>
+<li>Once the module has loaded, change the following parameters:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li><code class="parameter">input file</code>: <code class="filename">MYCN.gct</code> (found in the <code class="directory">Public</code> &gt; <code class="directory">RecipeData</code> &gt; <code class="directory">ExpressionData</code> folder)</li>
+<li><code class="parameter">cls file</code>: <code class="filename">MYCN.cls</code> (found in the <code class="directory">Public</code> &gt; <code class="directory">RecipeData</code> &gt; <code class="directory">ExpressionData</code> folder)</li>
+<li><code class="parameter">log transformed data</code>: yes</li>
+</ol>
+</li>
+<li>Click <code class="parameter">Run</code> to run <code class="subtool">ComparativeMarkerSelection</code>.
+	<p><img alt="" src="/ckeditor_assets/pictures/30/content_s1_0.png" style="height:384px; width:800px"/></p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_1"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Genepattern" class="stepAvatar tag-tooltip" src="/assets/GenePattern.png" title="GenePattern"/>
+<a data-toggle="toggle" href="#collapse_1" onclick="$('#collapse_1').collapse('toggle')">2: Extract highly differentially expressed genes <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>Next, we will convert the gene expression signatures associated with MYCN amplification and MYCN nonamplification into custom gene sets. We will filter the data and create two new datasets of genes that are upregulated in the MYCN amplified phenotype, and genes that are upregulated in the MYCN nonamplified phenotype. We will use <code class="subtool">ComparativeMarkerSelectionViewer</code> in GenePattern</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_1" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>Change to the <code class="parameter">Modules</code> tab, and search for "ComparativeMarkerSelectionViewer".</li>
+<li>Once the module has loaded, change the following parameters:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li><code class="parameter">comparative marker selection filename</code>: <code class="filename">MYCN.comp.marker.odf</code></li>
+<li><code class="parameter">dataset filename</code>: <code class="filename">MYCN.gct </code>(found in the <code class="directory">Public</code> &gt; <code class="directory">RecipeData</code> &gt; <code class="directory">ExpressionData</code> folder)</li>
+</ol>
+</li>
+<li>Click <code class="parameter">Run</code> to run <code class="subtool">ComparativeMarkerSelectionViewer</code>.<br>
+<img alt="" src="/ckeditor_assets/pictures/31/content_s2_0.png" style="height:308px; width:800px"/></br></li>
+<li>Once the job has completed, a visualizer should launch automatically. If it does not, click the <code class="parameter">Launch</code> button to launch the visualizer. Once the visualizer loads the file, select the genes which are significantly up-regulated in the MYCN amplified phenotype, as follows:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li>Navigate to the following menu: <code class="parameter">Edit &gt; Filter Features &gt; Create/Edit Filter</code>.<br>
+<img alt="" src="/ckeditor_assets/pictures/378/content_step2_4a.png" style="height: 382px; width: 800px;"/></br></li>
+<li>Change the following parameters:
+		<ol start="1" style="list-style-type: lower-roman;">
+<li>Select <code class="parameter">T-Test</code> from the dropdown menu.</li>
+<li>Enter 0 in the <code class="parameter">&lt;=</code> box to the right of <code class="parameter">T-Test</code>.</li>
+<li>Click <code class="parameter">Add Filter</code>.</li>
+<li>Select <code class="parameter">FDR(BH)</code> from the dropdown menu.</li>
+<li>Enter 0.01 in the <code class="parameter">&lt;=</code> box to the right of <code class="parameter">FDR(BH)</code>.</li>
+<li>Click <code class="parameter">OK</code> to filter the dataset.<br/>
+<img alt="" src="/ckeditor_assets/pictures/462/content_updated_fig1.png" style="height: 190px; width: 500px;"/></li>
+</ol>
+</li>
+<li>Save the resulting filtered data by clicking the box to the left of the <code class="parameter">Rank</code> header to select all rows, then navigating to the following menu: <code class="parameter">File &gt; Save Dataset(.gct).</code> Change the following parameters:
+		<ol start="1" style="list-style-type: lower-roman;">
+<li>Give the file a name, e.g. <code class="filename">MYCN_amplified_up.gct</code></li>
+<li>Click the <code class="parameter">Download</code> button then <code class="parameter">Create</code>. This will save the file to your local directory.</li>
+<li>Click <code class="parameter">Close</code></li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Next, select the genes which are significantly up-regulated in the MYCN nonamplified phenotype, as follows:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li>Navigate to the following menu: <code class="parameter">Edit &gt; Filter Features &gt; Create/Edit Filter</code>.</li>
+<li>Using the same filter, change the following parameters:
+		<ol start="1" style="list-style-type: lower-roman;">
+<li>Enter 0 in the <code class="parameter">&gt;=</code> box to the right of <code class="parameter">T-Test</code>.</li>
+<li>Leave the remaining filter parameters as-is.</li>
+<li>Click <code class="parameter">OK</code> to filter the dataset.<br/>
+<img alt="" src="/ckeditor_assets/pictures/463/content_updated_fig2.png" style="height: 190px; width: 500px;"/></li>
+</ol>
+</li>
+<li>Save the resulting filtered data by clicking the box to the left of the <code class="parameter">Rank</code> header to select all rows, then navigating to the following menu: <code class="parameter">File &gt; Save Dataset(.gct).</code> Change the following parameters:
+		<ol start="1" style="list-style-type: lower-roman;">
+<li>name, e.g. <code class="filename">MYCN_nonamplified_up.gct</code></li>
+<li>click the <code class="parameter">Download</code> button then <code class="parameter">Create</code>. This will save the file to your local directory.</li>
+<li>click <code class="parameter">Close</code></li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Save the files back to GenomeSpace by navigating to your local directory, then clicking and dragging the files into your GenomeSpace account.</li>
+<li>Convert each file to the GMT format, as follows:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li>Right-click the file and choose <code class="parameter">Convert</code></li>
+<li>Choose <code class="parameter">gmt</code></li>
+<li>Click <code class="parameter">Convert on Server</code><br/>
+<img alt="" src="/ckeditor_assets/pictures/35/content_s3_0.png" style="height:558px; width:800px"/></li>
+</ol>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_2"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Msigdb" class="stepAvatar tag-tooltip" src="/assets/MSigDB.png" title="MSigDB"/>
+<a data-toggle="toggle" href="#collapse_2" onclick="$('#collapse_2').collapse('toggle')">3: Obtain an MSigDB gene set <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>Next, we will download a specific gene set from MSigDB, the Hallmark gene set (H).  The Hallmark gene set summarizes and represents specific well-defined biological states or processes in sets of coherently expressed genes. They are a good benchmark for evaluating which biological functions or processes are enriched in a list of genes.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_2" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>Launch MSigDB from GenomeSpace.</li>
+<li>Navigate to the <code class="parameter">Downloads</code> tab on the MSigDB website.</li>
+<li>Scroll down to "Older version of MSigDB" and click on "Archived Downloads". </li>
+<li>Scroll down until you find the "MSigDB version 5.1, January 2016". Click on "download zip file" to download it to your local directory.</li>
+<li>Save the file to GenomeSpace (click and drag).<br>
+<img alt="" src="/ckeditor_assets/pictures/375/content_step3.png" style="height: 628px; width: 800px;"/></br></li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_3"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Galaxy" class="stepAvatar tag-tooltip" src="/assets/Galaxy.png" title="Galaxy"/>
+<a data-toggle="toggle" href="#collapse_3" onclick="$('#collapse_3').collapse('toggle')">4: Merge different gene sets <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>Next, we will merge the MYCN-associated gene sets with the MSigDB Hallmark gene set, to create one file that can be used for GSEA.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_3" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>Launch Galaxy from GenomeSpace.</li>
+<li>Import the gene sets from GenomeSpace.
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li>Navigate to the following menu: <code class="parameter">Get Data &gt; GenomeSpace Import</code>.</li>
+<li>Once the tool is loaded, navigate through your user directory. Select the following files:
+		<ol start="1" style="list-style-type: lower-roman;">
+<li><code class="filename">h.all.v5.1.symbols.gmt</code></li>
+<li><code class="filename">MYCN_amplifed_up.gmt</code></li>
+<li><code class="filename">MYCN_nonamplifed_up.gmt</code></li>
+</ol>
+</li>
+<li>Click <code class="parameter">Send to Galaxy</code> to upload them to Galaxy.<br>
+<img alt="" src="/ckeditor_assets/pictures/37/content_s5_0.png" style="height:540px; width:800px"/></br></li>
+</ol>
+</li>
+<li>Concatenate the files together into one file.
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li>Navigate to the following menu: <code class="parameter">Text Manipulation &gt; Concatenate Datasets</code>. Once the tool is loaded, change the following parameters:</li>
+<li><code class="parameter">Concatenate Dataset</code>: <code class="filename">MYCN_amplified_up.gmt</code></li>
+<li>Click <code class="parameter">Insert Dataset</code> to add a new dataset.</li>
+<li><code class="parameter">Concatenate Dataset</code>: <code class="filename">MYCN_nonamplified_up.gmt</code></li>
+<li>Click <code class="parameter">Insert Dataset</code> to add a new dataset.</li>
+<li><code class="parameter">Concatenate Dataset</code>: <code class="filename">h.all.v5.1.symbols.gmt</code></li>
+<li>Click <code class="parameter">Execute</code> to run the job.<br/>
+<img alt="" src="/ckeditor_assets/pictures/38/content_s5_1.png" style="height:331px; width:800px"/></li>
+</ol>
+</li>
+<li>Once the job has finished running, send the resulting file back to GenomeSpace.
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li>Navigate to the following menu: <code class="parameter">Send Data &gt; GenomeSpace Exporter</code>. Once the tool is loaded, change the following parameters:</li>
+<li><code class="parameter">Send this dataset to GenomeSpace</code>: <code class="filename">concatenate datasets…</code>.</li>
+<li><code class="parameter">Choose Target Directory</code>: your directory</li>
+<li><code class="parameter">Filename</code>: <code class="filename">concatenated_genesets.gmt</code></li>
+<li>Click <code class="parameter">Execute</code> to run the job.<br/>
+<img alt="" src="/ckeditor_assets/pictures/39/content_s5_2.png" style="height:326px; width:800px"/></li>
+</ol>
+</li>
+<li>Once the job has completed, return to GenomeSpace.</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_4"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Genepattern" class="stepAvatar tag-tooltip" src="/assets/GenePattern.png" title="GenePattern"/>
+<a data-toggle="toggle" href="#collapse_4" onclick="$('#collapse_4').collapse('toggle')">5: Run single-sample gene set enrichment analysis (ssGSEA) <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>Next, we run single-sample gene set enrichment analysis (ssGSEA) on the text expression dataset, using the custom GMT file of MYCN-associated gene sets and the MSigDB Hallmark gene set. ssGSEA calculates separate enrichment scores for each pairing of a sample and gene set, and represents the degree to which the genes in a particular gene set are coordinately up- or down-regulated within a single sample. We will use the <code class="subtool">ssGSEAprojection</code> module in GenePattern.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_4" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>Launch GenePattern from GenomeSpace.</li>
+<li>Change to the <code class="parameter">Modules</code> tab, and search for "ssGSEAProjection". Once the module has loaded, change the following parameters:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li><code class="parameter">input gct file</code>: <code class="filename">GSE43392null.collapsed.gct</code></li>
+<li><code class="parameter">output file prefix</code>: <code class="filename">GSE43392.ssGSEA.output</code></li>
+<li><code class="parameter">gene sets database file</code>: <code class="filename">concatenated_genesets.gmt</code></li>
+<li><code class="parameter">combine mode</code>: combine.off<br>
+<small><em><strong>NOTE:</strong> 'collapse mode' is set to 'combine.off' to prevent the module from creating new gene sets by combining sets with _UP or _DN suffixes in their names.</em></small></br></li>
+</ol>
+</li>
+<li>Click <code class="parameter">Run</code> to run the job. This will produce a new GCT file of the ssGSEA projection with gene sets as rows, samples as columns, and enrichment scores as elements.<br/>
+<img alt="" src="/ckeditor_assets/pictures/40/content_s6_0.png" style="height:474px; width:800px"/></li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_5"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Genepattern" class="stepAvatar tag-tooltip" src="/assets/GenePattern.png" title="GenePattern"/>
+<a data-toggle="toggle" href="#collapse_5" onclick="$('#collapse_5').collapse('toggle')">6: Visualize ssGSEAProjection results using ConstellationMap <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>Finally, we will visualize the results from the ssGSEA projection using the <code class="subtool">ConstellationMap</code> module in GenePattern. <code class="subtool">ConstellationMap</code> is a downstream visualization and analysis tool with an interactive web visualizer, which identifies commonalities between high-scoring gene sets. You can find more information at the <a href="http://gparc.org/docs/urn:lsid:8080.gpbroad.broadinstitute.org:genepatternmodules:345:1.1">GParc <code class="subtool">ConstellationMap</code> module page</a>.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_5" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>Change to the <code class="parameter">Modules</code> tab, and search for "ConstellationMap". Once the module has loaded, change the following parameters:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li><code class="parameter">input gct file</code>: <code class="filename">GSE43392.ssGSEA.output.gct</code></li>
+<li><code class="parameter">input cls file</code>: <code class="filename">GSE43392.cls</code></li>
+<li><code class="parameter">gene sets file</code>: <code class="filename">concatenate_genesets.gmt</code></li>
+<li><code class="parameter">top n</code>: 20</li>
+<li><code class="parameter">direction</code>: negative</li>
+<li><code class="parameter">jaccard threshold</code>: 0.05</li>
+<li><code class="parameter">target class</code>: JQ1<br>
+<img alt="" src="/ckeditor_assets/pictures/41/content_s7_0.png" style="height:761px; width:800px"/></br></li>
+</ol>
+</li>
+<li>Click <code class="parameter">Run</code> to run the job. This will produce several output files.</li>
+<li>Click the file, <code class="filename">Visualizer.html</code>, then <code class="filename">Open Link</code>, to launch a new webpage. This webpage is an interactive, in-browser radial plot.<br/>
+<img alt="" src="/ckeditor_assets/pictures/42/content_s7_1.png" style="height:440px; width:800px"/></li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="recipeInterpSection">
+<section id="results"></section>
+<h3 class="divider">Results Interpretation</h3>
+<div class="responsive-content" id="recipeInterpText">
+<p><strong>This is an example interpretation of the results from this recipe.</strong> First, we identified sets of genes that are significantly up- or down-regulated in MYCN amplified vs. MYCN non-amplified neuroblastoma tumors. We built a personalized collection of gene sets by combining these two new gene sets, MYCN_amplified_up and MYCN_nonamplified_up, with the Hallmarks collection gene set collection from MSigDB.</p>
+<p>Next, we investigated whether any of the gene sets in our combined collection were significantly enriched in neuroblastoma cell lines treated with DMSO (control) compared with those treated with JQ1. We used the <code class="subtool">ssGSEAProjection</code> module to get per sample enrichment values for each gene set. Then, we compared these gene set enrichment profiles against each other, and against the JQ1 treatment vs. control phenotype, using the <code class="subtool">ConstellationMap</code> module.</p>
+<p>Given the effects of JQ1, we expect that MYC and MYCN associated gene sets, including our new signature-based gene sets, will have enrichment profiles that are significantly associated with controls compared to JQ1-treated samples.</p>
+<p><img alt="" src="/ckeditor_assets/pictures/43/content_result1.png" style="height:557px; width:800px"/></p>
+<p>Our results seem to suggest that MYC and MYCN-amplification programs (highlighted) are indeed affected by JQ1 treatment, being highly anti-correlated to JQ1-treated samples and having similar enrichment profiles. Moreover, these gene sets share 12 genes that may be further investigated as markers for JQ1 susceptibility. As investigators, we could continue to investigate clusters of any of the other highly associated gene sets for potential leads in the search for downstream effects of JQ1 treatment. As these are investigative steps, the significance of any results would need further confirmation. </p>
+</div>
+</div>
+<hr/>
+<div class="panel-group" id="comments">
+<div class="panel panel-default">
+<div class="panel-heading">
+<h4 class="panel-title"><a data-toggle="collapse" href="#comments_list">Comments (0)</a> <span class="glyphicon glyphicon-chevron-down toggle-glyph"></span></h4>
+</div>
+<div class="panel-collapse collapse in" id="comments_list">
+<div class="panel-body">
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<h4 class="panel-title">Submit a Comment</h4>
+</div>
+<div class="panel-body">
+<form accept-charset="UTF-8" action="/users/sign_in" class="form" id="new_user" method="post" role="form"><div style="display:none"><input name="utf8" type="hidden" value="✓"/><input name="authenticity_token" type="hidden" value="TPlqgDC9ILWpCgCB4LENFB1vpT5eu/JTE3spaPAmH1U="/></div>
+<input id="user_identity_url" name="user[identity_url]" type="hidden" value="https://identity.genomespace.org/identityServer/xrd.jsp"/>
+<input class="btn btn-sm btn-success" name="commit" type="submit" value="Sign in using GenomeSpace"/>
+</form> </div>
+</div>
+</div>
+<script>
+//<![CDATA[
+
+
+
+                $('.responsive-content img').addClass('img-responsive').css({"height" : "", "width" : ""});
+				$('[data-toggle="popover"]').popover({trigger: "hover", placement: "top"});
+
+				$("#show-all").click(function() {
+					$(".step-container").collapse("show");
+
+				});
+
+				$("#hide-all").click(function() {
+					$(".step-container").collapse("hide");
+
+				});
+
+                 $('.tag-tooltip').tooltip();
+
+
+
+//]]>
+</script> </div>
+<div class="col-md-2">
+<div class="bs-docs-sidebar hidden-print gp-side-menu" role="complementary">
+<ul class="nav bs-docs-sidenav" data-spy="affix">
+<li><a href="#summary">Summary</a></li>
+<li><a href="#inputs">Inputs</a></li>
+<li id="recipeOutputNav"><a href="#outputs">Outputs</a></li>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#steps">Steps</a>
+<ul class="nav">
+<li><a class="step-anchor" href="#step_0">Identify differentially expressed genes</a></li>
+<li><a class="step-anchor" href="#step_1">Extract highly differentially expressed genes</a></li>
+<li><a class="step-anchor" href="#step_2">Obtain an MSigDB gene set</a></li>
+<li><a class="step-anchor" href="#step_3">Merge different gene sets</a></li>
+<li><a class="step-anchor" href="#step_4">Run single-sample gene set enrichment analysis (ssGSEA)</a></li>
+<li><a class="step-anchor" href="#step_5">Visualize ssGSEAProjection results using ConstellationMap</a></li>
+</ul>
+</li>
+<li id="recipeInterpNav"><a href="#results">Results Interpretation</a></li>
+<!-- <li><a href="#comments">Comments</a></li> -->
+<!-- <li><a href="#history">History</a></li> -->
+<li><a href="javascript:void(0);" id="scroll-top">Back to the Top</a></li>
+</ul>
+</div>
+<script>
+//<![CDATA[
+
+				$('.step-anchor').click(function() {
+					var step = $(this).attr('href').split('_')[1];
+					$('#collapse_' + step).collapse("show");
+				});
+
+//]]>
+</script> </div>
+</div>
+</div>
+<script>
+//<![CDATA[
+
+     if ($("#recipeOutputText").html().trim().length == 0){
+       $("#recipeOutputSection").hide();
+       $("#recipeOutputNav").hide();
+     }
+      if ($("#recipeInterpText").html().trim().length == 0){
+            $("#recipeInterpSection").hide();
+              $("#recipeInterpNav").hide();
+      }
+
+
+//]]>
+</script> <div class="container" id="history">
+<h1>History</h1>
+<ul>
+<li>Saved <b>over 3 years ago</b>
+                                                        on 03/15/2017 19:41:36 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/15?lastVersion=true&amp;versionIndex=6" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>almost 4 years ago</b>
+                                                        on 10/31/2016 19:09:31 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/15?lastVersion=true&amp;versionIndex=5" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>almost 4 years ago</b>
+                                                        on 10/31/2016 19:08:58 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/15?lastVersion=true&amp;versionIndex=4" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>about 4 years ago</b>
+                                                        on 09/02/2016 13:51:19 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/15?lastVersion=true&amp;versionIndex=3" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>about 4 years ago</b>
+                                                        on 09/02/2016 13:50:34 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/15?lastVersion=true&amp;versionIndex=2" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>over 4 years ago</b>
+                                                        on 06/02/2016 18:55:56 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/15?lastVersion=true&amp;versionIndex=1" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>over 4 years ago</b>
+                                                        on 05/27/2016 18:13:43 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/15?lastVersion=true&amp;versionIndex=0" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+</ul>
+</div>
+<div class="container-fluid footer gs-recipe-footer">
+<p class="copy-right-block">Copyright ©2016 The Regents of the University of California and The Broad Institute of MIT &amp; Harvard</p>
+</div>
+</body>
+</html>

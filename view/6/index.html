@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>GenomeSpace Recipe: Find differentially expressed genes in RNA-seq data</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link href="/assets/docs.min.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/featured_article.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/pages.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/recipes.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/site.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/tags.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/jquery-ui/theme.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/jquery-ui/core.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/application.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/dataTables/bootstrap/3/jquery.dataTables.bootstrap.css?body=1" media="all" rel="stylesheet"/>
+<script src="/assets/jquery.js?body=1"></script>
+<script src="/assets/jquery_ujs.js?body=1"></script>
+<script src="/assets/jquery-ui/core.js?body=1"></script>
+<script src="/assets/jquery-ui/widget.js?body=1"></script>
+<script src="/assets/jquery-ui/position.js?body=1"></script>
+<script src="/assets/jquery-ui/menu.js?body=1"></script>
+<script src="/assets/jquery-ui/autocomplete.js?body=1"></script>
+<script src="/assets/jquery-ui/mouse.js?body=1"></script>
+<script src="/assets/jquery-ui/sortable.js?body=1"></script>
+<script src="/assets/bootstrap/affix.js?body=1"></script>
+<script src="/assets/bootstrap/alert.js?body=1"></script>
+<script src="/assets/bootstrap/button.js?body=1"></script>
+<script src="/assets/bootstrap/carousel.js?body=1"></script>
+<script src="/assets/bootstrap/collapse.js?body=1"></script>
+<script src="/assets/bootstrap/dropdown.js?body=1"></script>
+<script src="/assets/bootstrap/tab.js?body=1"></script>
+<script src="/assets/bootstrap/transition.js?body=1"></script>
+<script src="/assets/bootstrap/scrollspy.js?body=1"></script>
+<script src="/assets/bootstrap/modal.js?body=1"></script>
+<script src="/assets/bootstrap/tooltip.js?body=1"></script>
+<script src="/assets/bootstrap/popover.js?body=1"></script>
+<script src="/assets/bootstrap-sprockets.js?body=1"></script>
+<script src="/assets/ckeditor/init.js?body=1"></script>
+<script src="/assets/ckeditor/ckeditor.js?body=1"></script>
+<script src="/assets/jquery_nested_form.js?body=1"></script>
+<script src="/assets/dataTables/jquery.dataTables.js?body=1"></script>
+<script src="/assets/dataTables/bootstrap/3/jquery.dataTables.bootstrap.js?body=1"></script>
+<script src="/assets/autocomplete-rails.js?body=1"></script>
+<script src="/assets/spin.min.js?body=1"></script>
+<script src="/assets/docs.min.js?body=1"></script>
+<script src="/assets/jquery.hoverIntent.minified.js?body=1"></script>
+<script src="/assets/ckeditor/config.js?body=1"></script>
+<script src="/assets/featured_article.js?body=1"></script>
+<script src="/assets/pages.js?body=1"></script>
+<script src="/assets/recipes.js?body=1"></script>
+<script src="/assets/site.js?body=1"></script>
+<script src="/assets/tags.js?body=1"></script>
+<script src="/assets/application.js?body=1"></script>
+<meta content="authenticity_token" name="csrf-param"/>
+<meta content="SCDrkdUj/B34DUFSAbVH+eM0qNklmbp2ZN0y5ZeLNLI=" name="csrf-token"/>
+<link href="https://fonts.googleapis.com/css?family=Wire+One" rel="stylesheet" type="text/css"/>
+<link href="https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:300" rel="stylesheet" type="text/css"/>
+<link href="/assets/favicon.ico" rel="shortcut icon">
+<script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-74623322-1', 'auto');
+        ga('send', 'pageview');
+       // ga('set', 'userId', {{"anonymous"}}); // Set the user ID using signed-in user_id.
+        ga('set', 'userId', 'anonymous'); // Set the user ID using signed-in user_id.
+
+    </script>
+</link></head>
+<body onload="tellParentWindowMySize()">
+<div id="nav_page_wrapper">
+<div id="logo"><a href="http://www.genomespace.org/"><img alt="Gslogo" src="/assets/gslogo.png"/></a></div>
+<div class="clickable" id="login_menu">
+<form accept-charset="UTF-8" action="/users/sign_in" class="new_user" id="gs-login" method="post"><div style="display:none"><input name="utf8" type="hidden" value="✓"/><input name="authenticity_token" type="hidden" value="SCDrkdUj/B34DUFSAbVH+eM0qNklmbp2ZN0y5ZeLNLI="/></div>
+<input id="user_identity_url" name="user[identity_url]" type="hidden" value="https://identity.genomespace.org/identityServer/xrd.jsp"/>
+<a onclick="document.getElementById('gs-login').submit(); return false;">Login<span class="glyphicon glyphicon-chevron-right"></span></a>
+</form></div>
+<ul id="nav">
+<li class="dropdown">
+<a href="/"><span class="glyphicon glyphicon-home"></span> GenomeSpace Recipes</a>
+</li>
+<!-- <li id="recipe_link"><a href="/recipes"><span class="gparc-nav-icon glyphicon glyphicon-list"></span> My Recipes</a></li> -->
+<!-- links to main genomespace.org -->
+<li id="gsdotorg"><a href="http://www.genomespace.org/"><img alt="Gslogo" height="24px" src="/assets/official_logo.png"/>GenomeSpace.org</a><ul>
+<li id="what-is-genomespace"><a href="http://www.genomespace.org/what-is-genomespace">What is GenomeSpace?</a>
+<li id="tools"><a href="http://www.genomespace.org/support/tools">Tools</a>
+</li>
+<li id="recipes"><a href="http://recipes.genomespace.org/">Recipes</a></li>
+<li id="documentation"><a href="http://www.genomespace.org/documentation">Documentation</a>
+<ul>
+<li><a href="http://www.genomespace.org/support/guides/user-guide">User Guide</a>
+<p>Read the detailed guide to the user interface</p>
+</li>
+<li><a href="http://www.genomespace.org/support/guides/tool-guide">Tool Guide</a>
+<p>Learn how to access GenomeSpace functionality for each Tool</p>
+</li>
+<li><a href="http://www.genomespace.org/faq">FAQ</a>
+<p>See answers to frequently asked questions</p>
+</li>
+<li><a href="http://www.genomespace.org/presentations-and-videos">Presentations and Videos</a>
+<p>Access talks by the GenomeSpace community</p>
+</li>
+<li><a href="http://www.genomespace.org/support/guides/end-to-end-analyses">End-to-End Analyses</a>
+<p>Provides description for end-to-end analyses.</p>
+</li>
+</ul>
+</li>
+<li id="developers"><a href="http://www.genomespace.org/for-developers">Developers</a>
+<ul>
+<li><a href="http://www.genomespace.org/what-can-genomespace-do-for-tool-developers">What Can GenomeSpace Do For Tool Developers?</a>
+<p></p>
+</li>
+<li><a href="http://www.genomespace.org/adopters">Technical Documentation</a>
+<p></p>
+</li>
+<li><a href="http://www.genomespace.org/source-code">Source Code and Distributions</a>
+<p></p>
+</li>
+<li><a href="http://www.genomespace.org/developer-support-and-feedback">Developer Support and Feedback</a>
+<p></p>
+</li>
+</ul>
+</li>
+<li id="support"><a href="http://www.genomespace.org/support">Support</a>
+</li>
+<li id="about"><a href="http://www.genomespace.org/about">About</a>
+</li>
+</li></ul></li>
+<!-- end of links to main GenomeSpace.org -->
+<li class="search">
+<div id="search_box">
+<form accept-charset="UTF-8" action="/search" class="form" method="get" role="form"><div style="display:none"><input name="utf8" type="hidden" value="✓"/></div>
+<div style="margin:0;padding:0;display:inline">
+<input class="search" id="search" name="search" type="text"/>
+</div>
+<input class="searchBtn" type="submit"/>
+</form> </div>
+</li>
+</ul>
+</div>
+<div class="container fluid gs-recipe-">
+<div class="row">
+<div class="col-md-10">
+<table><tr><td><img alt="Content ucsc gp igv" class="recipeAvatar" src="/system/recipes/avatars/000/000/006/original/content_ucsc_gp_igv.png?1445288372"/></td><td>
+<h3>Find differentially expressed genes in RNA-seq data
+                        </h3>
+</td></tr></table>
+<p class="text-muted">Added by GenomeSpaceTeam on 2015.04.21 <span class="official"><img alt="Official logo" data-content="Offical GenomeSpace Recipe" data-toggle="popover" src="/assets/official_logo.png"/></span>
+<br/>
+            Last updated on over 3 years ago.
+            </p>
+<div class="row">
+<div class="col-md-8">
+<p>
+<a class="btn btn-default btn-xs tag green" >RNA-seq</a>
+<a class="btn btn-default btn-xs tag red" >visualization</a>
+<a class="btn btn-default btn-xs tag red" >differential gene expression</a>
+</p>
+</div>
+<div class="col-md-2 voting">
+<p class="text-success"><span class="glyphicon glyphicon-thumbs-up"></span> 4</p>
+</div>
+<div class="col-md-2 voting">
+<p class="text-danger"><span class="glyphicon glyphicon-thumbs-down"></span> 0</p>
+</div>
+</div>
+<hr/>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/Ums_iMqIVdQ?list=PL4ZmSx1n2Kw7yioYVTCwO6YlSRyW4EgPn&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+<section id="summary"></section>
+<h3 class="divider">Summary</h3>
+<div class="responsive-content">
+<p><span style="font-family:arial,sans-serif;"><span style="font-size:16px;"><i>Which genes are differentially expressed between my two phenotypes, based on my RNA-seq data?</i></span></span></p>
+<p>This recipe provides one method to identify differentially expressed genes in RNA-seq read data. An example use of this recipe is a case where an investigator may want to compare two phenotypes, such as two types of cancer, to determine which genes are up- or down-regulated differently between these phenotypes.</p>
+<p><img alt="" src="/ckeditor_assets/pictures/361/content_finddifferentiallyexpressedgenes.png" style="width: 458px; height: 247px; float: right; padding: 10px;"/></p>
+<p> </p>
+<p>In particular, this recipe uses the UCSC Table Browser to retrieve a reference genome to align RNA-seq reads against. We also used several modules in GenePattern to align the reads against the reference genome, and to identify differentially expressed genes when comparing two conditions. Finally, we use IGV to visualize the differentially expressed genes.</p>
+<p><strong>Why differential expression analysis?</strong> We assume that most genes are not expressed all the time, but rather are expressed in specific tissues, stages of development, or under certain conditions. Genes which are expressed in one condition, such as cancerous tissue, are said to be differentially expressed when compared to normal conditions. To identify which genes change in response to specific conditions (e.g. cancer), we must filter or process the dataset to remove genes which are not informative.</p>
+<p> </p>
+<p> </p>
+</div>
+<section id="inputs"></section>
+<h3 class="divider">Inputs</h3>
+<div class="responsive-content">
+<p>To complete this recipe, we will need RNA-seq reads, and reference gene annotations to align the reads against. In this example, we are validating a <em>Saccharomyces cerevisiae</em> knockout of the SFP1/YLR403W gene using paired 3’ Digital Gene Expression (DGE) RNA-seq reads. The RNA-seq reads are in FASTQ/FASTA format, and can be gzipped. We will need the following datasets, which can be downloaded from the GenomeSpace Public folder:</p>
+<p><code class="directory">Public</code>  &gt;  <code class="directory">RecipeData</code>  &gt;  <code class="directory">SequenceData</code>  &gt;  <strong><code class="filename"><a href="https://gsui.genomespace.org/jsui/gsui.html?pathOrUrl=/Home/Public/RecipeData/SequenceData/WT.fastq.gz" target="_blank">WT.fastq.gz</a></code></strong>: This file contains RNA-seq reads for the wild-type <em>S. cerevisiae</em> genome.</p>
+<p><code class="directory">Public</code>  &gt;  <code class="directory">RecipeData</code>  &gt;  <code class="directory">SequenceData</code>  &gt;  <strong><code class="filename"><a href="https://gsui.genomespace.org/jsui/gsui.html?pathOrUrl=/Home/Public/RecipeData/SequenceData/SFP1KO.fastq.gz" target="_blank">SFP1KO.fastq.gz</a></code></strong>: This file contains RNA-seq reads for the mutant <em>S. cerevisiae</em> genome with the SFP1/YLR403W gene knocked out.</p>
+<p><code class="directory">Public</code>  &gt;  <code class="directory">RecipeData</code>  &gt;  <code class="directory">GenomicFeatureData</code>  &gt;  <strong><code class="filename"><a href="https://gsui.genomespace.org/jsui/gsui.html?pathOrUrl=/Home/Public/RecipeData/GenomicFeatureData/SacCer3.gtf" target="_blank">SacCer3.gtf</a></code></strong>: This file contains reference gene annotations for the wild-type <em>S. cerevisiae</em> genome.</p>
+</div>
+<div id="recipeOutputSection">
+<section id="outputs"></section>
+<h3 class="divider">Outputs</h3>
+<div class="responsive-content" id="recipeOutputText">
+</div>
+</div>
+<section id="overview"></section>
+<h3 class="divider">Recipe steps</h3>
+<ul>
+<li><strong>UCSC Table Browser</strong></li>
+<ol start="1">
+<li>Getting reference gene annotations</li>
+</ol>
+</ul>
+<ul>
+<li><strong>GenePattern</strong></li>
+<ol start="2">
+<li>Loading data</li>
+<li>Aligning RNA-Seq reads</li>
+<li>Identifying differential expression in RNA-seq reads</li>
+<li>Creating indices for aligned read files</li>
+<li>Saving the files to GenomeSpace</li>
+</ol>
+</ul>
+<ul>
+<li><strong>IGV</strong></li>
+<ol start="7">
+<li>Loading RNA-seq data into IGV and visualize differential expression and mapped alignments</li>
+</ol>
+</ul>
+<div class="row">
+<div class="col-md-6" style="text-align: right; display: inline;width: 250px !important;">
+<a class="btn btn-info" href="javascript:void(0);" id="show-all"><span class="glyphicon glyphicon-plus"></span> Expand All Steps</a>
+</div>
+<div class="col-md-6" style="display: inline;width: 250px !important;">
+<a class="btn btn-info" href="javascript:void(0);" id="hide-all"><span class="glyphicon glyphicon-minus"></span> Collapse All Steps</a>
+</div>
+</div>
+<p></p>
+<div aria-multiselectable="true" class="panel-group" id="steps" role="tablist">
+<div class="panel panel-default">
+<section id="step_0"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Ucsc table browser" class="stepAvatar tag-tooltip" src="/assets/UCSC Table Browser.png" title="UCSC Table Browser"/>
+<a data-toggle="toggle" href="#collapse_0" onclick="$('#collapse_0').collapse('toggle')">1: Getting reference gene annotations <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>In this step, we use the UCSC Table Browser to retrieve reference gene annotations corresponding to the reference genome for our example data. If you are using your own data, you may already have a reference gene annotation file, or you may need to search for one matching your reference genome here.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_0" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>Launch UCSC Table Browser from GenomeSpace by clicking on the icon.</li>
+<li>Download the reference gene annotations from UCSC. For the example dataset, enter the following parameters:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li><code class="parameter">clade</code>: Other</li>
+<li><code class="parameter">genome</code>: S. cerevisiae</li>
+<li><code class="parameter">assembly</code>: Apr. 2011 (SacCer_Apr2011/sacCer3)</li>
+<li><code class="parameter">group</code>: Genes and Gene Predictions</li>
+<li><code class="parameter">track</code>: SGD Genes</li>
+<li><code class="parameter">table</code>: sgdGene</li>
+<li><code class="parameter">region</code>: genome</li>
+<li><code class="parameter">output format</code>: GTF - gene transfer format</li>
+<li><code class="parameter">Send output to</code>: Select the GenomeSpace checkbox.</li>
+<li><code class="parameter">output file</code>: Give the output a name. For the example data, we name it <code class="filename">sacCer3_SGD.gtf</code>.
+		<p><img alt="" src="/uploaded/content_r3_s2_0.png" style="height:499px; width:800px"/></p>
+</li>
+</ol>
+</li>
+<li>Click get output to retrieve the file. This will take you to a new page which loads the file to GenomeSpace. The output file should appear in your GenomeSpace home directory. You may click and drag the file to place it into your directory.</li>
+</ol>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/Ums_iMqIVdQ?list=https://www.youtube.com/watch?v=Ums_iMqIVdQ&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_1"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Genepattern" class="stepAvatar tag-tooltip" src="/assets/GenePattern.png" title="GenePattern"/>
+<a data-toggle="toggle" href="#collapse_1" onclick="$('#collapse_1').collapse('toggle')">2: Loading data <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>This is one method that can be used to load data into GenePattern.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_1" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<p><em><small><strong>NOTE:</strong> If you have not yet associated your GenomeSpace account with your GenePattern account, you will be asked to do so. If you do not yet have a GenePattern account, you can automatically generate a new account that will be associated with your GenomeSpace account.</small></em></p>
+<ol>
+<li>Open GenePattern from GenomeSpace, navigate to the <code class="parameter">GenomeSpace</code> tab, then navigate to the example data file, e.g. <code class="directory">Public</code>  &gt;  <code class="directory">RecipeData</code>  &gt;  <code class="directory">SequenceData</code>  &gt;  <strong><code class="filename"><a href="https://gsui.genomespace.org/jsui/gsui.html?pathOrUrl=/Home/Public/RecipeData/SequenceData/WT.fastq.gz" target="_blank">WT.fastq.gz</a></code></strong> (or to your personal directory).</li>
+</ol>
+</div>
+<br>
+<div class="panel-group">
+<div class="panel panel-warning">
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title">
+<img alt="Genepattern" class="stepAvatar tag-tooltip" src="/assets/GenePattern.png" title="GenePattern"/><a data-toggle="collapse" href="#alternate_23_0">Alternative: other ways to load data into GenePattern <span class="glyphicon glyphicon-chevron-right"></span></a>
+</h4>
+<p class="text-muted">Tool: GenePattern</p>
+</div>
+<div class="panel-collapse step-container collapse" id="alternate_23_0" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<p>1. Click on the file (e.g., <code class="filename">WT.fastq.gz</code>) in GenomeSpace, then use the GenePattern context menu and click <code class="parameter">Launch on File</code>.</p>
+<p><i>OR</i></p>
+<p>2. Click on the file (e.g., <code class="filename">WT.fastq.gz</code>) in GenomeSpace, then drag it to the GenePattern icon to launch.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</br></div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_2"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Genepattern" class="stepAvatar tag-tooltip" src="/assets/GenePattern.png" title="GenePattern"/>
+<a data-toggle="toggle" href="#collapse_2" onclick="$('#collapse_2').collapse('toggle')">3: Aligning RNA-Seq reads <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>We will use <code class="subtool">TopHat</code> in GenePattern to align the RNA-seq raw reads to a reference genome. In this recipe, we specifically want to identify existing splice junctions, and not novel splice junctions. This module uses the FASTA/FASTQ files (e.g., <code class="filename">WT.fastq.gz</code> and <code class="filename">SFP1KO.fastq.gz</code>), the reference gene annotations (e.g., <code class="filename">SacCer3.gtf</code>) and a reference genome with an index (pre-built in GenePattern). If you are using your own data, you can load your own reference genome instead.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_2" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>Change to the <code class="parameter">Modules</code> tab, and search for "TopHat". Change the following parameters:</li>
+<li><code class="parameter">bowtie index</code>: choose a genome from the drop-down menu. In this example we use <code class="filename">Saccharomyces_cerevisiae_sacCer3_UCSC</code></li>
+<li><code class="parameter">reads pair 1</code>: load the raw RNA-seq data, e.g., <code class="directory">Public</code>  &gt;  <code class="directory">RecipeData</code>  &gt;  <code class="directory">SequenceData</code>  &gt;  <strong><code class="filename"><a href="https://gsui.genomespace.org/jsui/gsui.html?pathOrUrl=/Home/Public/RecipeData/SequenceData/SFP1KO.fastq.gz" target="_blank">SFP1KO.fastq.gz</a></code></strong>. To do this, use the <code class="parameter">GenomeSpace</code> tab to navigate to the directory containing your FASTQ file, then drag the file to the input box.<br>
+<img alt="" src="/ckeditor_assets/pictures/137/content_r3_s3_0_large_01.png" style="line-height: 20.8px; height: 377px; width: 754px; border: 1px solid grey; margin-top: 5px; margin-bottom: 5px;"/></br></li>
+<li><code class="parameter">GTF file</code>: load the GTF file. To do this, first click the <code class="parameter">Upload your own file</code> button. This creates a new area to drag-and-drop files. Next, navigate to the <code class="parameter">GenomeSpace</code> tab, and navigate to the folder containing the GTF file: <code class="directory">Public</code>  &gt;  <code class="directory">RecipeData</code>  &gt;  <code class="directory">GenomicFeatureData</code>  &gt;  <strong><code class="filename"><a href="https://gsui.genomespace.org/jsui/gsui.html?pathOrUrl=/Home/Public/RecipeData/GenomicFeatureData/SacCer3.gtf" target="_blank">SacCer3.gtf</a></code></strong>. Load the file into the <code class="parameter">GTF file</code> parameter by clicking on the file and choosing <code class="parameter">Send to GTF</code>, or by dragging the file to the <code class="parameter">GTF file</code> input box.<br>
+<img alt="" src="/ckeditor_assets/pictures/436/content_content_r3_s3_0_large_03.png" style="width: 754px; height: 187px; border: 1px solid grey; margin-top: 5px; margin-bottom: 5px;"/></br></li>
+<li><code class="parameter">output prefix</code>: choose a filename prefix, e.g., <code class="filename">sfp1ko.reads</code><img alt="" src="/ckeditor_assets/pictures/428/content_content_r3_s3_0_large_04.png" style="width: 752px; height: 64px; border: 1px solid grey; margin-top: 5px; margin-bottom: 5px;"/></li>
+<li><code class="directory">Miscellaneous Advanced Parameters</code>  &gt;  <code class="parameter">find novel junctions</code> : no<img alt="" src="/ckeditor_assets/pictures/427/content_content_r3_s3_0_large_03.png" style="width: 754px; height: 78px; border: 1px solid grey; margin-top: 5px; margin-bottom: 5px;"/></li>
+<li><find junctions="" novel="">Click <code class="parameter">Run</code> to run <code class="subtool">TopHat</code>. This will generate several files; in this recipe, we will use the <code class="filename">*.accepted_hits.bam</code> file.</find></li>
+<li>Then rerun <code class="subtool">TopHat</code> with the wild type FASTA/FASTQ file (or any other comparative FASTA/FASTQ file), using the following steps:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li>Click on the <code class="subtool">TopHat</code> job number to bring up the context menu for jobs.</li>
+<li>Click on <code class="parameter">Reload job</code>, which will reload the job with the same parameters.</li>
+<li>Remove the original FASTA/FASTQ reads file from the job, by clicking on the <img alt="" src="/ckeditor_assets/pictures/120/content_gp_x.png" style="display: inline; width: 15px; height: 14px;"/> next to the file in the <code class="parameter">reads pair 1</code> parameter.</li>
+<li>Using the <code class="parameter">GenomeSpace</code> tab, navigate to the second FASTA/FASTQ file (e.g., <code class="filename">WT.fastq.gz</code>). Load it into the <code class="parameter">reads pair 1</code> parameter by dragging the file to the input box.</li>
+<li>Remember to change the output prefix to a new filename, e.g., <code class="filename">wt.reads</code></li>
+</ol>
+</li>
+</ol>
+<p><find junctions="" novel=""><em><small><strong>NOTE:</strong> Each file of reads must be aligned separately; i.e., run <code class="subtool">TopHat</code> on <code class="filename">WT.fastq.gz</code> first, then again on another dataset, e.g., <code class="filename">SFP1KO.fastq.gz</code>. It may take several hours to run <code class="subtool">TopHat</code>, depending on the size of the files and whether you are using the GenePattern public server.</small></em></find></p>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/PSNu54zYNGg?list=https://www.youtube.com/watch?v=PSNu54zYNGg&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_3"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Genepattern" class="stepAvatar tag-tooltip" src="/assets/GenePattern.png" title="GenePattern"/>
+<a data-toggle="toggle" href="#collapse_3" onclick="$('#collapse_3').collapse('toggle')">4: Identifying differential expression in RNA-seq reads <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>We will use the <code class="subtool">Cufflinks.cuffdiff</code> module to test differential expression between the two samples (e.g., <code class="filename">WT.fastq.gz</code> and <code class="filename">SFP1KO.fastq.gz</code>). This module uses the aligned data output from <code class="subtool">TopHat</code>, and the reference gene annotation GTF file.</p>
+<p>Then, we convert the FPKM file to a GCT file using the <code class="subtool">Fpkm_trackingToGct</code> module in GenePattern.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_3" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<p><span style="font-size:18px;"><b>Cuffdiff </b></span></p>
+<ol>
+<li>Change to the <code class="parameter">Modules</code> tab, and search for "Cuffdiff". Once the module is loaded, change the following parameters:</li>
+<li><code class="parameter">aligned files</code>: Create a new condition for the first FASTA/FASTQ file, e.g., wt. Load the appropriate file (e.g., <code class="filename">wt.reads.accepted_hits.bam</code>) into the <code class="parameter">aligned files</code> parameter by clicking and dragging the file into the input box.</li>
+<li>Click the <code class="parameter">Add Another Condition</code> button.<br>
+<img alt="" src="/ckeditor_assets/pictures/140/content_r3_s4_0_large_01.png" style="width: 800px; height: 411px; border: 1px solid grey; margin-top: 5px; margin-bottom: 5px;"/></br></li>
+<li><code class="parameter">aligned files</code>: Create a second condition for the first FASTA/FASTQ file, e.g., sfp1ko. Load the appropriate file (e.g., <code class="filename">sfp1ko.accepted_hits.bam</code>) into the <code class="parameter">aligned files</code> parameter by clicking and dragging the file into the input box.</li>
+<li><code class="parameter">GTF file</code>: load the GTF file. To do this, first click the <code class="parameter">Upload your own file</code> button. This creates a new area to drag-and-drop files. Next, navigate to the <code class="parameter">GenomeSpace</code> tab, and navigate to the folder containing the GTF file: <code class="directory">Public</code>  &gt;  <code class="directory">RecipeData</code>  &gt;  <code class="directory">GenomicFeatureData</code>  &gt;  <strong><code class="filename"><a href="https://gsui.genomespace.org/jsui/gsui.html?pathOrUrl=/Home/Public/RecipeData/GenomicFeatureData/SacCer3.gtf" target="_blank">SacCer3.gtf</a></code></strong>. Load the file into the <code class="parameter">GTF file</code> parameter by clicking on the file and choosing <code class="parameter">Send to GTF</code>, or by dragging the file to the <code class="parameter">GTF file</code> input box.<br/>
+<img alt="" src="/ckeditor_assets/pictures/141/content_r3_s4_0_large_02.png" style="width: 800px; height: 566px; border: 1px solid grey; margin-top: 5px; margin-bottom: 5px;"/></li>
+<li><code class="parameter">library type</code>: fr-unstranded<br/>
+<img alt="" src="/ckeditor_assets/pictures/139/content_r3_s4_0_large_03.png" style="width: 750px; height: 84px; border: 1px solid grey; margin-top: 5px; margin-bottom: 5px;"/></li>
+<li><span style="line-height: 20.8px;">Click <code class="parameter" style="line-height: 20.8px;">advanced input parameters and options</code><span style="line-height: 20.8px;"> </span><span style="line-height: 20.8px;">and then set</span><font face="monospace"> </font></span><code class="parameter">min alignment count</code>: 0</li>
+<li>Click <code class="parameter">Run</code> to submit your job. This will generate several files; in this recipe, we will use the <code class="filename">genes.fpkm_tracking</code> file.<br/>
+<img alt="" src="/ckeditor_assets/pictures/142/content_r3_s4_0_large_04.png" style="width: 800px; height: 342px; border: 1px solid grey; margin-top: 5px; margin-bottom: 5px;"/></li>
+</ol>
+<p><span style="font-size:18px;"><b>Fpkm_trackingToGct </b></span></p>
+<ol>
+<li>Change to the <code class="parameter">Modules</code> tab, and search for "Fpkm_trackingToGct".</li>
+<li>Once the module is loaded, change the following parameters:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li><code class="parameter">input file</code>: load the <code class="filename">genes.fpkm_tracking</code> file. To do this, navigate to the GenomeSpace tab, and navigating to the folder containing the file. Load the file into the <code class="parameter">input file</code> parameter by clicking on the file and choosing <code class="parameter">Send to Input</code>, or by dragging the file to the <code class="parameter">input file</code> input box.</li>
+</ol>
+</li>
+<li>Click <code class="parameter">Run</code> to submit your job. This will generate a <code class="filename">genes.gct</code> file.<br/>
+<img alt="" src="/uploaded/content_r3_s5_0.png" style="line-height: 20.8px; height: 477px; width: 800px; border: 1px solid grey; margin-top: 5px; margin-bottom: 5px;"/></li>
+</ol>
+<p> </p>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/sz6l9YG427g?list=https://www.youtube.com/watch?v=sz6l9YG427g&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_4"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Genepattern" class="stepAvatar tag-tooltip" src="/assets/GenePattern.png" title="GenePattern"/>
+<a data-toggle="toggle" href="#collapse_4" onclick="$('#collapse_4').collapse('toggle')">5: Creating indices for aligned read files <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>We will use the <code class="subtool">Picard.SortSam</code> module to prepare the aligned read data for viewing in IGV. In order to visualize BAM alignment files in IGV, we need a companion index file (BAI) which is located in the same directory. The <code class="subtool">Picard.SortSam</code> module will sort the file and generate the index. This module uses the <code class="filename">*.accepted_hits.bam</code> files.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_4" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>Change to the <code class="parameter">Modules</code> tab, and search for "Picard.SortSam".</li>
+<li>Once the module is loaded, change the following parameters:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li><code class="parameter">input file</code>: load one of the <code class="subtool">TopHat</code> aligned reads outputs into the parameter, e.g. <code class="filename">wt.reads.accepted_hits.bam</code>. To do this, use the <code class="parameter">Jobs</code> tab, navigate to one of the previous <code class="subtool">TopHat</code> jobs, and load the file into the <code class="parameter">Picard.SortSam</code> module by dragging the file into the <code class="parameter">input file</code> parameter.</li>
+<li><code class="parameter">output format</code>: BAM</li>
+</ol>
+</li>
+<li>Click <code class="parameter">Run</code> to submit your job. This will generate a new sorted BAM file, as well as an index BAI file.
+	<p><img alt="" src="/uploaded/content_r3_s6_0.png" style="height:422px; width:800px; border: 1px solid grey"/></p>
+</li>
+<li><strong>Rerun </strong><code class="subtool">Picard.SortSam</code><strong> with the other file using these steps:</strong>
+<ol start="1" style="list-style-type: upper-alpha;">
+<li>Click on the <code class="subtool">Picard.SortSam</code> job number to bring up the context menu for jobs.</li>
+<li>Click on <code class="parameter">Reload job</code>, which will reload the job with the same parameters.</li>
+<li>Remove the original file from the job, by clicking on the <img alt="" src="/ckeditor_assets/pictures/120/content_gp_x.png" style="width: 15px; height: 14px; display: inline; "/> next to the file in the input file parameter.</li>
+<li>Using the <code class="parameter">Jobs</code> tab, navigate to other <code class="subtool">TopHat</code> job, then load the other aligned reads file, e.g. <code class="filename">sfp1ko.reads.accepted_hits.bam</code>, into the <code class="parameter">input file</code> parameter by dragging the file to the input box.</li>
+</ol>
+</li>
+</ol>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/U7p3nXpqwKQ?list=https://www.youtube.com/watch?v=U7p3nXpqwKQ&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_5"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Genepattern" class="stepAvatar tag-tooltip" src="/assets/GenePattern.png" title="GenePattern"/>
+<a data-toggle="toggle" href="#collapse_5" onclick="$('#collapse_5').collapse('toggle')">6: Saving the files to GenomeSpace <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>Save the <code class="filename">genes.gct</code> file, and the sorted BAM files and the BAI files GenomeSpace using one of the following methods.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_5" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>From the job processing view, on the text file (e.g., <code class="filename">genes.gct</code>), then choose <code class="parameter">Save to GenomeSpace</code>. Save the file to your folder.<br>
+<br>
+<em>OR</em><br/>
+	 </br></br></li>
+<li>From the <code class="parameter">Modules and Pipeline</code> start page, navigate to <code class="parameter">Jobs</code>. Click on the file, then choose <code class="parameter">Send to GenomeSpace</code>. Save the file to your folder.</li>
+</ol>
+<p>Repeat this process for the remaining files. In total, you should save the following five files back to your GenomeSpace account:</p>
+<ol>
+<li><code class="filename">genes.gct</code></li>
+<li><code class="filename">wt.reads.accepted_hits.sorted.<strong>bam</strong></code></li>
+<li><code class="filename">wt.reads.accepted_hits.sorted.<strong>bai</strong></code></li>
+<li><code class="filename">sfp1ko.reads.accepted_hits.sorted.<strong>bam</strong></code></li>
+<li><code class="filename">sfp1ko.reads.accepted_hits.sorted.<strong>bai</strong></code></li>
+</ol>
+<p><strong>Optional:</strong> when you are finished, close GenePattern.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_6"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Igv" class="stepAvatar tag-tooltip" src="/assets/IGV.png" title="IGV"/>
+<a data-toggle="toggle" href="#collapse_6" onclick="$('#collapse_6').collapse('toggle')">7: Loading RNA-seq data into IGV and visualize differential expression and mapped alignments <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>We will use IGV to visualize the differential expression and abundance levels in the genes.gct file, and check the quality of the mapped alignments from the BAM files. In this recipe, we will also validate that the gene of interest (SFP1) was knocked-out in the SFP1KO mutant strain of <em>S. cerevisiae</em>.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_6" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<p><em><small><strong>NOTE:</strong> For Macintosh Users: JNLP files from the internet are labeled insecure. In order to open the JNLP, find the file in your Finder, right-click the file, and press open. This will open a window that will ask for permission to open the file. Press open to access the JNLP.</small></em></p>
+<ol>
+<li>Launch IGV from GenomeSpace by clicking on the context menu and choosing <code class="parameter">Launch</code>, prompting the download of a <code class="filename">.jnlp</code> file. Double-click the file to launch IGV.</li>
+<li>Load the reference genome into IGV by using the IGV genome selection drop-down menu. Make sure the reference genome matches the samples you are using, e.g., <i>S. cerevisiae</i> samples should use the <code class="parameter">S. cerevisiae (sacCer3)</code> genome, as in this example.</li>
+<li>Use the <code class="parameter">GenomeSpace</code> tab to import files by clicking on the <code class="parameter">Load File from GenomeSpace...</code> option.
+	<p><img alt="" src="/ckeditor_assets/pictures/269/content_diffrnaseq.png"/></p>
+</li>
+<li>To load files, navigate to the directory in GenomeSpace which contains the file, then click the file to select it, and then click <code class="parameter">Open</code>. Load the following files into IGV:<br>
+<small><em><strong>NOTE:</strong> each file is loaded separately</em></small>
+<ol start="1" style="list-style-type: upper-alpha;">
+<li><code class="filename">wt.reads.accepted_hits.sorted.bam</code></li>
+<li><code class="filename">sfp1ko.reads.accepted_hits.sorted.bam</code></li>
+<li><code class="filename">genes.gct</code></li>
+</ol>
+</br></li>
+</ol>
+<p>Now we can visualize the knock-out gene in our datasets. If you are using the example data, type "YLR403W" into the search box, and click <code class="parameter">Go</code> or hit <kbd>enter</kbd>. Note that there are no reads aligned to the gene in the SFP1KO data and zero expression visible in the <i>sfp1ko_FPKM</i> track. There are reads aligned in the WT sample (although mostly at the 3' end, as expected with 3' DGE data) and a high expression level is visible in the <i>wt_FPKM</i> track.</p>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/oekuBJHKKuk?list=https://www.youtube.com/watch?v=oekuBJHKKuk&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="recipeInterpSection">
+<section id="results"></section>
+<h3 class="divider">Results Interpretation</h3>
+<div class="responsive-content" id="recipeInterpText">
+<p>This is an example interpretation of the results from this recipe. First, we used <code class="subtool">TopHat</code> in GenePattern to align raw reads from RNA-seq to a reference genome (pre-built in Bowtie). After aligning both a wild-type and mutant strain of <i>S. cerevisiae</i>, we used <code class="subtool">Cufflinks</code> to determine the genes which were differentially expressed when comparing the two phenotypes. We then use IGV to visualize the difference between these two datasets; in particular, we validate that the SFP1KO mutant strain of <i>S. cerevisiae</i> lacks the SFP1 gene.</p>
+<p><img alt="" src="/ckeditor_assets/pictures/424/content_r3_s8_1_new.png" style="width: 800px; height: 463px;"/></p>
+<p>The <i>wt_FPKM</i> track is red in the region of the SFP1 gene, whereas the <i>sfp1ko_FPKM</i> track is white. This is an indicator of gene expression, and shows that the SFP1 gene is not being transcribed in the SFP1KO mutant strain. We can see an additional indicator of this when we compare the <code class="filename">wt.reads.accepted_hits.sorted.bam</code> file to the <code class="filename">sfp1ko.reads.accepted_hits.sorted.bam</code> file. These are the tracks which have red and blue boxes to indicate where reads aligned against the reference genome. We can see there are several reads aligned in the WT strain to the SFP1 gene, but the area is blank in the SPF1KO mutant, showing that no reads from that gene aligned against the reference genome. These results confirm that the SFP1 gene was knocked-out in the SFP1KO mutant strain of <i>S. cerevisiae</i>. However, the results in this example are not necessarily significant and are only a simple representation of possible results.</p>
+</div>
+</div>
+<hr/>
+<div class="panel-group" id="comments">
+<div class="panel panel-default">
+<div class="panel-heading">
+<h4 class="panel-title"><a data-toggle="collapse" href="#comments_list">Comments (3)</a> <span class="glyphicon glyphicon-chevron-down toggle-glyph"></span></h4>
+</div>
+<div class="panel-collapse collapse in" id="comments_list">
+<div class="panel-body">
+<div class="well comment">
+<small class="help-block">Posted by swear0712 on March 04, 2016 01:17</small>
+<p></p>
+</div>
+<div class="well comment">
+<small class="help-block">Posted by BrunoBSouzaa on June 30, 2016 16:30</small>
+<p>Is GenePattern working ok??? I'm trying to use it but I keep getting an error message...
+ "GenePattern Server error preparing job 1314526 for execution.org.genepattern.server.executor.CommandExecutorException: Error adding job to queue, gpJobNo=1314526, DrmaaException=denied: parallel environment "smp" does not exist
+job rejected: the requested parallel environment "smp" does not exist"
+
+Can someone help me???</p>
+</div>
+<div class="well comment">
+<small class="help-block">Posted by ted on June 30, 2016 16:44</small>
+<p>I forwarded your comment to the GenePattern team at gp-help@broadinstitute.org but they could not find your job on the public server.  Could you contact them directly to see if they can help sort this out?</p>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<h4 class="panel-title">Submit a Comment</h4>
+</div>
+<div class="panel-body">
+<form accept-charset="UTF-8" action="/users/sign_in" class="form" id="new_user" method="post" role="form"><div style="display:none"><input name="utf8" type="hidden" value="✓"/><input name="authenticity_token" type="hidden" value="SCDrkdUj/B34DUFSAbVH+eM0qNklmbp2ZN0y5ZeLNLI="/></div>
+<input id="user_identity_url" name="user[identity_url]" type="hidden" value="https://identity.genomespace.org/identityServer/xrd.jsp"/>
+<input class="btn btn-sm btn-success" name="commit" type="submit" value="Sign in using GenomeSpace"/>
+</form> </div>
+</div>
+</div>
+<script>
+//<![CDATA[
+
+
+
+                $('.responsive-content img').addClass('img-responsive').css({"height" : "", "width" : ""});
+				$('[data-toggle="popover"]').popover({trigger: "hover", placement: "top"});
+
+				$("#show-all").click(function() {
+					$(".step-container").collapse("show");
+
+				});
+
+				$("#hide-all").click(function() {
+					$(".step-container").collapse("hide");
+
+				});
+
+                 $('.tag-tooltip').tooltip();
+
+
+
+//]]>
+</script> </div>
+<div class="col-md-2">
+<div class="bs-docs-sidebar hidden-print gp-side-menu" role="complementary">
+<ul class="nav bs-docs-sidenav" data-spy="affix">
+<li><a href="#summary">Summary</a></li>
+<li><a href="#inputs">Inputs</a></li>
+<li id="recipeOutputNav"><a href="#outputs">Outputs</a></li>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#steps">Steps</a>
+<ul class="nav">
+<li><a class="step-anchor" href="#step_0">Getting reference gene annotations</a></li>
+<li><a class="step-anchor" href="#step_1">Loading data</a></li>
+<li><a class="step-anchor" href="#step_2">Aligning RNA-Seq reads</a></li>
+<li><a class="step-anchor" href="#step_3">Identifying differential expression in RNA-seq reads</a></li>
+<li><a class="step-anchor" href="#step_4">Creating indices for aligned read files</a></li>
+<li><a class="step-anchor" href="#step_5">Saving the files to GenomeSpace</a></li>
+<li><a class="step-anchor" href="#step_6">Loading RNA-seq data into IGV and visualize differential expression and mapped alignments</a></li>
+</ul>
+</li>
+<li id="recipeInterpNav"><a href="#results">Results Interpretation</a></li>
+<!-- <li><a href="#comments">Comments</a></li> -->
+<!-- <li><a href="#history">History</a></li> -->
+<li><a href="javascript:void(0);" id="scroll-top">Back to the Top</a></li>
+</ul>
+</div>
+<script>
+//<![CDATA[
+
+				$('.step-anchor').click(function() {
+					var step = $(this).attr('href').split('_')[1];
+					$('#collapse_' + step).collapse("show");
+				});
+
+//]]>
+</script> </div>
+</div>
+</div>
+<script>
+//<![CDATA[
+
+     if ($("#recipeOutputText").html().trim().length == 0){
+       $("#recipeOutputSection").hide();
+       $("#recipeOutputNav").hide();
+     }
+      if ($("#recipeInterpText").html().trim().length == 0){
+            $("#recipeInterpSection").hide();
+              $("#recipeInterpNav").hide();
+      }
+
+
+//]]>
+</script> <div class="container" id="history">
+<h1>History</h1>
+<ul>
+<li>Saved <b>over 3 years ago</b>
+                                                        on 02/21/2017 22:36:04 UTC by <b>forrestkim</b>.
+                                                        <a href="/view/6?lastVersion=true&amp;versionIndex=14" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>over 3 years ago</b>
+                                                        on 02/21/2017 22:32:18 UTC by <b>forrestkim</b>.
+                                                        <a href="/view/6?lastVersion=true&amp;versionIndex=13" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>over 3 years ago</b>
+                                                        on 02/21/2017 22:29:37 UTC by <b>forrestkim</b>.
+                                                        <a href="/view/6?lastVersion=true&amp;versionIndex=12" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>over 3 years ago</b>
+                                                        on 02/21/2017 22:26:41 UTC by <b>forrestkim</b>.
+                                                        <a href="/view/6?lastVersion=true&amp;versionIndex=11" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>over 3 years ago</b>
+                                                        on 02/07/2017 19:51:56 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/6?lastVersion=true&amp;versionIndex=10" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>almost 4 years ago</b>
+                                                        on 11/21/2016 18:10:41 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/6?lastVersion=true&amp;versionIndex=9" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>almost 4 years ago</b>
+                                                        on 10/31/2016 20:26:47 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/6?lastVersion=true&amp;versionIndex=8" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>almost 4 years ago</b>
+                                                        on 10/31/2016 20:26:20 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/6?lastVersion=true&amp;versionIndex=7" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>almost 4 years ago</b>
+                                                        on 10/21/2016 01:42:34 UTC by <b>asp006</b>.
+                                                        <a href="/view/6?lastVersion=true&amp;versionIndex=6" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>almost 4 years ago</b>
+                                                        on 10/21/2016 01:41:08 UTC by <b>asp006</b>.
+                                                        <a href="/view/6?lastVersion=true&amp;versionIndex=5" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>almost 4 years ago</b>
+                                                        on 10/06/2016 15:21:58 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/6?lastVersion=true&amp;versionIndex=4" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>almost 4 years ago</b>
+                                                        on 09/07/2016 18:42:44 UTC by <b>andyis</b>.
+                                                        <a href="/view/6?lastVersion=true&amp;versionIndex=3" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>almost 4 years ago</b>
+                                                        on 09/07/2016 18:12:14 UTC by <b>andyis</b>.
+                                                        <a href="/view/6?lastVersion=true&amp;versionIndex=2" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>about 4 years ago</b>
+                                                        on 06/20/2016 18:55:37 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/6?lastVersion=true&amp;versionIndex=1" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>over 4 years ago</b>
+                                                        on 04/08/2016 15:42:55 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/6?lastVersion=true&amp;versionIndex=0" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+</ul>
+</div>
+<div class="container-fluid footer gs-recipe-footer">
+<p class="copy-right-block">Copyright ©2016 The Regents of the University of California and The Broad Institute of MIT &amp; Harvard</p>
+</div>
+</body>
+</html>

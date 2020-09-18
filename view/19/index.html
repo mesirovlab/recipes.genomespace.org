@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>GenomeSpace Recipe: Identify copy number variation (CNV)-associated transcriptional regulators with unique gene expression profiles by stepwise linkage analysis</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link href="/assets/docs.min.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/featured_article.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/pages.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/recipes.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/site.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/tags.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/jquery-ui/theme.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/jquery-ui/core.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/application.css?body=1" media="all" rel="stylesheet"/>
+<link href="/assets/dataTables/bootstrap/3/jquery.dataTables.bootstrap.css?body=1" media="all" rel="stylesheet"/>
+<script src="/assets/jquery.js?body=1"></script>
+<script src="/assets/jquery_ujs.js?body=1"></script>
+<script src="/assets/jquery-ui/core.js?body=1"></script>
+<script src="/assets/jquery-ui/widget.js?body=1"></script>
+<script src="/assets/jquery-ui/position.js?body=1"></script>
+<script src="/assets/jquery-ui/menu.js?body=1"></script>
+<script src="/assets/jquery-ui/autocomplete.js?body=1"></script>
+<script src="/assets/jquery-ui/mouse.js?body=1"></script>
+<script src="/assets/jquery-ui/sortable.js?body=1"></script>
+<script src="/assets/bootstrap/affix.js?body=1"></script>
+<script src="/assets/bootstrap/alert.js?body=1"></script>
+<script src="/assets/bootstrap/button.js?body=1"></script>
+<script src="/assets/bootstrap/carousel.js?body=1"></script>
+<script src="/assets/bootstrap/collapse.js?body=1"></script>
+<script src="/assets/bootstrap/dropdown.js?body=1"></script>
+<script src="/assets/bootstrap/tab.js?body=1"></script>
+<script src="/assets/bootstrap/transition.js?body=1"></script>
+<script src="/assets/bootstrap/scrollspy.js?body=1"></script>
+<script src="/assets/bootstrap/modal.js?body=1"></script>
+<script src="/assets/bootstrap/tooltip.js?body=1"></script>
+<script src="/assets/bootstrap/popover.js?body=1"></script>
+<script src="/assets/bootstrap-sprockets.js?body=1"></script>
+<script src="/assets/ckeditor/init.js?body=1"></script>
+<script src="/assets/ckeditor/ckeditor.js?body=1"></script>
+<script src="/assets/jquery_nested_form.js?body=1"></script>
+<script src="/assets/dataTables/jquery.dataTables.js?body=1"></script>
+<script src="/assets/dataTables/bootstrap/3/jquery.dataTables.bootstrap.js?body=1"></script>
+<script src="/assets/autocomplete-rails.js?body=1"></script>
+<script src="/assets/spin.min.js?body=1"></script>
+<script src="/assets/docs.min.js?body=1"></script>
+<script src="/assets/jquery.hoverIntent.minified.js?body=1"></script>
+<script src="/assets/ckeditor/config.js?body=1"></script>
+<script src="/assets/featured_article.js?body=1"></script>
+<script src="/assets/pages.js?body=1"></script>
+<script src="/assets/recipes.js?body=1"></script>
+<script src="/assets/site.js?body=1"></script>
+<script src="/assets/tags.js?body=1"></script>
+<script src="/assets/application.js?body=1"></script>
+<meta content="authenticity_token" name="csrf-param"/>
+<meta content="uqlkXgmsEsVa8rQuHkC22dWyzlnmluxo8lCfwRWkypM=" name="csrf-token"/>
+<link href="https://fonts.googleapis.com/css?family=Wire+One" rel="stylesheet" type="text/css"/>
+<link href="https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:300" rel="stylesheet" type="text/css"/>
+<link href="/assets/favicon.ico" rel="shortcut icon">
+<script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-74623322-1', 'auto');
+        ga('send', 'pageview');
+       // ga('set', 'userId', {{"anonymous"}}); // Set the user ID using signed-in user_id.
+        ga('set', 'userId', 'anonymous'); // Set the user ID using signed-in user_id.
+
+    </script>
+</link></head>
+<body onload="tellParentWindowMySize()">
+<div id="nav_page_wrapper">
+<div id="logo"><a href="http://www.genomespace.org/"><img alt="Gslogo" src="/assets/gslogo.png"/></a></div>
+<div class="clickable" id="login_menu">
+<form accept-charset="UTF-8" action="/users/sign_in" class="new_user" id="gs-login" method="post"><div style="display:none"><input name="utf8" type="hidden" value="✓"/><input name="authenticity_token" type="hidden" value="uqlkXgmsEsVa8rQuHkC22dWyzlnmluxo8lCfwRWkypM="/></div>
+<input id="user_identity_url" name="user[identity_url]" type="hidden" value="https://identity.genomespace.org/identityServer/xrd.jsp"/>
+<a onclick="document.getElementById('gs-login').submit(); return false;">Login<span class="glyphicon glyphicon-chevron-right"></span></a>
+</form></div>
+<ul id="nav">
+<li class="dropdown">
+<a href="/"><span class="glyphicon glyphicon-home"></span> GenomeSpace Recipes</a>
+</li>
+<!-- <li id="recipe_link"><a href="/recipes"><span class="gparc-nav-icon glyphicon glyphicon-list"></span> My Recipes</a></li> -->
+<!-- links to main genomespace.org -->
+<li id="gsdotorg"><a href="http://www.genomespace.org/"><img alt="Gslogo" height="24px" src="/assets/official_logo.png"/>GenomeSpace.org</a><ul>
+<li id="what-is-genomespace"><a href="http://www.genomespace.org/what-is-genomespace">What is GenomeSpace?</a>
+<li id="tools"><a href="http://www.genomespace.org/support/tools">Tools</a>
+</li>
+<li id="recipes"><a href="http://recipes.genomespace.org/">Recipes</a></li>
+<li id="documentation"><a href="http://www.genomespace.org/documentation">Documentation</a>
+<ul>
+<li><a href="http://www.genomespace.org/support/guides/user-guide">User Guide</a>
+<p>Read the detailed guide to the user interface</p>
+</li>
+<li><a href="http://www.genomespace.org/support/guides/tool-guide">Tool Guide</a>
+<p>Learn how to access GenomeSpace functionality for each Tool</p>
+</li>
+<li><a href="http://www.genomespace.org/faq">FAQ</a>
+<p>See answers to frequently asked questions</p>
+</li>
+<li><a href="http://www.genomespace.org/presentations-and-videos">Presentations and Videos</a>
+<p>Access talks by the GenomeSpace community</p>
+</li>
+<li><a href="http://www.genomespace.org/support/guides/end-to-end-analyses">End-to-End Analyses</a>
+<p>Provides description for end-to-end analyses.</p>
+</li>
+</ul>
+</li>
+<li id="developers"><a href="http://www.genomespace.org/for-developers">Developers</a>
+<ul>
+<li><a href="http://www.genomespace.org/what-can-genomespace-do-for-tool-developers">What Can GenomeSpace Do For Tool Developers?</a>
+<p></p>
+</li>
+<li><a href="http://www.genomespace.org/adopters">Technical Documentation</a>
+<p></p>
+</li>
+<li><a href="http://www.genomespace.org/source-code">Source Code and Distributions</a>
+<p></p>
+</li>
+<li><a href="http://www.genomespace.org/developer-support-and-feedback">Developer Support and Feedback</a>
+<p></p>
+</li>
+</ul>
+</li>
+<li id="support"><a href="http://www.genomespace.org/support">Support</a>
+</li>
+<li id="about"><a href="http://www.genomespace.org/about">About</a>
+</li>
+</li></ul></li>
+<!-- end of links to main GenomeSpace.org -->
+<li class="search">
+<div id="search_box">
+<form accept-charset="UTF-8" action="/search" class="form" method="get" role="form"><div style="display:none"><input name="utf8" type="hidden" value="✓"/></div>
+<div style="margin:0;padding:0;display:inline">
+<input class="search" id="search" name="search" type="text"/>
+</div>
+<input class="searchBtn" type="submit"/>
+</form> </div>
+</li>
+</ul>
+</div>
+<div class="container fluid gs-recipe-">
+<div class="row">
+<div class="col-md-10">
+<table><tr><td><img alt="Genomica gp msigdb" class="recipeAvatar" src="/system/recipes/avatars/000/000/019/original/genomica_gp_msigdb.png?1455048788"/></td><td>
+<h3>Identify copy number variation (CNV)-associated transcriptional regulators with unique gene expression profiles by stepwise linkage analysis
+                        </h3>
+</td></tr></table>
+<p class="text-muted">Added by GenomeSpaceTeam on 2015.05.28 <span class="official"><img alt="Official logo" data-content="Offical GenomeSpace Recipe" data-toggle="popover" src="/assets/official_logo.png"/></span>
+<br/>
+            Last updated on over 3 years ago.
+            </p>
+<div class="row">
+<div class="col-md-8">
+<p>
+<a class="btn btn-default btn-xs tag green" >microarray</a>
+<a class="btn btn-default btn-xs tag green" >copy number variation</a>
+<a class="btn btn-default btn-xs tag green" >gene sets</a>
+<a class="btn btn-default btn-xs tag red" >module map</a>
+</p>
+</div>
+<div class="col-md-2 voting">
+<p class="text-success"><span class="glyphicon glyphicon-thumbs-up"></span> 0</p>
+</div>
+<div class="col-md-2 voting">
+<p class="text-danger"><span class="glyphicon glyphicon-thumbs-down"></span> 0</p>
+</div>
+</div>
+<hr/>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/K4O8Kya3wyk?list=PL4ZmSx1n2Kw6Q5nzbf-x2uXmX8CMusRKG&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+<section id="summary"></section>
+<h3 class="divider">Summary</h3>
+<div class="responsive-content">
+<p><span style="font-family:arial,sans-serif;"><span style="font-size:16px;"><i>Are there specific transcriptional regulators, whose expression and copy number correlate with the expression of genes associated with a specific phenotype?</i></span></span></p>
+<p>This recipe provides a method for identifying transcriptional regulators of a gene set associated with a specific phenotype. An example use of this recipe is a case where an investigator may want to identify determine which transcriptional regulators exhibit unique expression phenotypes (e.g. up-regulation or down-regulation). This recipe uses a procedure called "Stepwise Linkage Analysis of Microarray Signatures", first described by <a href="https://www.ncbi.nlm.nih.gov/pubmed/16518402">Adler et al. (<em>Nat Genetics</em> 2006)</a>. This recipe does not use the SLAMS software tool.</p>
+<p><img alt="" src="/ckeditor_assets/pictures/366/content_identifycnv.png" style="width: 617px; height: 317px; float: right; padding: 10px;"/></p>
+<p>In particular, the phenotype is the embryonic stem cell (ESC) state, which is common to ESCs, as well as induced pluripotent stem cells (iPSCs), and also in a compendium of human cancers, such as breast cancer. In this recipe, we are interested in determining which genes transcriptionally regulate this 'stemness signature' of gene expression. This recipe recapitulates research by Wong <em>et al.</em>, in <em>Cell Stem Cell</em> (2008), "<a href="http://www.ncbi.nlm.nih.gov/pubmed/18397753">Module map of stem cell genes guides creation of epithelial cancer stem cells</a>". To recapitulate this research, we will use a procedure called Stepwise Linkage Analysis of Microarray Signatures (SLAMS), which is described by Adler <em>et al.</em> in <em>Nature Genetics</em> (2006), "<a href="http://www.ncbi.nlm.nih.gov/pubmed/16518402">Genetic regulators of large-scale transcriptional signatures in cancer</a>". A summary description of the SLAMS procedure is listed below, and more information about SLAMS can be found in the review paper, "<a href="http://www.ncbi.nlm.nih.gov/pubmed/16680134">A SLAMS dunk for cancer regulators</a>", by Kumar-Sinha and Chinnaiyan.</p>
+<p>We use a gene expression dataset of primary human breast cancer tumor samples, with a complementary dataset of copy number variation data in array comparative genomic hybridization (aCGH) format, as described in <a href="http://www.ncbi.nlm.nih.gov/pubmed/17157792" style="line-height: 20.7999992370605px;">Chin, K. <em>et al</em>, <em>Cancer Cell</em>, 2006</a>. We use a set of stemness signature genes to separate breast cancer tumor samples into those which exhibit the stemness signature and those that do not by creating a module map in Genomica.  A module map characterizes the expression of the gene expression dataset, providing information about sets of genes within the dataset.</p>
+<p>We use the classified samples (e.g. stemness signature present vs. stemness signature absent) to normalize the copy number variation data in GenePattern. Next, we identify transcriptional regulators that correlate with the changes in the copy number dataset using a gene set collection from MSigDB, in Genomica. Finally, we identify transcriptional regulators whose amplification or deletion is correlated with up- or downregulation of gene expression. We consider these genes to be 'stemness regulators', i.e. genes which regulate the genes associated with the stemness signature.</p>
+<p>Description of the <strong>Stepwise Linkage Analysis of Microarray Signatures</strong> (SLAMS) procedure (<a href="http://www.ncbi.nlm.nih.gov/pubmed/16680134" style="line-height: 20.7999992370605px;">Kumar-Sinha and Chinnaiyan</a>):</p>
+<ol>
+<li>Sort tumor samples into groups based on whether the stemness signature is present (“ON”) or absent (“OFF”).</li>
+<li>Compare the DNA copy number changes between the groups of tumor samples. Calculate the association between stemness expression and CNV datasets to identify amplifications/deletions associated with the stemness signature.</li>
+<li>Select genes which are potential candidate regulators of the stemness signature, based on coordinate gene amplification/deletion and gene expression upregulation/downregulation.</li>
+<li>Validate the candidate regulators by assessing their predictive ability in independent samples of tumor samples.</li>
+</ol>
+</div>
+<section id="inputs"></section>
+<h3 class="divider">Inputs</h3>
+<div class="responsive-content">
+<p>To complete this recipe, we will need a gene expression dataset, an accompanying set of copy number variation (CNV) data, and a custom-built gene set of interest. In this example, we use data from primary human breast cancer tumor samples: gene expression data, and array comparative genomic hybridization (aCGH) copy number variation data, fully described in <a href="http://www.ncbi.nlm.nih.gov/pubmed/17157792" target="new">Chin, K. et al, Cancer Cell (2006)</a>. We also use a set of genes whose transcriptional signature is consistent with an embryonic stem cell state ("stemness signature"). We will need the following datasets, which can be downloaded from the following GenomeSpace Public folder:</p>
+<p><code class="directory">Public</code> &gt; <code class="directory">RecipeData</code> &gt; <code class="directory">ExpressionData</code> &gt; <strong><code class="filename"><a href="https://gsui.genomespace.org/jsui/gsui.html?pathOrUrl=/Home/Public/RecipeData/ExpressionData/breasttumor.preprocessed.collapsed.tab" target="_blank">breasttumor.preprocessed.collapsed.tab</a></code></strong>: This file contains the gene expression profile of primary human breast cancer tumor samples. The original dataset has been log-transformed, row-centered on the mean, and has had the probe IDs collapsed to HUGO Gene Symbols.</p>
+<p><code class="directory">Public</code> &gt; <code class="directory">RecipeData</code> &gt; <code class="directory">VariantData</code> &gt; <strong><code class="filename"><a href="https://gsui.genomespace.org/jsui/gsui.html?pathOrUrl=/Home/Public/RecipeData/VariantData/breasttumor.acgh.txt" target="_blank">breasttumor.acgh.txt</a></code></strong>: This file contains accompanying copy number variation data in array comparative genomic hybridization (aCGH) format.</p>
+<p><code class="directory">Public</code> &gt; <code class="directory">RecipeData</code> &gt; <code class="directory">GeneSets</code> &gt; <strong><code class="filename"><a href="https://gsui.genomespace.org/jsui/gsui.html?pathOrUrl=/Home/Public/RecipeData/GeneSets/stemness.geneset.tab" target="_blank">stemness.geneset.tab</a></code></strong>: This file contains a list of genes which are associated with the embryonic stem cell state.</p>
+</div>
+<div id="recipeOutputSection">
+<section id="outputs"></section>
+<h3 class="divider">Outputs</h3>
+<div class="responsive-content" id="recipeOutputText">
+<p>This recipe identifies a set of transcription factors which regulate genes associated with an embryonic stem cell state. The recipe provides a list of stemness regulators, and also a heatmap of the stemness regulator expression in breast cancer tumor samples.</p>
+</div>
+</div>
+<section id="overview"></section>
+<h3 class="divider">Recipe steps</h3>
+<ul>
+<li><strong>Genomica</strong></li>
+<ol start="1">
+<li>Sort breast cancer tumor samples based on the presence or absence of the stemness signature</li>
+</ol>
+</ul>
+<ul>
+<li><strong>GenePattern</strong></li>
+<ol start="2">
+<li>Normalize breast cancer copy number variation profiles</li>
+</ol>
+</ul>
+<ul>
+<li><strong>MSigDB</strong></li>
+<ol start="3">
+<li>Download a collection of chromosome cytoband gene sets</li>
+</ol>
+</ul>
+<ul>
+<li><strong>Genomica</strong></li>
+<ol start="4">
+<li>Compare copy number variation data to identify regulators of expression</li>
+<li>Obtain a list of candidate stemness regulators</li>
+</ol>
+</ul>
+<div class="row">
+<div class="col-md-6" style="text-align: right; display: inline;width: 250px !important;">
+<a class="btn btn-info" href="javascript:void(0);" id="show-all"><span class="glyphicon glyphicon-plus"></span> Expand All Steps</a>
+</div>
+<div class="col-md-6" style="display: inline;width: 250px !important;">
+<a class="btn btn-info" href="javascript:void(0);" id="hide-all"><span class="glyphicon glyphicon-minus"></span> Collapse All Steps</a>
+</div>
+</div>
+<p></p>
+<div aria-multiselectable="true" class="panel-group" id="steps" role="tablist">
+<div class="panel panel-default">
+<section id="step_0"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Genomica" class="stepAvatar tag-tooltip" src="/assets/Genomica.png" title="Genomica"/>
+<a data-toggle="toggle" href="#collapse_0" onclick="$('#collapse_0').collapse('toggle')">1: Sort breast cancer tumor samples based on the presence or absence of the stemness signature <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>First, we will create a module map of co-regulated genes with similar expression profiles, to identify breast cancer tumor samples in which the stemness signature is present (“Stemness ON”) or absent (“Stemness OFF”).</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_0" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>Launch Genomica on the gene expression dataset file (<code class="directory">Public</code> &gt; <code class="directory">RecipeData</code> &gt; <code class="directory">ExpressionData</code> &gt; <code class="filename">breasttumor.preprocessed.collapsed.tab</code>) by clicking the file and dragging it to the Genomica icon. This will download a JNLP file to launch Genomica. Double-click the file to start the Genomica program. You should see a heatmap of gene expression when the program first loads.</li>
+<li>Navigate to the following menu: <code class="parameter">Sets &gt; Load Gene Sets from GenomeSpace File…</code><br>
+<img alt="" src="/ckeditor_assets/pictures/63/content_1.png" style="height:645px; width:658px"/></br></li>
+<li>Choose the stemness gene set file (<code class="directory">Public</code> &gt; <code class="directory">RecipeData</code> &gt; <code class="directory">GeneSets</code> &gt; <code class="filename">stemness.geneset.tab</code>), then click <code class="parameter">Select</code>.</li>
+<li>Navigate to the following menu: <code class="parameter">Algorithms &gt; Create a Module Map…</code><br/>
+<img alt="" src="/ckeditor_assets/pictures/64/content_2.png" style="height:647px; width:691px"/></li>
+<li>Once the tool has loaded, change the following parameters:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li>Under <code class="parameter">Gene Sets</code>, click the box next to <code class="filename">...stemness.geneset</code><br/>
+<img alt="" src="/ckeditor_assets/pictures/65/content_3_1.png" style="height:320px; width:614px"/></li>
+<li>Under <code class="parameter">Experiments</code>, set <code class="parameter">Expression levels &gt;= ___ are considered up-regulated</code> to 0.5.</li>
+<li>Under <code class="parameter">Experiments</code>, set <code class="parameter">Expression levels &lt;= ___ are considered down-regulated</code> to -0.5.<br/>
+<img alt="" src="/ckeditor_assets/pictures/66/content_3_2.png" style="height:542px; width:619px"/></li>
+</ol>
+</li>
+<li>Click <code class="parameter">Run</code> to create a module map.<br/>
+<small><em><strong>NOTE:</strong> It may take several minutes to learn and create the module map.</em></small></li>
+<li>Export the results to GenomeSpace using the following steps:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li>In the window <code class="parameter">Exp.An</code>, highlight the column <code class="parameter">INGENESET</code> by clicking on the label.</li>
+<li>Under <code class="parameter">Print Analysis</code>, click <code class="parameter">Regulation</code>.<br/>
+<img alt="" src="/ckeditor_assets/pictures/67/content_4.png" style="height:897px; width:606px"/></li>
+<li>Choose a folder on your local computer, and click <code class="parameter">Select</code>.<br/>
+<em><strong>NOTE:</strong> Genomica will automatically create and save the following files to this folder: <code class="filename">INGENESET.present.txt</code>, <code class="filename">INGENESET.absent.txt</code>, and <code class="filename">INGENESET.array.tab</code>.</em></li>
+</ol>
+</li>
+<li>Close Genomica and return to GenomeSpace.</li>
+<li>Save the files to GenomeSpace by clicking and dragging them into your GenomeSpace directory from your local directory.</li>
+</ol>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/K4O8Kya3wyk?list=https://www.youtube.com/watch?v=K4O8Kya3wyk&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_1"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Genepattern" class="stepAvatar tag-tooltip" src="/assets/GenePattern.png" title="GenePattern"/>
+<a data-toggle="toggle" href="#collapse_1" onclick="$('#collapse_1').collapse('toggle')">2: Normalize breast cancer copy number variation profiles <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>Next, we will normalize the raw breast cancer CNV profiles (aCGH data) using the files we just created in Genomica’s module map. In particular, <code class="filename">INGENESET.present</code> is a list of breast cancer tumor samples which have the stemness signature upregulated, and <code class="filename">INGENESET.absent</code> is a list of breast cancer tumor samples which do not have the stemness signature upregulated. These files will be used to normalize the aCGH data.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_1" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>Launch GenePattern from GenomeSpace.</li>
+<li>Under the <code class="parameter">Modules</code> tab, search for the "Acgh2Tab" module.</li>
+<li>Once the module has loaded, change the following parameters:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li><code class="parameter">acgh input file</code>: <code class="filename">breasttumor.acgh.txt</code> (found in the following directory: <code class="directory">Public</code> &gt; <code class="directory">RecipeData</code> &gt; <code class="directory">VariantData</code>)</li>
+<li><code class="parameter">presentlist file</code>: <code class="filename">INGENESET.present.txt</code></li>
+<li><code class="parameter">absentlist file</code>: <code class="filename">INGENESET.absent.txt</code></li>
+<li><code class="parameter">genelocs file</code>: <code class="filename">hg18_refseq_genes.txt</code> (this is the default setting)<br>
+<img alt="" src="/ckeditor_assets/pictures/68/content_5.png" style="border:1px solid grey; height:615px; width:800px"/></br></li>
+</ol>
+</li>
+<li>Click <code class="parameter">Run</code> to submit the job.</li>
+<li>Once the job has finished running, save the converted aCGH file (<code class="filename">acgh.avergene.tab</code>) to GenomeSpace by clicking on the file and selecting <code class="parameter">Save to GenomeSpace</code>, then choosing a directory and clicking <code class="parameter">Save</code>.<br/>
+<img alt="" src="/ckeditor_assets/pictures/69/content_6.png" style="border:1px solid grey; height:510px; width:360px"/></li>
+</ol>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/V_gsmtPn6PU?list=https://www.youtube.com/watch?v=V_gsmtPn6PU&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_2"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Msigdb" class="stepAvatar tag-tooltip" src="/assets/MSigDB.png" title="MSigDB"/>
+<a data-toggle="toggle" href="#collapse_2" onclick="$('#collapse_2').collapse('toggle')">3: Download a collection of chromosome cytoband gene sets <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>To identify the genes which regulate the stemness signature, we use a collection of gene sets which correspond to each human chromosome and each cytogenetic band. This collection of gene sets (<a href="http://www.broadinstitute.org/gsea/msigdb/collections.jsp#C1">C1</a>) is obtained from the <a href="http://www.broadinstitute.org/gsea/msigdb/">MSigDB</a>, and are useful for identifying effects related to chromosomal deletions or amplifications.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_2" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>Launch MSigDB from GenomeSpace.</li>
+<li>Navigate to the <code class="parameter">Downloads</code> tab on the MSigDB website (also located at <a href="http://www.broadinstitute.org/gsea/downloads.jsp" style="line-height: 1.6;">http://www.broadinstitute.org/gsea/downloads.jsp</a>).</li>
+<li>Scroll down until you find the file, <code class="filename">c1.all.v<strong>X.X</strong>.symbols.gmt</code>. Click the file to download it to your local directory.<br>
+<em><strong>NOTE:</strong> The file version may be updated to a different number than what is displayed in the screenshot. Always select the most recent file versions.</em><br/>
+<img alt="" src="/ckeditor_assets/pictures/70/content_6_5.png" style="border:1px solid grey; height:914px; width:800px"/></br></li>
+<li>Save the file to GenomeSpace by clicking and dragging the file into your GenomeSpace directory.</li>
+<li>Convert the file to Genomica TAB format using the follow method:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li>Right-click on the file, then choose <code class="parameter">Convert</code></li>
+<li><code class="parameter">Convert to</code>: <code class="filename">geneset.tab</code></li>
+<li>Click <code class="parameter">Convert on Server</code><br/>
+<img alt="" src="/ckeditor_assets/pictures/72/content_6_75.png" style="height:556px; width:800px"/></li>
+</ol>
+</li>
+</ol>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/zqnjmAd0bT8?list=https://www.youtube.com/watch?v=zqnjmAd0bT8&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_3"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Genomica" class="stepAvatar tag-tooltip" src="/assets/Genomica.png" title="Genomica"/>
+<a data-toggle="toggle" href="#collapse_3" onclick="$('#collapse_3').collapse('toggle')">4: Compare copy number variation data to identify regulators of expression <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>We will create a module map to identify which genes in cytogenetic bands regulate the aberrations found in breast cancer tumor copy number variation data.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_3" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>Launch Genomica on the normalized breast cancer CNV profile (<code class="filename">acgh.avergene.tab</code>) by clicking Genomica icon. This will download a JNLP file to launch Genomica. Double-click the file to start the Genomica program. Next, navigate to <code class="parameter">GenomeSpace &gt; Open from GenomeSpace File…</code> and find the file in your directory. Click the file and choose <code class="parameter">Select</code> to load the file. You should see a heatmap of expression values.</li>
+<li>Navigate to the following menu: <code class="parameter">Sets &gt; Load Gene Sets from GenomeSpace File…</code><br>
+<img alt="" src="/ckeditor_assets/pictures/73/content_7.png" style="height:665px; width:748px"/></br></li>
+<li>Choose C1 collection of chromosome cytobands file from GenomeSpace (<code class="filename">c1.all.v5.0.symbols.geneset.tab</code>). Click <code class="parameter">Select</code>.</li>
+<li>Navigate to the following menu: <code class="parameter">Sets &gt; Load Experiment Sets from GenomeSpace File…</code><br/>
+<img alt="" src="/ckeditor_assets/pictures/74/content_8.png" style="height:670px; width:751px"/></li>
+<li>Choose the experiment array set of samples that are present or absent for stemness genes (<code class="filename">INGENESET.array.tab</code>). Click <code class="parameter">Select</code>.</li>
+<li>Navigate to the following menu: <code class="parameter">Algorithms &gt; Create a Module Map…</code><br/>
+<img alt="" src="/ckeditor_assets/pictures/75/content_9.png" style="height:669px; width:754px"/></li>
+<li>Once the tool has loaded, change the following parameters:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li>Under <code class="parameter">Gene Set</code>, click the box next to <code class="filename">…c1.all.v5.0.symbols.geneset</code><br/>
+<img alt="" src="/ckeditor_assets/pictures/76/content_10.png" style="height:316px; width:616px"/></li>
+<li>Under <code class="parameter">Experiment attributes</code>, check the box next to <code class="filename">…INGENESET.array</code><br/>
+<img alt="" src="/ckeditor_assets/pictures/77/content_11.png" style="height:489px; width:615px"/></li>
+</ol>
+</li>
+<li>Click <code class="parameter">Run</code> to create a module map.</li>
+<li>In the window <code class="parameter">Exp.An</code>, highlight the <code class="parameter">CHR8Q24</code> and <code class="parameter">CHR8Q22</code> columns (the top 2 most enriched cytobands).</li>
+<li>Click the <code class="parameter">View Gene Hits</code> button.<br/>
+<img alt="" src="/ckeditor_assets/pictures/78/content_12.png" style="height:881px; width:800px"/></li>
+<li>Check the box next to <code class="filename">…INGENESET.array</code>.</li>
+<li>Click <code class="parameter">Analyze</code>.<br/>
+<img alt="" src="/ckeditor_assets/pictures/79/content_13.png" style="height:389px; width:417px"/></li>
+<li>Once the new heatmap is loaded, under <code class="parameter">Print Analysis</code>, click <code class="parameter">Columns</code>. Give the resulting file of 145 candidate regulators a name, e.g. <code class="filename">candidate_regulators.lst</code>. Click <code class="parameter">Save</code>.<br/>
+<img alt="" src="/ckeditor_assets/pictures/80/content_14.png" style="height:692px; width:800px"/></li>
+<li>Upload <code class="filename">candidate_regulators.lst</code> to GenomeSpace by clicking and dragging the file into your GenomeSpace directory.</li>
+<li>In GenomeSpace, convert the LST file to a Genomica geneset TAB format:
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li>Right-click on the file, then choose <code class="parameter">Convert</code></li>
+<li><code class="parameter">Convert to</code>: <code class="filename">geneset.tab</code></li>
+<li>Click <code class="parameter">Convert on Server</code><br/>
+<img alt="" src="/ckeditor_assets/pictures/81/content_15.png" style="height:555px; width:800px"/></li>
+</ol>
+</li>
+</ol>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/pSsqfSQXGsY?list=https://www.youtube.com/watch?v=pSsqfSQXGsY&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<section id="step_4"></section>
+<div class="panel-heading" id="headingOne" role="tab">
+<h4 class="panel-title"><img alt="Genomica" class="stepAvatar tag-tooltip" src="/assets/Genomica.png" title="Genomica"/>
+<a data-toggle="toggle" href="#collapse_4" onclick="$('#collapse_4').collapse('toggle')">5: Obtain a list of candidate stemness regulators <span class="glyphicon glyphicon-chevron-right toggle-glyph"></span></a>
+</h4><br/>
+<p>Candidate stemness regulators can be identified based on the coordinate profiles of the gene expression data and copy number variation data. Coordinated profiles occur when the gene is amplified in the CNV dataset and also upregulated in the gene expression dataset, or when the gene is deleted in the CNV dataset and also downregulated in the gene expression dataset.</p>
+</div>
+<div class="panel-collapse step-container collapse" id="collapse_4" role="tabpanel">
+<div class="panel-body">
+<div class="responsive-content">
+<ol>
+<li>Launch Genomica on the normalized breast cancer gene expression dataset (<code class="directory">Public</code> &gt; <code class="directory">RecipeData</code> &gt; <code class="directory">ExpressionData</code> &gt; <code class="filename">breasttumor.preprocessed.collapsed.tab</code>) by clicking and dragging the file to the Genomica icon. You should see a heatmap of expression values.</li>
+<li>Navigate to the following menu: <code class="parameter">Sets &gt; Load Gene Sets from GenomeSpace File…</code><br>
+<img alt="" src="/ckeditor_assets/pictures/63/content_1.png" style="height:645px; width:658px"/></br></li>
+<li>Choose the candidate regulators file (<code class="filename">candidate_regulators.geneset.tab</code>). Click <code class="parameter">Select</code>.</li>
+<li>Navigate to the following menu: <code class="parameter">Sets &gt; Load Experiment Sets from GenomeSpace File…</code><br/>
+<img alt="" src="/ckeditor_assets/pictures/83/content_16.png" style="height:662px; width:637px"/></li>
+<li>Choose the experiment array set of samples that are present or absent for stemness genes (<code class="filename">INGENESET.array.tab</code>).</li>
+<li>Navigate to the following menu: <code class="parameter">Algorithms &gt; Create a Module Map…</code>.
+	<ol start="1" style="list-style-type: upper-alpha;">
+<li>Under <code class="parameter">Gene Sets</code>, click the box next to <code class="filename">…candidate_regulators.geneset</code>.<br/>
+<img alt="" src="/ckeditor_assets/pictures/84/content_17.png" style="height:310px; width:611px"/></li>
+<li>Under <code class="parameter">Experiment attributes</code>, check the box next to <code class="filename">…INGENESET.array</code><br/>
+<img alt="" src="/ckeditor_assets/pictures/85/content_18.png" style="height:484px; width:614px"/></li>
+</ol>
+</li>
+<li>Click <code class="parameter">Run</code> to create a module map.</li>
+<li>In the window <code class="parameter">Exp.An</code>, highlight the <code class="parameter">INGENESET</code> column.</li>
+<li>Click the <code class="parameter">View Gene Hits</code> button.<br/>
+<img alt="" src="/ckeditor_assets/pictures/86/content_19.png" style="height:929px; width:637px"/></li>
+<li>Check the box next to <code class="filename">…INGENESET.array</code>.</li>
+<li>Click <code class="parameter">Analyze</code>.<br/>
+<img alt="" src="/ckeditor_assets/pictures/87/content_20.png" style="height:410px; width:499px"/></li>
+</ol>
+</div>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<div class="embed-responsive embed-responsive-16by9"><iframe allowfullscreen="" class="embed-responsive-item" frameborder="0" mozallowfullscreen="" src="//www.youtube.com/embed/P2GKo9FkzwI?list=https://www.youtube.com/watch?v=P2GKo9FkzwI&amp;vq=hd720" webkitallowfullscreen=""></iframe></div>
+</div>
+<div class="col-md-3"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="recipeInterpSection">
+<section id="results"></section>
+<h3 class="divider">Results Interpretation</h3>
+<div class="responsive-content" id="recipeInterpText">
+<p><strong>This is an example interpretation of the results from this recipe.</strong> First, we identified which breast cancer tumor samples exhibit the stemness signature and which did not, and used this classification to normalize copy number variation data. Next, we identified transcriptional regulators of the copy number variations by overlapping the copy number dataset with a gene set collection from MSigDB. Finally, we identified regulators of the stemness signature by identified genes with concordant profiles in the breast cancer tumor sample gene expression dataset, and in the copy number variation dataset, i.e. genes which exhibited copy number amplification and gene expression upregulation, or genes which exhibited copy number deletion and gene expression downregulation. Using this recipe we have identified 48 genes matching this description, which are the stemness regulators.</p>
+<p>The heatmap below illustrates the expression of the stemness regulators in breast cancer tumor samples. Red indicates upregulation of expression, green indicates downregulation of expression. Gene names are listed to the right of the heatmap, and the sames of breast cancer tumor samples are listed above the heatmap. Note that only breast cancer tumor samples with the presence or absence of the stemness signature are included. To the left, a single column indicates which genes are in the ‘INGENESET’ category, which is the label for regulators of the copy number variation data. In this example, all genes fall into that category, i.e. they are associated with both copy number variation, and gene expression. The rows on the bottom of the heatmap indicates which breast cancer tumor sample falls into which category. In the first row, red indicates ‘presence’, and green indicates ‘absence’, in the second and third rows, red indicates ‘presence’. These are not related to gene expression changes.</p>
+<p><img alt="" src="/ckeditor_assets/pictures/89/content_result_flipped.png" style="height:857px; width:800px"/></p>
+<p>Notice that these stemness regulatory genes tend to have the same overall expression patterns within one sample, i.e., both TAF2 and MYC are downregulated in sample b0404 (right-most green sample). Note that the pattern exhibits concordance between the stemness signature, and the stemness regulator. Sample b0404 lacks the stemness signature, and appears to have downregulation of stemness regulatory genes. In contrast, sample b0668 has the stemness signature present, and appears to have upregulation of stemness regulatory genes.</p>
+<p> </p>
+<ul>
+<li><strong>To save the list of stemness regulators from Genomica:</strong>
+<ol>
+<li>Under <code class="parameter">Print Analysis</code>, click <code class="parameter">Columns</code>.</li>
+<li>Save the resulting file of 48 stemness regulators as, e.g., <code class="filename">stemness_regulators.lst</code>.</li>
+<li>Click <code class="parameter">Save</code>.</li>
+<li>You can save this file to GenomeSpace by clicking and dragging the files into your GenomeSpace directory from your local directory.</li>
+</ol>
+</li>
+<li><strong>To convert the LST format to a Genomica geneset TAB format:</strong>
+<ol>
+<li>Right-click on the file</li>
+<li>Choose <code class="parameter">Convert</code></li>
+<li><code class="parameter">Convert to</code>: <code class="filename">geneset.tab</code></li>
+<li>Click <code class="parameter">Convert on Server</code></li>
+</ol>
+</li>
+</ul>
+</div>
+</div>
+<hr/>
+<div class="panel-group" id="comments">
+<div class="panel panel-default">
+<div class="panel-heading">
+<h4 class="panel-title"><a data-toggle="collapse" href="#comments_list">Comments (0)</a> <span class="glyphicon glyphicon-chevron-down toggle-glyph"></span></h4>
+</div>
+<div class="panel-collapse collapse in" id="comments_list">
+<div class="panel-body">
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<h4 class="panel-title">Submit a Comment</h4>
+</div>
+<div class="panel-body">
+<form accept-charset="UTF-8" action="/users/sign_in" class="form" id="new_user" method="post" role="form"><div style="display:none"><input name="utf8" type="hidden" value="✓"/><input name="authenticity_token" type="hidden" value="uqlkXgmsEsVa8rQuHkC22dWyzlnmluxo8lCfwRWkypM="/></div>
+<input id="user_identity_url" name="user[identity_url]" type="hidden" value="https://identity.genomespace.org/identityServer/xrd.jsp"/>
+<input class="btn btn-sm btn-success" name="commit" type="submit" value="Sign in using GenomeSpace"/>
+</form> </div>
+</div>
+</div>
+<script>
+//<![CDATA[
+
+
+
+                $('.responsive-content img').addClass('img-responsive').css({"height" : "", "width" : ""});
+				$('[data-toggle="popover"]').popover({trigger: "hover", placement: "top"});
+
+				$("#show-all").click(function() {
+					$(".step-container").collapse("show");
+
+				});
+
+				$("#hide-all").click(function() {
+					$(".step-container").collapse("hide");
+
+				});
+
+                 $('.tag-tooltip').tooltip();
+
+
+
+//]]>
+</script> </div>
+<div class="col-md-2">
+<div class="bs-docs-sidebar hidden-print gp-side-menu" role="complementary">
+<ul class="nav bs-docs-sidenav" data-spy="affix">
+<li><a href="#summary">Summary</a></li>
+<li><a href="#inputs">Inputs</a></li>
+<li id="recipeOutputNav"><a href="#outputs">Outputs</a></li>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#steps">Steps</a>
+<ul class="nav">
+<li><a class="step-anchor" href="#step_0">Sort breast cancer tumor samples based on the presence or absence of the stemness signature</a></li>
+<li><a class="step-anchor" href="#step_1">Normalize breast cancer copy number variation profiles</a></li>
+<li><a class="step-anchor" href="#step_2">Download a collection of chromosome cytoband gene sets</a></li>
+<li><a class="step-anchor" href="#step_3">Compare copy number variation data to identify regulators of expression</a></li>
+<li><a class="step-anchor" href="#step_4">Obtain a list of candidate stemness regulators</a></li>
+</ul>
+</li>
+<li id="recipeInterpNav"><a href="#results">Results Interpretation</a></li>
+<!-- <li><a href="#comments">Comments</a></li> -->
+<!-- <li><a href="#history">History</a></li> -->
+<li><a href="javascript:void(0);" id="scroll-top">Back to the Top</a></li>
+</ul>
+</div>
+<script>
+//<![CDATA[
+
+				$('.step-anchor').click(function() {
+					var step = $(this).attr('href').split('_')[1];
+					$('#collapse_' + step).collapse("show");
+				});
+
+//]]>
+</script> </div>
+</div>
+</div>
+<script>
+//<![CDATA[
+
+     if ($("#recipeOutputText").html().trim().length == 0){
+       $("#recipeOutputSection").hide();
+       $("#recipeOutputNav").hide();
+     }
+      if ($("#recipeInterpText").html().trim().length == 0){
+            $("#recipeInterpSection").hide();
+              $("#recipeInterpNav").hide();
+      }
+
+
+//]]>
+</script> <div class="container" id="history">
+<h1>History</h1>
+<ul>
+<li>Saved <b>over 3 years ago</b>
+                                                        on 03/21/2017 18:21:46 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/19?lastVersion=true&amp;versionIndex=7" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>over 3 years ago</b>
+                                                        on 03/15/2017 14:15:44 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/19?lastVersion=true&amp;versionIndex=6" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>over 3 years ago</b>
+                                                        on 03/15/2017 14:07:07 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/19?lastVersion=true&amp;versionIndex=5" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>over 3 years ago</b>
+                                                        on 03/08/2017 20:49:03 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/19?lastVersion=true&amp;versionIndex=4" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>over 3 years ago</b>
+                                                        on 03/08/2017 20:48:24 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/19?lastVersion=true&amp;versionIndex=3" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>almost 4 years ago</b>
+                                                        on 11/21/2016 18:33:02 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/19?lastVersion=true&amp;versionIndex=2" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>almost 4 years ago</b>
+                                                        on 11/02/2016 18:28:50 UTC by <b>sgaramsz</b>.
+                                                        <a href="/view/19?lastVersion=true&amp;versionIndex=1" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+<li>Saved <b>almost 4 years ago</b>
+                                                        on 09/06/2016 18:12:59 UTC by <b>andyis</b>.
+                                                        <a href="/view/19?lastVersion=true&amp;versionIndex=0" target="_oldRecipe" title="View this version in a new window">View this version</a><br/>
+<div>
+</div>
+</li>
+</ul>
+</div>
+<div class="container-fluid footer gs-recipe-footer">
+<p class="copy-right-block">Copyright ©2016 The Regents of the University of California and The Broad Institute of MIT &amp; Harvard</p>
+</div>
+</body>
+</html>
